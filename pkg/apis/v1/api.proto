@@ -280,6 +280,8 @@ message BackupInfo {
         string backup_id = 4;
         StatusInfo status = 5;
         string driver_name = 6;
+        repeated string zones = 7;
+        map<string, string> options = 8;
     }
 
     // Message for maintaing status of the object.
@@ -373,6 +375,8 @@ message RestoreInfo {
         string restore_volume = 4;
         StatusInfo status = 5;
         string driver_name = 6;
+        repeated string zones = 7;
+        map<string, string> options = 8;
     }
 
     // Message for maintaing status of the object.
