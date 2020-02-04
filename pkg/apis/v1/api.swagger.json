@@ -1419,7 +1419,6 @@
         "Failed",
         "Deleting",
         "Success",
-        "Initial",
         "Captured",
         "PartialSuccess",
         "DeletePending"
@@ -1705,7 +1704,6 @@
         "Failed",
         "Deleting",
         "Success",
-        "Initial",
         "Captured",
         "PartialSuccess",
         "DeletePending"
@@ -2225,7 +2223,6 @@
         "Failed",
         "Deleting",
         "Success",
-        "Initial",
         "Captured",
         "PartialSuccess"
       ],
