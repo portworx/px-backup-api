@@ -203,10 +203,9 @@ message BackupScheduleInfo {
             Failed = 4;
             Deleting = 5;
             Success = 6;
-            Initial = 7;
-            Captured = 8;
-            PartialSuccess = 9;
-            DeletePending = 10;
+            Captured = 7;
+            PartialSuccess = 8;
+            DeletePending = 9;
         }
     }
 }
@@ -294,10 +293,9 @@ message BackupInfo {
             Failed = 4;
             Deleting = 5;
             Success = 6;
-            Initial = 7;
-            Captured = 8;
-            PartialSuccess = 9;
-            DeletePending = 10;
+            Captured = 7;
+            PartialSuccess = 8;
+            DeletePending = 9;
         }
 
         Status status = 1;
@@ -389,9 +387,8 @@ message RestoreInfo {
             Failed = 4;
             Deleting = 5;
             Success = 6;
-            Initial = 7;
-            Captured = 8;
-            PartialSuccess = 9;
+            Captured = 7;
+            PartialSuccess = 8;
         }
 
         Status status = 1;
