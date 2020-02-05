@@ -254,6 +254,8 @@ message BackupInfo {
     repeated Volume volumes = 7;
     string backup_path = 8;
     Stage stage = 9;
+    string pre_exec_rule = 10;
+    string post_exec_rule = 11;
     enum Stage {
         Invalid = 0;
         Initial = 1;
@@ -305,6 +307,31 @@ message BackupInfo {
 message BackupObject {
     Metadata metadata = 1 [ (gogoproto.embed) = true ];
     BackupInfo backup_info = 2 [ (gogoproto.embed) = true ];
+}
+
+// Message for passing pre and post exec rules for backup
+message RulesInfo {
+    repeated RuleItem rules = 1 [ (gogoproto.moretags) = "yaml:\"rules\"" ];
+
+    message RuleItem {
+        map<string, string> PodSelector = 1
+            [ (gogoproto.moretags) = "yaml:\"podSelector\"" ];
+        repeated RuleAction rule_action = 2
+            [ (gogoproto.moretags) = "yaml:\"actions\"" ];
+    }
+
+    message RuleAction {
+        string type = 1;
+        bool back_ground = 2 [ (gogoproto.moretags) = "yaml:\"background\"" ];
+        bool running_in_single_pod = 3
+            [ (gogoproto.moretags) = "yaml:\"runInSinglePod\"" ];
+        string value = 4;
+    }
+}
+
+message RuleObject {
+    Metadata metadata = 1 [ (gogoproto.embed) = true ];
+    RulesInfo rules_info = 2 [ (gogoproto.embed) = true ];
 }
 
 // Message for restore info
@@ -879,7 +906,7 @@ message BackupCreateRequest {
     // Pre check rule to run before backup is started
     string pre_exec_rule = 6;
     // Post check rule to run after backup is completed
-    string port_exec_rule = 7;
+    string post_exec_rule = 7;
 }
 
 // Response message structure for backup create
@@ -1056,3 +1083,82 @@ message OrganizationEnumerateResponse {
 message OrganizationInspectRequest { string name = 2; }
 // Define OrganizationInspectResponse struct
 message OrganizationInspectResponse { OrganizationObject organization = 1; }
+
+// Request message for creating rules
+message RuleCreateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    RulesInfo rules_info = 2;
+}
+
+message RuleCreateResponse {}
+
+message RuleUpdateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    RulesInfo rules_info = 2;
+}
+
+// Define RuleUpdateResponse struct
+message RuleUpdateResponse {}
+
+// Define RuleEnumerateRequest struct
+message RuleEnumerateRequest { string org_id = 1; }
+
+// Define RuleEnumerateResponse struct
+message RuleEnumerateResponse { repeated RuleObject rule_object = 1; }
+
+// Define RuleInspectRequest struct
+message RuleInspectRequest {
+    string org_id = 1;
+    string name = 2;
+}
+
+// Define RuleInspectResponse struct
+message RuleInspectResponse { RuleObject rule_object = 1; }
+
+// Define RuleDeleteRequest struct
+message RuleDeleteRequest {
+    string org_id = 1;
+    string name = 2;
+}
+
+// Define RuleDeleteResponse struct
+message RuleDeleteResponse {}
+
+service Rules {
+    // Create creates new rule
+    rpc Create(RuleCreateRequest) returns (RuleCreateResponse) {
+        option (google.api.http) = {
+            post : "/v1/rule"
+            body : "*"
+        };
+    }
+
+    // Update given rule details
+    rpc Update(RuleUpdateRequest) returns (RuleUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/rule"
+            body : "*"
+        };
+    }
+
+    // Enumerate returns a list of rules
+    rpc Enumerate(RuleEnumerateRequest) returns (RuleEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/rule/{org_id}"
+        };
+    }
+
+    // Inspect returns detailed information about the specified rule
+    rpc Inspect(RuleInspectRequest) returns (RuleInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/rule/{org_id}/{name}"
+        };
+    }
+
+    // Delete removes rule from px-backup
+    rpc Delete(RuleDeleteRequest) returns (RuleDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/rule/{org_id}/{name}"
+        };
+    }
+}

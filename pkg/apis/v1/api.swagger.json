@@ -949,6 +949,143 @@
         ]
       }
     },
+    "/v1/rule": {
+      "post": {
+        "summary": "Create creates new rule",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RuleCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RuleCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Rules"
+        ]
+      },
+      "put": {
+        "summary": "Update given rule details",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RuleUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RuleUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Rules"
+        ]
+      }
+    },
+    "/v1/rule/{org_id}": {
+      "get": {
+        "summary": "Enumerate returns a list of rules",
+        "operationId": "Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RuleEnumerateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Rules"
+        ]
+      }
+    },
+    "/v1/rule/{org_id}/{name}": {
+      "get": {
+        "summary": "Inspect returns detailed information about the specified rule",
+        "operationId": "Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RuleInspectResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Rules"
+        ]
+      },
+      "delete": {
+        "summary": "Delete removes rule from px-backup",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RuleDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Rules"
+        ]
+      }
+    },
     "/v1/schedulepolicy": {
       "post": {
         "summary": "Create creates new schedule policy.",
@@ -1142,7 +1279,7 @@
           "type": "string",
           "title": "Pre check rule to run before backup is started"
         },
-        "port_exec_rule": {
+        "post_exec_rule": {
           "type": "string",
           "title": "Post check rule to run after backup is completed"
         }
@@ -1218,6 +1355,12 @@
         },
         "stage": {
           "$ref": "#/definitions/BackupInfoStage"
+        },
+        "pre_exec_rule": {
+          "type": "string"
+        },
+        "post_exec_rule": {
+          "type": "string"
         }
       }
     },
@@ -2132,6 +2275,120 @@
     "RestoreUpdateResponse": {
       "type": "object",
       "title": "Define RestoreUpdateResponse struct"
+    },
+    "RuleCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "rules_info": {
+          "$ref": "#/definitions/RulesInfo"
+        }
+      },
+      "title": "Request message for creating rules"
+    },
+    "RuleCreateResponse": {
+      "type": "object"
+    },
+    "RuleDeleteResponse": {
+      "type": "object",
+      "title": "Define RuleDeleteResponse struct"
+    },
+    "RuleEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "rule_object": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RuleObject"
+          }
+        }
+      },
+      "title": "Define RuleEnumerateResponse struct"
+    },
+    "RuleInspectResponse": {
+      "type": "object",
+      "properties": {
+        "rule_object": {
+          "$ref": "#/definitions/RuleObject"
+        }
+      },
+      "title": "Define RuleInspectResponse struct"
+    },
+    "RuleObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "rules_info": {
+          "$ref": "#/definitions/RulesInfo"
+        }
+      }
+    },
+    "RuleUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "rules_info": {
+          "$ref": "#/definitions/RulesInfo"
+        }
+      }
+    },
+    "RuleUpdateResponse": {
+      "type": "object",
+      "title": "Define RuleUpdateResponse struct"
+    },
+    "RulesInfo": {
+      "type": "object",
+      "properties": {
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RulesInfoRuleItem"
+          }
+        }
+      },
+      "title": "Message for passing pre and post exec rules for backup"
+    },
+    "RulesInfoRuleAction": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "back_ground": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "running_in_single_pod": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "RulesInfoRuleItem": {
+      "type": "object",
+      "properties": {
+        "PodSelector": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "rule_action": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RulesInfoRuleAction"
+          }
+        }
+      }
     },
     "S3Config": {
       "type": "object",
