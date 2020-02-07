@@ -183,6 +183,8 @@ message BackupScheduleInfo {
     repeated string namespaces = 7;
     // Label selectors to choose resources
     map<string, string> label_selectors = 8;
+    string pre_exec_rule = 9;
+    string post_exec_rule = 10;
     enum ReclaimPolicyType {
         Invalid = 0;
         Delete = 1;

@@ -1651,6 +1651,12 @@
             "type": "string"
           },
           "title": "Label selectors to choose resources"
+        },
+        "pre_exec_rule": {
+          "type": "string"
+        },
+        "post_exec_rule": {
+          "type": "string"
         }
       }
     },
