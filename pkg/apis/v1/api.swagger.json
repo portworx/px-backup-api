@@ -2376,6 +2376,13 @@
         "cluster": {
           "type": "string",
           "title": "uid or name of cluster"
+        },
+        "namespace_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "mapping of the namespaces from the backup to which restore should be done"
         }
       },
       "title": "Define RestoreCreateRequest struct"
