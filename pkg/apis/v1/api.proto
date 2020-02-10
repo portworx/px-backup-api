@@ -359,7 +359,10 @@ message RestoreInfo {
     repeated Volume volumes = 8;
     // Name of the cluster
     string cluster = 9;
-
+    string encryption_key = 10 [
+        (gogoproto.jsontag) = "encryptionkey",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
     message Resource {
         string name = 1;
         string namespace = 2;

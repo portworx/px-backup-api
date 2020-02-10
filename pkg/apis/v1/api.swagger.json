@@ -2174,6 +2174,9 @@
         "cluster": {
           "type": "string",
           "title": "Name of the cluster"
+        },
+        "encryption_key": {
+          "type": "string"
         }
       },
       "title": "Message for restore info"
