@@ -79,6 +79,23 @@ message AzureConfig {
         (gogoproto.jsontag) = "accountkey",
         (gogoproto.moretags) = "secure:\"true\""
     ];
+    string client_secret = 3 [
+        (gogoproto.jsontag) = "clientsecret",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
+    string client_id = 4 [
+        (gogoproto.jsontag) = "clientid",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
+    string tenant_id = 5 [
+        (gogoproto.jsontag) = "tenantid",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
+    // TODO: Need to see if this has to be here or in the backup object.
+    string subscription_id = 6 [
+        (gogoproto.jsontag) = "subscriptionid",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
 }
 
 message GoogleConfig {
