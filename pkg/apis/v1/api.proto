@@ -1184,3 +1184,26 @@ service Rules {
         };
     }
 }
+
+service Version {
+    // Get gets the version of the server
+    rpc Get(VersionGetRequest) returns (VersionGetResponse) {
+        option (google.api.http) = {
+            get : "/v1/version"
+        };
+    }
+}
+
+message VersionInfo {
+    string major = 1;
+    string minor = 2;
+    string patch = 3;
+    string git_commit = 4;
+    string build_date = 5;
+}
+
+message VersionGetRequest {}
+message VersionGetResponse {
+    // version information of the server
+    VersionInfo version = 1;
+}

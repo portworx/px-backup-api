@@ -1486,6 +1486,29 @@
           "SchedulePolicy"
         ]
       }
+    },
+    "/v1/version": {
+      "get": {
+        "summary": "Get gets the version of the server",
+        "operationId": "Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VersionGetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "tags": [
+          "Version"
+        ]
+      }
     }
   },
   "definitions": {
@@ -2882,6 +2905,35 @@
     "SchedulePolicyUpdateResponse": {
       "type": "object",
       "title": "Define SchedulePolicyUpdateResponse struct"
+    },
+    "VersionGetResponse": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "$ref": "#/definitions/VersionInfo",
+          "title": "version information of the server"
+        }
+      }
+    },
+    "VersionInfo": {
+      "type": "object",
+      "properties": {
+        "major": {
+          "type": "string"
+        },
+        "minor": {
+          "type": "string"
+        },
+        "patch": {
+          "type": "string"
+        },
+        "git_commit": {
+          "type": "string"
+        },
+        "build_date": {
+          "type": "string"
+        }
+      }
     },
     "protobufAny": {
       "type": "object",
