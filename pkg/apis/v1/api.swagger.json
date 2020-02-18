@@ -2203,8 +2203,32 @@
         },
         "cloud_credential": {
           "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/ClusterInfoStatusInfo"
         }
       }
+    },
+    "ClusterInfoStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/ClusterInfoStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "description": "Message for maintaing status of the cluster."
+    },
+    "ClusterInfoStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Online",
+        "Offline"
+      ],
+      "default": "Invalid"
     },
     "ClusterInspectResponse": {
       "type": "object",

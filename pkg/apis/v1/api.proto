@@ -46,6 +46,18 @@ message ClusterInfo {
         (gogoproto.moretags) = "secure:\"true\""
     ];
     string cloud_credential = 3;
+    StatusInfo status = 4;
+
+    // Message for maintaing status of the cluster.
+    message StatusInfo {
+        enum Status {
+            Invalid = 0;
+            Online = 1;
+            Offline = 2;
+        }
+        Status status = 1;
+        string reason = 2;
+    }
 }
 
 message ClusterObject {
