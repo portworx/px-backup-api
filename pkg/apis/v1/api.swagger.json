@@ -2814,11 +2814,6 @@
         "monthly": {
           "$ref": "#/definitions/SchedulePolicyInfoMonthlyPolicy"
         },
-        "ref_count": {
-          "type": "integer",
-          "format": "int32",
-          "description": "Reference count to track the number of backup schedule that are using\nthis schedulePolicy."
-        },
         "backup_schedule": {
           "type": "array",
           "items": {
