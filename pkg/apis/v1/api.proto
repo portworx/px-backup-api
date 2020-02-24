@@ -186,11 +186,8 @@ message SchedulePolicyInfo {
     DailyPolicy daily = 2;
     WeeklyPolicy weekly = 3;
     MonthlyPolicy monthly = 4;
-    // Reference count to track the number of backup schedule that are using
-    // this schedulePolicy.
-    int32 ref_count = 5;
     // list of backup schedule object that uses this schedule policy.
-    repeated string backup_schedule = 6;
+    repeated string backup_schedule = 5;
 }
 
 message SchedulePolicyObject {
