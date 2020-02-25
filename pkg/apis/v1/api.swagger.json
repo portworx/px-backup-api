@@ -2535,6 +2535,9 @@
         },
         "version": {
           "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/RestoreInfoStatusInfo"
         }
       }
     },
@@ -2560,7 +2563,7 @@
         "Failed",
         "Deleting",
         "Success",
-        "Captured",
+        "Retained",
         "PartialSuccess"
       ],
       "default": "Invalid"
