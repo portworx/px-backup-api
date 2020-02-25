@@ -392,6 +392,7 @@ message RestoreInfo {
         string group = 3;
         string kind = 4;
         string version = 5;
+        StatusInfo status = 6;
     }
 
     message Volume {
@@ -415,7 +416,7 @@ message RestoreInfo {
             Failed = 4;
             Deleting = 5;
             Success = 6;
-            Captured = 7;
+            Retained = 7;
             PartialSuccess = 8;
         }
 
