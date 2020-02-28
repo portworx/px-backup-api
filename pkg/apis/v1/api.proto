@@ -1216,3 +1216,77 @@ message VersionGetResponse {
     // version information of the server
     VersionInfo version = 1;
 }
+
+message LicenseStroage0Object {
+    Metadata metadata = 1 [ (gogoproto.embed) = true ];
+    LicenseStroage0Info storage0_info = 2 [ (gogoproto.embed) = true ];
+}
+
+message LicenseStroage1Object {
+    Metadata metadata = 1 [ (gogoproto.embed) = true ];
+    LicenseStroage1Info storage1_info = 2 [ (gogoproto.embed) = true ];
+}
+
+message LicenseAnchoringObject {
+    Metadata metadata = 1 [ (gogoproto.embed) = true ];
+    LicenseAnchoringInfo anchoring_info = 2 [ (gogoproto.embed) = true ];
+}
+
+message LicenseStroage0Info {
+    string storage0_content = 1;
+    string cluster = 2;
+}
+
+message LicenseStroage1Info {
+    string storage1_content = 1;
+    string cluster = 2;
+}
+
+message LicenseAnchoringInfo {
+    string anchoring_content = 1;
+    string cluster = 2;
+}
+
+// TODO: This api's are in WIP, more fields will be added as progress is made
+message LicenseCreateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    string activation_id = 2;
+}
+
+message LicenseCreateResponse {}
+
+message LicenseInspectRequest {
+    string org_id = 1;
+    bool etcd = 2;
+}
+
+message LicenseInspectResponse {
+    repeated LicenseResponseInfo response_info = 1;
+}
+
+message LicenseResponseInfo {
+    string name = 1;
+    string vendor_string = 2;
+    string notice = 3;
+    string version = 4;
+    int64 count = 5;
+    google.protobuf.Timestamp expires = 6;
+    google.protobuf.Timestamp starts = 7;
+}
+
+service License {
+    // Create creates new license
+    rpc Create(LicenseCreateRequest) returns (LicenseCreateResponse) {
+        option (google.api.http) = {
+            post : "/v1/license"
+            body : "*"
+        };
+    }
+
+    // Enumerate returns a list of license for given cluster
+    rpc Inspect(LicenseInspectRequest) returns (LicenseInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/license/{org_id}"
+        };
+    }
+}

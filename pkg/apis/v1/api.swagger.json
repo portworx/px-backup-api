@@ -885,6 +885,77 @@
         ]
       }
     },
+    "/v1/license": {
+      "post": {
+        "summary": "Create creates new license",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LicenseCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LicenseCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "License"
+        ]
+      }
+    },
+    "/v1/license/{org_id}": {
+      "get": {
+        "summary": "Enumerate returns a list of license for given cluster",
+        "operationId": "Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LicenseInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "etcd",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "License"
+        ]
+      }
+    },
     "/v1/organization": {
       "get": {
         "summary": "Enumerate returns a list of organization object",
@@ -2324,6 +2395,61 @@
     },
     "HealthStatusResponse": {
       "type": "object"
+    },
+    "LicenseCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "activation_id": {
+          "type": "string"
+        }
+      },
+      "title": "TODO: This api's are in WIP, more fields will be added as progress is made"
+    },
+    "LicenseCreateResponse": {
+      "type": "object"
+    },
+    "LicenseInspectResponse": {
+      "type": "object",
+      "properties": {
+        "response_info": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LicenseResponseInfo"
+          }
+        }
+      }
+    },
+    "LicenseResponseInfo": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "vendor_string": {
+          "type": "string"
+        },
+        "notice": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "count": {
+          "type": "string",
+          "format": "int64"
+        },
+        "expires": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "starts": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
     },
     "Metadata": {
       "type": "object",
