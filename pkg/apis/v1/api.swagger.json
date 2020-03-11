@@ -21,6 +21,12 @@
             "schema": {
               "$ref": "#/definitions/BackupCreateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -45,6 +51,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/BackupUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -72,6 +84,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/BackupEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -114,6 +132,12 @@
             "schema": {
               "$ref": "#/definitions/BackupInspectResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -142,6 +166,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/BackupDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -174,6 +204,12 @@
             "schema": {
               "$ref": "#/definitions/BackupLocationCreateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -198,6 +234,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/BackupLocationUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -226,6 +268,12 @@
             "schema": {
               "$ref": "#/definitions/BackupLocationEnumerateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -250,6 +298,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/BackupLocationInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -280,6 +334,12 @@
             "schema": {
               "$ref": "#/definitions/BackupLocationDeleteResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -294,6 +354,14 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "delete_backups",
+            "description": "delete_backups indicates whether the cloud backup files need to\nbe deleted or retained.",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
           }
         ],
         "tags": [
@@ -310,6 +378,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/BackupScheduleCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -335,6 +409,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/BackupScheduleUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -363,6 +443,12 @@
             "schema": {
               "$ref": "#/definitions/BackupScheduleEnumerateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -387,6 +473,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/BackupScheduleInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -416,6 +508,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/BackupScheduleDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -448,6 +546,12 @@
             "schema": {
               "$ref": "#/definitions/CloudCredentialCreateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -472,6 +576,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/CloudCredentialUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -500,6 +610,12 @@
             "schema": {
               "$ref": "#/definitions/CloudCredentialEnumerateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -524,6 +640,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/CloudCredentialInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -553,6 +675,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/CloudCredentialDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -585,6 +713,12 @@
             "schema": {
               "$ref": "#/definitions/ClusterCreateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -609,6 +743,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/ClusterUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -637,6 +777,12 @@
             "schema": {
               "$ref": "#/definitions/ClusterEnumerateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -661,6 +807,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/ClusterInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -690,6 +842,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/ClusterDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -722,6 +880,12 @@
             "schema": {
               "$ref": "#/definitions/HealthStatusResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "tags": [
@@ -739,6 +903,12 @@
             "schema": {
               "$ref": "#/definitions/OrganizationEnumerateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "tags": [
@@ -753,6 +923,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/OrganizationCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -781,6 +957,12 @@
             "schema": {
               "$ref": "#/definitions/OrganizationInspectResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -806,6 +988,12 @@
             "schema": {
               "$ref": "#/definitions/RestoreCreateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -830,6 +1018,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/RestoreUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -857,6 +1051,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/RestoreEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -899,6 +1099,12 @@
             "schema": {
               "$ref": "#/definitions/RestoreInspectResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -927,6 +1133,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/RestoreDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -959,6 +1171,12 @@
             "schema": {
               "$ref": "#/definitions/RuleCreateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -983,6 +1201,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/RuleUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1011,6 +1235,12 @@
             "schema": {
               "$ref": "#/definitions/RuleEnumerateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1035,6 +1265,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/RuleInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1064,6 +1300,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/RuleDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1096,6 +1338,12 @@
             "schema": {
               "$ref": "#/definitions/SchedulePolicyCreateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1120,6 +1368,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/SchedulePolicyUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1148,6 +1402,12 @@
             "schema": {
               "$ref": "#/definitions/SchedulePolicyEnumerateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1172,6 +1432,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/SchedulePolicyInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1201,6 +1467,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/SchedulePolicyDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1232,6 +1504,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/VersionGetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1546,10 +1824,38 @@
         "cloud_credential": {
           "type": "string"
         },
+        "status": {
+          "$ref": "#/definitions/BackupLocationInfoStatusInfo"
+        },
+        "delete_backups": {
+          "type": "boolean",
+          "format": "boolean"
+        },
         "s3_config": {
           "$ref": "#/definitions/S3Config"
         }
       }
+    },
+    "BackupLocationInfoStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/BackupLocationInfoStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "description": "Message for maintaing status of the object."
+    },
+    "BackupLocationInfoStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Valid",
+        "DeletePending"
+      ],
+      "default": "Invalid"
     },
     "BackupLocationInfoType": {
       "type": "string",
@@ -2688,6 +2994,39 @@
         },
         "build_date": {
           "type": "string"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
         }
       }
     }
