@@ -984,6 +984,10 @@ func local_request_CloudCredential_Update_0(ctx context.Context, marshaler runti
 
 }
 
+var (
+	filter_CloudCredential_Enumerate_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
 func request_CloudCredential_Enumerate_0(ctx context.Context, marshaler runtime.Marshaler, client CloudCredentialClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CloudCredentialEnumerateRequest
 	var metadata runtime.ServerMetadata
@@ -1004,6 +1008,13 @@ func request_CloudCredential_Enumerate_0(ctx context.Context, marshaler runtime.
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "org_id", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_CloudCredential_Enumerate_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.Enumerate(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -1033,10 +1044,18 @@ func local_request_CloudCredential_Enumerate_0(ctx context.Context, marshaler ru
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "org_id", err)
 	}
 
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_CloudCredential_Enumerate_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
 	msg, err := server.Enumerate(ctx, &protoReq)
 	return msg, metadata, err
 
 }
+
+var (
+	filter_CloudCredential_Inspect_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0, "name": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
+)
 
 func request_CloudCredential_Inspect_0(ctx context.Context, marshaler runtime.Marshaler, client CloudCredentialClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CloudCredentialInspectRequest
@@ -1069,6 +1088,13 @@ func request_CloudCredential_Inspect_0(ctx context.Context, marshaler runtime.Ma
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_CloudCredential_Inspect_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.Inspect(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -1107,6 +1133,10 @@ func local_request_CloudCredential_Inspect_0(ctx context.Context, marshaler runt
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_CloudCredential_Inspect_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := server.Inspect(ctx, &protoReq)

@@ -766,7 +766,10 @@ message CloudCredentialUpdateRequest {
 message CloudCredentialUpdateResponse {}
 
 // Define CloudCredentialEnumerateRequest struct
-message CloudCredentialEnumerateRequest { string org_id = 1; }
+message CloudCredentialEnumerateRequest {
+    string org_id = 1;
+    bool include_secrets = 2;
+}
 
 // Define CloudCredentialEnumerateResponse struct
 message CloudCredentialEnumerateResponse {
@@ -777,6 +780,7 @@ message CloudCredentialEnumerateResponse {
 message CloudCredentialInspectRequest {
     string org_id = 1;
     string name = 2;
+    bool include_secrets = 3;
 }
 
 // Define CloudCredentialInspectResponse struct

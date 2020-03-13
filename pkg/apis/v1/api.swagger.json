@@ -624,6 +624,13 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "include_secrets",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
           }
         ],
         "tags": [
@@ -661,6 +668,13 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "include_secrets",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
           }
         ],
         "tags": [
