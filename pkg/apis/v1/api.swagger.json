@@ -1671,8 +1671,19 @@
           "type": "string"
         },
         "backup_schedule": {
-          "type": "string",
+          "$ref": "#/definitions/BackupInfoBackupSchedule",
           "description": "Name of the backup schedule, if the backup was taken by schedule through\npx-backup.\nOtherwise it will be empty."
+        }
+      }
+    },
+    "BackupInfoBackupSchedule": {
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
         }
       }
     },
