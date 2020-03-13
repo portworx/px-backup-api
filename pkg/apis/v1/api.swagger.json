@@ -1669,6 +1669,10 @@
         },
         "post_exec_rule": {
           "type": "string"
+        },
+        "backup_schedule": {
+          "type": "string",
+          "description": "Name of the backup schedule, if the backup was taken by schedule through\npx-backup.\nOtherwise it will be empty."
         }
       }
     },

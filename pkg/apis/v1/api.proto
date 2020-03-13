@@ -296,6 +296,10 @@ message BackupInfo {
     Stage stage = 9;
     string pre_exec_rule = 10;
     string post_exec_rule = 11;
+    // Name of the backup schedule, if the backup was taken by schedule through
+    // px-backup.
+    // Otherwise it will be empty.
+    string backup_schedule = 12;
     enum Stage {
         Invalid = 0;
         Initial = 1;
