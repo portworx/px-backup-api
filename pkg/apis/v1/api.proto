@@ -299,7 +299,7 @@ message BackupInfo {
     // Name of the backup schedule, if the backup was taken by schedule through
     // px-backup.
     // Otherwise it will be empty.
-    string backup_schedule = 12;
+    BackupSchedule backup_schedule = 12;
     enum Stage {
         Invalid = 0;
         Initial = 1;
@@ -308,6 +308,11 @@ message BackupInfo {
         Volumes = 4;
         Applications = 5;
         Final = 6;
+    }
+
+    message BackupSchedule {
+        string uid = 1;
+        string name = 2;
     }
 
     message Resource {
