@@ -9,31 +9,8 @@ import "google/protobuf/timestamp.proto";
 option go_package = "api";
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
-
-message Metadata {
-    // name of the object
-    string name = 1;
-    // uid for the object
-    string uid = 2;
-    string owner = 3;
-    // organization uid
-    string org_id = 4;
-    google.protobuf.Timestamp create_time = 5;
-    google.protobuf.Timestamp last_update_time = 6;
-    // label selectors for the object for filtering
-    map<string, string> labels = 7;
-}
-
-message CreateMetadata {
-    // name of the object
-    string name = 1;
-    // org id of the object
-    string org_id = 2;
-    // owner of the object
-    string owner = 3;
-    // labels associated with the object
-    map<string, string> labels = 4;
-}
+/// import "common.proto";
+import "pkg/apis/v1/common.proto";
 
 message OrganizationObject {
     Metadata metadata = 1 [ (gogoproto.embed) = true ];
