@@ -2365,9 +2365,6 @@
     "GoogleConfig": {
       "type": "object",
       "properties": {
-        "project_id": {
-          "type": "string"
-        },
         "json_key": {
           "type": "string"
         }

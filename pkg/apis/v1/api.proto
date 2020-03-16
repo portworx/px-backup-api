@@ -111,8 +111,7 @@ message AzureConfig {
 }
 
 message GoogleConfig {
-    string project_id = 1;
-    string json_key = 2 [
+    string json_key = 1 [
         (gogoproto.jsontag) = "jsonkey",
         (gogoproto.moretags) = "secure:\"true\""
     ];
