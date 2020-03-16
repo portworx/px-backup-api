@@ -4,6 +4,7 @@ endif
 
 ifndef PROTOC_FILES
 PROTOC_FILES := pkg/apis/v1/api.proto
+PROTOC_FILES += pkg/apis/v1/common.proto
 endif
 
 .DEFAULT_GOAL: all
