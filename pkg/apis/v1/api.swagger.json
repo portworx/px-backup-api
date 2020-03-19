@@ -1647,7 +1647,7 @@
     "BackupEnumerateResponse": {
       "type": "object",
       "properties": {
-        "backup": {
+        "backups": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/BackupObject"
@@ -1857,7 +1857,7 @@
     "BackupLocationEnumerateResponse": {
       "type": "object",
       "properties": {
-        "backup_location": {
+        "backup_locations": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/BackupLocationObject"
@@ -1995,7 +1995,7 @@
     "BackupScheduleEnumerateResponse": {
       "type": "object",
       "properties": {
-        "backup_schedule": {
+        "backup_schedules": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/BackupScheduleObject"
@@ -2181,7 +2181,7 @@
     "CloudCredentialEnumerateResponse": {
       "type": "object",
       "properties": {
-        "cloud_credential": {
+        "cloud_credentials": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/CloudCredentialObject"
@@ -2276,7 +2276,7 @@
     "ClusterEnumerateResponse": {
       "type": "object",
       "properties": {
-        "cluster": {
+        "clusters": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ClusterObject"
@@ -2477,7 +2477,7 @@
     "OrganizationEnumerateResponse": {
       "type": "object",
       "properties": {
-        "organization": {
+        "organizations": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/OrganizationObject"
@@ -2559,7 +2559,7 @@
     "RestoreEnumerateResponse": {
       "type": "object",
       "properties": {
-        "restore": {
+        "restores": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/RestoreObject"
@@ -2764,7 +2764,7 @@
     "RuleEnumerateResponse": {
       "type": "object",
       "properties": {
-        "rule_object": {
+        "rules": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/RuleObject"
@@ -2776,7 +2776,7 @@
     "RuleInspectResponse": {
       "type": "object",
       "properties": {
-        "rule_object": {
+        "rule": {
           "$ref": "#/definitions/RuleObject"
         }
       },
@@ -2898,7 +2898,7 @@
     "SchedulePolicyEnumerateResponse": {
       "type": "object",
       "properties": {
-        "schedule_policy": {
+        "schedule_policies": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/SchedulePolicyObject"

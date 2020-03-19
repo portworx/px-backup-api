@@ -529,7 +529,7 @@ message SchedulePolicyEnumerateRequest {
 }
 // Define SchedulePolicyEnumerateResponse struct
 message SchedulePolicyEnumerateResponse {
-    repeated SchedulePolicyObject schedule_policy = 1;
+    repeated SchedulePolicyObject schedule_policies = 1;
 }
 // Define SchedulePolicyInspectRequest struct
 message SchedulePolicyInspectRequest {
@@ -614,7 +614,7 @@ message BackupScheduleEnumerateRequest {
 }
 // Define BackupScheduleEnumerateResponse struct
 message BackupScheduleEnumerateResponse {
-    repeated BackupScheduleObject backup_schedule = 1;
+    repeated BackupScheduleObject backup_schedules = 1;
 }
 // Define BackupScheduleInspectRequest struct
 message BackupScheduleInspectRequest {
@@ -696,7 +696,7 @@ message ClusterEnumerateRequest {
     map<string, string> labels = 2;
 }
 // Define ClusterEnumerateResponse struct
-message ClusterEnumerateResponse { repeated ClusterObject cluster = 1; }
+message ClusterEnumerateResponse { repeated ClusterObject clusters = 1; }
 // Define ClusterInspectRequest struct
 message ClusterInspectRequest {
     string org_id = 1;
@@ -779,7 +779,7 @@ message CloudCredentialEnumerateRequest { string org_id = 1; }
 
 // Define CloudCredentialEnumerateResponse struct
 message CloudCredentialEnumerateResponse {
-    repeated CloudCredentialObject cloud_credential = 1;
+    repeated CloudCredentialObject cloud_credentials = 1;
 }
 
 // Define CloudCredentialInspectRequest struct
@@ -871,7 +871,7 @@ message BackupLocationEnumerateRequest {
 }
 // Define BackupLocationEnumerateResponse struct
 message BackupLocationEnumerateResponse {
-    repeated BackupLocationObject backup_location = 1;
+    repeated BackupLocationObject backup_locations = 1;
 }
 
 // Define BackupLocationInspectRequest struct
@@ -973,7 +973,7 @@ message BackupEnumerateRequest {
 
 //  Response message structure for enumerate create
 message BackupEnumerateResponse {
-    repeated BackupObject backup = 1;
+    repeated BackupObject backups = 1;
     // continuation token
     string continuation_token = 2;
 }
@@ -1069,7 +1069,7 @@ message RestoreEnumerateRequest {
 
 // Define RestoreEnumerateResponse struct
 message RestoreEnumerateResponse {
-    repeated RestoreObject restore = 1;
+    repeated RestoreObject restores = 1;
     // continuation token
     string continuation_token = 2;
 }
@@ -1125,7 +1125,7 @@ message OrganizationCreateResponse {}
 message OrganizationEnumerateRequest {}
 // Define OrganizationEnumerateResponse struct
 message OrganizationEnumerateResponse {
-    repeated OrganizationObject organization = 1;
+    repeated OrganizationObject organizations = 1;
 }
 // Define OrganizationInspectRequest struct
 message OrganizationInspectRequest { string name = 2; }
@@ -1152,7 +1152,7 @@ message RuleUpdateResponse {}
 message RuleEnumerateRequest { string org_id = 1; }
 
 // Define RuleEnumerateResponse struct
-message RuleEnumerateResponse { repeated RuleObject rule_object = 1; }
+message RuleEnumerateResponse { repeated RuleObject rules = 1; }
 
 // Define RuleInspectRequest struct
 message RuleInspectRequest {
@@ -1161,7 +1161,7 @@ message RuleInspectRequest {
 }
 
 // Define RuleInspectResponse struct
-message RuleInspectResponse { RuleObject rule_object = 1; }
+message RuleInspectResponse { RuleObject rule = 1; }
 
 // Define RuleDeleteRequest struct
 message RuleDeleteRequest {
