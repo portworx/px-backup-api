@@ -2047,7 +2047,7 @@
         "reclaim_policy_type": {
           "$ref": "#/definitions/BackupScheduleInfoReclaimPolicyType"
         },
-        "Status": {
+        "backup_status": {
           "type": "object",
           "additionalProperties": {
             "$ref": "#/definitions/BackupScheduleInfoStatusInfoList"
@@ -2084,6 +2084,9 @@
         "delete_backups": {
           "type": "boolean",
           "format": "boolean"
+        },
+        "status": {
+          "$ref": "#/definitions/BackupScheduleInfoStatusInfo"
         }
       }
     },
