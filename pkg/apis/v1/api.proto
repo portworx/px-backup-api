@@ -178,7 +178,7 @@ message BackupScheduleInfo {
     string schedule_policy_name = 1;
     bool suspend = 2;
     ReclaimPolicyType reclaim_policy_type = 3;
-    map<string, StatusInfoList> Status = 4;
+    map<string, StatusInfoList> backup_status = 4;
     // Name of BackupLocation
     string backup_location = 5;
     // Name of Cluster
@@ -190,6 +190,7 @@ message BackupScheduleInfo {
     string pre_exec_rule = 9;
     string post_exec_rule = 10;
     bool delete_backups = 11;
+    StatusInfo status = 12;
     enum ReclaimPolicyType {
         Invalid = 0;
         Delete = 1;
