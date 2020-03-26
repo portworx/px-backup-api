@@ -1746,8 +1746,8 @@
           "$ref": "#/definitions/BackupInfoBackupSchedule",
           "description": "Name of the backup schedule, if the backup was taken by schedule through\npx-backup.\nOtherwise it will be empty."
         },
-        "created_by": {
-          "$ref": "#/definitions/BackupInfoCreatedBy"
+        "cr_name": {
+          "type": "string"
         }
       }
     },
@@ -1761,15 +1761,6 @@
           "type": "string"
         }
       }
-    },
-    "BackupInfoCreatedBy": {
-      "type": "string",
-      "enum": [
-        "Unsupported",
-        "PxBackup",
-        "stork"
-      ],
-      "default": "Unsupported"
     },
     "BackupInfoResource": {
       "type": "object",

@@ -280,12 +280,7 @@ message BackupInfo {
     // px-backup.
     // Otherwise it will be empty.
     BackupSchedule backup_schedule = 12;
-    CreatedBy created_by = 13;
-    enum CreatedBy {
-        Unsupported = 0;
-        PxBackup = 1;
-        stork = 2;
-    }
+    string cr_name = 13;
 
     enum Stage {
         Invalid = 0;
