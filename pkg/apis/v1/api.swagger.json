@@ -2129,6 +2129,9 @@
         },
         "status": {
           "$ref": "#/definitions/BackupScheduleInfoStatusInfo"
+        },
+        "suspended_by": {
+          "$ref": "#/definitions/BackupScheduleInfoSuspendedBy"
         }
       }
     },
@@ -2187,6 +2190,14 @@
         "DeletePending"
       ],
       "default": "Invalid"
+    },
+    "BackupScheduleInfoSuspendedBy": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "$ref": "#/definitions/SuspendedBySource"
+        }
+      }
     },
     "BackupScheduleInspectResponse": {
       "type": "object",
@@ -3166,6 +3177,15 @@
     "SchedulePolicyUpdateResponse": {
       "type": "object",
       "title": "Define SchedulePolicyUpdateResponse struct"
+    },
+    "SuspendedBySource": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "User",
+        "LicenseCheck"
+      ],
+      "default": "Invalid"
     },
     "TimeRange": {
       "type": "object",

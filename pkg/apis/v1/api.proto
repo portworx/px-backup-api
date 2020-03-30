@@ -196,6 +196,17 @@ message BackupScheduleInfo {
     string post_exec_rule = 10;
     bool delete_backups = 11;
     StatusInfo status = 12;
+    SuspendedBy suspended_by = 13;
+
+    message SuspendedBy {
+        Source source = 1;
+        enum Source {
+            Invalid = 0;
+            User = 1;
+            LicenseCheck = 2;
+        }
+    }
+
     enum ReclaimPolicyType {
         Invalid = 0;
         Delete = 1;
