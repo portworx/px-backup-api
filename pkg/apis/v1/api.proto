@@ -23,7 +23,12 @@ message ClusterInfo {
     ];
     string cloud_credential = 3;
     StatusInfo status = 4;
+    // delete_backups will determine whether the backups
+    // belong to given cluster needs to be deleted or not.
     bool delete_backups = 5;
+    // delete_restores will determine whether the restore
+    // belong to given cluster needs to be deleted or not.
+    bool delete_restores = 6;
 
     // Message for maintaing status of the cluster.
     message StatusInfo {
