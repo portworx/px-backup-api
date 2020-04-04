@@ -136,6 +136,13 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "enumerate_options.cluster_name_filter",
+            "description": "Filter to use for cluster name of objects. Any object that contains the\nfilter will be returned.",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -1159,6 +1166,13 @@
           {
             "name": "enumerate_options.name_filter",
             "description": "Filter to use for name of objects. Any object that contains the filter\nwill be returned.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.cluster_name_filter",
+            "description": "Filter to use for cluster name of objects. Any object that contains the\nfilter will be returned.",
             "in": "query",
             "required": false,
             "type": "string"
@@ -2557,6 +2571,10 @@
         "name_filter": {
           "type": "string",
           "title": "Filter to use for name of objects. Any object that contains the filter\nwill be returned"
+        },
+        "cluster_name_filter": {
+          "type": "string",
+          "title": "Filter to use for cluster name of objects. Any object that contains the\nfilter will be returned"
         }
       }
     },
