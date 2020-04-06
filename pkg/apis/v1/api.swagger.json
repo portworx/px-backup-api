@@ -2668,6 +2668,11 @@
         "license_data": {
           "type": "string",
           "format": "byte"
+        },
+        "lic_uat_ep": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "Set to activate license from UAT server"
         }
       }
     },

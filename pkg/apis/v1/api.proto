@@ -1335,6 +1335,8 @@ message LicenseActivateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
     string activation_id = 2;
     bytes license_data = 3;
+    // Set to activate license from UAT server
+    bool lic_uat_ep = 4;
 }
 
 message LicenseActivateResponse {}
