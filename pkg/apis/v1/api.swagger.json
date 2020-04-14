@@ -2009,6 +2009,9 @@
         },
         "s3_config": {
           "$ref": "#/definitions/S3Config"
+        },
+        "azure_config": {
+          "$ref": "#/definitions/AzureConfig"
         }
       }
     },
