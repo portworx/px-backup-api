@@ -219,6 +219,7 @@ message BackupScheduleInfo {
         google.protobuf.Timestamp create_time = 2;
         google.protobuf.Timestamp finish_time = 3;
         Status status = 4;
+        string Reason = 5;
         enum Status {
             Invalid = 0;
             Pending = 1;

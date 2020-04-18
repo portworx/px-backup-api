@@ -2239,6 +2239,9 @@
         },
         "status": {
           "$ref": "#/definitions/BackupScheduleInfoStatusInfoStatus"
+        },
+        "Reason": {
+          "type": "string"
         }
       }
     },
