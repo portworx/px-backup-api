@@ -31,3 +31,9 @@ message CreateMetadata {
     // labels associated with the object
     map<string, string> labels = 4;
 }
+
+message ErrorInfo {
+    int64 error_code = 1;
+    string error_message = 2;
+    string resource_name = 3;
+}
