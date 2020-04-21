@@ -331,6 +331,7 @@ message BackupInfo {
         string driver_name = 6;
         repeated string zones = 7;
         map<string, string> options = 8;
+        uint64 capacity = 9;
     }
 
     // Message for maintaing status of the object.

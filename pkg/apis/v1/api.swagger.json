@@ -1941,6 +1941,10 @@
           "additionalProperties": {
             "type": "string"
           }
+        },
+        "capacity": {
+          "type": "string",
+          "format": "uint64"
         }
       }
     },
