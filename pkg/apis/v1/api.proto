@@ -366,11 +366,11 @@ message RulesInfo {
     message RuleItem {
         map<string, string> pod_selector = 1
             [ (gogoproto.moretags) = "yaml:\"podSelector\"" ];
-        repeated RuleAction actions = 2
+        repeated Action actions = 2
             [ (gogoproto.moretags) = "yaml:\"actions\"" ];
     }
 
-    message RuleAction {
+    message Action {
         bool background = 1 [ (gogoproto.moretags) = "yaml:\"background\"" ];
         bool run_in_single_pod = 2
             [ (gogoproto.moretags) = "yaml:\"runInSinglePod\"" ];

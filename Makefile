@@ -2,6 +2,10 @@ ifndef PROTOC
 PROTOC = protoc
 endif
 
+ifndef PKGS
+PKGS := $(shell go list ./... 2>&1 | grep -v 'github.com/portworx/px-backup-api/vendor' | grep -v versioned | grep -v 'pkg/apis/v1')
+endif
+
 ifndef PROTOC_FILES
 PROTOC_FILES := pkg/apis/v1/api.proto
 PROTOC_FILES += pkg/apis/v1/common.proto
@@ -9,7 +13,7 @@ endif
 
 .DEFAULT_GOAL: all
 
-all: proto
+all: proto pretest
 
 proto:
 	clang-format -i $(PROTOC_FILES)
@@ -40,3 +44,17 @@ plugins=grpc:. \
 		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
 		--swagger_out=logtostderr=true:. \
 		$(PROTOC_FILES)
+
+pretest: vet staticcheck errcheck 
+
+vet:
+	go vet $(PKGS)
+
+staticcheck:
+	go get -u honnef.co/go/tools/cmd/staticcheck
+	staticcheck $(PKGS)
+
+errcheck:
+	go get -u github.com/kisielk/errcheck
+	errcheck -ignoregenerated -verbose -blank $(PKGS)
+
