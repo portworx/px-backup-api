@@ -37,6 +37,7 @@ message ClusterInfo {
             Online = 1;
             Offline = 2;
             DeletePending = 3;
+            Failed = 4;
         }
         Status status = 1;
         string reason = 2;
