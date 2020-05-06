@@ -1081,6 +1081,8 @@ message BackupInspectResponse { BackupObject backup = 1; }
 message BackupDeleteRequest {
     string name = 1;
     string org_id = 2;
+    // Force delete flag
+    bool force = 3;
 }
 
 // Response message strcuture for object delete
