@@ -1906,7 +1906,7 @@
         "Captured",
         "PartialSuccess",
         "DeletePending",
-        "CloudFileMissing"
+        "CloudBackupMissing"
       ],
       "default": "Invalid"
     },
