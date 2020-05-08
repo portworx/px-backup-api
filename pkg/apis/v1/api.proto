@@ -346,7 +346,7 @@ message BackupInfo {
             Captured = 7;
             PartialSuccess = 8;
             DeletePending = 9;
-            CloudFileMissing = 10;
+            CloudBackupMissing = 10;
         }
 
         Status status = 1;
