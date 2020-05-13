@@ -1138,6 +1138,8 @@ message RestoreCreateRequest {
     map<string, string> namespace_mapping = 4;
     // replace policy to use if the resource already exists
     ReplacePolicy.Type replace_policy = 5;
+    // optional resource types to be restored (eg Jobs)
+    repeated string include_optional_resource_types = 6;
 }
 
 // Define RestoreCreateResponse struct
