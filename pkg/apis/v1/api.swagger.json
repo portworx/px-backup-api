@@ -2656,6 +2656,12 @@
         "cluster": {
           "type": "string",
           "title": "Name of the cluster"
+        },
+        "include_optional_resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "title": "Message for restore info"
