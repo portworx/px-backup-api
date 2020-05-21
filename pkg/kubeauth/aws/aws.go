@@ -61,7 +61,15 @@ func (a *aws) UpdateClient(
 				Value: cloudCredential.GetAwsConfig().GetAccessKey(),
 			})
 			client.ExecProvider.Env = append(client.ExecProvider.Env, clientcmdapi.ExecEnvVar{
+				Name:  "AWS_ACCESS_KEY_ID",
+				Value: cloudCredential.GetAwsConfig().GetAccessKey(),
+			})
+			client.ExecProvider.Env = append(client.ExecProvider.Env, clientcmdapi.ExecEnvVar{
 				Name:  "AWS_SECRET_KEY",
+				Value: cloudCredential.GetAwsConfig().GetSecretKey(),
+			})
+			client.ExecProvider.Env = append(client.ExecProvider.Env, clientcmdapi.ExecEnvVar{
+				Name:  "AWS_SECRET_ACCESS_KEY",
 				Value: cloudCredential.GetAwsConfig().GetSecretKey(),
 			})
 		}
