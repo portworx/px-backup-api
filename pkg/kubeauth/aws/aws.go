@@ -72,6 +72,16 @@ func (a *aws) UpdateClient(
 				Name:  "AWS_SECRET_ACCESS_KEY",
 				Value: cloudCredential.GetAwsConfig().GetSecretKey(),
 			})
+
+			// Remove the profile env if present since we are passing in the creds through env
+			tempEnv := make([]clientcmdapi.ExecEnvVar, 0)
+			for _, env := range client.ExecProvider.Env {
+				if env.Name == "AWS_PROFILE" {
+					continue
+				}
+				tempEnv = append(tempEnv, env)
+			}
+			client.ExecProvider.Env = tempEnv
 		}
 		return true, nil
 	}
