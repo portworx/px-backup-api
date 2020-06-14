@@ -299,6 +299,7 @@ message BackupInfo {
     // Otherwise it will be empty.
     BackupSchedule backup_schedule = 12;
     string cr_name = 13;
+    uint64 size = 14;
 
     enum Stage {
         Invalid = 0;
@@ -331,6 +332,7 @@ message BackupInfo {
         string driver_name = 6;
         repeated string zones = 7;
         map<string, string> options = 8;
+        uint64 size = 9;
     }
 
     // Message for maintaing status of the object.
