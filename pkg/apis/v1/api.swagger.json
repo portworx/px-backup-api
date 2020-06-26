@@ -2743,6 +2743,11 @@
             "$ref": "#/definitions/LicenseResponseInfoEntitlementInfo"
           },
           "title": "License entitlement info"
+        },
+        "grace_period": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Grace period"
         }
       }
     },

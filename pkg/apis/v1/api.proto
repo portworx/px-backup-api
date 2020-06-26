@@ -1360,6 +1360,8 @@ message LicenseResponseInfo {
         int64 consumed = 2;
         // License entitlement info
         repeated EntitlementInfo entitlement_info = 3;
+        // Grace period
+        google.protobuf.Timestamp grace_period = 4;
     }
 
     message EntitlementInfo {
