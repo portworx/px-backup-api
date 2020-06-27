@@ -2952,6 +2952,10 @@
           "items": {
             "type": "string"
           }
+        },
+        "size": {
+          "type": "string",
+          "format": "uint64"
         }
       },
       "title": "Message for restore info"
@@ -3038,6 +3042,10 @@
           "additionalProperties": {
             "type": "string"
           }
+        },
+        "size": {
+          "type": "string",
+          "format": "uint64"
         }
       }
     },
