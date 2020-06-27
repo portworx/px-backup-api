@@ -413,6 +413,7 @@ message RestoreInfo {
     // Name of the cluster
     string cluster = 9;
     repeated string include_optional_resource_types = 10;
+    uint64 size = 11;
 
     message Resource {
         string name = 1;
@@ -432,6 +433,7 @@ message RestoreInfo {
         string driver_name = 6;
         repeated string zones = 7;
         map<string, string> options = 8;
+        uint64 size = 9;
     }
 
     // Message for maintaing status of the object.
