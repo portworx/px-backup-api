@@ -432,8 +432,12 @@ message RestoreInfo {
     repeated ResourceInfo include_resources = 12;
 
     message RestoredResource {
-        ResourceInfo resource = 1 [ (gogoproto.embed) = true ];
-        StatusInfo status = 2;
+        string name = 1;
+        string namespace = 2;
+        string group = 3;
+        string kind = 4;
+        string version = 5;
+        StatusInfo status = 6;
     }
 
     message Volume {
