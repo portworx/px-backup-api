@@ -23,6 +23,159 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+type ErrorCode int32
+
+const (
+	ErrorCode_ErrCodeInvalid   ErrorCode = 0
+	ErrorCode_NotFound         ErrorCode = 100
+	ErrorCode_RestrictedAccess ErrorCode = 101
+	ErrorCode_AlreadyExists    ErrorCode = 102
+	ErrorCode_InvalidArguments ErrorCode = 103
+	ErrorCode_Aborted          ErrorCode = 104
+	ErrorCode_Unimplemented    ErrorCode = 105
+	ErrorCode_Internal         ErrorCode = 106
+	ErrorCode_ParameterMissing ErrorCode = 107
+	ErrorCode_Offline          ErrorCode = 108
+)
+
+var ErrorCode_name = map[int32]string{
+	0:   "ErrCodeInvalid",
+	100: "NotFound",
+	101: "RestrictedAccess",
+	102: "AlreadyExists",
+	103: "InvalidArguments",
+	104: "Aborted",
+	105: "Unimplemented",
+	106: "Internal",
+	107: "ParameterMissing",
+	108: "Offline",
+}
+
+var ErrorCode_value = map[string]int32{
+	"ErrCodeInvalid":   0,
+	"NotFound":         100,
+	"RestrictedAccess": 101,
+	"AlreadyExists":    102,
+	"InvalidArguments": 103,
+	"Aborted":          104,
+	"Unimplemented":    105,
+	"Internal":         106,
+	"ParameterMissing": 107,
+	"Offline":          108,
+}
+
+func (x ErrorCode) String() string {
+	return proto.EnumName(ErrorCode_name, int32(x))
+}
+
+func (ErrorCode) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_b12f1cda86a0f641, []int{0}
+}
+
+type EntityType int32
+
+const (
+	EntityType_EntityTypeInvalid     EntityType = 0
+	EntityType_OrganizationEntity    EntityType = 100
+	EntityType_NamespaceEntity       EntityType = 101
+	EntityType_CloudCredentialEntity EntityType = 102
+	EntityType_BackupLocationEntity  EntityType = 103
+	EntityType_ClusterEntity         EntityType = 104
+	EntityType_CloudProviderEntity   EntityType = 105
+	EntityType_SchedulePolicyEntity  EntityType = 107
+	EntityType_KubeConfigEntity      EntityType = 108
+	// Object name
+	EntityType_ObjectNameEntity EntityType = 109
+	EntityType_BackupEntity     EntityType = 110
+	EntityType_RestoreEntity    EntityType = 111
+	EntityType_RuleEntity       EntityType = 112
+	EntityType_DeleteEntity     EntityType = 113
+	EntityType_LicenseEntity    EntityType = 114
+	EntityType_LabelEntity      EntityType = 150
+	// AWS config parameters
+	EntityType_SecretKeyEntity  EntityType = 200
+	EntityType_AccessKeyEntity  EntityType = 201
+	EntityType_S3EndPointEntity EntityType = 202
+	EntityType_S3RegionEntity   EntityType = 203
+	// Google config paramaters
+	EntityType_GoogleJSONKeyEntity EntityType = 300
+	// Azure config
+	EntityType_AzureAccountKeyEntity     EntityType = 400
+	EntityType_AzureAccountNameEntity    EntityType = 401
+	EntityType_AzureClientIDEntity       EntityType = 402
+	EntityType_AzureClientSecretEntity   EntityType = 403
+	EntityType_AzureSubscriptionIDEntity EntityType = 404
+	EntityType_AzureTenantIDEntity       EntityType = 405
+)
+
+var EntityType_name = map[int32]string{
+	0:   "EntityTypeInvalid",
+	100: "OrganizationEntity",
+	101: "NamespaceEntity",
+	102: "CloudCredentialEntity",
+	103: "BackupLocationEntity",
+	104: "ClusterEntity",
+	105: "CloudProviderEntity",
+	107: "SchedulePolicyEntity",
+	108: "KubeConfigEntity",
+	109: "ObjectNameEntity",
+	110: "BackupEntity",
+	111: "RestoreEntity",
+	112: "RuleEntity",
+	113: "DeleteEntity",
+	114: "LicenseEntity",
+	150: "LabelEntity",
+	200: "SecretKeyEntity",
+	201: "AccessKeyEntity",
+	202: "S3EndPointEntity",
+	203: "S3RegionEntity",
+	300: "GoogleJSONKeyEntity",
+	400: "AzureAccountKeyEntity",
+	401: "AzureAccountNameEntity",
+	402: "AzureClientIDEntity",
+	403: "AzureClientSecretEntity",
+	404: "AzureSubscriptionIDEntity",
+	405: "AzureTenantIDEntity",
+}
+
+var EntityType_value = map[string]int32{
+	"EntityTypeInvalid":         0,
+	"OrganizationEntity":        100,
+	"NamespaceEntity":           101,
+	"CloudCredentialEntity":     102,
+	"BackupLocationEntity":      103,
+	"ClusterEntity":             104,
+	"CloudProviderEntity":       105,
+	"SchedulePolicyEntity":      107,
+	"KubeConfigEntity":          108,
+	"ObjectNameEntity":          109,
+	"BackupEntity":              110,
+	"RestoreEntity":             111,
+	"RuleEntity":                112,
+	"DeleteEntity":              113,
+	"LicenseEntity":             114,
+	"LabelEntity":               150,
+	"SecretKeyEntity":           200,
+	"AccessKeyEntity":           201,
+	"S3EndPointEntity":          202,
+	"S3RegionEntity":            203,
+	"GoogleJSONKeyEntity":       300,
+	"AzureAccountKeyEntity":     400,
+	"AzureAccountNameEntity":    401,
+	"AzureClientIDEntity":       402,
+	"AzureClientSecretEntity":   403,
+	"AzureSubscriptionIDEntity": 404,
+	"AzureTenantIDEntity":       405,
+}
+
+func (x EntityType) String() string {
+	return proto.EnumName(EntityType_name, int32(x))
+}
+
+func (EntityType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_b12f1cda86a0f641, []int{1}
+}
+
 type Metadata struct {
 	// name of the object
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
@@ -191,39 +344,257 @@ func (m *CreateMetadata) GetLabels() map[string]string {
 	return nil
 }
 
+type ErrorInfo struct {
+	// Unique error code
+	ErrorCode ErrorCode `protobuf:"varint,1,opt,name=error_code,json=errorCode,proto3,enum=ErrorCode" json:"error_code,omitempty"`
+	// Error message containing the actual reason of error
+	// For eg: If accessing a bucket, fails due to permission issue,
+	// the same is captured here. Error message returned from the end API.
+	ErrorMessage string            `protobuf:"bytes,2,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	Entity       *ErrorInfo_Entity `protobuf:"bytes,3,opt,name=entity,proto3" json:"entity,omitempty"`
+}
+
+func (m *ErrorInfo) Reset()         { *m = ErrorInfo{} }
+func (m *ErrorInfo) String() string { return proto.CompactTextString(m) }
+func (*ErrorInfo) ProtoMessage()    {}
+func (*ErrorInfo) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b12f1cda86a0f641, []int{2}
+}
+func (m *ErrorInfo) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ErrorInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ErrorInfo.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ErrorInfo) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ErrorInfo.Merge(m, src)
+}
+func (m *ErrorInfo) XXX_Size() int {
+	return m.Size()
+}
+func (m *ErrorInfo) XXX_DiscardUnknown() {
+	xxx_messageInfo_ErrorInfo.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ErrorInfo proto.InternalMessageInfo
+
+func (m *ErrorInfo) GetErrorCode() ErrorCode {
+	if m != nil {
+		return m.ErrorCode
+	}
+	return ErrorCode_ErrCodeInvalid
+}
+
+func (m *ErrorInfo) GetErrorMessage() string {
+	if m != nil {
+		return m.ErrorMessage
+	}
+	return ""
+}
+
+func (m *ErrorInfo) GetEntity() *ErrorInfo_Entity {
+	if m != nil {
+		return m.Entity
+	}
+	return nil
+}
+
+type ErrorInfo_Entity struct {
+	// Name of the entity causing the error
+	// Eg: Backup, cluster, etc...
+	// This is enum so that GUI can do langauge localization
+	Name EntityType `protobuf:"varint,1,opt,name=name,proto3,enum=EntityType" json:"name,omitempty"`
+	// Entity type
+	Type *ErrorInfo_Type `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
+}
+
+func (m *ErrorInfo_Entity) Reset()         { *m = ErrorInfo_Entity{} }
+func (m *ErrorInfo_Entity) String() string { return proto.CompactTextString(m) }
+func (*ErrorInfo_Entity) ProtoMessage()    {}
+func (*ErrorInfo_Entity) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b12f1cda86a0f641, []int{2, 0}
+}
+func (m *ErrorInfo_Entity) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ErrorInfo_Entity) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ErrorInfo_Entity.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ErrorInfo_Entity) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ErrorInfo_Entity.Merge(m, src)
+}
+func (m *ErrorInfo_Entity) XXX_Size() int {
+	return m.Size()
+}
+func (m *ErrorInfo_Entity) XXX_DiscardUnknown() {
+	xxx_messageInfo_ErrorInfo_Entity.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ErrorInfo_Entity proto.InternalMessageInfo
+
+func (m *ErrorInfo_Entity) GetName() EntityType {
+	if m != nil {
+		return m.Name
+	}
+	return EntityType_EntityTypeInvalid
+}
+
+func (m *ErrorInfo_Entity) GetType() *ErrorInfo_Type {
+	if m != nil {
+		return m.Type
+	}
+	return nil
+}
+
+type ErrorInfo_Type struct {
+	// Type of the sub-resource
+	// Eg: cloud credential object
+	// This is enum so that GUI can do langauge localization
+	Name EntityType `protobuf:"varint,1,opt,name=name,proto3,enum=EntityType" json:"name,omitempty"`
+	// Name of the type causing the error
+	// Eg: cloud cred object name
+	Parameter string `protobuf:"bytes,2,opt,name=parameter,proto3" json:"parameter,omitempty"`
+}
+
+func (m *ErrorInfo_Type) Reset()         { *m = ErrorInfo_Type{} }
+func (m *ErrorInfo_Type) String() string { return proto.CompactTextString(m) }
+func (*ErrorInfo_Type) ProtoMessage()    {}
+func (*ErrorInfo_Type) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b12f1cda86a0f641, []int{2, 1}
+}
+func (m *ErrorInfo_Type) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ErrorInfo_Type) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ErrorInfo_Type.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ErrorInfo_Type) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ErrorInfo_Type.Merge(m, src)
+}
+func (m *ErrorInfo_Type) XXX_Size() int {
+	return m.Size()
+}
+func (m *ErrorInfo_Type) XXX_DiscardUnknown() {
+	xxx_messageInfo_ErrorInfo_Type.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ErrorInfo_Type proto.InternalMessageInfo
+
+func (m *ErrorInfo_Type) GetName() EntityType {
+	if m != nil {
+		return m.Name
+	}
+	return EntityType_EntityTypeInvalid
+}
+
+func (m *ErrorInfo_Type) GetParameter() string {
+	if m != nil {
+		return m.Parameter
+	}
+	return ""
+}
+
 func init() {
+	proto.RegisterEnum("ErrorCode", ErrorCode_name, ErrorCode_value)
+	proto.RegisterEnum("EntityType", EntityType_name, EntityType_value)
 	proto.RegisterType((*Metadata)(nil), "Metadata")
 	proto.RegisterMapType((map[string]string)(nil), "Metadata.LabelsEntry")
 	proto.RegisterType((*CreateMetadata)(nil), "CreateMetadata")
 	proto.RegisterMapType((map[string]string)(nil), "CreateMetadata.LabelsEntry")
+	proto.RegisterType((*ErrorInfo)(nil), "ErrorInfo")
+	proto.RegisterType((*ErrorInfo_Entity)(nil), "ErrorInfo.Entity")
+	proto.RegisterType((*ErrorInfo_Type)(nil), "ErrorInfo.Type")
 }
 
 func init() { proto.RegisterFile("pkg/apis/v1/common.proto", fileDescriptor_b12f1cda86a0f641) }
 
 var fileDescriptor_b12f1cda86a0f641 = []byte{
-	// 345 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x90, 0x3d, 0x4b, 0xc3, 0x40,
-	0x18, 0xc7, 0x7b, 0x49, 0x1b, 0xf5, 0x09, 0x94, 0x72, 0x58, 0x38, 0x2a, 0xc6, 0xd2, 0xa9, 0x8b,
-	0x17, 0x6c, 0x17, 0x5f, 0x36, 0x5f, 0x06, 0x41, 0x97, 0xa2, 0x8b, 0x4b, 0xb9, 0x36, 0x67, 0x08,
-	0x4d, 0x72, 0x21, 0xb9, 0x54, 0xfa, 0x2d, 0xfc, 0x4a, 0x6e, 0xe2, 0xd4, 0xd1, 0x51, 0xda, 0x2f,
-	0x22, 0x77, 0x49, 0x6b, 0x05, 0xd1, 0xc5, 0xed, 0x79, 0xfe, 0x3c, 0x2f, 0xff, 0xff, 0x0f, 0x48,
-	0x32, 0xf1, 0x5d, 0x96, 0x04, 0x99, 0x3b, 0x3d, 0x72, 0xc7, 0x22, 0x8a, 0x44, 0x4c, 0x93, 0x54,
-	0x48, 0xd1, 0x3a, 0xf0, 0x85, 0xf0, 0x43, 0xee, 0xea, 0x6e, 0x94, 0x3f, 0xba, 0x32, 0x88, 0x78,
-	0x26, 0x59, 0x94, 0x14, 0x03, 0x9d, 0x37, 0x03, 0xb6, 0x6f, 0xb9, 0x64, 0x1e, 0x93, 0x0c, 0x63,
-	0xa8, 0xc6, 0x2c, 0xe2, 0x04, 0xb5, 0x51, 0x77, 0x67, 0xa0, 0x6b, 0xdc, 0x00, 0x33, 0x0f, 0x3c,
-	0x62, 0x68, 0x49, 0x95, 0x78, 0x17, 0x6a, 0xe2, 0x29, 0xe6, 0x29, 0x31, 0xb5, 0x56, 0x34, 0xb8,
-	0x09, 0x96, 0x48, 0xfd, 0x61, 0xe0, 0x91, 0x6a, 0x29, 0xa7, 0xfe, 0xb5, 0x87, 0xcf, 0xc0, 0x1e,
-	0xa7, 0x9c, 0x49, 0x3e, 0x54, 0x9f, 0x49, 0xad, 0x8d, 0xba, 0x76, 0xaf, 0x45, 0x0b, 0x5b, 0x74,
-	0x65, 0x8b, 0xde, 0xad, 0x6c, 0x0d, 0xa0, 0x18, 0x57, 0x02, 0xbe, 0x84, 0x46, 0xc8, 0x32, 0x39,
-	0xcc, 0x13, 0x6f, 0x7d, 0xc1, 0xfa, 0xf3, 0x42, 0x5d, 0xed, 0xdc, 0xeb, 0x15, 0x7d, 0xe5, 0x10,
-	0xac, 0x90, 0x8d, 0x78, 0x98, 0x91, 0xad, 0xb6, 0xd9, 0xb5, 0x7b, 0x4d, 0xba, 0x0a, 0x4c, 0x6f,
-	0xb4, 0x7e, 0x15, 0xcb, 0x74, 0x36, 0x28, 0x87, 0x5a, 0x27, 0x60, 0x6f, 0xc8, 0x2a, 0xff, 0x84,
-	0xcf, 0x4a, 0x24, 0xaa, 0x54, 0xf9, 0xa7, 0x2c, 0xcc, 0x79, 0xc9, 0xa4, 0x68, 0x4e, 0x8d, 0x63,
-	0xd4, 0x79, 0x41, 0x50, 0xbf, 0xd0, 0xf6, 0x7f, 0x45, 0xfa, 0x85, 0xca, 0xd8, 0x44, 0xf5, 0x33,
-	0xd7, 0xfe, 0xda, 0x7d, 0x55, 0xbb, 0xdf, 0xa3, 0xdf, 0x3f, 0xfc, 0x73, 0x86, 0xf3, 0xfd, 0xd7,
-	0x85, 0x83, 0xe6, 0x0b, 0x07, 0x7d, 0x2c, 0x1c, 0xf4, 0xbc, 0x74, 0x2a, 0xf3, 0xa5, 0x53, 0x79,
-	0x5f, 0x3a, 0x95, 0x07, 0x93, 0x25, 0xc1, 0xc8, 0xd2, 0xc0, 0xfb, 0x9f, 0x01, 0x00, 0x00, 0xff,
-	0xff, 0x5a, 0x8a, 0x33, 0xea, 0x73, 0x02, 0x00, 0x00,
+	// 914 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x54, 0xbb, 0x72, 0x1b, 0x37,
+	0x14, 0xd5, 0x92, 0x12, 0x6d, 0x5d, 0xca, 0xd4, 0x0a, 0x12, 0x6d, 0x9a, 0x76, 0x68, 0x8d, 0xdd,
+	0xc8, 0x9e, 0x09, 0x35, 0xa1, 0x9a, 0x3c, 0x2a, 0x9a, 0x62, 0x32, 0x8a, 0xf5, 0x1a, 0x52, 0x6e,
+	0xd2, 0x68, 0xc0, 0xdd, 0xcb, 0x15, 0x2c, 0x2c, 0xb0, 0xc1, 0x62, 0x95, 0xd0, 0x55, 0x3e, 0xc1,
+	0x79, 0x76, 0xf9, 0x83, 0xfc, 0x42, 0x8a, 0x74, 0x8e, 0xd3, 0xb8, 0x4c, 0x99, 0x91, 0x7e, 0x24,
+	0x03, 0x2c, 0x56, 0xdc, 0xcc, 0x64, 0xe2, 0x26, 0x1d, 0xee, 0x39, 0x17, 0xe7, 0xde, 0x73, 0x40,
+	0x2e, 0xb4, 0x92, 0xf3, 0x68, 0x9b, 0x26, 0x2c, 0xdd, 0xbe, 0xf8, 0x60, 0x3b, 0x90, 0x71, 0x2c,
+	0x45, 0x37, 0x51, 0x52, 0xcb, 0xf6, 0x83, 0x48, 0xca, 0x88, 0xe3, 0xb6, 0xad, 0x26, 0xd9, 0x74,
+	0x5b, 0xb3, 0x18, 0x53, 0x4d, 0xe3, 0x24, 0x6f, 0x78, 0xf8, 0xa6, 0x02, 0x37, 0x0f, 0x50, 0xd3,
+	0x90, 0x6a, 0x4a, 0x08, 0x2c, 0x0a, 0x1a, 0x63, 0xcb, 0xdb, 0xf4, 0xb6, 0x96, 0x47, 0xf6, 0x4c,
+	0x7c, 0xa8, 0x66, 0x2c, 0x6c, 0x55, 0x2c, 0x64, 0x8e, 0x64, 0x03, 0x96, 0xe4, 0x57, 0x02, 0x55,
+	0xab, 0x6a, 0xb1, 0xbc, 0x20, 0x4d, 0xa8, 0x49, 0x15, 0x9d, 0xb2, 0xb0, 0xb5, 0xe8, 0x60, 0x15,
+	0xed, 0x85, 0xe4, 0x13, 0xa8, 0x07, 0x0a, 0xa9, 0xc6, 0x53, 0x33, 0xb9, 0xb5, 0xb4, 0xe9, 0x6d,
+	0xd5, 0x7b, 0xed, 0x6e, 0xbe, 0x56, 0xb7, 0x58, 0xab, 0x7b, 0x52, 0xac, 0x35, 0x82, 0xbc, 0xdd,
+	0x00, 0x64, 0x17, 0x7c, 0x4e, 0x53, 0x7d, 0x9a, 0x25, 0xe1, 0xb5, 0x42, 0xed, 0x9d, 0x0a, 0x0d,
+	0x73, 0xe7, 0xb9, 0xbd, 0x62, 0x55, 0xde, 0x87, 0x1a, 0xa7, 0x13, 0xe4, 0x69, 0xeb, 0xc6, 0x66,
+	0x75, 0xab, 0xde, 0x6b, 0x76, 0x0b, 0xc3, 0xdd, 0x7d, 0x8b, 0x0f, 0x85, 0x56, 0xb3, 0x91, 0x6b,
+	0x6a, 0x7f, 0x04, 0xf5, 0x12, 0x6c, 0xfc, 0x9f, 0xe3, 0xcc, 0x45, 0x62, 0x8e, 0xc6, 0xff, 0x05,
+	0xe5, 0x19, 0xba, 0x4c, 0xf2, 0xe2, 0xe3, 0xca, 0x87, 0xde, 0xc3, 0xdf, 0x3c, 0x68, 0x0c, 0xec,
+	0xfa, 0xff, 0x19, 0xe9, 0x3c, 0xaa, 0x4a, 0x39, 0xaa, 0x7f, 0xcf, 0x75, 0xe7, 0x7a, 0xfb, 0x45,
+	0xbb, 0xfd, 0xbd, 0xee, 0x3f, 0x27, 0xfc, 0xdf, 0x1e, 0x7e, 0xae, 0xc0, 0xf2, 0x50, 0x29, 0xa9,
+	0xf6, 0xc4, 0x54, 0x92, 0xc7, 0x00, 0x68, 0x8a, 0xd3, 0x40, 0x86, 0xb9, 0x89, 0x46, 0x0f, 0xba,
+	0x96, 0x1f, 0xc8, 0x10, 0x47, 0xcb, 0x58, 0x1c, 0xc9, 0x23, 0xb8, 0x95, 0xb7, 0xc6, 0x98, 0xa6,
+	0x34, 0x2a, 0xa4, 0x57, 0x2c, 0x78, 0x90, 0x63, 0xe4, 0x31, 0xd4, 0x50, 0x68, 0xa6, 0x67, 0xd6,
+	0x64, 0xbd, 0xb7, 0xd6, 0xbd, 0x9e, 0xd5, 0x1d, 0x5a, 0x62, 0xe4, 0x1a, 0xda, 0x87, 0x50, 0xcb,
+	0x11, 0xf2, 0xa0, 0x94, 0x61, 0xa3, 0x57, 0x77, 0x8d, 0x27, 0xb3, 0x04, 0x5d, 0xa0, 0x8f, 0x60,
+	0x51, 0xcf, 0x92, 0x7c, 0x62, 0xbd, 0xb7, 0x5a, 0xd2, 0xcc, 0x9b, 0x0c, 0xd9, 0x1e, 0xc2, 0xa2,
+	0xa9, 0xde, 0xad, 0x76, 0x1f, 0x96, 0x13, 0xaa, 0x68, 0x8c, 0x1a, 0x95, 0x33, 0x31, 0x07, 0x9e,
+	0xfc, 0xea, 0xb9, 0x7c, 0xac, 0x69, 0x02, 0x8d, 0xa1, 0xb2, 0xc7, 0x3d, 0x71, 0x41, 0x39, 0x0b,
+	0xfd, 0x05, 0xb2, 0x02, 0x37, 0x0f, 0xa5, 0xfe, 0x54, 0x66, 0x22, 0xf4, 0xcd, 0xab, 0xfa, 0x23,
+	0x4c, 0xb5, 0x62, 0x81, 0xc6, 0xb0, 0x1f, 0x04, 0x98, 0xa6, 0x3e, 0x92, 0x35, 0xb8, 0xd5, 0xe7,
+	0x0a, 0x69, 0x38, 0x1b, 0x7e, 0xcd, 0x52, 0x9d, 0xfa, 0x53, 0xd3, 0xe8, 0x34, 0xfa, 0x2a, 0xca,
+	0x62, 0x14, 0x3a, 0xf5, 0x23, 0x52, 0x87, 0x1b, 0xfd, 0x89, 0x54, 0x1a, 0x43, 0xff, 0xcc, 0xdc,
+	0x7a, 0x2e, 0x58, 0x9c, 0x70, 0x34, 0x34, 0x86, 0x3e, 0x33, 0xc3, 0xf6, 0x84, 0x46, 0x25, 0x28,
+	0xf7, 0x5f, 0x18, 0x8d, 0xe3, 0x62, 0xd3, 0x03, 0x96, 0xa6, 0x4c, 0x44, 0xfe, 0xb9, 0xd1, 0x38,
+	0x9a, 0x4e, 0x39, 0x13, 0xe8, 0xf3, 0x27, 0xdf, 0x2c, 0x01, 0xcc, 0x2d, 0x93, 0x26, 0xac, 0xcd,
+	0xab, 0xb9, 0x87, 0xdb, 0x40, 0x8e, 0x54, 0x44, 0x05, 0x7b, 0x49, 0x35, 0x93, 0x22, 0x6f, 0xf1,
+	0x43, 0xb2, 0x0e, 0xab, 0x87, 0x34, 0xc6, 0x34, 0xa1, 0x01, 0x3a, 0x10, 0xc9, 0x5d, 0x68, 0x0e,
+	0xb8, 0xcc, 0xc2, 0x81, 0xc2, 0xd0, 0x3c, 0x1e, 0xe5, 0x8e, 0x9a, 0x92, 0x16, 0x6c, 0x3c, 0xa5,
+	0xc1, 0x79, 0x96, 0xec, 0xcb, 0xa0, 0xac, 0x14, 0x19, 0x2f, 0x03, 0x9e, 0xa5, 0x1a, 0x95, 0x83,
+	0xce, 0xc8, 0x1d, 0x58, 0xb7, 0x3a, 0xc7, 0x4a, 0x5e, 0xb0, 0xf0, 0x9a, 0x60, 0x46, 0x65, 0x1c,
+	0x9c, 0x61, 0x98, 0x71, 0x3c, 0x96, 0x9c, 0x05, 0x33, 0xc7, 0x9c, 0x1b, 0xc3, 0xcf, 0xb2, 0x09,
+	0x0e, 0xa4, 0x98, 0xb2, 0xc8, 0xa1, 0xdc, 0xa0, 0x47, 0x93, 0x17, 0x18, 0x68, 0xb3, 0xab, 0x43,
+	0x63, 0xe2, 0xc3, 0x4a, 0xbe, 0x8b, 0x43, 0x84, 0xd9, 0xc1, 0xbc, 0x8d, 0x54, 0x45, 0x93, 0x24,
+	0x0d, 0x80, 0x51, 0xc6, 0x8b, 0x3a, 0x31, 0x97, 0x76, 0x91, 0xa3, 0x2e, 0x90, 0x2f, 0xcd, 0xa5,
+	0x7d, 0x16, 0xa0, 0x48, 0x0b, 0x48, 0x11, 0xdf, 0xfd, 0xdd, 0x1c, 0xf0, 0x93, 0x47, 0x36, 0x60,
+	0x75, 0x8c, 0x81, 0x42, 0xfd, 0x0c, 0x8b, 0x65, 0x5f, 0x5b, 0x34, 0xff, 0x05, 0xcc, 0xd1, 0xdf,
+	0x3d, 0xd2, 0x04, 0x7f, 0xbc, 0x33, 0x14, 0xe1, 0xb1, 0x64, 0x42, 0x3b, 0xf8, 0x8d, 0x47, 0xd6,
+	0xa1, 0x31, 0xde, 0x19, 0x61, 0x34, 0x0f, 0xed, 0x0f, 0x8f, 0xb4, 0x60, 0xfd, 0x33, 0xfb, 0xe1,
+	0xfb, 0x7c, 0x7c, 0x74, 0x38, 0x57, 0xf9, 0xa5, 0x42, 0xda, 0xd0, 0xec, 0xbf, 0xcc, 0x14, 0xf6,
+	0x83, 0x40, 0x66, 0xa2, 0x34, 0xf7, 0x55, 0x95, 0xdc, 0x83, 0xdb, 0x65, 0xae, 0x94, 0xca, 0xb7,
+	0x55, 0x23, 0x69, 0xc9, 0x01, 0x67, 0x28, 0xf4, 0xde, 0xae, 0x63, 0xbe, 0xab, 0x92, 0xfb, 0x70,
+	0xa7, 0xc4, 0xe4, 0x7e, 0x1c, 0xfb, 0x7d, 0x95, 0x74, 0xe0, 0xae, 0x65, 0xc7, 0xd9, 0x24, 0x0d,
+	0x14, 0x4b, 0xcc, 0xeb, 0x5e, 0xdf, 0xfe, 0x61, 0xae, 0x7b, 0x82, 0x82, 0x96, 0x74, 0x7f, 0xac,
+	0x3e, 0x7d, 0xef, 0xf5, 0x65, 0xc7, 0x7b, 0x7b, 0xd9, 0xf1, 0xfe, 0xba, 0xec, 0x78, 0xaf, 0xae,
+	0x3a, 0x0b, 0x6f, 0xaf, 0x3a, 0x0b, 0x7f, 0x5e, 0x75, 0x16, 0xbe, 0xa8, 0xd2, 0x84, 0x4d, 0x6a,
+	0xf6, 0x9b, 0xbe, 0xf3, 0x77, 0x00, 0x00, 0x00, 0xff, 0xff, 0x79, 0x6a, 0xe6, 0xb1, 0xd6, 0x06,
+	0x00, 0x00,
 }
 
 func (m *Metadata) Marshal() (dAtA []byte, err error) {
@@ -383,6 +754,128 @@ func (m *CreateMetadata) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *ErrorInfo) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ErrorInfo) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ErrorInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Entity != nil {
+		{
+			size, err := m.Entity.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCommon(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.ErrorMessage) > 0 {
+		i -= len(m.ErrorMessage)
+		copy(dAtA[i:], m.ErrorMessage)
+		i = encodeVarintCommon(dAtA, i, uint64(len(m.ErrorMessage)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.ErrorCode != 0 {
+		i = encodeVarintCommon(dAtA, i, uint64(m.ErrorCode))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ErrorInfo_Entity) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ErrorInfo_Entity) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ErrorInfo_Entity) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Type != nil {
+		{
+			size, err := m.Type.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCommon(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Name != 0 {
+		i = encodeVarintCommon(dAtA, i, uint64(m.Name))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ErrorInfo_Type) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ErrorInfo_Type) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ErrorInfo_Type) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Parameter) > 0 {
+		i -= len(m.Parameter)
+		copy(dAtA[i:], m.Parameter)
+		i = encodeVarintCommon(dAtA, i, uint64(len(m.Parameter)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Name != 0 {
+		i = encodeVarintCommon(dAtA, i, uint64(m.Name))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintCommon(dAtA []byte, offset int, v uint64) int {
 	offset -= sovCommon(v)
 	base := offset
@@ -460,6 +953,58 @@ func (m *CreateMetadata) Size() (n int) {
 			mapEntrySize := 1 + len(k) + sovCommon(uint64(len(k))) + 1 + len(v) + sovCommon(uint64(len(v)))
 			n += mapEntrySize + 1 + sovCommon(uint64(mapEntrySize))
 		}
+	}
+	return n
+}
+
+func (m *ErrorInfo) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.ErrorCode != 0 {
+		n += 1 + sovCommon(uint64(m.ErrorCode))
+	}
+	l = len(m.ErrorMessage)
+	if l > 0 {
+		n += 1 + l + sovCommon(uint64(l))
+	}
+	if m.Entity != nil {
+		l = m.Entity.Size()
+		n += 1 + l + sovCommon(uint64(l))
+	}
+	return n
+}
+
+func (m *ErrorInfo_Entity) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Name != 0 {
+		n += 1 + sovCommon(uint64(m.Name))
+	}
+	if m.Type != nil {
+		l = m.Type.Size()
+		n += 1 + l + sovCommon(uint64(l))
+	}
+	return n
+}
+
+func (m *ErrorInfo_Type) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Name != 0 {
+		n += 1 + sovCommon(uint64(m.Name))
+	}
+	l = len(m.Parameter)
+	if l > 0 {
+		n += 1 + l + sovCommon(uint64(l))
 	}
 	return n
 }
@@ -1101,6 +1646,358 @@ func (m *CreateMetadata) Unmarshal(dAtA []byte) error {
 				}
 			}
 			m.Labels[mapkey] = mapvalue
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCommon(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ErrorInfo) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCommon
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ErrorInfo: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ErrorInfo: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ErrorCode", wireType)
+			}
+			m.ErrorCode = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ErrorCode |= ErrorCode(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ErrorMessage", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthCommon
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ErrorMessage = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Entity", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCommon
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Entity == nil {
+				m.Entity = &ErrorInfo_Entity{}
+			}
+			if err := m.Entity.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCommon(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ErrorInfo_Entity) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCommon
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Entity: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Entity: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
+			}
+			m.Name = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Name |= EntityType(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Type", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCommon
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Type == nil {
+				m.Type = &ErrorInfo_Type{}
+			}
+			if err := m.Type.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCommon(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ErrorInfo_Type) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCommon
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Type: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Type: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
+			}
+			m.Name = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Name |= EntityType(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Parameter", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthCommon
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Parameter = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
