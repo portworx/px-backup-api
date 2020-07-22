@@ -322,6 +322,8 @@ message BackupInfo {
     BackupSchedule backup_schedule = 12;
     string cr_name = 13;
     uint64 size = 14;
+    // Reference to cloud credential object used for backup
+    string cloud_credential = 15;
 
     enum Stage {
         Invalid = 0;
@@ -1072,6 +1074,8 @@ message BackupCreateResponse {}
 // Define BackupUpdateRequest struct
 message BackupUpdateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    // Reference to cloud credential object used for backup
+    string cloud_credential = 2;
 }
 
 // Define BackupUpdateResponse struct
