@@ -1852,6 +1852,10 @@
         "size": {
           "type": "string",
           "format": "uint64"
+        },
+        "cloud_credential": {
+          "type": "string",
+          "title": "Reference to cloud credential object used for backup"
         }
       }
     },
@@ -2359,6 +2363,10 @@
       "properties": {
         "metadata": {
           "$ref": "#/definitions/CreateMetadata"
+        },
+        "cloud_credential": {
+          "type": "string",
+          "title": "Reference to cloud credential object used for backup"
         }
       },
       "title": "Define BackupUpdateRequest struct"
