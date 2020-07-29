@@ -272,6 +272,7 @@ message BackupLocationInfo {
     string cloud_credential = 4;
     StatusInfo status = 5;
     bool delete_backups = 6;
+    bool validate_cloud_credential = 7;
     oneof config { S3Config s3_config = 100; }
     // Message for maintaing status of the object.
     message StatusInfo {

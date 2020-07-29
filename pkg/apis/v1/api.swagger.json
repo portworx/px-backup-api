@@ -2014,6 +2014,10 @@
           "type": "boolean",
           "format": "boolean"
         },
+        "validate_cloud_credential": {
+          "type": "boolean",
+          "format": "boolean"
+        },
         "s3_config": {
           "$ref": "#/definitions/S3Config"
         }
