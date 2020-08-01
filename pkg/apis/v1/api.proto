@@ -910,6 +910,9 @@ message CloudCredentialInspectResponse {
 message CloudCredentialDeleteRequest {
     string org_id = 1;
     string name = 2;
+    // delete_backuplocation will be set, if the associated
+    // backuplocation also need to be deleted.
+    bool delete_backuplocation = 3;
 }
 
 // Define CloudCredentialInspectResponse struct

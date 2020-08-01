@@ -746,6 +746,14 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "delete_backuplocation",
+            "description": "delete_backuplocation will be set, if the associated\nbackuplocation also need to be deleted.",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
           }
         ],
         "tags": [
