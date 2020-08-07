@@ -1379,6 +1379,11 @@ message LicenseInspectResponse { LicenseResponseInfo license_resp_info = 1; }
 
 message LicenseResponseInfo {
     repeated FeatureInfo feature_info = 1;
+    enum Status {
+        INVALID = 0;
+        ACTIVE = 1;
+        EXPIRED = 2;
+    }
 
     message FeatureInfo {
         // Feature name
@@ -1396,6 +1401,8 @@ message LicenseResponseInfo {
         google.protobuf.Timestamp expires = 3;
         // Start time of license
         google.protobuf.Timestamp starts = 4;
+        // License status
+        Status status = 5;
     }
 }
 

@@ -2728,6 +2728,10 @@
           "type": "string",
           "format": "date-time",
           "title": "Start time of license"
+        },
+        "status": {
+          "$ref": "#/definitions/LicenseResponseInfoStatus",
+          "title": "License status"
         }
       }
     },
@@ -2751,6 +2755,15 @@
           "title": "License entitlement info"
         }
       }
+    },
+    "LicenseResponseInfoStatus": {
+      "type": "string",
+      "enum": [
+        "INVALID",
+        "ACTIVE",
+        "EXPIRED"
+      ],
+      "default": "INVALID"
     },
     "Metadata": {
       "type": "object",
