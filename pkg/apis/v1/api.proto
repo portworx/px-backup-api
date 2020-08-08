@@ -958,6 +958,15 @@ service BackupLocation {
             delete : "/v1/backuplocation/{org_id}/{name}"
         };
     }
+
+    // Verify if a backup location is valid
+    rpc Validate(BackupLocationValidateRequest)
+        returns (BackupLocationValidateResponse) {
+        option (google.api.http) = {
+            post : "/v1/backuplocation/validate"
+            body : "*"
+        };
+    }
 }
 
 // Define BackupLocationCreateRequest struct
@@ -1010,8 +1019,17 @@ message BackupLocationDeleteRequest {
     bool delete_backups = 3;
 }
 
-// Define BackupLocationInspectResponse struct
+// Define BackupLocationDeleteResponse struct
 message BackupLocationDeleteResponse {}
+
+// Define BackupLocationValidateRequest struct
+message BackupLocationValidateRequest {
+    string org_id = 1;
+    string name = 2;
+}
+
+// Define BackupLocationValidateResponse struct
+message BackupLocationValidateResponse {}
 
 service Backup {
     // Create creates a new backup object

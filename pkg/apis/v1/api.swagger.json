@@ -286,6 +286,39 @@
         ]
       }
     },
+    "/v1/backuplocation/validate": {
+      "post": {
+        "summary": "Verify if a backup location is valid",
+        "operationId": "BackupLocation_Validate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupLocationValidateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupLocationValidateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "BackupLocation"
+        ]
+      }
+    },
     "/v1/backuplocation/{org_id}": {
       "get": {
         "summary": "Enumerate returns a list of backup locations",
@@ -1978,7 +2011,7 @@
     },
     "BackupLocationDeleteResponse": {
       "type": "object",
-      "title": "Define BackupLocationInspectResponse struct"
+      "title": "Define BackupLocationDeleteResponse struct"
     },
     "BackupLocationEnumerateResponse": {
       "type": "object",
@@ -2089,6 +2122,22 @@
     "BackupLocationUpdateResponse": {
       "type": "object",
       "title": "Define BackupLocationUpdateResponse struct"
+    },
+    "BackupLocationValidateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "Define BackupLocationValidateRequest struct"
+    },
+    "BackupLocationValidateResponse": {
+      "type": "object",
+      "title": "Define BackupLocationValidateResponse struct"
     },
     "BackupObject": {
       "type": "object",
