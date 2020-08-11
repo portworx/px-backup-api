@@ -389,6 +389,7 @@ message RulesInfo {
             [ (gogoproto.moretags) = "yaml:\"podSelector\"" ];
         repeated Action actions = 2
             [ (gogoproto.moretags) = "yaml:\"actions\"" ];
+        string container = 3;
     }
 
     message Action {
