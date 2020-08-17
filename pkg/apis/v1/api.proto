@@ -322,7 +322,7 @@ message BackupInfo {
     // Otherwise it will be empty.
     BackupSchedule backup_schedule = 12;
     string cr_name = 13;
-    uint64 size = 14;
+    uint64 total_size = 14;
     // Reference to cloud credential object used for backup
     string cloud_credential = 15;
 
@@ -350,7 +350,10 @@ message BackupInfo {
         string driver_name = 6;
         repeated string zones = 7;
         map<string, string> options = 8;
-        uint64 size = 9;
+        uint64 total_size = 9;
+        // actual size of the backup
+        // incase of invremental, it's the incremental backup size
+        uint64 actual_size = 10;
     }
 
     // Message for maintaing status of the object.
@@ -432,7 +435,7 @@ message RestoreInfo {
     // Name of the cluster
     string cluster = 9;
     repeated string include_optional_resource_types = 10;
-    uint64 size = 11;
+    uint64 total_size = 11;
     repeated ResourceInfo include_resources = 12;
 
     message RestoredResource {
@@ -453,7 +456,7 @@ message RestoreInfo {
         string driver_name = 6;
         repeated string zones = 7;
         map<string, string> options = 8;
-        uint64 size = 9;
+        uint64 total_size = 9;
     }
 
     // Message for maintaing status of the object.
