@@ -12,6 +12,10 @@ import "google/protobuf/wrappers.proto";
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "pkg/apis/v1/common.proto";
 
+option (gogoproto.populate_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.testgen_all) = true;
+
 message OrganizationObject {
     Metadata metadata = 1 [ (gogoproto.embed) = true ];
 }
@@ -122,7 +126,7 @@ message CloudCredentialInfo {
 message CloudCredentialObject {
     Metadata metadata = 1
         [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
-    CloudCredentialInfo cloud_credential_info = 2 [ (gogoproto.embed) = true ];
+    CloudCredentialInfo cloud_credential_info = 2;
 }
 
 message SchedulePolicyInfo {
@@ -290,7 +294,7 @@ message BackupLocationInfo {
 message BackupLocationObject {
     Metadata metadata = 1
         [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
-    BackupLocationInfo backup_location_info = 2 [ (gogoproto.embed) = true ];
+    BackupLocationInfo backup_location_info = 2;
 }
 
 message ResourceInfo {

@@ -17,8 +17,10 @@ all: proto pretest
 
 proto:
 	clang-format -i $(PROTOC_FILES)
-	go get -u github.com/gogo/protobuf/...
-	go get -u github.com/grpc-ecosystem/grpc-gateway/...
+	go get -u \
+	        github.com/gogo/protobuf/protoc-gen-gogo \
+	        github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway \
+	        github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger 
 	$(PROTOC) -I/usr/local/include -I. \
 		-I${GOPATH}/src \
 		-I${GOPATH}/src/github.com/gogo/protobuf/protobuf \
@@ -32,16 +34,20 @@ Mgoogle/protobuf/field_mask.proto=github.com/gogo/protobuf/types,\
 Mgoogle/protobuf/struct.proto=github.com/gogo/protobuf/types,\
 Mgoogle/protobuf/timestamp.proto=github.com/gogo/protobuf/types,\
 Mgoogle/protobuf/wrappers.proto=github.com/gogo/protobuf/types,\
+Mgoogle/api/annotations.proto=github.com/gogo/googleapis/google/api,\
+Mgoogle/protobuf/field_mask.proto=github.com/gogo/protobuf/types,\
 plugins=grpc:. \
-	    $(PROTOC_FILES)
-	$(PROTOC) -I/usr/local/include -I. \
-		-I${GOPATH}/src \
-		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-		--grpc-gateway_out=logtostderr=true:. \
-		$(PROTOC_FILES)
-	$(PROTOC) -I/usr/local/include -I. \
-		-I${GOPATH}/src \
-		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+		--grpc-gateway_out=allow_patch_feature=false,\
+Mgogoproto/gogo.proto=github.com/gogo/protobuf/gogoproto,\
+Mgoogle/protobuf/any.proto=github.com/gogo/protobuf/types,\
+Mgoogle/protobuf/empty.proto=github.com/gogo/protobuf/types,\
+Mgoogle/protobuf/duration.proto=github.com/gogo/protobuf/types,\
+Mgoogle/protobuf/field_mask.proto=github.com/gogo/protobuf/types,\
+Mgoogle/protobuf/struct.proto=github.com/gogo/protobuf/types,\
+Mgoogle/protobuf/timestamp.proto=github.com/gogo/protobuf/types,\
+Mgoogle/protobuf/wrappers.proto=github.com/gogo/protobuf/types,\
+Mgoogle/api/annotations.proto=github.com/gogo/googleapis/google/api,\
+Mgoogle/protobuf/field_mask.proto=github.com/gogo/protobuf/types:.\
 		--swagger_out=logtostderr=true:. \
 		$(PROTOC_FILES)
 
