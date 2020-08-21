@@ -7,6 +7,58 @@ syntax = "proto3";
 import "google/protobuf/timestamp.proto";
 option go_package = "api";
 
+enum ErrorCode {
+    ErrCodeInvalid = 0;
+
+    NotFound = 100;
+    RestrictedAccess = 101;
+    AlreadyExists = 102;
+    InvalidArguments = 103;
+    Aborted = 104;
+    Unimplemented = 105;
+    Internal = 106;
+    ParameterMissing = 107;
+    Offline = 108;
+}
+
+enum EntityType {
+    EntityTypeInvalid = 0;
+
+    OrganizationEntity = 100;
+    NamespaceEntity = 101;
+    CloudCredentialEntity = 102;
+    BackupLocationEntity = 103;
+    ClusterEntity = 104;
+    CloudProviderEntity = 105;
+    SchedulePolicyEntity = 107;
+    KubeConfigEntity = 108;
+    // Object name
+    ObjectNameEntity = 109;
+    BackupEntity = 110;
+    RestoreEntity = 111;
+    RuleEntity = 112;
+    DeleteEntity = 113;
+    LicenseEntity = 114;
+
+    LabelEntity = 150;
+
+    // AWS config parameters
+    SecretKeyEntity = 200;
+    AccessKeyEntity = 201;
+    S3EndPointEntity = 202;
+    S3RegionEntity = 203;
+
+    // Google config paramaters
+    GoogleJSONKeyEntity = 300;
+    // Azure config
+    AzureAccountKeyEntity = 400;
+    AzureAccountNameEntity = 401;
+    AzureClientIDEntity = 402;
+    AzureClientSecretEntity = 403;
+    AzureSubscriptionIDEntity = 404;
+    AzureTenantIDEntity = 405;
+}
+
 message Metadata {
     // name of the object
     string name = 1;
@@ -30,4 +82,33 @@ message CreateMetadata {
     string owner = 3;
     // labels associated with the object
     map<string, string> labels = 4;
+}
+
+message ErrorInfo {
+    message Entity {
+        // Name of the entity causing the error
+        // Eg: Backup, cluster, etc...
+        // This is enum so that GUI can do langauge localization
+        EntityType name = 1;
+        // Entity type
+        Type type = 2;
+    }
+
+    message Type {
+        // Type of the sub-resource
+        // Eg: cloud credential object
+        // This is enum so that GUI can do langauge localization
+        EntityType name = 1;
+        // Name of the type causing the error
+        // Eg: cloud cred object name
+        string parameter = 2;
+    }
+
+    // Unique error code
+    ErrorCode error_code = 1;
+    // Error message containing the actual reason of error
+    // For eg: If accessing a bucket, fails due to permission issue,
+    // the same is captured here. Error message returned from the end API.
+    string error_message = 2;
+    Entity entity = 3;
 }
