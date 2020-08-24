@@ -1507,6 +1507,13 @@
         "post_exec_rule": {
           "type": "string",
           "title": "Post check rule to run after backup is completed"
+        },
+        "include_resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceInfo"
+          },
+          "title": "List of resources to backup (optional)"
         }
       },
       "title": "Request message structure for backup create"
@@ -1601,6 +1608,12 @@
         "cloud_credential": {
           "type": "string",
           "title": "Reference to cloud credential object used for backup"
+        },
+        "include_resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceInfo"
+          }
         }
       }
     },
@@ -1907,6 +1920,13 @@
         },
         "post_exec_rule": {
           "type": "string"
+        },
+        "include_resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceInfo"
+          },
+          "title": "List of resources to backup (optional)"
         }
       },
       "title": "Define BackupScheduleCreateRequest struct"
@@ -1987,6 +2007,12 @@
         },
         "suspended_by": {
           "$ref": "#/definitions/BackupScheduleInfoSuspendedBy"
+        },
+        "include_resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceInfo"
+          }
         }
       }
     },
@@ -2120,6 +2146,13 @@
         "suspend": {
           "type": "boolean",
           "format": "boolean"
+        },
+        "include_resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceInfo"
+          },
+          "title": "List of resources to backup (optional)"
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"

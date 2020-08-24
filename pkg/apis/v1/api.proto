@@ -215,6 +215,7 @@ message BackupScheduleInfo {
     bool delete_backups = 11;
     StatusInfo status = 12;
     SuspendedBy suspended_by = 13;
+    repeated ResourceInfo include_resources = 14;
 
     message SuspendedBy {
         Source source = 1;
@@ -329,6 +330,7 @@ message BackupInfo {
     uint64 total_size = 14;
     // Reference to cloud credential object used for backup
     string cloud_credential = 15;
+    repeated ResourceInfo include_resources = 16;
 
     enum Stage {
         Invalid = 0;
@@ -666,6 +668,8 @@ message BackupScheduleCreateRequest {
     map<string, string> label_selectors = 7;
     string pre_exec_rule = 8;
     string post_exec_rule = 9;
+    // List of resources to backup (optional)
+    repeated ResourceInfo include_resources = 10;
 }
 
 // Define BackupScheduleCreateResponse struct
@@ -687,6 +691,8 @@ message BackupScheduleUpdateRequest {
     string pre_exec_rule = 8;
     string post_exec_rule = 9;
     bool suspend = 10;
+    // List of resources to backup (optional)
+    repeated ResourceInfo include_resources = 11;
 }
 
 // Define BackupScheduleUpdateResponse struct
@@ -1093,6 +1099,8 @@ message BackupCreateRequest {
     string pre_exec_rule = 6;
     // Post check rule to run after backup is completed
     string post_exec_rule = 7;
+    // List of resources to backup (optional)
+    repeated ResourceInfo include_resources = 8;
 }
 
 // Response message structure for backup create
