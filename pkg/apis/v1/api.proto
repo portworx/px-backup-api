@@ -8,7 +8,6 @@ option go_package = "api";
 
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/wrappers.proto";
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "pkg/apis/v1/common.proto";
 
@@ -137,7 +136,7 @@ message SchedulePolicyInfo {
         int64 retain = 2;
         // Number of incremental snapshots to take before taking a full
         // snapshot.
-        google.protobuf.UInt32Value incremental_count = 3;
+        oneof incremental_count_set { uint64 incremental_count = 3; }
     }
 
     message DailyPolicy {
@@ -148,7 +147,7 @@ message SchedulePolicyInfo {
         int64 retain = 2;
         // Number of incremental snapshots to take before taking a full
         // snapshot.
-        google.protobuf.UInt32Value incremental_count = 3;
+        oneof incremental_count_set { uint64 incremental_count = 4; }
     }
 
     message WeeklyPolicy {
@@ -162,7 +161,7 @@ message SchedulePolicyInfo {
         int64 retain = 3;
         // Number of incremental snapshots to take before taking a full
         // snapshot.
-        google.protobuf.UInt32Value incremental_count = 4;
+        oneof incremental_count_set { uint64 incremental_count = 4; }
     }
 
     message MonthlyPolicy {
@@ -181,8 +180,9 @@ message SchedulePolicyInfo {
         int64 retain = 3;
         // Number of incremental snapshots to take before taking a full
         // snapshot.
-        google.protobuf.UInt32Value incremental_count = 4;
+        oneof incremental_count_set { uint64 incremental_count = 4; }
     }
+
     IntervalPolicy interval = 1;
     DailyPolicy daily = 2;
     WeeklyPolicy weekly = 3;
