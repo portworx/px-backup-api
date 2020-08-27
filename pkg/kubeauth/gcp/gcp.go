@@ -63,7 +63,7 @@ func (g *gcp) UpdateClient(
 				return false, err
 			}
 			client.AuthProvider.Config = make(map[string]string)
-			client.AuthProvider.Config[jsonKeyConfig] = resp.GetCloudCredential().GetGoogleConfig().GetJsonKey()
+			client.AuthProvider.Config[jsonKeyConfig] = resp.GetCloudCredential().GetCloudCredentialInfo().GetGoogleConfig().GetJsonKey()
 		}
 		return true, nil
 	}
