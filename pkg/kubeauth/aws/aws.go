@@ -50,27 +50,27 @@ func (a *aws) UpdateClient(
 				return false, err
 			}
 			cloudCredential := resp.GetCloudCredential()
-			if cloudCredential.GetType() != api.CloudCredentialInfo_AWS {
-				return false, fmt.Errorf("need AWS CloudCredential for EKS cluster. Provided %v", cloudCredential.GetType())
+			if cloudCredential.GetCloudCredentialInfo().GetType() != api.CloudCredentialInfo_AWS {
+				return false, fmt.Errorf("need AWS CloudCredential for EKS cluster. Provided %v", cloudCredential.GetCloudCredentialInfo().GetType())
 			}
 			if client.ExecProvider.Env == nil {
 				client.ExecProvider.Env = make([]clientcmdapi.ExecEnvVar, 0)
 			}
 			client.ExecProvider.Env = append(client.ExecProvider.Env, clientcmdapi.ExecEnvVar{
 				Name:  "AWS_ACCESS_KEY",
-				Value: cloudCredential.GetAwsConfig().GetAccessKey(),
+				Value: cloudCredential.GetCloudCredentialInfo().GetAwsConfig().GetAccessKey(),
 			})
 			client.ExecProvider.Env = append(client.ExecProvider.Env, clientcmdapi.ExecEnvVar{
 				Name:  "AWS_ACCESS_KEY_ID",
-				Value: cloudCredential.GetAwsConfig().GetAccessKey(),
+				Value: cloudCredential.GetCloudCredentialInfo().GetAwsConfig().GetAccessKey(),
 			})
 			client.ExecProvider.Env = append(client.ExecProvider.Env, clientcmdapi.ExecEnvVar{
 				Name:  "AWS_SECRET_KEY",
-				Value: cloudCredential.GetAwsConfig().GetSecretKey(),
+				Value: cloudCredential.GetCloudCredentialInfo().GetAwsConfig().GetSecretKey(),
 			})
 			client.ExecProvider.Env = append(client.ExecProvider.Env, clientcmdapi.ExecEnvVar{
 				Name:  "AWS_SECRET_ACCESS_KEY",
-				Value: cloudCredential.GetAwsConfig().GetSecretKey(),
+				Value: cloudCredential.GetCloudCredentialInfo().GetAwsConfig().GetSecretKey(),
 			})
 
 			// Remove the profile env if present since we are passing in the creds through env
