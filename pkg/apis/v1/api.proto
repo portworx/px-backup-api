@@ -137,7 +137,8 @@ message SchedulePolicyInfo {
         int64 retain = 2;
         // Number of incremental snapshots to take before taking a full
         // snapshot.
-        google.protobuf.UInt32Value incremental_count = 3;
+        google.protobuf.UInt32Value incremental_count = 3
+            [ (gogoproto.jsontag) = "incremental_count" ];
     }
 
     message DailyPolicy {
@@ -148,7 +149,8 @@ message SchedulePolicyInfo {
         int64 retain = 2;
         // Number of incremental snapshots to take before taking a full
         // snapshot.
-        google.protobuf.UInt32Value incremental_count = 3;
+        google.protobuf.UInt32Value incremental_count = 3
+            [ (gogoproto.jsontag) = "incremental_count" ];
     }
 
     message WeeklyPolicy {
@@ -162,7 +164,8 @@ message SchedulePolicyInfo {
         int64 retain = 3;
         // Number of incremental snapshots to take before taking a full
         // snapshot.
-        google.protobuf.UInt32Value incremental_count = 4;
+        google.protobuf.UInt32Value incremental_count = 4
+            [ (gogoproto.jsontag) = "incremental_count" ];
     }
 
     message MonthlyPolicy {
@@ -181,7 +184,8 @@ message SchedulePolicyInfo {
         int64 retain = 3;
         // Number of incremental snapshots to take before taking a full
         // snapshot.
-        google.protobuf.UInt32Value incremental_count = 4;
+        google.protobuf.UInt32Value incremental_count = 4
+            [ (gogoproto.jsontag) = "incremental_count" ];
     }
     IntervalPolicy interval = 1;
     DailyPolicy daily = 2;
