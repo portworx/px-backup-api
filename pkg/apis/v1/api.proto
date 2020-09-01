@@ -8,6 +8,7 @@ option go_package = "api";
 
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "pkg/apis/v1/common.proto";
 
@@ -129,8 +130,6 @@ message CloudCredentialObject {
 }
 
 message SchedulePolicyInfo {
-    message IncrementalCount { uint64 count = 1; }
-
     message IntervalPolicy {
         // Interval in minutes at which an action should be triggered.
         int64 minutes = 1;
@@ -138,7 +137,7 @@ message SchedulePolicyInfo {
         int64 retain = 2;
         // Number of incremental snapshots to take before taking a full
         // snapshot.
-        IncrementalCount incremental_count = 3;
+        google.protobuf.UInt32Value incremental_count = 3;
     }
 
     message DailyPolicy {
@@ -149,7 +148,7 @@ message SchedulePolicyInfo {
         int64 retain = 2;
         // Number of incremental snapshots to take before taking a full
         // snapshot.
-        IncrementalCount incremental_count = 3;
+        google.protobuf.UInt32Value incremental_count = 3;
     }
 
     message WeeklyPolicy {
@@ -163,7 +162,7 @@ message SchedulePolicyInfo {
         int64 retain = 3;
         // Number of incremental snapshots to take before taking a full
         // snapshot.
-        IncrementalCount incremental_count = 4;
+        google.protobuf.UInt32Value incremental_count = 4;
     }
 
     message MonthlyPolicy {
@@ -182,9 +181,8 @@ message SchedulePolicyInfo {
         int64 retain = 3;
         // Number of incremental snapshots to take before taking a full
         // snapshot.
-        IncrementalCount incremental_count = 4;
+        google.protobuf.UInt32Value incremental_count = 4;
     }
-
     IntervalPolicy interval = 1;
     DailyPolicy daily = 2;
     WeeklyPolicy weekly = 3;

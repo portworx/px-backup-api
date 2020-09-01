@@ -3126,17 +3126,9 @@
           "description": "Number of objects to retain for daily policy, default value is 10."
         },
         "incremental_count": {
-          "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
+          "type": "integer",
+          "format": "int64",
           "description": "Number of incremental snapshots to take before taking a full\nsnapshot."
-        }
-      }
-    },
-    "SchedulePolicyInfoIncrementalCount": {
-      "type": "object",
-      "properties": {
-        "count": {
-          "type": "string",
-          "format": "uint64"
         }
       }
     },
@@ -3154,7 +3146,8 @@
           "description": "Number of objects to retain for interval policy, default value is 10."
         },
         "incremental_count": {
-          "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
+          "type": "integer",
+          "format": "int64",
           "description": "Number of incremental snapshots to take before taking a full\nsnapshot."
         }
       }
@@ -3177,7 +3170,8 @@
           "description": "Number of objects to retain for monthly policy, default value is 10."
         },
         "incremental_count": {
-          "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
+          "type": "integer",
+          "format": "int64",
           "description": "Number of incremental snapshots to take before taking a full\nsnapshot."
         }
       }
@@ -3199,7 +3193,8 @@
           "description": "Number of objects to retain for weekly policy, default value is 10."
         },
         "incremental_count": {
-          "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
+          "type": "integer",
+          "format": "int64",
           "description": "Number of incremental snapshots to take before taking a full\nsnapshot."
         }
       }
