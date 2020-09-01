@@ -129,7 +129,9 @@ message CloudCredentialObject {
 }
 
 message SchedulePolicyInfo {
-    message IncrementalCount { uint64 count = 1; }
+    message IncrementalCount {
+        uint64 count = 1 [ (gogoproto.jsontag) = "count" ];
+    }
 
     message IntervalPolicy {
         // Interval in minutes at which an action should be triggered.
