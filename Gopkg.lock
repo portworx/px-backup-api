@@ -68,7 +68,7 @@
   version = "v1.1.0"
 
 [[projects]]
-  digest = "1:2e024ad1c01e96326b0cc055213084dfd5b1ef294dc3844cbfc36c48d13bdd47"
+  digest = "1:4e57a115d4d4fa49ee4b605a6d1a41883aa996273978e9b21f84b46ea0578598"
   name = "github.com/grpc-ecosystem/grpc-gateway"
   packages = [
     "internal",
@@ -76,8 +76,8 @@
     "utilities",
   ]
   pruneopts = ""
-  revision = "e16fcd495a18ea01dbc6f5b6ac2956a94e1981a2"
-  version = "v1.12.2"
+  revision = "0688fa432fcdfd17d346b4d1de415030dbdace2f"
+  version = "v1.14.8"
 
 [[projects]]
   digest = "1:fb8bce9822eac1e2aeee6c2621cf25c6dec8f8f5f50a09a4a894d7932bfb2106"
@@ -402,6 +402,7 @@
     "google.golang.org/grpc",
     "google.golang.org/grpc/codes",
     "google.golang.org/grpc/grpclog",
+    "google.golang.org/grpc/metadata",
     "google.golang.org/grpc/status",
     "k8s.io/client-go/rest",
     "k8s.io/client-go/tools/clientcmd/api",
