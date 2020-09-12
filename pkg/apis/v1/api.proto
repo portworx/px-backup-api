@@ -515,9 +515,7 @@ message EnumerateOptions {
     // label selectors for the object for filtering
     map<string, string> labels = 1;
     // max objects to fetch
-    int64 page_size = 2;
-    // continuation token
-    string continuation_token = 3;
+    uint64 max_objects = 2;
     // Time range for which to return objects
     TimeRange time_range = 4;
     // Filter to use for name of objects. Any object that contains the filter
@@ -526,6 +524,7 @@ message EnumerateOptions {
     // Filter to use for cluster name of objects. Any object that contains the
     // filter will be returned
     string cluster_name_filter = 6;
+    uint64 object_index = 7;
 }
 
 service SchedulePolicy {
@@ -1133,6 +1132,8 @@ message BackupEnumerateResponse {
     repeated BackupObject backups = 1;
     // continuation token
     string continuation_token = 2;
+    uint64 total_count = 3;
+    bool complete = 4;
 }
 
 // Request message strcuture for object inspect
