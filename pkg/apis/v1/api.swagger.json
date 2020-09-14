@@ -3515,6 +3515,37 @@
       "type": "object",
       "title": "Define SchedulePolicyUpdateResponse struct"
     },
+    "StatsGetResponse": {
+      "type": "object",
+      "properties": {
+        "backup_stats": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StatsGetResponseStats"
+          }
+        }
+      }
+    },
+    "StatsGetResponseStats": {
+      "type": "object",
+      "properties": {
+        "cluster": {
+          "type": "string"
+        },
+        "num_namespaces": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "total_backup_size": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "num_schedules": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
     "SuspendedBySource": {
       "type": "string",
       "enum": [

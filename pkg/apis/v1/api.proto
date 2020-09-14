@@ -1048,6 +1048,26 @@ message BackupLocationValidateRequest {
 // Define BackupLocationValidateResponse struct
 message BackupLocationValidateResponse {}
 
+service Stats {
+    rpc Get(StatsGetRequest) returns (StatsGetResponse) {
+        option (google.api.http) = {
+            get : "/v1/backup/{org_id}"
+        };
+    }
+}
+
+message StatsGetRequest { string org_id = 1; }
+
+message StatsGetResponse {
+    repeated Stats backup_stats = 1;
+    message Stats {
+        string cluster = 1;
+        uint64 num_namespaces = 2;
+        uint64 total_backup_size = 3;
+        uint64 num_schedules = 4;
+    }
+}
+
 service Backup {
     // Create creates a new backup object
     rpc Create(BackupCreateRequest) returns (BackupCreateResponse) {
