@@ -150,6 +150,37 @@
         ]
       }
     },
+    "/v1/backup/{org_id}/stats": {
+      "get": {
+        "summary": "stats returns stats information about backup object",
+        "operationId": "Backup_Stats",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupStatsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
     "/v1/backup/{org_id}/{name}": {
       "get": {
         "summary": "Inspect returns detail information about a specified object",
@@ -2442,6 +2473,37 @@
     "BackupScheduleUpdateResponse": {
       "type": "object",
       "title": "Define BackupScheduleUpdateResponse struct"
+    },
+    "BackupStatsResponse": {
+      "type": "object",
+      "properties": {
+        "backup_stats": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/BackupStatsResponseBackupStats"
+          }
+        }
+      }
+    },
+    "BackupStatsResponseBackupStats": {
+      "type": "object",
+      "properties": {
+        "namespaces": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "uint64"
+          }
+        },
+        "size": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "schedule": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
     },
     "BackupUpdateRequest": {
       "type": "object",

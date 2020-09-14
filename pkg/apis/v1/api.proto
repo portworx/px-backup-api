@@ -1085,6 +1085,12 @@ service Backup {
             delete : "/v1/backup/{org_id}/{name}"
         };
     }
+    // stats returns stats information about backup object
+    rpc Stats(BackupStatsRequest) returns (BackupStatsResponse) {
+        option (google.api.http) = {
+            get : "/v1/backup/{org_id}/stats"
+        };
+    }
 }
 
 // Request message structure for backup create
@@ -1134,6 +1140,17 @@ message BackupEnumerateResponse {
     string continuation_token = 2;
     uint64 total_count = 3;
     bool complete = 4;
+}
+
+message BackupStatsRequest { string org_id = 1; }
+
+message BackupStatsResponse {
+    map<string, BackupStats> backup_stats = 1;
+    message BackupStats {
+        map<string, uint64> namespaces = 1;
+        uint64 size = 2;
+        uint64 schedule = 3;
+    }
 }
 
 // Request message strcuture for object inspect
