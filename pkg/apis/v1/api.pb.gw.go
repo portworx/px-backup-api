@@ -1635,8 +1635,8 @@ func local_request_BackupLocation_Validate_0(ctx context.Context, marshaler runt
 
 }
 
-func request_Stats_Get_0(ctx context.Context, marshaler runtime.Marshaler, client StatsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq StatsGetRequest
+func request_Metrics_Inspect_0(ctx context.Context, marshaler runtime.Marshaler, client MetricsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq MetricsInspectRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1657,13 +1657,13 @@ func request_Stats_Get_0(ctx context.Context, marshaler runtime.Marshaler, clien
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "org_id", err)
 	}
 
-	msg, err := client.Get(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.Inspect(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Stats_Get_0(ctx context.Context, marshaler runtime.Marshaler, server StatsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq StatsGetRequest
+func local_request_Metrics_Inspect_0(ctx context.Context, marshaler runtime.Marshaler, server MetricsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq MetricsInspectRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1684,7 +1684,7 @@ func local_request_Stats_Get_0(ctx context.Context, marshaler runtime.Marshaler,
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "org_id", err)
 	}
 
-	msg, err := server.Get(ctx, &protoReq)
+	msg, err := server.Inspect(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -3434,13 +3434,13 @@ func RegisterBackupLocationHandlerServer(ctx context.Context, mux *runtime.Serve
 	return nil
 }
 
-// RegisterStatsHandlerServer registers the http handlers for service Stats to "mux".
-// UnaryRPC     :call StatsServer directly.
+// RegisterMetricsHandlerServer registers the http handlers for service Metrics to "mux".
+// UnaryRPC     :call MetricsServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterStatsHandlerFromEndpoint instead.
-func RegisterStatsHandlerServer(ctx context.Context, mux *runtime.ServeMux, server StatsServer) error {
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterMetricsHandlerFromEndpoint instead.
+func RegisterMetricsHandlerServer(ctx context.Context, mux *runtime.ServeMux, server MetricsServer) error {
 
-	mux.Handle("GET", pattern_Stats_Get_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Metrics_Inspect_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -3451,7 +3451,7 @@ func RegisterStatsHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Stats_Get_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Metrics_Inspect_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -3459,7 +3459,7 @@ func RegisterStatsHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 			return
 		}
 
-		forward_Stats_Get_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Metrics_Inspect_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -4921,9 +4921,9 @@ var (
 	forward_BackupLocation_Validate_0 = runtime.ForwardResponseMessage
 )
 
-// RegisterStatsHandlerFromEndpoint is same as RegisterStatsHandler but
+// RegisterMetricsHandlerFromEndpoint is same as RegisterMetricsHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterStatsHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterMetricsHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.Dial(endpoint, opts...)
 	if err != nil {
 		return err
@@ -4943,23 +4943,23 @@ func RegisterStatsHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux
 		}()
 	}()
 
-	return RegisterStatsHandler(ctx, mux, conn)
+	return RegisterMetricsHandler(ctx, mux, conn)
 }
 
-// RegisterStatsHandler registers the http handlers for service Stats to "mux".
+// RegisterMetricsHandler registers the http handlers for service Metrics to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterStatsHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterStatsHandlerClient(ctx, mux, NewStatsClient(conn))
+func RegisterMetricsHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterMetricsHandlerClient(ctx, mux, NewMetricsClient(conn))
 }
 
-// RegisterStatsHandlerClient registers the http handlers for service Stats
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "StatsClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "StatsClient"
+// RegisterMetricsHandlerClient registers the http handlers for service Metrics
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "MetricsClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "MetricsClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "StatsClient" to call the correct interceptors.
-func RegisterStatsHandlerClient(ctx context.Context, mux *runtime.ServeMux, client StatsClient) error {
+// "MetricsClient" to call the correct interceptors.
+func RegisterMetricsHandlerClient(ctx context.Context, mux *runtime.ServeMux, client MetricsClient) error {
 
-	mux.Handle("GET", pattern_Stats_Get_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Metrics_Inspect_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -4968,14 +4968,14 @@ func RegisterStatsHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Stats_Get_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Metrics_Inspect_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Stats_Get_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Metrics_Inspect_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -4983,11 +4983,11 @@ func RegisterStatsHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 }
 
 var (
-	pattern_Stats_Get_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "backup", "org_id"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Metrics_Inspect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "metrics", "org_id"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
-	forward_Stats_Get_0 = runtime.ForwardResponseMessage
+	forward_Metrics_Inspect_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterBackupHandlerFromEndpoint is same as RegisterBackupHandler but
