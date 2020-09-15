@@ -517,14 +517,14 @@ message EnumerateOptions {
     // max objects to fetch
     uint64 max_objects = 2;
     // Time range for which to return objects
-    TimeRange time_range = 4;
+    TimeRange time_range = 3;
     // Filter to use for name of objects. Any object that contains the filter
     // will be returned
-    string name_filter = 5;
+    string name_filter = 4;
     // Filter to use for cluster name of objects. Any object that contains the
     // filter will be returned
-    string cluster_name_filter = 6;
-    uint64 object_index = 7;
+    string cluster_name_filter = 5;
+    uint64 object_index = 6;
 }
 
 service SchedulePolicy {
@@ -1048,18 +1048,18 @@ message BackupLocationValidateRequest {
 // Define BackupLocationValidateResponse struct
 message BackupLocationValidateResponse {}
 
-service Stats {
-    rpc Get(StatsGetRequest) returns (StatsGetResponse) {
+service Metrics {
+    rpc Inspect(MetricsInspectRequest) returns (MetricsInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/backup/{org_id}"
+            get : "/v1/metrics/{org_id}"
         };
     }
 }
 
-message StatsGetRequest { string org_id = 1; }
+message MetricsInspectRequest { string org_id = 1; }
 
-message StatsGetResponse {
-    repeated Stats backup_stats = 1;
+message MetricsInspectResponse {
+    repeated Stats stats = 1;
     message Stats {
         string cluster = 1;
         uint64 num_namespaces = 2;
