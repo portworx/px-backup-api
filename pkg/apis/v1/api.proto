@@ -515,17 +515,16 @@ message EnumerateOptions {
     // label selectors for the object for filtering
     map<string, string> labels = 1;
     // max objects to fetch
-    int64 page_size = 2;
-    // continuation token
-    string continuation_token = 3;
+    uint64 max_objects = 2;
     // Time range for which to return objects
-    TimeRange time_range = 4;
+    TimeRange time_range = 3;
     // Filter to use for name of objects. Any object that contains the filter
     // will be returned
-    string name_filter = 5;
+    string name_filter = 4;
     // Filter to use for cluster name of objects. Any object that contains the
     // filter will be returned
-    string cluster_name_filter = 6;
+    string cluster_name_filter = 5;
+    uint64 object_index = 6;
 }
 
 service SchedulePolicy {
@@ -1049,6 +1048,26 @@ message BackupLocationValidateRequest {
 // Define BackupLocationValidateResponse struct
 message BackupLocationValidateResponse {}
 
+service Metrics {
+    rpc Inspect(MetricsInspectRequest) returns (MetricsInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/metrics/{org_id}"
+        };
+    }
+}
+
+message MetricsInspectRequest { string org_id = 1; }
+
+message MetricsInspectResponse {
+    repeated Stats stats = 1;
+    message Stats {
+        string cluster = 1;
+        uint64 num_namespaces = 2;
+        uint64 total_backup_size = 3;
+        uint64 num_schedules = 4;
+    }
+}
+
 service Backup {
     // Create creates a new backup object
     rpc Create(BackupCreateRequest) returns (BackupCreateResponse) {
@@ -1131,8 +1150,8 @@ message BackupEnumerateRequest {
 //  Response message structure for enumerate create
 message BackupEnumerateResponse {
     repeated BackupObject backups = 1;
-    // continuation token
-    string continuation_token = 2;
+    uint64 total_count = 2;
+    bool complete = 3;
 }
 
 // Request message strcuture for object inspect
@@ -1232,8 +1251,8 @@ message RestoreEnumerateRequest {
 // Define RestoreEnumerateResponse struct
 message RestoreEnumerateResponse {
     repeated RestoreObject restores = 1;
-    // continuation token
-    string continuation_token = 2;
+    uint64 total_count = 2;
+    bool complete = 3;
 }
 
 // Define RestoreInspectRequest struct

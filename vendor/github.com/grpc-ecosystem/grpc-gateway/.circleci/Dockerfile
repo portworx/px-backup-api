@@ -1,4 +1,4 @@
-FROM golang:1.13.4
+FROM golang:1.15.1
 
 # Warm apt cache and install dependencies
 # bzip2 is required by the node_tests (to extract its dependencies).
@@ -9,7 +9,7 @@ RUN apt-get update && \
 
 # Install swagger-codegen
 ENV SWAGGER_CODEGEN_VERSION=2.4.8
-RUN wget http://repo1.maven.org/maven2/io/swagger/swagger-codegen-cli/${SWAGGER_CODEGEN_VERSION}/swagger-codegen-cli-${SWAGGER_CODEGEN_VERSION}.jar \
+RUN wget https://repo1.maven.org/maven2/io/swagger/swagger-codegen-cli/${SWAGGER_CODEGEN_VERSION}/swagger-codegen-cli-${SWAGGER_CODEGEN_VERSION}.jar \
     -O /usr/local/bin/swagger-codegen-cli.jar
 
 # Wrap the jar for swagger-codgen
@@ -17,7 +17,7 @@ RUN echo -e '#!/bin/bash\njava -jar /usr/local/bin/swagger-codegen-cli.jar "$@"'
 	chmod +x /usr/local/bin/swagger-codegen
 
 # Install protoc
-ENV PROTOC_VERSION=3.10.1
+ENV PROTOC_VERSION=3.12.0
 RUN wget https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip \
     -O /protoc-${PROTOC_VERSION}-linux-x86_64.zip && \
     unzip /protoc-${PROTOC_VERSION}-linux-x86_64.zip -d /usr/local/ && \
