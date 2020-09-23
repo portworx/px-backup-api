@@ -1167,6 +1167,8 @@ message BackupInspectResponse { BackupObject backup = 1; }
 message BackupDeleteRequest {
     string name = 1;
     string org_id = 2;
+    // cluster name or uid to perform delete through
+    string cluster = 3;
 }
 
 // Response message strcuture for object delete
