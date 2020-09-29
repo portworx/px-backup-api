@@ -1029,6 +1029,37 @@
         "tags": [
           "License"
         ]
+      },
+      "put": {
+        "summary": "Update updates Usage Based activation ID",
+        "operationId": "License_Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LicenseUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LicenseUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "License"
+        ]
       }
     },
     "/v1/license/{org_id}": {
@@ -2791,6 +2822,9 @@
         "license_data": {
           "type": "string",
           "format": "byte"
+        },
+        "usage_based_id": {
+          "type": "string"
         }
       }
     },
@@ -2813,6 +2847,9 @@
           "items": {
             "$ref": "#/definitions/LicenseResponseInfoFeatureInfo"
           }
+        },
+        "status": {
+          "$ref": "#/definitions/LicenseResponseInfoStatus"
         }
       }
     },
@@ -2833,8 +2870,22 @@
           "type": "string",
           "format": "date-time",
           "title": "Start time of license"
+        },
+        "type": {
+          "$ref": "#/definitions/LicenseResponseInfoEntitlementInfoType",
+          "title": "License type"
         }
       }
+    },
+    "LicenseResponseInfoEntitlementInfoType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Trial",
+        "Enterprise",
+        "UsageBased"
+      ],
+      "default": "Invalid"
     },
     "LicenseResponseInfoFeatureInfo": {
       "type": "object",
@@ -2856,6 +2907,33 @@
           "title": "License entitlement info"
         }
       }
+    },
+    "LicenseResponseInfoStatus": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "title": "Representing if license is active or expired"
+        },
+        "reason": {
+          "type": "string",
+          "title": "Reason for above status"
+        }
+      }
+    },
+    "LicenseUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "usage_based_id": {
+          "type": "string"
+        }
+      }
+    },
+    "LicenseUpdateResponse": {
+      "type": "object"
     },
     "Metadata": {
       "type": "object",
