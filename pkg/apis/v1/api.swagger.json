@@ -1029,6 +1029,37 @@
         "tags": [
           "License"
         ]
+      },
+      "put": {
+        "summary": "Update updates PAYG activation ID",
+        "operationId": "License_Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LicenseUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LicenseUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "License"
+        ]
       }
     },
     "/v1/license/{org_id}": {
@@ -2791,6 +2822,9 @@
         "license_data": {
           "type": "string",
           "format": "byte"
+        },
+        "payg_id": {
+          "type": "string"
         }
       }
     },
@@ -2833,6 +2867,10 @@
           "type": "string",
           "format": "date-time",
           "title": "Start time of license"
+        },
+        "type": {
+          "type": "string",
+          "title": "License type\nEither \"Usage Based\" or normal license"
         }
       }
     },
@@ -2856,6 +2894,20 @@
           "title": "License entitlement info"
         }
       }
+    },
+    "LicenseUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "payg_id": {
+          "type": "string"
+        }
+      }
+    },
+    "LicenseUpdateResponse": {
+      "type": "object"
     },
     "Metadata": {
       "type": "object",
