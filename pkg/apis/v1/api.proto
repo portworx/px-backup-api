@@ -1424,11 +1424,21 @@ message VersionGetResponse {
 
 message LicenseActivateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
-    string activation_id = 2;
-    bytes license_data = 3;
+    oneof activation {
+        string activation_id = 2;
+        bytes license_data = 3;
+        string usage_based_id = 4;
+    }
 }
 
 message LicenseActivateResponse {}
+
+message LicenseUpdateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    string usage_based_id = 2;
+}
+
+message LicenseUpdateResponse {}
 
 message LicenseInspectRequest { string org_id = 1; }
 
@@ -1436,6 +1446,7 @@ message LicenseInspectResponse { LicenseResponseInfo license_resp_info = 1; }
 
 message LicenseResponseInfo {
     repeated FeatureInfo feature_info = 1;
+    Status status = 2;
 
     message FeatureInfo {
         // Feature name
@@ -1453,6 +1464,22 @@ message LicenseResponseInfo {
         google.protobuf.Timestamp expires = 3;
         // Start time of license
         google.protobuf.Timestamp starts = 4;
+        // License type
+        Type type = 5;
+
+        enum Type {
+            Invalid = 0;
+            Trial = 1;
+            Enterprise = 2;
+            UsageBased = 3;
+        }
+    }
+
+    message Status {
+        // Representing if license is active or expired
+        string status = 1;
+        // Reason for above status
+        string reason = 2;
     }
 }
 
@@ -1469,6 +1496,14 @@ service License {
     rpc Inspect(LicenseInspectRequest) returns (LicenseInspectResponse) {
         option (google.api.http) = {
             get : "/v1/license/{org_id}"
+        };
+    }
+
+    // Update updates Usage Based activation ID
+    rpc Update(LicenseUpdateRequest) returns (LicenseUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/license"
+            body : "*"
         };
     }
 }
