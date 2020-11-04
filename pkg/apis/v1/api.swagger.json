@@ -2847,6 +2847,9 @@
           "items": {
             "$ref": "#/definitions/LicenseResponseInfoFeatureInfo"
           }
+        },
+        "status": {
+          "$ref": "#/definitions/LicenseResponseInfoStatus"
         }
       }
     },
@@ -2892,6 +2895,19 @@
             "$ref": "#/definitions/LicenseResponseInfoEntitlementInfo"
           },
           "title": "License entitlement info"
+        }
+      }
+    },
+    "LicenseResponseInfoStatus": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "title": "Representing if license is active or expired"
+        },
+        "reason": {
+          "type": "string",
+          "title": "Reason for above status"
         }
       }
     },

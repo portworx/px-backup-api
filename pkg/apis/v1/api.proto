@@ -1446,6 +1446,7 @@ message LicenseInspectResponse { LicenseResponseInfo license_resp_info = 1; }
 
 message LicenseResponseInfo {
     repeated FeatureInfo feature_info = 1;
+    Status status = 2;
 
     message FeatureInfo {
         // Feature name
@@ -1466,6 +1467,13 @@ message LicenseResponseInfo {
         // License type
         // Either "Usage Based" or normal license
         string type = 5;
+    }
+
+    message Status {
+        // Representing if license is active or expired
+        string status = 1;
+        // Reason for above status
+        string reason = 2;
     }
 }
 
