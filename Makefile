@@ -11,6 +11,8 @@ PROTOC_FILES := pkg/apis/v1/api.proto
 PROTOC_FILES += pkg/apis/v1/common.proto
 endif
 
+GO111MODULE := on
+
 .DEFAULT_GOAL: all
 
 all: proto pretest
@@ -20,7 +22,7 @@ proto:
 	go get -u \
 	        github.com/gogo/protobuf/protoc-gen-gogo \
 	        github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway \
-	        github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger 
+	        github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger@v1.16.0
 	$(PROTOC) -I/usr/local/include -I. \
 		-I${GOPATH}/src \
 		-I${GOPATH}/src/github.com/gogo/protobuf/protobuf \
