@@ -343,6 +343,13 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "cloud_cred",
+            "description": "cloud credential name.\nEnumerate will return list of backuplocation\nthat used this cloud credential.",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -775,6 +782,12 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "delete_backuplocation",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -2532,8 +2545,31 @@
         },
         "google_config": {
           "$ref": "#/definitions/GoogleConfig"
+        },
+        "status": {
+          "$ref": "#/definitions/CloudCredentialInfoStatusInfo"
         }
       }
+    },
+    "CloudCredentialInfoStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/CloudCredentialInfoStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "CloudCredentialInfoStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Valid",
+        "DeletePending"
+      ],
+      "default": "Invalid"
     },
     "CloudCredentialInfoType": {
       "type": "string",

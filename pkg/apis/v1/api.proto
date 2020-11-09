@@ -120,6 +120,16 @@ message CloudCredentialInfo {
         AzureConfig azure_config = 101;
         GoogleConfig google_config = 102;
     }
+    StatusInfo status = 2;
+    message StatusInfo {
+        enum Status {
+            Invalid = 0;
+            Valid = 1;
+            DeletePending = 2;
+        }
+        Status status = 1;
+        string reason = 2;
+    }
 }
 
 message CloudCredentialObject {
@@ -928,6 +938,7 @@ message CloudCredentialInspectResponse {
 message CloudCredentialDeleteRequest {
     string org_id = 1;
     string name = 2;
+    bool delete_backuplocation = 3;
 }
 
 // Define CloudCredentialInspectResponse struct
@@ -1009,6 +1020,10 @@ message BackupLocationEnumerateRequest {
     string org_id = 1;
     // label selectors for the object for filtering
     map<string, string> labels = 2;
+    // cloud credential name.
+    // Enumerate will return list of backuplocation
+    // that used this cloud credential.
+    string cloud_cred = 3;
 }
 
 // Define BackupLocationEnumerateResponse struct
