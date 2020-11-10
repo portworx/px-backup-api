@@ -15,9 +15,9 @@ require (
 	github.com/sirupsen/logrus v1.5.0
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
 	golang.org/x/time v0.0.0-20200416051211-89c76fbcd5d1 // indirect
-	golang.org/x/tools v0.0.0-20201105220310-78b158585360 // indirect
+	golang.org/x/tools v0.0.0-20201110030525-169ad6d6ecb2 // indirect
 	google.golang.org/appengine v1.6.6 // indirect
-	google.golang.org/genproto v0.0.0-20201106154455-f9bfe239b0ba
+	google.golang.org/genproto v0.0.0-20201109203340-2640f1f9cdfb // indirect
 	google.golang.org/grpc v1.33.1
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
