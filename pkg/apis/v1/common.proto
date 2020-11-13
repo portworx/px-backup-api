@@ -25,6 +25,8 @@ message Metadata {
     google.protobuf.Timestamp last_update_time = 6;
     // label selectors for the object for filtering
     map<string, string> labels = 7;
+    // email_id of the owner associated with the object
+    string email_id = 8;
 }
 
 message CreateMetadata {
@@ -36,4 +38,6 @@ message CreateMetadata {
     string owner = 3;
     // labels associated with the object
     map<string, string> labels = 4;
+    // email_id of the owner associated with the object
+    string email_id = 5;
 }
