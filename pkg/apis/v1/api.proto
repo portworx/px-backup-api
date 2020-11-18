@@ -1124,6 +1124,8 @@ message BackupCreateRequest {
     string post_exec_rule = 7;
     // List of resources to backup (optional)
     repeated ResourceInfo include_resources = 8;
+    // Snapshot class name to use for backup (optional)
+    string csi_snapshot_class_name = 9;
 }
 
 // Response message structure for backup create
