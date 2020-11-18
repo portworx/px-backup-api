@@ -2,7 +2,6 @@
 ## explicit
 cloud.google.com/go/compute/metadata
 # github.com/davecgh/go-spew v1.1.1
-## explicit
 github.com/davecgh/go-spew/spew
 # github.com/gogo/googleapis v1.4.0
 ## explicit
@@ -29,7 +28,7 @@ github.com/golang/protobuf/ptypes/wrappers
 # github.com/google/gofuzz v1.1.0
 ## explicit
 github.com/google/gofuzz
-# github.com/grpc-ecosystem/grpc-gateway v1.16.0
+# github.com/grpc-ecosystem/grpc-gateway v1.14.8
 ## explicit
 github.com/grpc-ecosystem/grpc-gateway/internal
 github.com/grpc-ecosystem/grpc-gateway/runtime
@@ -43,16 +42,13 @@ github.com/json-iterator/go
 ## explicit
 github.com/konsorten/go-windows-terminal-sequences
 # github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
-## explicit
 github.com/modern-go/concurrent
 # github.com/modern-go/reflect2 v1.0.1
-## explicit
 github.com/modern-go/reflect2
 # github.com/sirupsen/logrus v1.5.0
 ## explicit
 github.com/sirupsen/logrus
 # golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
-## explicit
 golang.org/x/crypto/ssh/terminal
 # golang.org/x/net v0.0.0-20201021035429-f5854403a974
 golang.org/x/net/context
@@ -181,7 +177,6 @@ google.golang.org/protobuf/types/known/fieldmaskpb
 google.golang.org/protobuf/types/known/timestamppb
 google.golang.org/protobuf/types/known/wrapperspb
 # gopkg.in/inf.v0 v0.9.1
-## explicit
 gopkg.in/inf.v0
 # gopkg.in/yaml.v2 v2.3.0
 ## explicit
@@ -189,7 +184,6 @@ gopkg.in/yaml.v2
 # honnef.co/go/tools v0.0.1-2020.1.6
 ## explicit
 # k8s.io/apimachinery v0.16.6
-## explicit
 k8s.io/apimachinery/pkg/api/errors
 k8s.io/apimachinery/pkg/api/resource
 k8s.io/apimachinery/pkg/apis/meta/v1
@@ -240,7 +234,6 @@ k8s.io/client-go/util/connrotation
 k8s.io/client-go/util/flowcontrol
 k8s.io/client-go/util/keyutil
 # k8s.io/klog v1.0.0
-## explicit
 k8s.io/klog
 # k8s.io/utils v0.0.0-20200414100711-2df71ebbae66
 ## explicit
