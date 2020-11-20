@@ -1484,15 +1484,8 @@ message LicenseResponseInfo {
         google.protobuf.Timestamp expires = 3;
         // Start time of license
         google.protobuf.Timestamp starts = 4;
-        // License type
-        Type type = 5;
-
-        enum Type {
-            Invalid = 0;
-            Trial = 1;
-            Enterprise = 2;
-            UsageBased = 3;
-        }
+        // License type defined in common.proto
+        LicenseType type = 5;
     }
 
     message Status {
