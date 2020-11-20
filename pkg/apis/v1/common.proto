@@ -13,6 +13,14 @@ option (gogoproto.populate_all) = true;
 option (gogoproto.equal_all) = true;
 option (gogoproto.testgen_all) = true;
 
+enum LicenseType {
+    Invalid = 0;
+    Trial = 1;
+    Enterprise = 2;
+    UsageBased = 3;
+    IBM = 4;
+}
+
 message Metadata {
     // name of the object
     string name = 1;
