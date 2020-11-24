@@ -1969,6 +1969,9 @@
           "items": {
             "$ref": "#/definitions/ResourceInfo"
           }
+        },
+        "stork_version": {
+          "type": "string"
         }
       }
     },
@@ -2364,6 +2367,9 @@
           "items": {
             "$ref": "#/definitions/ResourceInfo"
           }
+        },
+        "stork_version": {
+          "type": "string"
         }
       }
     },
@@ -2683,6 +2689,9 @@
         "delete_restores": {
           "type": "boolean",
           "description": "delete_restores will determine whether the restore\nbelong to given cluster needs to be deleted or not."
+        },
+        "stork_version": {
+          "type": "string"
         }
       }
     },
@@ -3223,6 +3232,9 @@
           "items": {
             "$ref": "#/definitions/ResourceInfo"
           }
+        },
+        "stork_version": {
+          "type": "string"
         }
       },
       "title": "Message for restore info"

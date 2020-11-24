@@ -33,6 +33,7 @@ message ClusterInfo {
     // delete_restores will determine whether the restore
     // belong to given cluster needs to be deleted or not.
     bool delete_restores = 6;
+    string stork_version = 7;
 
     // Message for maintaing status of the cluster.
     message StatusInfo {
@@ -220,6 +221,7 @@ message BackupScheduleInfo {
     StatusInfo status = 12;
     SuspendedBy suspended_by = 13;
     repeated ResourceInfo include_resources = 14;
+    string stork_version = 15;
 
     message SuspendedBy {
         Source source = 1;
@@ -335,6 +337,7 @@ message BackupInfo {
     // Reference to cloud credential object used for backup
     string cloud_credential = 15;
     repeated ResourceInfo include_resources = 16;
+    string stork_version = 17;
 
     enum Stage {
         Invalid = 0;
@@ -447,6 +450,7 @@ message RestoreInfo {
     repeated string include_optional_resource_types = 10;
     uint64 total_size = 11;
     repeated ResourceInfo include_resources = 12;
+    string stork_version = 13;
 
     message RestoredResource {
         string name = 1;
