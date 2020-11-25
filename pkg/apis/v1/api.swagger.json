@@ -350,6 +350,13 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "cloud_credential",
+            "description": "cloud credential name.\nEnumerate will return list of backuplocation that\nuses this cloud credential.",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -523,6 +530,13 @@
             "name": "org_id",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "backup_location",
+            "description": "Backuplocation name.\nEnumerate will return list of backupschedule that\nuses this backuplocation.",
+            "in": "query",
+            "required": false,
             "type": "string"
           }
         ],
@@ -883,6 +897,13 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "cloud_credential",
+            "description": "cloud credential name.\nEnumerate will return list of cluster that\nuses this cloud credential.",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
