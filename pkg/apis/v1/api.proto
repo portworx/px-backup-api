@@ -709,6 +709,10 @@ message BackupScheduleEnumerateRequest {
     string org_id = 1;
     // label selectors for the object for filtering
     map<string, string> labels = 2;
+    // Backuplocation name.
+    // Enumerate will return list of backupschedule that
+    // uses this backuplocation
+    string backup_location = 3;
 }
 
 // Define BackupScheduleEnumerateResponse struct
@@ -813,6 +817,10 @@ message ClusterEnumerateRequest {
     // label selectors for the object for filtering
     map<string, string> labels = 2;
     bool include_secrets = 3;
+    // cloud credential name.
+    // Enumerate will return list of cluster that
+    // uses this cloud credential
+    string cloud_credential = 4;
 }
 
 // Define ClusterEnumerateResponse struct
@@ -1013,6 +1021,10 @@ message BackupLocationEnumerateRequest {
     string org_id = 1;
     // label selectors for the object for filtering
     map<string, string> labels = 2;
+    // cloud credential name.
+    // Enumerate will return list of backuplocation that
+    // uses this cloud credential
+    string cloud_credential = 3;
 }
 
 // Define BackupLocationEnumerateResponse struct
