@@ -390,10 +390,21 @@ message BackupInfo {
     }
 }
 
+message BackupMetadata {
+    string name = 1;
+    map<string, string> label_selectors = 2;
+    string location = 3;
+    repeated string namespaces = 4;
+    int64 size = 5;
+    int64 volume_count = 6;
+    int64 resource_count = 7;
+}
+
 // Message for Backup object which will be stored in Datastore.
 message BackupObject {
     Metadata metadata = 1 [ (gogoproto.embed) = true ];
     BackupInfo backup_info = 2 [ (gogoproto.embed) = true ];
+    BackupMetadata backup_metadata = 3;
 }
 
 // Message for passing pre and post exec rules for backup
@@ -1170,6 +1181,7 @@ message BackupEnumerateResponse {
     repeated BackupObject backups = 1;
     uint64 total_count = 2;
     bool complete = 3;
+    repeated BackupMetadata backup_metadata = 4;
 }
 
 // Request message strcuture for object inspect

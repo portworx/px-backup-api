@@ -1914,6 +1914,12 @@
         },
         "complete": {
           "type": "boolean"
+        },
+        "backup_metadata": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupMetadata"
+          }
         }
       },
       "title": "Response message structure for enumerate create"
@@ -2246,6 +2252,41 @@
       "type": "object",
       "title": "Define BackupLocationValidateResponse struct"
     },
+    "BackupMetadata": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "label_selectors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "location": {
+          "type": "string"
+        },
+        "namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "size": {
+          "type": "string",
+          "format": "int64"
+        },
+        "volume_count": {
+          "type": "string",
+          "format": "int64"
+        },
+        "resource_count": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "BackupObject": {
       "type": "object",
       "properties": {
@@ -2254,6 +2295,9 @@
         },
         "backup_info": {
           "$ref": "#/definitions/BackupInfo"
+        },
+        "backup_metadata": {
+          "$ref": "#/definitions/BackupMetadata"
         }
       },
       "description": "Message for Backup object which will be stored in Datastore."
