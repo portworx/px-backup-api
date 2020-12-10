@@ -143,6 +143,13 @@
             "required": false,
             "type": "string",
             "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.include_detailed_resources",
+            "description": "Ths option will be set to true by the caller, when they want to have\ncomplete backup object. That means the backupObject's\nresource list will be set to complete list of resources.\nIf this option is set to false, resource list will be\nset to nil and rest of the backupObject details will be returned in the\nresponse.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -1368,6 +1375,13 @@
             "required": false,
             "type": "string",
             "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.include_detailed_resources",
+            "description": "Ths option will be set to true by the caller, when they want to have\ncomplete backup object. That means the backupObject's\nresource list will be set to complete list of resources.\nIf this option is set to false, resource list will be\nset to nil and rest of the backupObject details will be returned in the\nresponse.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -1990,6 +2004,10 @@
           "items": {
             "$ref": "#/definitions/ResourceInfo"
           }
+        },
+        "resource_count": {
+          "type": "string",
+          "format": "uint64"
         }
       }
     },
@@ -2829,6 +2847,10 @@
         "object_index": {
           "type": "string",
           "format": "uint64"
+        },
+        "include_detailed_resources": {
+          "type": "boolean",
+          "description": "Ths option will be set to true by the caller, when they want to have\ncomplete backup object. That means the backupObject's\nresource list will be set to complete list of resources.\nIf this option is set to false, resource list will be\nset to nil and rest of the backupObject details will be returned in the\nresponse."
         }
       }
     },
@@ -3249,6 +3271,10 @@
           "items": {
             "$ref": "#/definitions/ResourceInfo"
           }
+        },
+        "resource_count": {
+          "type": "string",
+          "format": "uint64"
         }
       },
       "title": "Message for restore info"
