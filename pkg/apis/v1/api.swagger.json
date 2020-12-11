@@ -2904,20 +2904,10 @@
           "title": "Start time of license"
         },
         "type": {
-          "$ref": "#/definitions/LicenseResponseInfoEntitlementInfoType",
-          "title": "License type"
+          "$ref": "#/definitions/LicenseType",
+          "title": "License type defined in common.proto"
         }
       }
-    },
-    "LicenseResponseInfoEntitlementInfoType": {
-      "type": "string",
-      "enum": [
-        "Invalid",
-        "Trial",
-        "Enterprise",
-        "UsageBased"
-      ],
-      "default": "Invalid"
     },
     "LicenseResponseInfoFeatureInfo": {
       "type": "object",
@@ -2952,6 +2942,17 @@
           "title": "Reason for above status"
         }
       }
+    },
+    "LicenseType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Trial",
+        "Enterprise",
+        "UsageBased",
+        "IBM"
+      ],
+      "default": "Invalid"
     },
     "LicenseUpdateRequest": {
       "type": "object",
