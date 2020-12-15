@@ -677,6 +677,8 @@ message BackupScheduleCreateRequest {
     string post_exec_rule = 9;
     // List of resources to backup (optional)
     repeated ResourceInfo include_resources = 10;
+    // Snapshot class name to use for backup schedule (optional)
+    string csi_snapshot_class_name = 11;
 }
 
 // Define BackupScheduleCreateResponse struct
