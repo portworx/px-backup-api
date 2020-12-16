@@ -337,7 +337,8 @@ message BackupInfo {
     // Reference to cloud credential object used for backup
     string cloud_credential = 15;
     repeated ResourceInfo include_resources = 16;
-    string stork_version = 17;
+    uint64 resource_count = 17;
+    string stork_version = 18;
 
     enum Stage {
         Invalid = 0;
@@ -450,7 +451,8 @@ message RestoreInfo {
     repeated string include_optional_resource_types = 10;
     uint64 total_size = 11;
     repeated ResourceInfo include_resources = 12;
-    string stork_version = 13;
+    uint64 resource_count = 13;
+    string stork_version = 14;
 
     message RestoredResource {
         string name = 1;
@@ -529,6 +531,13 @@ message EnumerateOptions {
     // filter will be returned
     string cluster_name_filter = 5;
     uint64 object_index = 6;
+    // Ths option will be set to true by the caller, when they want to have
+    // complete backup object. That means the backupObject's
+    // resource list will be set to complete list of resources.
+    // If this option is set to false, resource list will be
+    // set to nil and rest of the backupObject details will be returned in the
+    // response.
+    bool include_detailed_resources = 7;
 }
 
 service SchedulePolicy {
