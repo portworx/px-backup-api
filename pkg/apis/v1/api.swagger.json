@@ -2011,6 +2011,9 @@
         },
         "stork_version": {
           "type": "string"
+        },
+        "csi_snapshot_class_name": {
+          "type": "string"
         }
       }
     },
@@ -2412,6 +2415,9 @@
           }
         },
         "stork_version": {
+          "type": "string"
+        },
+        "csi_snapshot_class_name": {
           "type": "string"
         }
       }
