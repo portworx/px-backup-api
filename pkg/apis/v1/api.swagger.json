@@ -77,13 +77,13 @@
     },
     "/v1/backup/{org_id}": {
       "get": {
-        "summary": "Enumerate returns a list of objects",
-        "operationId": "Backup_Enumerate",
+        "summary": "EnumerateSlime returns a list of objects",
+        "operationId": "Backup_EnumerateSlim",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/BackupEnumerateResponse"
+              "$ref": "#/definitions/BackupEnumerateSlimResponse"
             }
           },
           "default": {
@@ -1932,6 +1932,25 @@
       },
       "title": "Response message structure for enumerate create"
     },
+    "BackupEnumerateSlimResponse": {
+      "type": "object",
+      "properties": {
+        "backups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupSlimObject"
+          }
+        },
+        "total_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "complete": {
+          "type": "boolean"
+        }
+      },
+      "title": "Response message structure for enumerate create"
+    },
     "BackupInfo": {
       "type": "object",
       "properties": {
@@ -2565,6 +2584,75 @@
     "BackupScheduleUpdateResponse": {
       "type": "object",
       "title": "Define BackupScheduleUpdateResponse struct"
+    },
+    "BackupSlimInfo": {
+      "type": "object",
+      "properties": {
+        "backup_location": {
+          "type": "string"
+        },
+        "cluster": {
+          "type": "string"
+        },
+        "namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "label_selectors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "$ref": "#/definitions/BackupSlimInfoStatus"
+        },
+        "backup_path": {
+          "type": "string"
+        },
+        "resource_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "volume_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "backup_schedule": {
+          "type": "string"
+        }
+      }
+    },
+    "BackupSlimInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Pending",
+        "InProgress",
+        "Aborted",
+        "Failed",
+        "Deleting",
+        "Success",
+        "Captured",
+        "PartialSuccess",
+        "DeletePending",
+        "CloudBackupMissing"
+      ],
+      "default": "Invalid"
+    },
+    "BackupSlimObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "backup_slim_info": {
+          "$ref": "#/definitions/BackupSlimInfo"
+        }
+      },
+      "description": "Message for Backup object which will be stored in Datastore."
     },
     "BackupUpdateRequest": {
       "type": "object",
