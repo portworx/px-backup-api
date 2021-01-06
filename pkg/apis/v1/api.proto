@@ -690,6 +690,8 @@ message BackupScheduleUpdateRequest {
     bool suspend = 10;
     // List of resources to backup (optional)
     repeated ResourceInfo include_resources = 11;
+    // Snapshot class name to use for backup schedule (optional)
+    string csi_snapshot_class_name = 12;
 }
 
 // Define BackupScheduleUpdateResponse struct

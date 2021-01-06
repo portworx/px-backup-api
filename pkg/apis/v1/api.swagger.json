@@ -2558,6 +2558,10 @@
             "$ref": "#/definitions/ResourceInfo"
           },
           "title": "List of resources to backup (optional)"
+        },
+        "csi_snapshot_class_name": {
+          "type": "string",
+          "title": "Snapshot class name to use for backup schedule (optional)"
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
