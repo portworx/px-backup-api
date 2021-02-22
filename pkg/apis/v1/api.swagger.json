@@ -2995,7 +2995,9 @@
         "Trial",
         "Enterprise",
         "UsageBased",
-        "IBM"
+        "IBM",
+        "AWS",
+        "GCP"
       ],
       "default": "Invalid"
     },
