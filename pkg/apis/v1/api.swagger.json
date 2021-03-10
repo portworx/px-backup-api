@@ -1901,6 +1901,13 @@
         "csi_snapshot_class_name": {
           "type": "string",
           "title": "Snapshot class name to use for backup (optional)"
+        },
+        "resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of resource types to backup (optional)"
         }
       },
       "title": "Request message structure for backup create"
@@ -2014,6 +2021,12 @@
         },
         "csi_snapshot_class_name": {
           "type": "string"
+        },
+        "resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -2329,6 +2342,13 @@
         "csi_snapshot_class_name": {
           "type": "string",
           "title": "Snapshot class name to use for backup schedule (optional)"
+        },
+        "resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of resource types to backup (optional)"
         }
       },
       "title": "Define BackupScheduleCreateRequest struct"
@@ -2419,6 +2439,12 @@
         },
         "csi_snapshot_class_name": {
           "type": "string"
+        },
+        "resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
