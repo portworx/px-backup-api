@@ -1389,6 +1389,63 @@
         ]
       }
     },
+    "/v1/restore/{org_id}/{days}/{interval}": {
+      "get": {
+        "summary": "Enumerate returns a list of activity data for a given time period",
+        "operationId": "ActivityTimeLine_Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ActivityEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "days",
+            "description": "Time period for which activity is needed",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "interval",
+            "description": "Interval for which we want the activity\nFor now Hourly and Daily are supported",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Hourly",
+              "Daily"
+            ]
+          },
+          {
+            "name": "time_zone",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ActivityTimeLine"
+        ]
+      }
+    },
     "/v1/restore/{org_id}/{name}": {
       "get": {
         "summary": "Inspect returns detailed information about specified restore object",
@@ -1831,6 +1888,85 @@
         }
       }
     },
+    "ActivityEnumerateRequestInterval": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Hourly",
+        "Daily"
+      ],
+      "default": "Invalid"
+    },
+    "ActivityEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "activity_data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ActivityEnumerateResponseData"
+          }
+        }
+      }
+    },
+    "ActivityEnumerateResponseData": {
+      "type": "object",
+      "properties": {
+        "start_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "successful_backups": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "failed_backups": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "inprogress_backups": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "partial_success": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "delete_pending": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "pending_backups": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "successful_backups_time_taken": {
+          "type": "number",
+          "format": "double"
+        },
+        "failed_backups_time_taken": {
+          "type": "number",
+          "format": "double"
+        },
+        "partial_success_time_taken": {
+          "type": "number",
+          "format": "double"
+        },
+        "total_backups": {
+          "type": "string",
+          "format": "uint64",
+          "title": "Total number of backups in a given time frame (irrespective of the\nstate)"
+        },
+        "total_backup_size": {
+          "type": "string",
+          "format": "uint64",
+          "title": "Size of the backups"
+        }
+      }
+    },
     "AzureConfig": {
       "type": "object",
       "properties": {
@@ -2123,7 +2259,7 @@
         "actual_size": {
           "type": "string",
           "format": "uint64",
-          "title": "actual size of the backup\nincase of invremental, it's the incremental backup size"
+          "title": "actual size of the backup\nincase of incremental, it's the incremental backup size"
         }
       }
     },

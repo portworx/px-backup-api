@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go v0.56.0 // indirect
 	github.com/gogo/googleapis v1.4.0
 	github.com/gogo/protobuf v1.3.2
-	github.com/golang/protobuf v1.4.3
+	github.com/golang/protobuf v1.5.1
 	github.com/google/gofuzz v1.1.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/json-iterator/go v1.1.9 // indirect
@@ -16,9 +16,8 @@ require (
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
 	golang.org/x/time v0.0.0-20200416051211-89c76fbcd5d1 // indirect
 	google.golang.org/appengine v1.6.6 // indirect
-	google.golang.org/genproto v0.0.0-20210312152112-fc591d9ea70f
+	google.golang.org/genproto v0.0.0-20210318145829-90b20ab00860
 	google.golang.org/grpc v1.33.1
-	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	honnef.co/go/tools v0.1.0 // indirect
 	k8s.io/client-go v0.16.6
