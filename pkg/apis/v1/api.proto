@@ -370,7 +370,7 @@ message BackupInfo {
         map<string, string> options = 8;
         uint64 total_size = 9;
         // actual size of the backup
-        // incase of invremental, it's the incremental backup size
+        // incase of incremental, it's the incremental backup size
         uint64 actual_size = 10;
     }
 
@@ -1539,5 +1539,54 @@ service License {
             put : "/v1/license"
             body : "*"
         };
+    }
+}
+
+service ActivityTimeLine {
+    // Enumerate returns a list of activity data for a given time period
+    rpc Enumerate(ActivityEnumerateRequest)
+        returns (ActivityEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/restore/{org_id}/{days}/{interval}"
+        };
+    }
+}
+
+message ActivityEnumerateRequest {
+    string org_id = 1;
+    // Time period for which activity is needed
+    int32 days = 2;
+    // Interval for which we want the activity
+    // For now Hourly and Daily are supported
+    Interval interval = 3;
+    string time_zone = 4;
+    enum Interval {
+        Invalid = 0;
+        Hourly = 1;
+        Daily = 2;
+    }
+}
+
+message ActivityEnumerateResponse {
+    repeated Data activity_data = 1;
+
+    message Data {
+        google.protobuf.Timestamp start_time = 1;
+        google.protobuf.Timestamp end_time = 2;
+        uint64 successful_backups = 3;
+        uint64 failed_backups = 4;
+        uint64 inprogress_backups = 5;
+        uint64 partial_success = 6;
+        uint64 delete_pending = 7;
+        uint64 pending_backups = 8;
+        double successful_backups_time_taken = 9;
+        double failed_backups_time_taken = 10;
+        double partial_success_time_taken = 11;
+        uint64 deleting_backups = 12;
+        // Total number of backups in a given time frame (irrespective of the
+        // state)
+        uint64 total_backups = 13;
+        // Size of the backups
+        uint64 total_backup_size = 14;
     }
 }
