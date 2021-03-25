@@ -33,6 +33,8 @@ message Metadata {
     google.protobuf.Timestamp last_update_time = 6;
     // label selectors for the object for filtering
     map<string, string> labels = 7;
+    // create time in sec
+    int64 create_time_in_sec = 8;
 }
 
 message CreateMetadata {
