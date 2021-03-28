@@ -3211,6 +3211,11 @@
             "type": "string"
           },
           "title": "label selectors for the object for filtering"
+        },
+        "create_time_in_sec": {
+          "type": "string",
+          "format": "int64",
+          "title": "create time in sec"
         }
       }
     },
