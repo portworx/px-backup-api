@@ -27,6 +27,7 @@ proto:
 		-I${GOPATH}/src \
 		-I${GOPATH}/src/github.com/gogo/protobuf/protobuf \
 		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+		-I${GOPATH}/src/github.com/libopenstorage/openstorage/api \
 		--gogofaster_out=\
 Mgogoproto/gogo.proto=github.com/gogo/protobuf/gogoproto,\
 Mgoogle/protobuf/any.proto=github.com/gogo/protobuf/types,\
