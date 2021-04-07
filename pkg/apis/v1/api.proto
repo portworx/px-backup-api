@@ -1600,3 +1600,79 @@ message BackupRole {
     // SdkRole defines the rules and permissions associated with a role
     openstorage.api.SdkRole role = 2;
 }
+
+service Role {
+    // Create creates new role object in datastore
+    rpc Create(RoleCreateRequest) returns (RoleCreateResponse) {
+        option (google.api.http) = {
+            post : "/v1/role"
+            body : "*"
+        };
+    }
+    // Enumerate returns a list of roles object
+    rpc Enumerate(RoleEnumerateRequest) returns (RoleEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/role"
+        };
+    }
+
+    // Inspect returns detailed information about request role object
+    rpc Inspect(RoleInspectRequest) returns (RoleInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/role/{name}"
+        };
+    }
+    // Update given role information
+    rpc Update(RoleUpdateRequest) returns (RoleUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/role"
+            body : "*"
+        };
+    }
+    // Delete removes role from px-backup
+    rpc Delete(RoleDeleteRequest) returns (RoleDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/role/{org_id}/{name}"
+        };
+    }
+}
+
+// Request message for creating roles
+message RoleCreateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    BackupRole role = 2;
+}
+
+message RoleCreateResponse {}
+
+message RoleUpdateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    BackupRole rules = 2;
+}
+
+// Define RoleUpdateResponse struct
+message RoleUpdateResponse {}
+
+// Define RoleEnumerateRequest struct
+message RoleEnumerateRequest { string org_id = 1; }
+
+// Define RoleEnumerateResponse struct
+message RoleEnumerateResponse { repeated BackupRole roles = 1; }
+
+// Define RoleInspectRequest struct
+message RoleInspectRequest {
+    string org_id = 1;
+    string name = 2;
+}
+
+// Define RoleInspectResponse struct
+message RoleInspectResponse { BackupRole role = 1; }
+
+// Define RoleDeleteRequest struct
+message RoleDeleteRequest {
+    string org_id = 1;
+    string name = 2;
+}
+
+// Define RoleDeleteResponse struct
+message RoleDeleteResponse {}

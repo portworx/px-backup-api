@@ -1518,6 +1518,173 @@
         ]
       }
     },
+    "/v1/role": {
+      "get": {
+        "summary": "Enumerate returns a list of roles object",
+        "operationId": "Role_Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RoleEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Role"
+        ]
+      },
+      "post": {
+        "summary": "Create creates new role object in datastore",
+        "operationId": "Role_Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RoleCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RoleCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Role"
+        ]
+      },
+      "put": {
+        "summary": "Update given role information",
+        "operationId": "Role_Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RoleUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RoleUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Role"
+        ]
+      }
+    },
+    "/v1/role/{name}": {
+      "get": {
+        "summary": "Inspect returns detailed information about request role object",
+        "operationId": "Role_Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RoleInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "org_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Role"
+        ]
+      }
+    },
+    "/v1/role/{org_id}/{name}": {
+      "delete": {
+        "summary": "Delete removes role from px-backup",
+        "operationId": "Role_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RoleDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Role"
+        ]
+      }
+    },
     "/v1/rule": {
       "post": {
         "summary": "Create creates new rule",
@@ -2431,6 +2598,20 @@
         }
       },
       "description": "Message for Backup object which will be stored in Datastore."
+    },
+    "BackupRole": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata",
+          "title": "Metadata of the object"
+        },
+        "role": {
+          "$ref": "#/definitions/apiSdkRole",
+          "title": "SdkRole defines the rules and permissions associated with a role"
+        }
+      },
+      "description": "Defines a BackupRole object.\nIt has an imported field from libopenstorage  with definitions\nfor a Role and rules that define permissions on a role."
     },
     "BackupScheduleCreateRequest": {
       "type": "object",
@@ -3604,6 +3785,61 @@
       "type": "object",
       "title": "Define RestoreUpdateResponse struct"
     },
+    "RoleCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "role": {
+          "$ref": "#/definitions/BackupRole"
+        }
+      },
+      "title": "Request message for creating roles"
+    },
+    "RoleCreateResponse": {
+      "type": "object"
+    },
+    "RoleDeleteResponse": {
+      "type": "object",
+      "title": "Define RoleDeleteResponse struct"
+    },
+    "RoleEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupRole"
+          }
+        }
+      },
+      "title": "Define RoleEnumerateResponse struct"
+    },
+    "RoleInspectResponse": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "$ref": "#/definitions/BackupRole"
+        }
+      },
+      "title": "Define RoleInspectResponse struct"
+    },
+    "RoleUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "rules": {
+          "$ref": "#/definitions/BackupRole"
+        }
+      }
+    },
+    "RoleUpdateResponse": {
+      "type": "object",
+      "title": "Define RoleUpdateResponse struct"
+    },
     "RuleCreateRequest": {
       "type": "object",
       "properties": {
@@ -3960,6 +4196,40 @@
           "type": "string"
         }
       }
+    },
+    "apiSdkRole": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/apiSdkRule"
+          }
+        }
+      }
+    },
+    "apiSdkRule": {
+      "type": "object",
+      "properties": {
+        "services": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "The gRPC service name in `OpenStorage\u003cservice name\u003e` in lowercase"
+        },
+        "apis": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "The API name in the service in lowercase"
+        }
+      },
+      "description": "SdkRule is the message used to construct custom roles in the OpenStorage SDK.\n\n### Format\nThe following shows the supported format for SdkRule:\n\n* Services: Is the gRPC service name in `OpenStorage\u003cservice name\u003e` in lowercase\n* Apis: Is the API name in the service in lowercase\n\nValues can also be set to `*`, or start or end with `*` to allow multiple matches in services or apis.\n\nServices and APIs can also be denied by prefixing the value with a `!`. Note that on rule conflicts,\ndenial will always be chosen.\n\n### Examples\n\n* Allow any call:\n\n```yaml\nSdkRule:\n  - Services: [\"*\"]\n    Apis: [\"*\"]\n```\n\n* Allow only cluster operations:\n\n```yaml\nSdkRule:\n  - services: [\"cluster\"]\n    apis: [\"*\"]\n```\n\n* Allow inspection of any object and listings of only volumes\n\n```yaml\nSdkRule:\n  - Services: [\"volumes\"]\n    Apis: [\"*enumerate*\"]\n  - Services: [\"*\"]\n    Apis: [\"inspect*\"]\n```\n\n* Allow all volume call except create\n\n```yaml\nSdkRule:\n  - Services: [\"volumes\"]\n    Apis: [\"*\", \"!create\"]\n```"
     },
     "protobufAny": {
       "type": "object",
