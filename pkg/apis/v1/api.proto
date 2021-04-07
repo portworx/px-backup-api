@@ -10,6 +10,7 @@ import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "pkg/apis/v1/common.proto";
+import "github.com/libopenstorage/openstorage/api/api.proto";
 
 option (gogoproto.populate_all) = true;
 option (gogoproto.equal_all) = true;
@@ -1589,4 +1590,13 @@ message ActivityEnumerateResponse {
         // Size of the backups
         uint64 total_backup_size = 14;
     }
+}
+// Defines a BackupRole object.
+// It has an imported field from libopenstorage  with definitions
+// for a Role and rules that define permissions on a role.
+message BackupRole {
+    // Metadata of the object
+    Metadata metadata = 1;
+    // SdkRole defines the rules and permissions associated with a role
+    openstorage.api.SdkRole role = 2;
 }

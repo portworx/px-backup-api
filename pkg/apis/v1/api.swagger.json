@@ -2651,9 +2651,18 @@
       "type": "object",
       "properties": {
         "source": {
-          "$ref": "#/definitions/SuspendedBySource"
+          "$ref": "#/definitions/BackupScheduleInfoSuspendedBySource"
         }
       }
+    },
+    "BackupScheduleInfoSuspendedBySource": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "User",
+        "LicenseCheck"
+      ],
+      "default": "Invalid"
     },
     "BackupScheduleInspectResponse": {
       "type": "object",
@@ -3909,15 +3918,6 @@
     "SchedulePolicyUpdateResponse": {
       "type": "object",
       "title": "Define SchedulePolicyUpdateResponse struct"
-    },
-    "SuspendedBySource": {
-      "type": "string",
-      "enum": [
-        "Invalid",
-        "User",
-        "LicenseCheck"
-      ],
-      "default": "Invalid"
     },
     "TimeRange": {
       "type": "object",
