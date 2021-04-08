@@ -19,6 +19,8 @@ enum LicenseType {
     Enterprise = 2;
     UsageBased = 3;
     IBM = 4;
+    AWS = 5;
+    GCP = 6;
 }
 
 message Metadata {
