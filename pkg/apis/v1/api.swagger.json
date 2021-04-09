@@ -1518,6 +1518,173 @@
         ]
       }
     },
+    "/v1/role": {
+      "post": {
+        "summary": "Create creates new role object in datastore",
+        "operationId": "Role_Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RoleCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RoleCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Role"
+        ]
+      },
+      "put": {
+        "summary": "Update given role information",
+        "operationId": "Role_Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RoleUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RoleUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Role"
+        ]
+      }
+    },
+    "/v1/role/{org_id}": {
+      "get": {
+        "summary": "Enumerate returns a list of roles object",
+        "operationId": "Role_Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RoleEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Role"
+        ]
+      }
+    },
+    "/v1/role/{org_id}/{name}": {
+      "get": {
+        "summary": "Inspect returns detailed information about requested role object",
+        "operationId": "Role_Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RoleInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Role"
+        ]
+      },
+      "delete": {
+        "summary": "Delete removes given role from px-backup",
+        "operationId": "Role_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RoleDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Role"
+        ]
+      }
+    },
     "/v1/rule": {
       "post": {
         "summary": "Create creates new rule",
@@ -3594,6 +3761,105 @@
     "RestoreUpdateResponse": {
       "type": "object",
       "title": "Define RestoreUpdateResponse struct"
+    },
+    "RoleConfig": {
+      "type": "object",
+      "properties": {
+        "services": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "The gRPC service name"
+        },
+        "apis": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "The API name in the service in lowercase"
+        }
+      },
+      "title": "RoleConfig object for set of rules associated with each role object\nservices - PX-Backup services names\napis - allowed apis for px-backup services"
+    },
+    "RoleCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RoleConfig"
+          }
+        }
+      },
+      "title": "RoleCreateRequest defines roleobject create structure\nMetadata with each role object\nRoleConfig set of rules over api services for given role object"
+    },
+    "RoleCreateResponse": {
+      "type": "object"
+    },
+    "RoleDeleteResponse": {
+      "type": "object",
+      "title": "Define RoleDeleteResponse struct"
+    },
+    "RoleEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RoleObject"
+          }
+        }
+      },
+      "title": "Define RoleEnumerateResponse struct"
+    },
+    "RoleInspectResponse": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "$ref": "#/definitions/RoleObject"
+        }
+      },
+      "title": "Define RoleInspectResponse struct"
+    },
+    "RoleObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata",
+          "title": "Metadata of the object"
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RoleConfig"
+          },
+          "title": "RoleConfig associated with role object"
+        }
+      },
+      "description": "Defines a RoleObject object."
+    },
+    "RoleUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RoleConfig"
+          }
+        }
+      },
+      "title": "RoleUpdateRequest defines roleobject update structure"
+    },
+    "RoleUpdateResponse": {
+      "type": "object",
+      "title": "Define RoleUpdateResponse struct"
     },
     "RuleCreateRequest": {
       "type": "object",
