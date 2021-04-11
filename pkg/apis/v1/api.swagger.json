@@ -3158,7 +3158,7 @@
         },
         "owner": {
           "type": "string",
-          "title": "owner of the object"
+          "title": "owner of the object. This field is deprecated, not to be used"
         },
         "labels": {
           "type": "object",
@@ -3166,6 +3166,10 @@
             "type": "string"
           },
           "title": "labels associated with the object"
+        },
+        "ownership": {
+          "$ref": "#/definitions/Ownership",
+          "title": "ownership of the object"
         }
       }
     },
@@ -3360,7 +3364,8 @@
           "title": "uid for the object"
         },
         "owner": {
-          "type": "string"
+          "type": "string",
+          "description": "owner of the object. This field is deprecated, not to be used\nTODO: Currently gRPC supports marking field as [deprecated=true]\nAs we need to access this field as part of migration to new Ownership\nmessage will not use the same for now."
         },
         "org_id": {
           "type": "string",
@@ -3385,6 +3390,10 @@
           "type": "string",
           "format": "int64",
           "title": "create time in sec"
+        },
+        "ownership": {
+          "$ref": "#/definitions/Ownership",
+          "title": "ownership of the object"
         }
       }
     },
@@ -3460,6 +3469,64 @@
           "$ref": "#/definitions/Metadata"
         }
       }
+    },
+    "Ownership": {
+      "type": "object",
+      "properties": {
+        "owner": {
+          "type": "string",
+          "description": "Username of owner\nThe storage system uses the username taken from the token\nand is saved on this field. Only users with system administration\ncan edit this value."
+        },
+        "acls": {
+          "$ref": "#/definitions/OwnershipAccessControl",
+          "description": "Permissions to share objects which can be set by the owner."
+        }
+      },
+      "description": "Ownership information for objects(eg: backup object, schedule object).\nAdministrators are users who belong to the group `*`, meaning, every group."
+    },
+    "OwnershipAccessControl": {
+      "type": "object",
+      "properties": {
+        "groups": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/OwnershipAccessType"
+          },
+          "description": "Group access to objects which must match the group set in the\nauthorization token.\nCan be set by the owner or the system administrator only.\nPossible values are:\n1. no groups: Means no groups are given access.\n2. `[\"*\"]`: All groups are allowed.\n3. `[\"group1\", \"group2\"]`: Only certain groups are allowed. In this\nexample only\n_group1_ and _group2_ are allowed."
+        },
+        "collaborators": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/OwnershipAccessType"
+          },
+          "description": "Collaborator access to objects gives access to other user.\nMust be the username (unique id) set in the authorization token.\nThe owner or the administrator can set this value. Possible values\nare:\n1. no collaborators: Means no users are given access.\n2. `[\"*\"]`: All users are allowed.\n3. `[\"username1\", \"username2\"]`: Only certain usernames are allowed.\nIn this example only\n_username1_ and _username2_ are allowed."
+        },
+        "public": {
+          "$ref": "#/definitions/OwnershipPublicAccessControl",
+          "title": "Public access to objects may be assigned for access by the public\nuserd\nTODO: Instead of PublicAccessControl, can we just set '*' in\ncollaborators with required permision?"
+        }
+      }
+    },
+    "OwnershipAccessType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Read",
+        "Write",
+        "Admin"
+      ],
+      "default": "Invalid",
+      "description": " - Read: Read access only and cannot affect the resource.\n - Write: Write access and can affect the resource.\nThis type automatically provides Read access also.\n - Admin: Administrator access.\nThis type automatically provides Read and Write access also."
+    },
+    "OwnershipPublicAccessControl": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/OwnershipAccessType",
+          "title": "AccessType declares which level of public access is allowed"
+        }
+      },
+      "title": "PublicAccessControl allows assigning public ownership"
     },
     "PXConfig": {
       "type": "object",
