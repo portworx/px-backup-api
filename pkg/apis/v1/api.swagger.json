@@ -300,6 +300,39 @@
         ]
       }
     },
+    "/v1/backuplocation/updateownership": {
+      "put": {
+        "summary": "UpdateOwnership updates ownership of existing object",
+        "operationId": "BackupLocation_UpdateOwnership",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupLocationOwnershipUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupLocationOwnershipUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "BackupLocation"
+        ]
+      }
+    },
     "/v1/backuplocation/validate": {
       "post": {
         "summary": "Verify if a backup location is valid",
@@ -687,6 +720,39 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/CloudCredentialUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CloudCredential"
+        ]
+      }
+    },
+    "/v1/cloudcredential/updateownership": {
+      "put": {
+        "summary": "UpdateOwnership updates ownership of existing object",
+        "operationId": "CloudCredential_UpdateOwnership",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CloudCredentialOwnershipUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CloudCredentialOwnershipUpdateRequest"
             }
           }
         ],
@@ -1749,6 +1815,39 @@
         ]
       }
     },
+    "/v1/rule/updateownership": {
+      "put": {
+        "summary": "UpdateOwnership updates ownership of existing object",
+        "operationId": "Rules_UpdateOwnership",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RuleOwnershipUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RuleOwnershipUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Rules"
+        ]
+      }
+    },
     "/v1/rule/{org_id}": {
       "get": {
         "summary": "Enumerate returns a list of rules",
@@ -1908,6 +2007,39 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/SchedulePolicyUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SchedulePolicy"
+        ]
+      }
+    },
+    "/v1/schedulepolicy/updateownership": {
+      "put": {
+        "summary": "UpdateOwnership updates ownership of existing object",
+        "operationId": "SchedulePolicy_UpdateOwnership",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SchedulePolicyOwnershipUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SchedulePolicyOwnershipUpdateRequest"
             }
           }
         ],
@@ -2555,6 +2687,26 @@
         }
       }
     },
+    "BackupLocationOwnershipUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "title": "Backup location to be updated"
+        },
+        "ownership": {
+          "$ref": "#/definitions/Ownership"
+        }
+      },
+      "title": "Define BackupLocationOwnershipUpdateRequest struct"
+    },
+    "BackupLocationOwnershipUpdateResponse": {
+      "type": "object",
+      "title": "Define BackupLocationOwnershipUpdateResponse struct"
+    },
     "BackupLocationUpdateRequest": {
       "type": "object",
       "properties": {
@@ -2998,6 +3150,24 @@
           "$ref": "#/definitions/CloudCredentialInfo"
         }
       }
+    },
+    "CloudCredentialOwnershipUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "title": "Cloud credential name to be updated"
+        },
+        "ownership": {
+          "$ref": "#/definitions/Ownership"
+        }
+      }
+    },
+    "CloudCredentialOwnershipUpdateResponse": {
+      "type": "object"
     },
     "CloudCredentialUpdateRequest": {
       "type": "object",
@@ -3503,7 +3673,7 @@
         },
         "public": {
           "$ref": "#/definitions/OwnershipPublicAccessControl",
-          "title": "Public access to objects may be assigned for access by the public\nuserd\nTODO: Instead of PublicAccessControl, can we just set '*' in\ncollaborators with required permision?"
+          "title": "Public access to objects may be assigned for access by the public\nuserd\nTODO: Instead of PublicAccessControl, can we just set '*' in\ncollaborators with required permission?"
         }
       }
     },
@@ -3981,6 +4151,26 @@
         }
       }
     },
+    "RuleOwnershipUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "title": "Rule to be updated"
+        },
+        "ownership": {
+          "$ref": "#/definitions/Ownership"
+        }
+      },
+      "title": "Define RuleOwnershipUpdateRequest struct"
+    },
+    "RuleOwnershipUpdateResponse": {
+      "type": "object",
+      "title": "Define RuleOwnershipUpdateResponse struct"
+    },
     "RuleUpdateRequest": {
       "type": "object",
       "properties": {
@@ -4228,6 +4418,24 @@
           "$ref": "#/definitions/SchedulePolicyInfo"
         }
       }
+    },
+    "SchedulePolicyOwnershipUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "title": "Schedule policy name"
+        },
+        "ownership": {
+          "$ref": "#/definitions/Ownership"
+        }
+      }
+    },
+    "SchedulePolicyOwnershipUpdateResponse": {
+      "type": "object"
     },
     "SchedulePolicyUpdateRequest": {
       "type": "object",
