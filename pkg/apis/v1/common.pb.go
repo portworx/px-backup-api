@@ -428,7 +428,7 @@ type Ownership_AccessControl struct {
 	// Public access to objects may be assigned for access by the public
 	// userd
 	// TODO: Instead of PublicAccessControl, can we just set '*' in
-	// collaborators with required permision?
+	// collaborators with required permission?
 	Public *Ownership_PublicAccessControl `protobuf:"bytes,3,opt,name=public,proto3" json:"public,omitempty"`
 }
 

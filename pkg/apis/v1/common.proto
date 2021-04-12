@@ -102,7 +102,7 @@ message Ownership {
         // Public access to objects may be assigned for access by the public
         // userd
         // TODO: Instead of PublicAccessControl, can we just set '*' in
-        // collaborators with required permision?
+        // collaborators with required permission?
         PublicAccessControl public = 3;
     }
 
