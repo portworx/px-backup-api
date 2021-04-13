@@ -20,8 +20,8 @@ require (
 	golang.org/x/oauth2 v0.0.0-20210819190943-2bc19b11175f
 	golang.org/x/sys v0.0.0-20211205182925-97ca703d548d // indirect
 	golang.org/x/tools v0.1.8 // indirect
-	google.golang.org/genproto v0.0.0-20211207154714-918901c715cf // indirect
-	google.golang.org/grpc v1.40.0
+	google.golang.org/genproto v0.0.0-20220218161850-94dd64e39d7c // indirect
+	google.golang.org/grpc v1.44.0
 	honnef.co/go/tools v0.2.2 // indirect
 	k8s.io/apiextensions-apiserver v0.20.4 // indirect
 	k8s.io/apimachinery v0.20.4
