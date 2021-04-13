@@ -1748,6 +1748,51 @@ service License {
     }
 }
 
+service ManagedClusters {
+
+    // Enumerate returns a list of managed clusters from a provider like
+    // AWS/other clouds
+    // using the given credentials
+    rpc Enumerate(ManagedClusterEnumerateRequest)
+        returns (ManagedClusterEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/managedcluster/{org_id}"
+        };
+    }
+}
+
+// Define ManagedClusterEnumerateRequest struct
+message ManagedClusterEnumerateRequest {
+    string org_id = 1;
+    bool include_secrets = 2;
+    // cloud credential name.
+    // Enumerate will return list of managed clusters that
+    // this cloud credential has access to
+    string cloud_credential = 3;
+}
+
+// Define ManagedClusterObject struct
+message ManagedClusterObject {
+    // Name of the managed cluster
+    // This is usually the user friendly name of the cluster
+    string name = 1;
+    // UID of the managed cluster
+    // This is the UID returned by the managed cluster provider
+    string uid = 2;
+    // Cloud Credential name used for fetching this cluster's details
+    string cloud_credential = 3;
+    // Kubeconfig if the provider supports using kubeconfigs
+    string kubeconfig = 4 [
+        (gogoproto.jsontag) = "kubeconfig",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
+}
+
+// Define ClusterEnumerateResponse struct
+message ManagedClusterEnumerateResponse {
+    repeated ManagedClusterObject clusters = 1;
+}
+
 service ActivityTimeLine {
     // Enumerate returns a list of activity data for a given time period
     rpc Enumerate(ActivityEnumerateRequest)
