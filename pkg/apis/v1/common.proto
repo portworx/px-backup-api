@@ -78,6 +78,11 @@ message Ownership {
         AccessType type = 1;
     }
 
+    message AccessConfig {
+        string user_id = 1;
+        AccessType permission = 2;
+    }
+
     message AccessControl {
         // Group access to objects which must match the group set in the
         // authorization token.
@@ -88,7 +93,7 @@ message Ownership {
         // 3. `["group1", "group2"]`: Only certain groups are allowed. In this
         // example only
         // _group1_ and _group2_ are allowed.
-        map<string, AccessType> groups = 1;
+        repeated AccessConfig groups = 1;
         // Collaborator access to objects gives access to other user.
         // Must be the username (unique id) set in the authorization token.
         // The owner or the administrator can set this value. Possible values
@@ -98,7 +103,7 @@ message Ownership {
         // 3. `["username1", "username2"]`: Only certain usernames are allowed.
         // In this example only
         // _username1_ and _username2_ are allowed.
-        map<string, AccessType> collaborators = 2;
+        repeated AccessConfig collaborators = 2;
         // Public access to objects may be assigned for access by the public
         // userd
         // TODO: Instead of PublicAccessControl, can we just set '*' in
@@ -112,5 +117,5 @@ message Ownership {
     // can edit this value.
     string owner = 1;
     // Permissions to share objects which can be set by the owner.
-    AccessControl acls = 2;
+    repeated AccessControl acls = 2;
 }
