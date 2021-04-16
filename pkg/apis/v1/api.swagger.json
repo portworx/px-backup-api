@@ -3647,33 +3647,35 @@
           "type": "string",
           "description": "Username of owner\nThe storage system uses the username taken from the token\nand is saved on this field. Only users with system administration\ncan edit this value."
         },
-        "acls": {
-          "$ref": "#/definitions/OwnershipAccessControl",
-          "description": "Permissions to share objects which can be set by the owner."
-        }
-      },
-      "description": "Ownership information for objects(eg: backup object, schedule object).\nAdministrators are users who belong to the group `*`, meaning, every group."
-    },
-    "OwnershipAccessControl": {
-      "type": "object",
-      "properties": {
         "groups": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/definitions/OwnershipAccessType"
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OwnershipAccessConfig"
           },
           "description": "Group access to objects which must match the group set in the\nauthorization token.\nCan be set by the owner or the system administrator only.\nPossible values are:\n1. no groups: Means no groups are given access.\n2. `[\"*\"]`: All groups are allowed.\n3. `[\"group1\", \"group2\"]`: Only certain groups are allowed. In this\nexample only\n_group1_ and _group2_ are allowed."
         },
         "collaborators": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/definitions/OwnershipAccessType"
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OwnershipAccessConfig"
           },
           "description": "Collaborator access to objects gives access to other user.\nMust be the username (unique id) set in the authorization token.\nThe owner or the administrator can set this value. Possible values\nare:\n1. no collaborators: Means no users are given access.\n2. `[\"*\"]`: All users are allowed.\n3. `[\"username1\", \"username2\"]`: Only certain usernames are allowed.\nIn this example only\n_username1_ and _username2_ are allowed."
         },
         "public": {
           "$ref": "#/definitions/OwnershipPublicAccessControl",
           "title": "Public access to objects may be assigned for access by the public\nuserd\nTODO: Instead of PublicAccessControl, can we just set '*' in\ncollaborators with required permission?"
+        }
+      },
+      "description": "Ownership information for objects(eg: backup object, schedule object).\nAdministrators are users who belong to the group `*`, meaning, every group."
+    },
+    "OwnershipAccessConfig": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "access": {
+          "$ref": "#/definitions/OwnershipAccessType"
         }
       }
     },
