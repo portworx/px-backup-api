@@ -3168,6 +3168,9 @@
         },
         "google_config": {
           "$ref": "#/definitions/GoogleConfig"
+        },
+        "ibm_config": {
+          "$ref": "#/definitions/IBMConfig"
         }
       }
     },
@@ -3177,7 +3180,8 @@
         "Invalid",
         "AWS",
         "Azure",
-        "Google"
+        "Google",
+        "IBM"
       ],
       "default": "Invalid"
     },
@@ -3443,6 +3447,14 @@
     },
     "HealthStatusResponse": {
       "type": "object"
+    },
+    "IBMConfig": {
+      "type": "object",
+      "properties": {
+        "api_key": {
+          "type": "string"
+        }
+      }
     },
     "LicenseActivateRequest": {
       "type": "object",
