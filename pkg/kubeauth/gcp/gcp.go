@@ -12,11 +12,15 @@ import (
 	"golang.org/x/oauth2/google"
 	"google.golang.org/grpc"
 	"k8s.io/client-go/rest"
+	clientcmd "k8s.io/client-go/tools/clientcmd/api"
 )
 
 const (
-	pluginName    = "gcp"
-	jsonKeyConfig = "json-key"
+	pluginName      = "gcp"
+	jsonKeyConfig   = "json-key"
+	credOrgIDConfig = "cred-org-id"
+	credOwnerConfig = "cred-owner"
+	credJSON        = "cred-json"
 )
 
 var (
@@ -44,11 +48,14 @@ func (g *gcp) UpdateClient(
 	cloudCredentialName string,
 	orgID string,
 	client *rest.Config,
-) (bool, error) {
+	clientConfig *clientcmd.Config,
+) (bool, string, error) {
+	// GCP does not support returning kubeconfigs
+	var emptyKubeconfig string
 	if client.AuthProvider != nil {
 		if client.AuthProvider.Name == pluginName {
 			if cloudCredentialName == "" {
-				return false, fmt.Errorf("CloudCredential not provided for GKE cluster")
+				return false, emptyKubeconfig, fmt.Errorf("CloudCredential not provided for GKE cluster")
 			}
 			cloudCredentialClient := api.NewCloudCredentialClient(conn)
 			resp, err := cloudCredentialClient.Inspect(
@@ -60,14 +67,14 @@ func (g *gcp) UpdateClient(
 				},
 			)
 			if err != nil {
-				return false, err
+				return false, emptyKubeconfig, err
 			}
 			client.AuthProvider.Config = make(map[string]string)
 			client.AuthProvider.Config[jsonKeyConfig] = resp.GetCloudCredential().GetCloudCredentialInfo().GetGoogleConfig().GetJsonKey()
-		}
-		return true, nil
+			return true, emptyKubeconfig, nil
+		} // else not a gcp kubeauth provider
 	}
-	return false, nil
+	return false, emptyKubeconfig, nil
 }
 
 func (g *gcp) newGCPAuthProvider(
@@ -87,6 +94,28 @@ func (g *gcpToken) Login() error { return nil }
 
 func (g *gcpToken) WrapTransport(rt http.RoundTripper) http.RoundTripper {
 	return &oauth2.Transport{Source: g.tokenSource, Base: rt}
+}
+
+func (g *gcp) UpdateClientByCredObject(
+	cloudCred *api.CloudCredentialObject,
+	client *rest.Config,
+	clientConfig *clientcmd.Config,
+) (bool, string, error) {
+	// GCP does not support returning kubeconfigs
+	var emptyKubeconfig string
+	if client.AuthProvider != nil {
+		if client.AuthProvider.Name == pluginName {
+			if cloudCred == nil {
+				return false, emptyKubeconfig, fmt.Errorf("CloudCredential not provided for GKE cluster")
+			}
+			client.AuthProvider.Config = make(map[string]string)
+			client.AuthProvider.Config[credOrgIDConfig] = cloudCred.GetOrgId()
+			client.AuthProvider.Config[credOwnerConfig] = cloudCred.GetOwnership().GetOwner()
+			client.AuthProvider.Config[credJSON] = cloudCred.GetCloudCredentialInfo().GetGoogleConfig().GetJsonKey()
+			return true, emptyKubeconfig, nil
+		} // else not a gcp kubeauth provider
+	}
+	return false, emptyKubeconfig, nil
 }
 
 func init() {
