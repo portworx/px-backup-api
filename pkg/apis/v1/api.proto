@@ -66,6 +66,13 @@ message AWSConfig {
     ];
 }
 
+message IBMConfig {
+    string api_key = 1 [
+        (gogoproto.jsontag) = "api_key",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
+}
+
 message S3Config {
     string endpoint = 1;
     string region = 2;
@@ -113,6 +120,7 @@ message CloudCredentialInfo {
         AWS = 1;
         Azure = 2;
         Google = 3;
+        IBM = 4;
     }
 
     Type type = 1;
@@ -120,6 +128,7 @@ message CloudCredentialInfo {
         AWSConfig aws_config = 100;
         AzureConfig azure_config = 101;
         GoogleConfig google_config = 102;
+        IBMConfig ibm_config = 103;
     }
 }
 
