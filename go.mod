@@ -15,10 +15,10 @@ require (
 	github.com/sirupsen/logrus v1.5.0
 	golang.org/x/mod v0.4.2 // indirect
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
-	golang.org/x/sys v0.0.0-20210415045647-66c3f260301c // indirect
+	golang.org/x/sys v0.0.0-20210423185535-09eb48e85fd7 // indirect
 	golang.org/x/time v0.0.0-20200416051211-89c76fbcd5d1 // indirect
 	google.golang.org/appengine v1.6.6 // indirect
-	google.golang.org/genproto v0.0.0-20210415145412-64678f1ae2d5 // indirect
+	google.golang.org/genproto v0.0.0-20210423144448-3a41ef94ed2b // indirect
 	google.golang.org/grpc v1.36.1
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	honnef.co/go/tools v0.1.3 // indirect
