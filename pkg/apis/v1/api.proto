@@ -1672,6 +1672,8 @@ message RoleObject {
     Metadata metadata = 1 [ (gogoproto.embed) = true ];
     // RoleConfig associated with role object
     repeated RoleConfig rules = 2;
+    // Keyclock UID associated with role
+    string role_id = 3;
 }
 
 // RoleConfig object for set of rules associated with each role object
@@ -1726,6 +1728,8 @@ service Role {
 message RoleCreateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
     repeated RoleConfig rules = 2;
+    // Keyclock UID associated with role
+    string role_id = 3;
 }
 
 message RoleCreateResponse {}
@@ -1733,13 +1737,19 @@ message RoleCreateResponse {}
 message RoleUpdateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
     repeated RoleConfig rules = 2;
+    // Keyclock UID associated with role
+    string role_id = 3;
 }
 
 // Define RoleUpdateResponse struct
 message RoleUpdateResponse {}
 
 // Define RoleEnumerateRequest struct
-message RoleEnumerateRequest { string org_id = 1; }
+message RoleEnumerateRequest {
+    string org_id = 1;
+    // Optional arguments for enumeration
+    EnumerateOptions enumerate_options = 2 [ (gogoproto.embed) = true ];
+}
 
 // Define RoleEnumerateResponse struct
 message RoleEnumerateResponse { repeated RoleObject roles = 1; }
