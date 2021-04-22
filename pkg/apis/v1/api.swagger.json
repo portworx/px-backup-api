@@ -1672,6 +1672,56 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "enumerate_options.max_objects",
+            "description": "max objects to fetch.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.time_range.start_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "enumerate_options.time_range.end_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "enumerate_options.name_filter",
+            "description": "Filter to use for name of objects. Any object that contains the filter\nwill be returned.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.cluster_name_filter",
+            "description": "Filter to use for cluster name of objects. Any object that contains the\nfilter will be returned.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.object_index",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.include_detailed_resources",
+            "description": "Ths option will be set to true by the caller, when they want to have\ncomplete backup object. That means the backupObject's\nresource list will be set to complete list of resources.\nIf this option is set to false, resource list will be\nset to nil and rest of the backupObject details will be returned in the\nresponse.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -4034,6 +4084,10 @@
           "items": {
             "$ref": "#/definitions/RoleConfig"
           }
+        },
+        "role_id": {
+          "type": "string",
+          "title": "Keyclock UID associated with role"
         }
       },
       "title": "RoleCreateRequest defines roleobject create structure\nMetadata with each role object\nRoleConfig set of rules over api services for given role object"
@@ -4079,6 +4133,10 @@
             "$ref": "#/definitions/RoleConfig"
           },
           "title": "RoleConfig associated with role object"
+        },
+        "role_id": {
+          "type": "string",
+          "title": "Keyclock UID associated with role"
         }
       },
       "description": "Defines a RoleObject object."
@@ -4094,6 +4152,10 @@
           "items": {
             "$ref": "#/definitions/RoleConfig"
           }
+        },
+        "role_id": {
+          "type": "string",
+          "title": "Keyclock UID associated with role"
         }
       },
       "title": "RoleUpdateRequest defines roleobject update structure"
