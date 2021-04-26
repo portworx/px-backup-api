@@ -392,13 +392,6 @@
             "type": "string"
           },
           {
-            "name": "cloud_credential",
-            "description": "cloud credential name.\nEnumerate will return list of backuplocation that\nuses this cloud credential\ncloud_credential is deprecated, not to be used.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
             "name": "cloud_credential_ref.name",
             "in": "query",
             "required": false,
@@ -594,13 +587,6 @@
             "name": "org_id",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "backup_location",
-            "description": "Backuplocation name.\nEnumerate will return list of backupschedule that\nuses this backuplocation\nbackup_location is deprecated, not to be used.",
-            "in": "query",
-            "required": false,
             "type": "string"
           },
           {
@@ -1030,13 +1016,6 @@
             "in": "query",
             "required": false,
             "type": "boolean"
-          },
-          {
-            "name": "cloud_credential",
-            "description": "cloud credential name.\nEnumerate will return list of cluster that\nuses this cloud credential\ncloud_credential is deprecated, not to be used.",
-            "in": "query",
-            "required": false,
-            "type": "string"
           },
           {
             "name": "cloud_credential_ref.name",
@@ -2458,13 +2437,9 @@
         "metadata": {
           "$ref": "#/definitions/CreateMetadata"
         },
-        "backup_location": {
-          "type": "string",
-          "description": "Name or UID + orgid of BackupLocation\nbackup_location is deprecated, not to be used."
-        },
         "cluster": {
           "type": "string",
-          "title": "Name or UID of Cluster"
+          "title": "Name or UID + orgid of BackupLocation\nbackup_location is deprecated, not to be used.\nstring backup_location = 2;\nName or UID of Cluster"
         },
         "namespaces": {
           "type": "array",
@@ -2480,20 +2455,12 @@
           },
           "title": "Label selectors to choose resources"
         },
-        "pre_exec_rule": {
-          "type": "string",
-          "description": "Pre check rule to run before backup is started\ndeprecated, not to be used."
-        },
-        "post_exec_rule": {
-          "type": "string",
-          "description": "Post check rule to run after backup is completed\ndeprecated, not to be used."
-        },
         "include_resources": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ResourceInfo"
           },
-          "title": "List of resources to backup (optional)"
+          "title": "Pre check rule to run before backup is started\ndeprecated, not to be used.\nstring pre_exec_rule = 6;\nPost check rule to run after backup is completed\ndeprecated, not to be used.\nstring post_exec_rule = 7;\nList of resources to backup (optional)"
         },
         "csi_snapshot_class_name": {
           "type": "string",
@@ -2548,13 +2515,9 @@
     "BackupInfo": {
       "type": "object",
       "properties": {
-        "backup_location": {
-          "type": "string",
-          "description": "Name of BackupLocation, deprecated. Not to be used."
-        },
         "cluster": {
           "type": "string",
-          "title": "Name of Cluster"
+          "title": "Name of BackupLocation, deprecated. Not to be used.\nstring backup_location = 1;\nName of Cluster"
         },
         "namespaces": {
           "type": "array",
@@ -2591,16 +2554,9 @@
         "stage": {
           "$ref": "#/definitions/BackupInfoStage"
         },
-        "pre_exec_rule": {
-          "type": "string",
-          "title": "pre_exec_rule and post_exec_rule are deprecated, not to be used,"
-        },
-        "post_exec_rule": {
-          "type": "string"
-        },
         "backup_schedule": {
           "$ref": "#/definitions/BackupInfoBackupSchedule",
-          "description": "Name of the backup schedule, if the backup was taken by schedule through\npx-backup.\nOtherwise it will be empty."
+          "description": "pre_exec_rule and post_exec_rule are deprecated, not to be used,\nstring pre_exec_rule = 10;\nstring post_exec_rule = 11;\nName of the backup schedule, if the backup was taken by schedule through\npx-backup.\nOtherwise it will be empty."
         },
         "cr_name": {
           "type": "string"
@@ -2609,15 +2565,12 @@
           "type": "string",
           "format": "uint64"
         },
-        "cloud_credential": {
-          "type": "string",
-          "description": "Reference to cloud credential object used for backup.\ncloud_credential is deprecated, not to be used."
-        },
         "include_resources": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ResourceInfo"
-          }
+          },
+          "title": "Reference to cloud credential object used for backup.\ncloud_credential is deprecated, not to be used.\nstring cloud_credential = 15;"
         },
         "resource_count": {
           "type": "string",
@@ -2799,12 +2752,9 @@
         "encryption_key": {
           "type": "string"
         },
-        "cloud_credential": {
-          "type": "string",
-          "description": "cloud_credential is deprecated, not to be used."
-        },
         "status": {
-          "$ref": "#/definitions/BackupLocationInfoStatusInfo"
+          "$ref": "#/definitions/BackupLocationInfoStatusInfo",
+          "title": "cloud_credential is deprecated, not to be used.\nstring cloud_credential = 4;"
         },
         "delete_backups": {
           "type": "boolean"
@@ -2947,20 +2897,13 @@
         "metadata": {
           "$ref": "#/definitions/CreateMetadata"
         },
-        "schedule_policy": {
-          "type": "string",
-          "title": "schedule_policy is deprecated, not to be used"
-        },
         "reclaim_policy": {
-          "$ref": "#/definitions/BackupScheduleInfoReclaimPolicyType"
-        },
-        "backup_location": {
-          "type": "string",
-          "title": "Name of BackupLocation, is deprecated. Not to be used"
+          "$ref": "#/definitions/BackupScheduleInfoReclaimPolicyType",
+          "title": "schedule_policy is deprecated, not to be used\nstring schedule_policy = 2;"
         },
         "cluster": {
           "type": "string",
-          "title": "Name of Cluster"
+          "title": "Name of BackupLocation, is deprecated. Not to be used\nstring backup_location = 4;\nName of Cluster"
         },
         "namespaces": {
           "type": "array",
@@ -2976,19 +2919,12 @@
           },
           "title": "Label selectors to choose resources"
         },
-        "pre_exec_rule": {
-          "type": "string",
-          "description": "pre_exec_rule and post_exec_rule are deprecated. Not to be used."
-        },
-        "post_exec_rule": {
-          "type": "string"
-        },
         "include_resources": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ResourceInfo"
           },
-          "title": "List of resources to backup (optional)"
+          "title": "pre_exec_rule and post_exec_rule are deprecated. Not to be used.\nstring pre_exec_rule = 8;\nstring post_exec_rule = 9;\nList of resources to backup (optional)"
         },
         "csi_snapshot_class_name": {
           "type": "string",
@@ -3039,12 +2975,9 @@
     "BackupScheduleInfo": {
       "type": "object",
       "properties": {
-        "schedule_policy": {
-          "type": "string",
-          "description": "schedule_policy is deprecated, not to be used."
-        },
         "suspend": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "schedule_policy is deprecated, not to be used.\nstring schedule_policy = 1;"
         },
         "reclaim_policy": {
           "$ref": "#/definitions/BackupScheduleInfoReclaimPolicyType"
@@ -3055,13 +2988,9 @@
             "$ref": "#/definitions/BackupScheduleInfoStatusInfoList"
           }
         },
-        "backup_location": {
-          "type": "string",
-          "description": "Name of BackupLocation, is deprecated. Not to be used."
-        },
         "cluster": {
           "type": "string",
-          "title": "Name of Cluster"
+          "title": "Name of BackupLocation, is deprecated. Not to be used.\nstring backup_location = 5;\nName of Cluster"
         },
         "namespaces": {
           "type": "array",
@@ -3077,15 +3006,9 @@
           },
           "title": "Label selectors to choose resources"
         },
-        "pre_exec_rule": {
-          "type": "string",
-          "description": "pre_exec_rule and post_exec_rule is deprecated. Not to be used."
-        },
-        "post_exec_rule": {
-          "type": "string"
-        },
         "delete_backups": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "pre_exec_rule and post_exec_rule is deprecated. Not to be used.\nstring pre_exec_rule = 9;\nstring post_exec_rule = 10;"
         },
         "status": {
           "$ref": "#/definitions/BackupScheduleInfoStatusInfo"
@@ -3218,20 +3141,13 @@
         "metadata": {
           "$ref": "#/definitions/CreateMetadata"
         },
-        "schedule_policy": {
-          "type": "string",
-          "title": "schedule_policy is deprecated, not to be used"
-        },
         "reclaim_policy": {
-          "$ref": "#/definitions/BackupScheduleInfoReclaimPolicyType"
-        },
-        "backup_location": {
-          "type": "string",
-          "title": "Name of BackupLocation, is deprecated. Not to be used"
+          "$ref": "#/definitions/BackupScheduleInfoReclaimPolicyType",
+          "title": "schedule_policy is deprecated, not to be used\nstring schedule_policy = 2;"
         },
         "cluster": {
           "type": "string",
-          "title": "Name of Cluster"
+          "title": "Name of BackupLocation, is deprecated. Not to be used\nstring backup_location = 4;\nName of Cluster"
         },
         "namespaces": {
           "type": "array",
@@ -3247,15 +3163,9 @@
           },
           "title": "Label selectors to choose resources"
         },
-        "pre_exec_rule": {
-          "type": "string",
-          "description": "pre_exec_rule and post_exec_rule are deprecated. Not to be used."
-        },
-        "post_exec_rule": {
-          "type": "string"
-        },
         "suspend": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "pre_exec_rule and post_exec_rule are deprecated. Not to be used.\nstring pre_exec_rule = 8;\nstring post_exec_rule = 9;"
         },
         "include_resources": {
           "type": "array",
@@ -3293,12 +3203,9 @@
         "metadata": {
           "$ref": "#/definitions/CreateMetadata"
         },
-        "cloud_credential": {
-          "type": "string",
-          "description": "Reference to cloud credential object used for backup\ncloud_credential is deprecated, not to be used."
-        },
         "cloud_credential_ref": {
-          "$ref": "#/definitions/ObjectRef"
+          "$ref": "#/definitions/ObjectRef",
+          "title": "Reference to cloud credential object used for backup\ncloud_credential is deprecated, not to be used.\nstring cloud_credential = 2;"
         }
       },
       "title": "Define BackupUpdateRequest struct"
@@ -3435,12 +3342,9 @@
         "kubeconfig": {
           "type": "string"
         },
-        "cloud_credential": {
-          "type": "string",
-          "description": "cloud_credential_ref is deprecated, not to be used."
-        },
         "cloud_credential_ref": {
-          "$ref": "#/definitions/ObjectRef"
+          "$ref": "#/definitions/ObjectRef",
+          "title": "cloud_credential_ref is deprecated, not to be used.\nstring cloud_credential = 4;"
         }
       },
       "title": "Define ClusterCreateRequest struct"
@@ -3474,12 +3378,9 @@
         "kubeconfig": {
           "type": "string"
         },
-        "cloud_credential": {
-          "type": "string",
-          "description": "cloud_credential is deprecated, not to be used."
-        },
         "status": {
-          "$ref": "#/definitions/ClusterInfoStatusInfo"
+          "$ref": "#/definitions/ClusterInfoStatusInfo",
+          "title": "cloud_credential is deprecated, not to be used.\nstring cloud_credential = 3;"
         },
         "delete_backups": {
           "type": "boolean",
@@ -3551,12 +3452,9 @@
         "kubeconfig": {
           "type": "string"
         },
-        "cloud_credential": {
-          "type": "string",
-          "description": "cloud_credential is deprecated, not to be used."
-        },
         "cloud_credential_ref": {
-          "$ref": "#/definitions/ObjectRef"
+          "$ref": "#/definitions/ObjectRef",
+          "title": "cloud_credential is deprecated, not to be used.\nstring cloud_credential = 4;"
         }
       },
       "title": "Define ClusterUpdateRequest struct"
@@ -4078,16 +3976,12 @@
           "type": "string",
           "title": "Name of backup to restore from"
         },
-        "backup_location": {
-          "type": "string",
-          "description": "Name of backup location to restore from.\nbackup_location is deprecated, not to be used."
-        },
         "label_selectors": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
           },
-          "title": "Label selectors to choose resources"
+          "title": "Name of backup location to restore from.\nbackup_location is deprecated, not to be used.\nstring backup_location = 2;\nLabel selectors to choose resources"
         },
         "namespace_mapping": {
           "type": "object",

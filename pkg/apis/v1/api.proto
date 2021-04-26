@@ -26,7 +26,7 @@ message ClusterInfo {
         (gogoproto.moretags) = "secure:\"true\""
     ];
     // cloud_credential is deprecated, not to be used.
-    string cloud_credential = 3;
+    // string cloud_credential = 3;
     StatusInfo status = 4;
     // delete_backups will determine whether the backups
     // belong to given cluster needs to be deleted or not.
@@ -206,12 +206,12 @@ message SchedulePolicyObject {
 
 message BackupScheduleInfo {
     // schedule_policy is deprecated, not to be used.
-    string schedule_policy = 1;
+    // string schedule_policy = 1;
     bool suspend = 2;
     ReclaimPolicyType reclaim_policy = 3;
     map<string, StatusInfoList> backup_status = 4;
     // Name of BackupLocation, is deprecated. Not to be used.
-    string backup_location = 5;
+    // string backup_location = 5;
     // Name of Cluster
     string cluster = 6;
     // Namespaces to backup. Only an admin can provide multiple namespaces
@@ -219,8 +219,8 @@ message BackupScheduleInfo {
     // Label selectors to choose resources
     map<string, string> label_selectors = 8;
     // pre_exec_rule and post_exec_rule is deprecated. Not to be used.
-    string pre_exec_rule = 9;
-    string post_exec_rule = 10;
+    // string pre_exec_rule = 9;
+    // string post_exec_rule = 10;
     bool delete_backups = 11;
     StatusInfo status = 12;
     SuspendedBy suspended_by = 13;
@@ -291,7 +291,7 @@ message BackupLocationInfo {
         (gogoproto.moretags) = "secure:\"true\""
     ];
     // cloud_credential is deprecated, not to be used.
-    string cloud_credential = 4;
+    // string cloud_credential = 4;
     StatusInfo status = 5;
     bool delete_backups = 6;
     bool validate_cloud_credential = 7;
@@ -326,7 +326,7 @@ message ResourceInfo {
 
 message BackupInfo {
     // Name of BackupLocation, deprecated. Not to be used.
-    string backup_location = 1;
+    // string backup_location = 1;
     // Name of Cluster
     string cluster = 2;
     // Namespaces to backup. Only an admin can provide multiple namespaces
@@ -339,8 +339,8 @@ message BackupInfo {
     string backup_path = 8;
     Stage stage = 9;
     // pre_exec_rule and post_exec_rule are deprecated, not to be used,
-    string pre_exec_rule = 10;
-    string post_exec_rule = 11;
+    // string pre_exec_rule = 10;
+    // string post_exec_rule = 11;
     // Name of the backup schedule, if the backup was taken by schedule through
     // px-backup.
     // Otherwise it will be empty.
@@ -349,7 +349,7 @@ message BackupInfo {
     uint64 total_size = 14;
     // Reference to cloud credential object used for backup.
     // cloud_credential is deprecated, not to be used.
-    string cloud_credential = 15;
+    // string cloud_credential = 15;
     repeated ResourceInfo include_resources = 16;
     uint64 resource_count = 17;
     string stork_version = 18;
@@ -456,7 +456,7 @@ message RestoreInfo {
     string backup = 1;
     // Name of backup location to restore from.
     // backup_location is deprecated, not to be used.
-    string backup_location = 2;
+    // string backup_location = 2;
     // Label selectors to choose resources
     map<string, string> label_selectors = 3;
     // Namespace Mapping
@@ -715,10 +715,10 @@ service BackupSchedule {
 message BackupScheduleCreateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
     // schedule_policy is deprecated, not to be used
-    string schedule_policy = 2;
+    // string schedule_policy = 2;
     BackupScheduleInfo.ReclaimPolicyType reclaim_policy = 3;
     // Name of BackupLocation, is deprecated. Not to be used
-    string backup_location = 4;
+    // string backup_location = 4;
     // Name of Cluster
     string cluster = 5;
     // Namespaces to backup. Only an admin can provide multiple namespaces
@@ -726,8 +726,8 @@ message BackupScheduleCreateRequest {
     // Label selectors to choose resources
     map<string, string> label_selectors = 7;
     // pre_exec_rule and post_exec_rule are deprecated. Not to be used.
-    string pre_exec_rule = 8;
-    string post_exec_rule = 9;
+    // string pre_exec_rule = 8;
+    // string post_exec_rule = 9;
     // List of resources to backup (optional)
     repeated ResourceInfo include_resources = 10;
     // Snapshot class name to use for backup schedule (optional)
@@ -747,10 +747,10 @@ message BackupScheduleCreateResponse {}
 message BackupScheduleUpdateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
     // schedule_policy is deprecated, not to be used
-    string schedule_policy = 2;
+    // string schedule_policy = 2;
     BackupScheduleInfo.ReclaimPolicyType reclaim_policy = 3;
     // Name of BackupLocation, is deprecated. Not to be used
-    string backup_location = 4;
+    // string backup_location = 4;
     // Name of Cluster
     string cluster = 5;
     // Namespaces to backup. Only an admin can provide multiple namespaces
@@ -758,8 +758,8 @@ message BackupScheduleUpdateRequest {
     // Label selectors to choose resources
     map<string, string> label_selectors = 7;
     // pre_exec_rule and post_exec_rule are deprecated. Not to be used.
-    string pre_exec_rule = 8;
-    string post_exec_rule = 9;
+    // string pre_exec_rule = 8;
+    // string post_exec_rule = 9;
     bool suspend = 10;
     // List of resources to backup (optional)
     repeated ResourceInfo include_resources = 11;
@@ -782,7 +782,7 @@ message BackupScheduleEnumerateRequest {
     // Enumerate will return list of backupschedule that
     // uses this backuplocation
     // backup_location is deprecated, not to be used.
-    string backup_location = 3;
+    // string backup_location = 3;
     ObjectRef backup_location_ref = 4;
 }
 
@@ -865,7 +865,7 @@ message ClusterCreateRequest {
         (gogoproto.moretags) = "secure:\"true\""
     ];
     // cloud_credential_ref is deprecated, not to be used.
-    string cloud_credential = 4;
+    // string cloud_credential = 4;
     ObjectRef cloud_credential_ref = 5;
 }
 
@@ -881,7 +881,7 @@ message ClusterUpdateRequest {
         (gogoproto.moretags) = "secure:\"true\""
     ];
     // cloud_credential is deprecated, not to be used.
-    string cloud_credential = 4;
+    // string cloud_credential = 4;
     ObjectRef cloud_credential_ref = 5;
 }
 
@@ -898,7 +898,7 @@ message ClusterEnumerateRequest {
     // Enumerate will return list of cluster that
     // uses this cloud credential
     // cloud_credential is deprecated, not to be used.
-    string cloud_credential = 4;
+    // string cloud_credential = 4;
     ObjectRef cloud_credential_ref = 5;
 }
 
@@ -1134,7 +1134,7 @@ message BackupLocationEnumerateRequest {
     // Enumerate will return list of backuplocation that
     // uses this cloud credential
     // cloud_credential is deprecated, not to be used.
-    string cloud_credential = 3;
+    // string cloud_credential = 3;
     ObjectRef cloud_credential_ref = 4;
 }
 
@@ -1254,7 +1254,7 @@ message BackupCreateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
     // Name or UID + orgid of BackupLocation
     // backup_location is deprecated, not to be used.
-    string backup_location = 2;
+    // string backup_location = 2;
     // Name or UID of Cluster
     string cluster = 3;
     // Namespaces to backup. Only an admin can provide multiple namespaces
@@ -1263,10 +1263,10 @@ message BackupCreateRequest {
     map<string, string> label_selectors = 5;
     // Pre check rule to run before backup is started
     // deprecated, not to be used.
-    string pre_exec_rule = 6;
+    // string pre_exec_rule = 6;
     // Post check rule to run after backup is completed
     // deprecated, not to be used.
-    string post_exec_rule = 7;
+    // string post_exec_rule = 7;
     // List of resources to backup (optional)
     repeated ResourceInfo include_resources = 8;
     // Snapshot class name to use for backup (optional)
@@ -1286,7 +1286,7 @@ message BackupUpdateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
     // Reference to cloud credential object used for backup
     // cloud_credential is deprecated, not to be used.
-    string cloud_credential = 2;
+    // string cloud_credential = 2;
     ObjectRef cloud_credential_ref = 3;
 }
 
