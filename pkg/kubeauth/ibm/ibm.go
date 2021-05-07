@@ -327,6 +327,20 @@ func parseConfig(clientConfig *clientcmdapi.Config) (string, string, error) {
 
 }
 
+func (i *ibm) GetClient(
+	cloudCredential *api.CloudCredentialObject,
+	clusterName string,
+) (*kubeauth.PluginClient, error) {
+	return nil, fmt.Errorf("not supported")
+}
+
+func (i *ibm) GetAllClients(
+	cloudCredential *api.CloudCredentialObject,
+) (map[string]*kubeauth.PluginClient, error) {
+	return nil, fmt.Errorf("not supported")
+
+}
+
 func init() {
 	cMap := make(map[string]*sync.Mutex)
 	if err := kubeauth.Register(pluginName, &ibm{cMap}); err != nil {
