@@ -1194,6 +1194,50 @@
         ]
       }
     },
+    "/v1/managedcluster/{org_id}": {
+      "get": {
+        "summary": "Enumerate returns a list of managed clusters from a provider like\nAWS/other clouds\nusing the given credentials",
+        "operationId": "ManagedClusters_Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ManagedClusterEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "include_secrets",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "cloud_credential",
+            "description": "cloud credential name.\nEnumerate will return list of managed clusters that\nthis cloud credential has access to.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ManagedClusters"
+        ]
+      }
+    },
     "/v1/metrics/{org_id}": {
       "get": {
         "operationId": "Metrics_Inspect",
@@ -3583,6 +3627,40 @@
     },
     "LicenseUpdateResponse": {
       "type": "object"
+    },
+    "ManagedClusterEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "clusters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ManagedClusterObject"
+          }
+        }
+      },
+      "title": "Define ClusterEnumerateResponse struct"
+    },
+    "ManagedClusterObject": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name of the managed cluster\nThis is usually the user friendly name of the cluster"
+        },
+        "uid": {
+          "type": "string",
+          "title": "UID of the managed cluster\nThis is the UID returned by the managed cluster provider"
+        },
+        "cloud_credential": {
+          "type": "string",
+          "title": "Cloud Credential name used for fetching this cluster's details"
+        },
+        "kubeconfig": {
+          "type": "string",
+          "title": "Kubeconfig if the provider supports using kubeconfigs"
+        }
+      },
+      "title": "Define ManagedClusterObject struct"
     },
     "Metadata": {
       "type": "object",
