@@ -2,6 +2,7 @@ package aws
 
 import (
 	"context"
+	"encoding/base64"
 	"fmt"
 
 	api "github.com/portworx/px-backup-api/pkg/apis/v1"
@@ -10,6 +11,13 @@ import (
 	"google.golang.org/grpc"
 	"k8s.io/client-go/rest"
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
+	"sigs.k8s.io/aws-iam-authenticator/pkg/token"
+
+	awsapi "github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/eks"
+
+	awscredentials "github.com/libopenstorage/secrets/aws/credentials"
 )
 
 const (
@@ -126,6 +134,188 @@ func (a *aws) updateClient(
 	}
 	client.ExecProvider.Env = tempEnv
 	return nil
+}
+
+func (a *aws) GetClient(
+	cloudCredential *api.CloudCredentialObject,
+	clusterName string,
+) (*kubeauth.PluginClient, error) {
+	awsConfig := cloudCredential.GetCloudCredentialInfo().GetAwsConfig()
+	if awsConfig == nil {
+		return nil, fmt.Errorf("cloud credentials are not for aws")
+	}
+	return GetRestConfigForCluster(clusterName, awsConfig)
+
+}
+
+func (a *aws) GetAllClients(
+	cloudCredential *api.CloudCredentialObject,
+) (map[string]*kubeauth.PluginClient, error) {
+	awsConfig := cloudCredential.GetCloudCredentialInfo().GetAwsConfig()
+	if awsConfig == nil {
+		return nil, fmt.Errorf("cloud credentials are not for aws")
+	}
+	return GetRestConfigForAllClusters(awsConfig)
+
+}
+
+func GetRestConfigForCluster(clusterName string, awsConfig *api.AWSConfig) (*kubeauth.PluginClient, error) {
+	region := "us-east-1"
+	awsCreds, err := awscredentials.NewAWSCredentials(
+		awsConfig.GetAccessKey(),
+		awsConfig.GetSecretKey(),
+		"",
+	)
+	if err != nil {
+		return nil, err
+	}
+	creds, err := awsCreds.Get()
+	if err != nil {
+		return nil, err
+	}
+	sess := session.Must(session.NewSession(&awsapi.Config{
+		Region:      awsapi.String(region),
+		Credentials: creds,
+	}))
+	eksSvc := eks.New(sess)
+
+	describeClusterOutput, err := eksSvc.DescribeCluster(&eks.DescribeClusterInput{
+		Name: &clusterName,
+	})
+	if err != nil {
+		logrus.Errorf("Failed to describe cluster %v: %v", clusterName, err)
+		return nil, err
+	}
+	restConfig, kubeConfig, err := getRestConfig(describeClusterOutput.Cluster, sess)
+	if err != nil {
+		logrus.Infof("Failed to create a clientset for cluster %v: %v", clusterName, err)
+		return nil, err
+	}
+	return &kubeauth.PluginClient{
+		Kubeconfig: kubeConfig,
+		Rest:       restConfig,
+		Uid:        clusterName, // aws does not have uid
+	}, nil
+}
+
+func GetRestConfigForAllClusters(awsConfig *api.AWSConfig) (map[string]*kubeauth.PluginClient, error) {
+	region := "us-east-1"
+	awsCreds, err := awscredentials.NewAWSCredentials(
+		awsConfig.GetAccessKey(),
+		awsConfig.GetSecretKey(),
+		"",
+	)
+	if err != nil {
+		return nil, err
+	}
+	creds, err := awsCreds.Get()
+	if err != nil {
+		return nil, err
+	}
+	sess := session.Must(session.NewSession(&awsapi.Config{
+		Region:      awsapi.String(region),
+		Credentials: creds,
+	}))
+	eksSvc := eks.New(sess)
+
+	listClusterOutput, err := eksSvc.ListClusters(&eks.ListClustersInput{})
+	if err != nil {
+		return nil, err
+	}
+	restConfigs := make(map[string]*kubeauth.PluginClient)
+	for _, clusterName := range listClusterOutput.Clusters {
+		describeClusterOutput, err := eksSvc.DescribeCluster(&eks.DescribeClusterInput{
+			Name: clusterName,
+		})
+		if err != nil {
+			logrus.Errorf("Failed to describe cluster %v: %v", *clusterName, err)
+			return nil, err
+		}
+		restConfig, kubeConfig, err := getRestConfig(describeClusterOutput.Cluster, sess)
+		if err != nil {
+			logrus.Infof("Failed to create a clientset for cluster %v: %v", *clusterName, err)
+			return nil, err
+		}
+		restConfigs[awsapi.StringValue(clusterName)] = &kubeauth.PluginClient{
+			Kubeconfig: kubeConfig,
+			Rest:       restConfig,
+			Uid:        awsapi.StringValue(clusterName), // aws does not have uid
+		}
+	}
+	return restConfigs, nil
+
+}
+
+func getRestConfig(cluster *eks.Cluster, sess *session.Session) (*rest.Config, string, error) {
+	logrus.Infof("%+v", cluster)
+	gen, err := token.NewGenerator(true, false)
+	if err != nil {
+		return nil, "", err
+	}
+	opts := &token.GetTokenOptions{
+		ClusterID: awsapi.StringValue(cluster.Name),
+		Session:   sess,
+	}
+	tok, err := gen.GetWithOptions(opts)
+	if err != nil {
+		return nil, "", err
+	}
+	ca, err := base64.StdEncoding.DecodeString(awsapi.StringValue(cluster.CertificateAuthority.Data))
+	if err != nil {
+
+		return nil, "", err
+	}
+
+	restConfig := &rest.Config{
+		Host:        awsapi.StringValue(cluster.Endpoint),
+		BearerToken: tok.Token,
+		TLSClientConfig: rest.TLSClientConfig{
+			CAData: ca,
+		},
+	}
+
+	if err != nil {
+		return nil, "", err
+	}
+	_, err = kubeauth.ValidateConfig(restConfig)
+	if err != nil {
+		return nil, "", err
+	}
+	return restConfig, buildKubeconfig(awsapi.StringValue(cluster.Endpoint), awsapi.StringValue(cluster.Name), ca), nil
+}
+
+// the kubeconfig spec taken from - https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html#create-kubeconfig-manually
+func buildKubeconfig(
+	clusterEndpoint string,
+	clusterName string,
+	certData []byte,
+) string {
+	return fmt.Sprintf(`{
+apiVersion: v1
+clusters:
+- cluster:
+    server: %s
+    certificate-authority-data: %s
+  name: kubernetes
+contexts:
+- context:
+    cluster: kubernetes
+    user: aws
+  name: aws
+current-context: aws
+kind: Config
+preferences: {}
+users:
+- name: aws
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1alpha1
+      command: aws-iam-authenticator
+      args:
+        - "token"
+        - "-i"
+        - "%s"
+}`, clusterEndpoint, string(certData), clusterName)
 }
 
 func init() {

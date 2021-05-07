@@ -122,6 +122,20 @@ func (g *gcp) UpdateClientByCredObject(
 	return false, emptyKubeconfig, nil
 }
 
+func (g *gcp) GetClient(
+	cloudCredential *api.CloudCredentialObject,
+	clusterName string,
+) (*kubeauth.PluginClient, error) {
+	return nil, fmt.Errorf("not supported")
+}
+
+func (g *gcp) GetAllClients(
+	cloudCredential *api.CloudCredentialObject,
+) (map[string]*kubeauth.PluginClient, error) {
+	return nil, fmt.Errorf("not supported")
+
+}
+
 func init() {
 	g := &gcp{}
 	if err := rest.RegisterAuthProviderPlugin(pluginName, g.newGCPAuthProvider); err != nil {

@@ -4,11 +4,24 @@ import (
 	"context"
 
 	api "github.com/portworx/px-backup-api/pkg/apis/v1"
+	"github.com/portworx/sched-ops/k8s/core"
 	"github.com/sirupsen/logrus"
+	"go.uber.org/multierr"
 	"google.golang.org/grpc"
 	"k8s.io/client-go/rest"
 	clientcmd "k8s.io/client-go/tools/clientcmd/api"
 )
+
+// PluginClient returns a k8s client returned by one of the
+// supported plugins
+type PluginClient struct {
+	// Kubeconfig is the string representation of kubeconfig
+	Kubeconfig string
+	//  Restclient is the rest k8s client
+	Rest *rest.Config
+	// Uid uniquely identifies the managed cluster by the cloud provider
+	Uid string
+}
 
 // Plugin is the interface the plugins need to implement
 type Plugin interface {
@@ -27,6 +40,15 @@ type Plugin interface {
 		restConfig *rest.Config,
 		clientConfig *clientcmd.Config,
 	) (bool, string, error)
+
+	GetClient(
+		cloudCred *api.CloudCredentialObject,
+		clusterName string,
+	) (*PluginClient, error)
+
+	GetAllClients(
+		cloudCred *api.CloudCredentialObject,
+	) (map[string]*PluginClient, error)
 }
 
 var (
@@ -81,4 +103,52 @@ func UpdateClientByCredObject(
 		}
 	}
 	return "", nil
+}
+
+// GetClient gets the k8s client config from the cloud credential
+// The provided cloud credentials should have sufficient
+// permissions to fetch a token using the cloud's SDK APIs
+func GetClient(cloudCred *api.CloudCredentialObject, clusterName string) (*PluginClient, error) {
+	var getErr error
+	for _, plugin := range plugins {
+		client, err := plugin.GetClient(cloudCred, clusterName)
+		if err == nil {
+			return client, nil
+		}
+		getErr = multierr.Append(getErr, err)
+
+	}
+	return nil, getErr
+
+}
+
+// GetAllClients gets the k8s client config for all the clusters
+// which the provided cloud credential has access to.
+// The provided cloud credentials should have sufficient
+// permissions to fetch a token using the cloud's SDK APIs
+func GetAllClients(cloudCred *api.CloudCredentialObject) (map[string]*PluginClient, error) {
+	var getErr error
+	for _, plugin := range plugins {
+		clients, err := plugin.GetAllClients(cloudCred)
+		if err == nil {
+			return clients, nil
+		}
+		getErr = multierr.Append(getErr, err)
+
+	}
+	return nil, getErr
+}
+
+// ValidateConfig validates the provided rest config
+func ValidateConfig(restConfig *rest.Config) (bool, error) {
+	// Check if the provided config has expired
+	coreInst, err := core.NewForConfig(restConfig)
+	if err != nil {
+		return false, err
+	}
+	_, err = coreInst.GetVersion()
+	if err == nil {
+		return true, nil
+	}
+	return false, err
 }
