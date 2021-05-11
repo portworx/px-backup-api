@@ -1729,6 +1729,12 @@ service Role {
             delete : "/v1/role/{org_id}/{name}"
         };
     }
+    // Permission returns list of service,apis permission for given user
+    rpc Permission(RolePermissionRequest) returns (RolePermissionResponse) {
+        option (google.api.http) = {
+            get : "/v1/role"
+        };
+    }
 }
 
 // RoleCreateRequest defines roleobject create structure
@@ -1780,3 +1786,12 @@ message RoleDeleteRequest {
 
 // Define RoleDeleteResponse struct
 message RoleDeleteResponse {}
+
+// Define RolePermissionRequest struct
+message RolePermissionRequest { string org_id = 1; }
+
+// Define RolePermissionResponse struct
+message RolePermissionResponse { map<string, Permission> rules = 1; }
+
+// Define Permission struct
+message Permission { bool full_access = 1; }
