@@ -6,6 +6,7 @@ require (
 	github.com/BurntSushi/toml v1.0.0 // indirect
 	github.com/IBM-Cloud/bluemix-go v0.0.0-20210408042812-96aaa47da4cd
 	github.com/IBM/keyprotect-go-client v0.7.0 // indirect
+	github.com/aws/aws-sdk-go v1.37.1
 	github.com/gogo/googleapis v1.4.0
 	github.com/gogo/protobuf v1.3.2
 	github.com/golang/glog v1.0.0 // indirect
