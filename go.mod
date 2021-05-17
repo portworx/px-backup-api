@@ -5,6 +5,7 @@ go 1.15
 require (
 	github.com/IBM-Cloud/bluemix-go v0.0.0-20210408042812-96aaa47da4cd
 	github.com/IBM/keyprotect-go-client v0.7.0 // indirect
+	github.com/aws/aws-sdk-go v1.37.1
 	github.com/gogo/googleapis v1.4.0
 	github.com/gogo/protobuf v1.3.2
 	github.com/golang/glog v0.0.0-20210429001901-424d2337a529 // indirect
@@ -12,15 +13,18 @@ require (
 	github.com/google/gofuzz v1.1.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/kisielk/errcheck v1.6.0 // indirect
-	github.com/portworx/sched-ops v0.0.0-00010101000000-000000000000
+	github.com/libopenstorage/secrets v0.0.0-20210420133146-40b46ecff61d
+	github.com/portworx/sched-ops v0.0.0-20200831185134-3e8010dc7056
 	github.com/sirupsen/logrus v1.6.0
+	go.uber.org/multierr v1.5.0
 	golang.org/x/mod v0.4.2 // indirect
 	golang.org/x/oauth2 v0.0.0-20201208152858-08078c50e5b5
-	golang.org/x/sys v0.0.0-20210426230700-d19ff857e887 // indirect
-	google.golang.org/genproto v0.0.0-20210429181445-86c259c2b4ab // indirect
+	golang.org/x/sys v0.0.0-20210514084401-e8d321eab015 // indirect
+	golang.org/x/tools v0.1.1 // indirect
+	google.golang.org/genproto v0.0.0-20210517163617-5e0236093d7a // indirect
 	google.golang.org/grpc v1.36.1
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	honnef.co/go/tools v0.1.3 // indirect
+	honnef.co/go/tools v0.1.4 // indirect
 	k8s.io/api v0.20.4 // indirect
 	k8s.io/apiextensions-apiserver v0.20.4 // indirect
 	k8s.io/apimachinery v0.20.4
@@ -31,6 +35,7 @@ require (
 	k8s.io/kube-scheduler v0.0.0 // indirect
 	k8s.io/kubectl v0.20.4 // indirect
 	k8s.io/kubernetes v1.20.4 // indirect
+	sigs.k8s.io/aws-iam-authenticator v0.5.3
 	sigs.k8s.io/controller-runtime v0.5.0 // indirect
 	sigs.k8s.io/gcp-compute-persistent-disk-csi-driver v0.7.0 // indirect
 	sigs.k8s.io/sig-storage-lib-external-provisioner/v6 v6.3.0 // indirect
