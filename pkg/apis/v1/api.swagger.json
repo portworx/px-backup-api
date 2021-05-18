@@ -1585,6 +1585,35 @@
       }
     },
     "/v1/role": {
+      "get": {
+        "summary": "Permission returns list of service,apis permission for given user",
+        "operationId": "Role_Permission",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RolePermissionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Role"
+        ]
+      },
       "post": {
         "summary": "Create creates new role object in datastore",
         "operationId": "Role_Create",
@@ -3770,6 +3799,15 @@
         }
       }
     },
+    "Permission": {
+      "type": "object",
+      "properties": {
+        "full_access": {
+          "type": "boolean"
+        }
+      },
+      "title": "Define Permission struct"
+    },
     "ReplacePolicyType": {
       "type": "string",
       "enum": [
@@ -4152,6 +4190,18 @@
         }
       },
       "description": "Defines a RoleObject object."
+    },
+    "RolePermissionResponse": {
+      "type": "object",
+      "properties": {
+        "rules": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/Permission"
+          }
+        }
+      },
+      "title": "Define RolePermissionResponse struct"
     },
     "RoleUpdateRequest": {
       "type": "object",
