@@ -1751,11 +1751,22 @@ service License {
 
 service ManagedClusters {
 
-    // Enumerate returns a list of managed clusters from a provider like
-    // AWS/other clouds
+    // Enumerate returns a list of managed clusters from providers like
+    // AWS, Azure, GCE, IBM
     // using the given credentials
     rpc Enumerate(ManagedClusterEnumerateRequest)
         returns (ManagedClusterEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/managedcluster/{org_id}"
+        };
+    }
+
+    // Inspect returns detailed information on a managed cluster from providers
+    // like
+    // AWS, Azure, GCE, IBM
+    // using the given credentials
+    rpc Inspect(ManagedClusterInspectRequest)
+        returns (ManagedClusterInspectResponse) {
         option (google.api.http) = {
             get : "/v1/managedcluster/{org_id}"
         };
@@ -1791,8 +1802,22 @@ message ManagedClusterObject {
 
 // Define ClusterEnumerateResponse struct
 message ManagedClusterEnumerateResponse {
-    repeated ManagedClusterObject clusters = 1;
+    repeated ManagedClusterObject cluster = 1;
 }
+
+// Define ManagedClusterInspectRequest struct
+message ManagedClusterInspectRequest {
+    string org_id = 1;
+    bool include_secrets = 2;
+    // cloud credential name.
+    // Inspect will return detailed info of the requested cluster
+    // if this cloud credential has access to it
+    string cloud_credential = 3;
+    string cluster_name = 4;
+}
+
+// Define ClusterInspectResponse struct
+message ManagedClusterInspectResponse { ManagedClusterObject cluster = 1; }
 
 service ActivityTimeLine {
     // Enumerate returns a list of activity data for a given time period

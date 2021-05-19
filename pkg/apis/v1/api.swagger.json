@@ -1268,13 +1268,13 @@
     },
     "/v1/managedcluster/{org_id}": {
       "get": {
-        "summary": "Enumerate returns a list of managed clusters from a provider like\nAWS/other clouds\nusing the given credentials",
-        "operationId": "ManagedClusters_Enumerate",
+        "summary": "Inspect returns detailed information on a managed cluster from providers\nlike\nAWS, Azure, GCE, IBM\nusing the given credentials",
+        "operationId": "ManagedClusters_Inspect",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/ManagedClusterEnumerateResponse"
+              "$ref": "#/definitions/ManagedClusterInspectResponse"
             }
           },
           "default": {
@@ -1299,7 +1299,13 @@
           },
           {
             "name": "cloud_credential",
-            "description": "cloud credential name.\nEnumerate will return list of managed clusters that\nthis cloud credential has access to.",
+            "description": "cloud credential name.\nInspect will return detailed info of the requested cluster\nif this cloud credential has access to it.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cluster_name",
             "in": "query",
             "required": false,
             "type": "string"
@@ -3935,7 +3941,7 @@
     "ManagedClusterEnumerateResponse": {
       "type": "object",
       "properties": {
-        "clusters": {
+        "cluster": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ManagedClusterObject"
@@ -3943,6 +3949,15 @@
         }
       },
       "title": "Define ClusterEnumerateResponse struct"
+    },
+    "ManagedClusterInspectResponse": {
+      "type": "object",
+      "properties": {
+        "cluster": {
+          "$ref": "#/definitions/ManagedClusterObject"
+        }
+      },
+      "title": "Define ClusterInspectResponse struct"
     },
     "ManagedClusterObject": {
       "type": "object",
