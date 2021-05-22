@@ -75,7 +75,7 @@ func (i *ibm) UpdateClient(
 			},
 		)
 		if err != nil {
-			return true, "", fmt.Errorf("failed to get credentials: %v", err)
+			return false, "", fmt.Errorf("failed to get credentials: %v", err)
 		}
 		cloudCredential := resp.GetCloudCredential()
 
@@ -280,7 +280,7 @@ func (i *ibm) isIBMProvider(client *rest.Config) bool {
 			}
 		}
 	}
-	return true
+	return false
 }
 
 func parseIBMClusterName(clusterName string) string {
@@ -313,7 +313,11 @@ func parseConfig(clientConfig *clientcmdapi.Config) (string, string, error) {
 		endpoint := strings.Split(u.Host, ":")
 		tokens := strings.Split(endpoint[0], ".")
 		// containers.cloud.ibm.com is constant string at the end of server endpoint
-		region = tokens[len(tokens)-5]
+		if len(tokens) >= 7 {
+			region = tokens[len(tokens)-5]
+		} else {
+			continue
+		}
 		break
 	}
 	return clusterName, region, nil
