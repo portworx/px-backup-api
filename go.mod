@@ -12,7 +12,7 @@ require (
 	github.com/google/gofuzz v1.1.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/kisielk/errcheck v1.6.0 // indirect
-	github.com/portworx/sched-ops v0.0.0-00010101000000-000000000000
+	github.com/portworx/sched-ops v1.20.4-rc1
 	github.com/sirupsen/logrus v1.6.0
 	golang.org/x/mod v0.4.2 // indirect
 	golang.org/x/oauth2 v0.0.0-20201208152858-08078c50e5b5
@@ -39,7 +39,6 @@ require (
 
 replace (
 	github.com/kubernetes-incubator/external-storage => github.com/libopenstorage/external-storage v0.20.4-openstorage-rc3
-	github.com/portworx/sched-ops => github.com/portworx/sched-ops v0.0.0-20210401071253-c9846fa7a34b
 	k8s.io/api => k8s.io/api v0.20.4
 	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.20.4
 	k8s.io/apimachinery => k8s.io/apimachinery v0.20.4
