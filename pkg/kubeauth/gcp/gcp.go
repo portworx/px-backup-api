@@ -17,7 +17,6 @@ import (
 
 const (
 	pluginName      = "gcp"
-	jsonKeyConfig   = "json-key"
 	credOrgIDConfig = "cred-org-id"
 	credOwnerConfig = "cred-owner"
 	credJSON        = "cred-json"
@@ -69,8 +68,11 @@ func (g *gcp) UpdateClient(
 			if err != nil {
 				return false, emptyKubeconfig, err
 			}
+			cloudCred := resp.GetCloudCredential()
 			client.AuthProvider.Config = make(map[string]string)
-			client.AuthProvider.Config[jsonKeyConfig] = resp.GetCloudCredential().GetCloudCredentialInfo().GetGoogleConfig().GetJsonKey()
+			client.AuthProvider.Config[credOrgIDConfig] = cloudCred.GetOrgId()
+			client.AuthProvider.Config[credOwnerConfig] = cloudCred.GetOwnership().GetOwner()
+			client.AuthProvider.Config[credJSON] = cloudCred.GetCloudCredentialInfo().GetGoogleConfig().GetJsonKey()
 			return true, emptyKubeconfig, nil
 		} // else not a gcp kubeauth provider
 	}
@@ -84,7 +86,7 @@ func (g *gcp) newGCPAuthProvider(
 ) (rest.AuthProvider, error) {
 	var creds *google.Credentials
 	var err error
-	if creds, err = google.CredentialsFromJSON(context.Background(), []byte(gcpConfig[jsonKeyConfig]), defaultScopes...); err != nil {
+	if creds, err = google.CredentialsFromJSON(context.Background(), []byte(gcpConfig[credJSON]), defaultScopes...); err != nil {
 		return nil, err
 	}
 	return &gcpToken{tokenSource: creds.TokenSource}, nil
