@@ -151,7 +151,8 @@ func (i *ibm) updateClient(restConfig *rest.Config, clientConfig *clientcmdapi.C
 	// rest.Config is populated we will cleanup the directory
 	lock, exists := i.clusterMapLock[clusterName]
 	if !exists {
-		i.clusterMapLock[clusterName] = &sync.Mutex{}
+		lock = &sync.Mutex{}
+		i.clusterMapLock[clusterName] = lock
 	}
 	lock.Lock()
 	defer lock.Unlock()
