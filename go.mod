@@ -9,32 +9,25 @@ require (
 	github.com/gogo/protobuf v1.3.2
 	github.com/golang/glog v0.0.0-20210429001901-424d2337a529 // indirect
 	github.com/golang/protobuf v1.5.2
-	github.com/google/gofuzz v1.1.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/kisielk/errcheck v1.6.0 // indirect
 	github.com/portworx/sched-ops v0.0.0-00010101000000-000000000000
 	github.com/sirupsen/logrus v1.6.0
-	golang.org/x/mod v0.4.2 // indirect
 	golang.org/x/oauth2 v0.0.0-20201208152858-08078c50e5b5
-	golang.org/x/sys v0.0.0-20210426230700-d19ff857e887 // indirect
-	google.golang.org/genproto v0.0.0-20210429181445-86c259c2b4ab // indirect
-	google.golang.org/grpc v1.36.1
-	gopkg.in/yaml.v2 v2.4.0 // indirect
-	honnef.co/go/tools v0.1.3 // indirect
-	k8s.io/api v0.20.4 // indirect
+	golang.org/x/sys v0.0.0-20210601080250-7ecdf8ef093b // indirect
+	google.golang.org/genproto v0.0.0-20210602131652-f16073e35f0c // indirect
+	google.golang.org/grpc v1.38.0
+	honnef.co/go/tools v0.2.0 // indirect
 	k8s.io/apiextensions-apiserver v0.20.4 // indirect
 	k8s.io/apimachinery v0.20.4
-	k8s.io/apiserver v0.20.4 // indirect
 	k8s.io/cli-runtime v0.20.4
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/kube-openapi v0.0.0-20210216185858-15cd8face8d6 // indirect
-	k8s.io/kube-scheduler v0.0.0 // indirect
 	k8s.io/kubectl v0.20.4 // indirect
 	k8s.io/kubernetes v1.20.4 // indirect
 	sigs.k8s.io/controller-runtime v0.5.0 // indirect
 	sigs.k8s.io/gcp-compute-persistent-disk-csi-driver v0.7.0 // indirect
 	sigs.k8s.io/sig-storage-lib-external-provisioner/v6 v6.3.0 // indirect
-	sigs.k8s.io/yaml v1.2.0 // indirect
 )
 
 replace (
