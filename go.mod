@@ -14,8 +14,9 @@ require (
 	github.com/portworx/sched-ops v0.0.0-00010101000000-000000000000
 	github.com/sirupsen/logrus v1.6.0
 	golang.org/x/oauth2 v0.0.0-20201208152858-08078c50e5b5
-	golang.org/x/sys v0.0.0-20210601080250-7ecdf8ef093b // indirect
-	google.golang.org/genproto v0.0.0-20210602131652-f16073e35f0c // indirect
+	golang.org/x/sys v0.0.0-20210611083646-a4fc73990273 // indirect
+	golang.org/x/tools v0.1.3 // indirect
+	google.golang.org/genproto v0.0.0-20210611144927-798beca9d670 // indirect
 	google.golang.org/grpc v1.38.0
 	honnef.co/go/tools v0.2.0 // indirect
 	k8s.io/apiextensions-apiserver v0.20.4 // indirect
