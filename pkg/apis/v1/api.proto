@@ -873,7 +873,7 @@ message ClusterCreateRequest {
         (gogoproto.jsontag) = "kubeconfig",
         (gogoproto.moretags) = "secure:\"true\""
     ];
-    // cloud_credential_ref is deprecated, not to be used.
+    // cloud_credential is deprecated, not to be used.
     string cloud_credential = 4;
     ObjectRef cloud_credential_ref = 5;
 }

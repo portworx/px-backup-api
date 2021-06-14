@@ -3470,7 +3470,7 @@
         },
         "cloud_credential": {
           "type": "string",
-          "description": "cloud_credential_ref is deprecated, not to be used."
+          "description": "cloud_credential is deprecated, not to be used."
         },
         "cloud_credential_ref": {
           "$ref": "#/definitions/ObjectRef"

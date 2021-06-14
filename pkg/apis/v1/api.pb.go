@@ -5107,7 +5107,7 @@ type ClusterCreateRequest struct {
 	*CreateMetadata `protobuf:"bytes,1,opt,name=metadata,proto3,embedded=metadata" json:"metadata,omitempty"`
 	PxConfig        *PXConfig `protobuf:"bytes,2,opt,name=px_config,json=pxConfig,proto3" json:"pxconfig"`
 	Kubeconfig      string    `protobuf:"bytes,3,opt,name=kubeconfig,proto3" json:"kubeconfig" secure:"true"`
-	// cloud_credential_ref is deprecated, not to be used.
+	// cloud_credential is deprecated, not to be used.
 	CloudCredential    string     `protobuf:"bytes,4,opt,name=cloud_credential,json=cloudCredential,proto3" json:"cloud_credential,omitempty"`
 	CloudCredentialRef *ObjectRef `protobuf:"bytes,5,opt,name=cloud_credential_ref,json=cloudCredentialRef,proto3" json:"cloud_credential_ref,omitempty"`
 }
