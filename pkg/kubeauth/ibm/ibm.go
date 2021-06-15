@@ -47,6 +47,7 @@ func (i *ibm) UpdateClient(
 	conn *grpc.ClientConn,
 	ctx context.Context,
 	cloudCredentialName string,
+	cloudCredentialUID string,
 	orgID string,
 	restConfig *rest.Config,
 	clientConfig *clientcmdapi.Config,
@@ -70,6 +71,7 @@ func (i *ibm) UpdateClient(
 			ctx,
 			&api.CloudCredentialInspectRequest{
 				Name:           cloudCredentialName,
+				Uid: cloudCredentialUID,
 				OrgId:          orgID,
 				IncludeSecrets: true,
 			},

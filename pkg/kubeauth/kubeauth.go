@@ -16,6 +16,7 @@ type Plugin interface {
 		conn *grpc.ClientConn,
 		ctx context.Context,
 		cloudCredentialName string,
+		cloudCredentialUID string,
 		orgID string,
 		restConfig *rest.Config,
 		clientConfig *clientcmd.Config,
@@ -46,12 +47,13 @@ func UpdateClient(
 	conn *grpc.ClientConn,
 	ctx context.Context,
 	cloudCredentialName string,
+	cloudCredentialUID string,
 	orgID string,
 	restConfig *rest.Config,
 	clientConfig *clientcmd.Config,
 ) (string, error) {
 	for _, plugin := range plugins {
-		updated, kubeconfig, err := plugin.UpdateClient(conn, ctx, cloudCredentialName, orgID, restConfig, clientConfig)
+		updated, kubeconfig, err := plugin.UpdateClient(conn, ctx, cloudCredentialName, cloudCredentialUID, orgID, restConfig, clientConfig)
 		if err != nil {
 			return "", err
 		}
