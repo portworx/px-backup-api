@@ -28,6 +28,7 @@ func (a *aws) UpdateClient(
 	conn *grpc.ClientConn,
 	ctx context.Context,
 	cloudCredentialName string,
+	cloudCredentialUID string,
 	orgID string,
 	client *rest.Config,
 	clientConfig *clientcmdapi.Config,
@@ -45,6 +46,7 @@ func (a *aws) UpdateClient(
 				ctx,
 				&api.CloudCredentialInspectRequest{
 					Name:           cloudCredentialName,
+					Uid: cloudCredentialUID,
 					OrgId:          orgID,
 					IncludeSecrets: true,
 				},
