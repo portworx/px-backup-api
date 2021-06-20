@@ -1707,6 +1707,10 @@ message ActivityEnumerateRequest {
     // For now Hourly and Daily are supported
     Interval interval = 3;
     string time_zone = 4;
+    string cluster = 5;
+    // For which type of Actvity data eg: backup, restore, etc..
+    string kind = 6;
+
     enum Interval {
         Invalid = 0;
         Hourly = 1;
@@ -1720,23 +1724,15 @@ message ActivityEnumerateResponse {
     message Data {
         google.protobuf.Timestamp start_time = 1;
         google.protobuf.Timestamp end_time = 2;
-        uint64 successful_backups = 3;
-        uint64 failed_backups = 4;
-        uint64 inprogress_backups = 5;
-        uint64 partial_success = 6;
-        uint64 delete_pending = 7;
-        uint64 pending_backups = 8;
-        double successful_backups_time_taken = 9;
-        double failed_backups_time_taken = 10;
-        double partial_success_time_taken = 11;
-        uint64 deleting_backups = 12;
-        // Total number of backups in a given time frame (irrespective of the
-        // state)
-        uint64 total_backups = 13;
-        // Size of the backups
-        uint64 total_backup_size = 14;
+        uint64 successful = 3;
+        uint64 failed = 4;
+        uint64 in_progress = 5;
+        double completion_time = 6;
+        // Total number of backups in a given time frame (success/failure)
+        uint64 total = 7;
     }
 }
+
 // Defines a RoleObject object.
 message RoleObject {
     // Metadata of the object
@@ -1859,3 +1855,31 @@ message RolePermissionResponse { map<string, Permission> rules = 1; }
 
 // Define Permission struct
 message Permission { bool full_access = 1; }
+
+// ActivityDataObject defines activity data to be stored
+message ActivityDataObject {
+    Metadata metadata = 1 [ (gogoproto.embed) = true ];
+    string kind = 2;
+    // Final status of activity
+    Status status = 3;
+    // Completion time in seconds
+    double completion_time = 4;
+    // Captures transistion times between different status
+    repeated Opcycle opcycle = 5;
+    string cluster = 6;
+
+    message Opcycle {
+        google.protobuf.Timestamp start_time = 1;
+        google.protobuf.Timestamp last_updated_time = 2;
+        Status status = 3;
+    }
+
+    enum Status {
+        Invalid = 0;
+        Inprogress = 1;
+        Success = 2;
+        Failed = 3;
+        Deleting = 4;
+        Deleted = 5;
+    }
+}
