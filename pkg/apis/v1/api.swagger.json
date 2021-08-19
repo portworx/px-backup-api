@@ -2527,9 +2527,22 @@
         },
         "post_exec_rule_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "backup_type": {
+          "$ref": "#/definitions/BackupCreateRequestBackupType",
+          "title": "To get type of backup (generic or non-generic)"
         }
       },
       "title": "Request message structure for backup create"
+    },
+    "BackupCreateRequestBackupType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Generic",
+        "Normal"
+      ],
+      "default": "Invalid"
     },
     "BackupCreateResponse": {
       "type": "object",
@@ -2659,6 +2672,10 @@
         },
         "cloud_credential_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "backup_type": {
+          "$ref": "#/definitions/BackupInfoBackupType",
+          "title": "To get type of backup (generic or non-generic)"
         }
       }
     },
@@ -2672,6 +2689,23 @@
           "type": "string"
         }
       }
+    },
+    "BackupInfoBackupType": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/BackupInfoBackupTypeType"
+        }
+      }
+    },
+    "BackupInfoBackupTypeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Generic",
+        "Normal"
+      ],
+      "default": "Invalid"
     },
     "BackupInfoStage": {
       "type": "string",
@@ -2756,6 +2790,9 @@
           "type": "string",
           "format": "uint64",
           "title": "actual size of the backup\nincase of incremental, it's the incremental backup size"
+        },
+        "storage_class": {
+          "type": "string"
         }
       }
     },
@@ -3025,9 +3062,22 @@
         },
         "post_exec_rule_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "backup_type": {
+          "$ref": "#/definitions/BackupScheduleCreateRequestBackupType",
+          "title": "To get type of backup (generic or non-generic)"
         }
       },
       "title": "Define BackupScheduleCreateRequest struct"
+    },
+    "BackupScheduleCreateRequestBackupType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Generic",
+        "Normal"
+      ],
+      "default": "Invalid"
     },
     "BackupScheduleCreateResponse": {
       "type": "object",
@@ -3135,8 +3185,29 @@
         },
         "post_exec_rule_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "backup_type": {
+          "$ref": "#/definitions/BackupScheduleInfoBackupType",
+          "title": "To get type of backup (generic or non-generic)"
         }
       }
+    },
+    "BackupScheduleInfoBackupType": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/BackupScheduleInfoBackupTypeType"
+        }
+      }
+    },
+    "BackupScheduleInfoBackupTypeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Generic",
+        "Normal"
+      ],
+      "default": "Invalid"
     },
     "BackupScheduleInfoReclaimPolicyType": {
       "type": "string",
@@ -4074,6 +4145,13 @@
             "$ref": "#/definitions/ResourceInfo"
           },
           "title": "List of resources to restore (optional)"
+        },
+        "storage_class_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "storage class mapping"
         }
       },
       "title": "Define RestoreCreateRequest struct"
