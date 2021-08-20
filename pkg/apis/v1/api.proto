@@ -241,6 +241,16 @@ message BackupScheduleInfo {
     ObjectRef backup_location_ref = 19;
     ObjectRef pre_exec_rule_ref = 20;
     ObjectRef post_exec_rule_ref = 21;
+    // To get type of backup (generic or non-generic)
+    BackupType backup_type = 22;
+    message BackupType {
+        Type type = 1;
+        enum Type {
+            Invalid = 0;
+            Generic = 1;
+            Normal = 2;
+        }
+    }
 
     message SuspendedBy {
         Source source = 1;
@@ -368,6 +378,16 @@ message BackupInfo {
     ObjectRef pre_exec_rule_ref = 22;
     ObjectRef post_exec_rule_ref = 23;
     ObjectRef cloud_credential_ref = 24;
+    // To get type of backup (generic or non-generic)
+    BackupType backup_type = 25;
+    message BackupType {
+        Type type = 1;
+        enum Type {
+            Invalid = 0;
+            Generic = 1;
+            Normal = 2;
+        }
+    }
 
     enum Stage {
         Invalid = 0;
@@ -397,6 +417,7 @@ message BackupInfo {
         // actual size of the backup
         // incase of incremental, it's the incremental backup size
         uint64 actual_size = 10;
+        string storage_class = 11;
     }
 
     // Message for maintaining status of the object.
@@ -747,6 +768,13 @@ message BackupScheduleCreateRequest {
     ObjectRef backup_location_ref = 14;
     ObjectRef pre_exec_rule_ref = 15;
     ObjectRef post_exec_rule_ref = 16;
+    // To get type of backup (generic or non-generic)
+    BackupType backup_type = 17;
+    enum BackupType {
+        Invalid = 0;
+        Generic = 1;
+        Normal = 2;
+    }
 }
 
 // Define BackupScheduleCreateResponse struct
@@ -1285,6 +1313,13 @@ message BackupCreateRequest {
     ObjectRef backup_location_ref = 11;
     ObjectRef pre_exec_rule_ref = 12;
     ObjectRef post_exec_rule_ref = 13;
+    // To get type of backup (generic or non-generic)
+    BackupType backup_type = 14;
+    enum BackupType {
+        Invalid = 0;
+        Generic = 1;
+        Normal = 2;
+    }
 }
 
 // Response message structure for backup create
@@ -1392,6 +1427,8 @@ message RestoreCreateRequest {
     repeated string include_optional_resource_types = 6;
     // List of resources to restore (optional)
     repeated ResourceInfo include_resources = 7;
+    // storage class mapping
+    map<string, string> storage_class_mapping = 8;
 }
 
 // Define RestoreCreateResponse struct
