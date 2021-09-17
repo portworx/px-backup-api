@@ -493,7 +493,6 @@ message RestoreInfo {
     map<string, string> namespace_mapping = 4;
     // Restore replace policy type ("delete"/"retain")
     ReplacePolicy.Type replace_policy = 5;
-
     StatusInfo status = 6;
     repeated RestoredResource resources = 7;
     repeated Volume volumes = 8;
@@ -505,6 +504,8 @@ message RestoreInfo {
     uint64 resource_count = 13;
     string stork_version = 14;
     ObjectRef backup_location_ref = 15;
+    // storage class mapping for generic backup <source, destination>
+    map<string, string> storage_class_mapping = 16;
 
     message RestoredResource {
         string name = 1;
@@ -1427,7 +1428,7 @@ message RestoreCreateRequest {
     repeated string include_optional_resource_types = 6;
     // List of resources to restore (optional)
     repeated ResourceInfo include_resources = 7;
-    // storage class mapping
+    // storage class mapping for generic backup <source, destination>
     map<string, string> storage_class_mapping = 8;
 }
 

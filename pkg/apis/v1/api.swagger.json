@@ -4151,7 +4151,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "title": "storage class mapping"
+          "title": "storage class mapping for generic backup \u003csource, destination\u003e"
         }
       },
       "title": "Define RestoreCreateRequest struct"
@@ -4256,6 +4256,13 @@
         },
         "backup_location_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "storage_class_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "storage class mapping for generic backup \u003csource, destination\u003e"
         }
       },
       "title": "Message for restore info"
