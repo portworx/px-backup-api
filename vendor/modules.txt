@@ -1,5 +1,7 @@
 # cloud.google.com/go v0.65.0
 cloud.google.com/go/compute/metadata
+# github.com/BurntSushi/toml v0.4.1
+## explicit
 # github.com/IBM-Cloud/bluemix-go v0.0.0-20210408042812-96aaa47da4cd
 ## explicit
 github.com/IBM-Cloud/bluemix-go
@@ -38,7 +40,7 @@ github.com/gogo/protobuf/proto
 github.com/gogo/protobuf/protoc-gen-gogo/descriptor
 github.com/gogo/protobuf/sortkeys
 github.com/gogo/protobuf/types
-# github.com/golang/glog v0.0.0-20210429001901-424d2337a529
+# github.com/golang/glog v1.0.0
 ## explicit
 # github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e
 github.com/golang/groupcache/lru
@@ -54,7 +56,6 @@ github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/timestamp
 github.com/golang/protobuf/ptypes/wrappers
 # github.com/google/gofuzz v1.1.0
-## explicit
 github.com/google/gofuzz
 # github.com/googleapis/gnostic v0.5.1
 github.com/googleapis/gnostic/compiler
@@ -93,9 +94,9 @@ github.com/sirupsen/logrus
 github.com/spf13/pflag
 # golang.org/x/crypto v0.0.0-20201208171446-5f87f3452ae9
 golang.org/x/crypto/ssh/terminal
-# golang.org/x/mod v0.4.2
+# golang.org/x/mod v0.5.0
 ## explicit
-# golang.org/x/net v0.0.0-20210316092652-d523dce5a7f4
+# golang.org/x/net v0.0.0-20210405180319-a5a99cb37ef4
 golang.org/x/net/context
 golang.org/x/net/context/ctxhttp
 golang.org/x/net/http/httpguts
@@ -112,7 +113,7 @@ golang.org/x/oauth2/google
 golang.org/x/oauth2/internal
 golang.org/x/oauth2/jws
 golang.org/x/oauth2/jwt
-# golang.org/x/sys v0.0.0-20210426230700-d19ff857e887
+# golang.org/x/sys v0.0.0-20210915083310-ed5796bab164
 ## explicit
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/plan9
@@ -138,12 +139,12 @@ google.golang.org/appengine/internal/modules
 google.golang.org/appengine/internal/remote_api
 google.golang.org/appengine/internal/urlfetch
 google.golang.org/appengine/urlfetch
-# google.golang.org/genproto v0.0.0-20210429181445-86c259c2b4ab
+# google.golang.org/genproto v0.0.0-20210916144049-3192f974c780
 ## explicit
 google.golang.org/genproto/googleapis/api/httpbody
 google.golang.org/genproto/googleapis/rpc/status
 google.golang.org/genproto/protobuf/field_mask
-# google.golang.org/grpc v1.36.1
+# google.golang.org/grpc v1.40.0
 ## explicit
 google.golang.org/grpc
 google.golang.org/grpc/attributes
@@ -189,7 +190,7 @@ google.golang.org/grpc/serviceconfig
 google.golang.org/grpc/stats
 google.golang.org/grpc/status
 google.golang.org/grpc/tap
-# google.golang.org/protobuf v1.26.0
+# google.golang.org/protobuf v1.27.1
 google.golang.org/protobuf/encoding/protojson
 google.golang.org/protobuf/encoding/prototext
 google.golang.org/protobuf/encoding/protowire
@@ -227,14 +228,12 @@ google.golang.org/protobuf/types/known/wrapperspb
 # gopkg.in/inf.v0 v0.9.1
 gopkg.in/inf.v0
 # gopkg.in/yaml.v2 v2.4.0
-## explicit
 gopkg.in/yaml.v2
 # gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
 gopkg.in/yaml.v3
-# honnef.co/go/tools v0.1.3
+# honnef.co/go/tools v0.2.1
 ## explicit
 # k8s.io/api v0.20.4 => k8s.io/api v0.20.4
-## explicit
 k8s.io/api/admissionregistration/v1
 k8s.io/api/admissionregistration/v1beta1
 k8s.io/api/apiserverinternal/v1alpha1
@@ -325,8 +324,6 @@ k8s.io/apimachinery/pkg/watch
 k8s.io/apimachinery/third_party/forked/golang/json
 k8s.io/apimachinery/third_party/forked/golang/netutil
 k8s.io/apimachinery/third_party/forked/golang/reflect
-# k8s.io/apiserver v0.20.4 => k8s.io/apiserver v0.20.4
-## explicit
 # k8s.io/cli-runtime v0.20.4 => k8s.io/cli-runtime v0.20.4
 ## explicit
 k8s.io/cli-runtime/pkg/printers
@@ -411,8 +408,6 @@ k8s.io/klog/v2
 # k8s.io/kube-openapi v0.0.0-20210216185858-15cd8face8d6
 ## explicit
 k8s.io/kube-openapi/pkg/util/proto
-# k8s.io/kube-scheduler v0.0.0 => k8s.io/kube-scheduler v0.20.4
-## explicit
 # k8s.io/kubectl v0.20.4 => k8s.io/kubectl v0.20.4
 ## explicit
 # k8s.io/kubernetes v1.20.4 => k8s.io/kubernetes v1.20.4
@@ -428,7 +423,6 @@ k8s.io/utils/integer
 # sigs.k8s.io/structured-merge-diff/v4 v4.0.2
 sigs.k8s.io/structured-merge-diff/v4/value
 # sigs.k8s.io/yaml v1.2.0
-## explicit
 sigs.k8s.io/yaml
 # github.com/kubernetes-incubator/external-storage => github.com/libopenstorage/external-storage v0.20.4-openstorage-rc3
 # github.com/portworx/sched-ops => github.com/portworx/sched-ops v0.0.0-20210401071253-c9846fa7a34b
