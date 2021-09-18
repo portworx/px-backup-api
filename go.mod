@@ -12,12 +12,13 @@ require (
 	github.com/golang/protobuf v1.5.2
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/kisielk/errcheck v1.6.0 // indirect
-	github.com/portworx/sched-ops v0.0.0-00010101000000-000000000000
-	github.com/sirupsen/logrus v1.6.0
+	github.com/portworx/sched-ops v1.20.4-rc1.0.20210917175300-a553cdf14ddc
+	github.com/sirupsen/logrus v1.8.1
 	golang.org/x/mod v0.5.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20201208152858-08078c50e5b5
-	golang.org/x/sys v0.0.0-20210915083310-ed5796bab164 // indirect
-	google.golang.org/genproto v0.0.0-20210916144049-3192f974c780 // indirect
+	golang.org/x/sys v0.0.0-20210917161153-d61c044b1678 // indirect
+	golang.org/x/tools v0.1.6 // indirect
+	google.golang.org/genproto v0.0.0-20210917145530-b395a37504d4 // indirect
 	google.golang.org/grpc v1.40.0
 	honnef.co/go/tools v0.2.1 // indirect
 	k8s.io/apiextensions-apiserver v0.20.4 // indirect
@@ -27,14 +28,12 @@ require (
 	k8s.io/kube-openapi v0.0.0-20210216185858-15cd8face8d6 // indirect
 	k8s.io/kubectl v0.20.4 // indirect
 	k8s.io/kubernetes v1.20.4 // indirect
-	sigs.k8s.io/controller-runtime v0.5.0 // indirect
 	sigs.k8s.io/gcp-compute-persistent-disk-csi-driver v0.7.0 // indirect
 	sigs.k8s.io/sig-storage-lib-external-provisioner/v6 v6.3.0 // indirect
 )
 
 replace (
 	github.com/kubernetes-incubator/external-storage => github.com/libopenstorage/external-storage v0.20.4-openstorage-rc3
-	github.com/portworx/sched-ops => github.com/portworx/sched-ops v0.0.0-20210401071253-c9846fa7a34b
 	k8s.io/api => k8s.io/api v0.20.4
 	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.20.4
 	k8s.io/apimachinery => k8s.io/apimachinery v0.20.4
