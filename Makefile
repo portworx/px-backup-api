@@ -22,11 +22,13 @@ proto:
 	go get -u \
 	        github.com/gogo/protobuf/protoc-gen-gogo \
 	        github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway \
-	        github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger@v1.16.0 
+	        github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
 	$(PROTOC) -I/usr/local/include -I. \
 		-I${GOPATH}/src \
+                -I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/protoc-gen-openapiv2 \
 		-I${GOPATH}/src/github.com/gogo/protobuf/protobuf \
 		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/ \
 		--gogofaster_out=\
 Mgogoproto/gogo.proto=github.com/gogo/protobuf/gogoproto,\
 Mgoogle/protobuf/any.proto=github.com/gogo/protobuf/types,\
