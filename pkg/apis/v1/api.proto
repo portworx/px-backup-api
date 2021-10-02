@@ -380,6 +380,7 @@ message BackupInfo {
     ObjectRef cloud_credential_ref = 24;
     // To get type of backup (generic or non-generic)
     BackupType backup_type = 25;
+    string cr_uid = 26;
     message BackupType {
         Type type = 1;
         enum Type {
@@ -418,6 +419,7 @@ message BackupInfo {
         // incase of incremental, it's the incremental backup size
         uint64 actual_size = 10;
         string storage_class = 11;
+        string pvc_id = 12;
     }
 
     // Message for maintaining status of the object.

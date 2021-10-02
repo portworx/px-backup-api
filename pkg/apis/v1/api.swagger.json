@@ -2676,6 +2676,9 @@
         "backup_type": {
           "$ref": "#/definitions/BackupInfoBackupType",
           "title": "To get type of backup (generic or non-generic)"
+        },
+        "cr_uid": {
+          "type": "string"
         }
       }
     },
@@ -2792,6 +2795,9 @@
           "title": "actual size of the backup\nincase of incremental, it's the incremental backup size"
         },
         "storage_class": {
+          "type": "string"
+        },
+        "pvc_id": {
           "type": "string"
         }
       }
