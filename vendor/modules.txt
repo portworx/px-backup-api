@@ -92,7 +92,9 @@ github.com/sirupsen/logrus
 github.com/spf13/pflag
 # golang.org/x/crypto v0.0.0-20201208171446-5f87f3452ae9
 golang.org/x/crypto/ssh/terminal
-# golang.org/x/mod v0.5.0
+# golang.org/x/lint v0.0.0-20210508222113-6edffad5e616
+## explicit
+# golang.org/x/mod v0.5.1
 ## explicit
 # golang.org/x/net v0.0.0-20210805182204-aaa1db679c0d
 golang.org/x/net/context
@@ -111,7 +113,7 @@ golang.org/x/oauth2/google
 golang.org/x/oauth2/internal
 golang.org/x/oauth2/jws
 golang.org/x/oauth2/jwt
-# golang.org/x/sys v0.0.0-20210917161153-d61c044b1678
+# golang.org/x/sys v0.0.0-20211013075003-97ac67df715c
 ## explicit
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/plan9
@@ -126,7 +128,7 @@ golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
 # golang.org/x/time v0.0.0-20201208040808-7e3f01d25324
 golang.org/x/time/rate
-# golang.org/x/tools v0.1.6
+# golang.org/x/tools v0.1.7
 ## explicit
 # google.golang.org/appengine v1.6.7
 google.golang.org/appengine
@@ -139,7 +141,7 @@ google.golang.org/appengine/internal/modules
 google.golang.org/appengine/internal/remote_api
 google.golang.org/appengine/internal/urlfetch
 google.golang.org/appengine/urlfetch
-# google.golang.org/genproto v0.0.0-20210917145530-b395a37504d4
+# google.golang.org/genproto v0.0.0-20211013025323-ce878158c4d4
 ## explicit
 google.golang.org/genproto/googleapis/api/httpbody
 google.golang.org/genproto/googleapis/rpc/status

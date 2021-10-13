@@ -1266,36 +1266,6 @@
         ]
       }
     },
-    "/v1/metrics/{org_id}": {
-      "get": {
-        "operationId": "Metrics_Inspect",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/MetricsInspectResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Metrics"
-        ]
-      }
-    },
     "/v1/organization": {
       "get": {
         "summary": "Enumerate returns a list of organization object",
@@ -3920,37 +3890,6 @@
         "ownership": {
           "$ref": "#/definitions/Ownership",
           "title": "ownership of the object"
-        }
-      }
-    },
-    "MetricsInspectResponse": {
-      "type": "object",
-      "properties": {
-        "stats": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/MetricsInspectResponseStats"
-          }
-        }
-      }
-    },
-    "MetricsInspectResponseStats": {
-      "type": "object",
-      "properties": {
-        "cluster": {
-          "type": "string"
-        },
-        "num_namespaces": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "total_backup_size": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "num_schedules": {
-          "type": "string",
-          "format": "uint64"
         }
       }
     },
