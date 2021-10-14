@@ -1230,26 +1230,6 @@ message BackupLocationOwnershipUpdateRequest {
 // Define BackupLocationOwnershipUpdateResponse struct
 message BackupLocationOwnershipUpdateResponse {}
 
-// service Metrics {
-//    rpc Inspect(MetricsInspectRequest) returns (MetricsInspectResponse) {
-//        option (google.api.http) = {
-//            get : "/v1/metrics/{org_id}"
-//        };
-//    }
-//}
-
-// message MetricsInspectRequest { string org_id = 1; }
-
-// message MetricsInspectResponse {
-//    repeated Stats stats = 1;
-//    message Stats {
-//        string cluster = 1;
-//        uint64 num_namespaces = 2;
-//        uint64 total_backup_size = 3;
-//        uint64 num_schedules = 4;
-//    }
-//}
-
 service Backup {
     // Create creates a new backup object
     rpc Create(BackupCreateRequest) returns (BackupCreateResponse) {
