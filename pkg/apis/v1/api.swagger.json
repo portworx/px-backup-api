@@ -13,7 +13,7 @@
   "paths": {
     "/v1/backup": {
       "post": {
-        "summary": "Create creates a new backup object",
+        "summary": "Creates a new backup object",
         "operationId": "Backup_Create",
         "responses": {
           "200": {
@@ -238,7 +238,7 @@
     },
     "/v1/backuplocation": {
       "post": {
-        "summary": "Create creates new backup location",
+        "summary": "Creates new backup location",
         "operationId": "BackupLocation_Create",
         "responses": {
           "200": {
@@ -509,7 +509,7 @@
     },
     "/v1/backupschedule": {
       "post": {
-        "summary": "Create creates new backup schedule",
+        "summary": "Creates new backup schedule",
         "operationId": "BackupSchedule_Create",
         "responses": {
           "200": {
@@ -540,7 +540,7 @@
         ]
       },
       "put": {
-        "summary": "Update updates a backup schedule",
+        "summary": "Updates a backup schedule",
         "operationId": "BackupSchedule_Update",
         "responses": {
           "200": {
@@ -714,7 +714,7 @@
     },
     "/v1/cloudcredential": {
       "post": {
-        "summary": "Create creates new cloud credential",
+        "summary": "Creates new cloud credential",
         "operationId": "CloudCredential_Create",
         "responses": {
           "200": {
@@ -938,7 +938,7 @@
     },
     "/v1/cluster": {
       "post": {
-        "summary": "Create creates a new cluster",
+        "summary": "Creates a new cluster",
         "operationId": "Cluster_Create",
         "responses": {
           "200": {
@@ -1204,7 +1204,7 @@
         ]
       },
       "put": {
-        "summary": "Update updates Usage Based activation ID",
+        "summary": "Updates Usage Based activation ID",
         "operationId": "License_Update",
         "responses": {
           "200": {
@@ -1319,7 +1319,7 @@
         ]
       },
       "post": {
-        "summary": "Create creates new organization object in datastore",
+        "summary": "Creates new organization object in datastore",
         "operationId": "Organization_Create",
         "responses": {
           "200": {
@@ -1383,7 +1383,7 @@
     },
     "/v1/restore": {
       "post": {
-        "summary": "Create creates new restore object in datastore\nIt will also trigger a restore operation on the target cluster",
+        "summary": "Creates new restore object in datastore\nIt will also trigger a restore operation on the target cluster",
         "operationId": "Restore_Create",
         "responses": {
           "200": {
@@ -1700,7 +1700,7 @@
         ]
       },
       "post": {
-        "summary": "Create creates new role object in datastore",
+        "summary": "Creates new role object in datastore",
         "operationId": "Role_Create",
         "responses": {
           "200": {
@@ -1929,7 +1929,7 @@
     },
     "/v1/rule": {
       "post": {
-        "summary": "Create creates new rule",
+        "summary": "Creates new rule",
         "operationId": "Rules_Create",
         "responses": {
           "200": {
@@ -2141,7 +2141,7 @@
     },
     "/v1/schedulepolicy": {
       "post": {
-        "summary": "Create creates new schedule policy.",
+        "summary": "Creates new schedule policy.",
         "operationId": "SchedulePolicy_Create",
         "responses": {
           "200": {

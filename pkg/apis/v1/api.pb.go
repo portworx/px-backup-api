@@ -17702,7 +17702,7 @@ var _Health_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type SchedulePolicyClient interface {
-	// Create creates new schedule policy.
+	// Creates new schedule policy.
 	Create(ctx context.Context, in *SchedulePolicyCreateRequest, opts ...grpc.CallOption) (*SchedulePolicyCreateResponse, error)
 	// Update given schedule policy details
 	Update(ctx context.Context, in *SchedulePolicyUpdateRequest, opts ...grpc.CallOption) (*SchedulePolicyUpdateResponse, error)
@@ -17780,7 +17780,7 @@ func (c *schedulePolicyClient) UpdateOwnership(ctx context.Context, in *Schedule
 
 // SchedulePolicyServer is the server API for SchedulePolicy service.
 type SchedulePolicyServer interface {
-	// Create creates new schedule policy.
+	// Creates new schedule policy.
 	Create(context.Context, *SchedulePolicyCreateRequest) (*SchedulePolicyCreateResponse, error)
 	// Update given schedule policy details
 	Update(context.Context, *SchedulePolicyUpdateRequest) (*SchedulePolicyUpdateResponse, error)
@@ -17966,9 +17966,9 @@ var _SchedulePolicy_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type BackupScheduleClient interface {
-	// Create creates new backup schedule
+	// Creates new backup schedule
 	Create(ctx context.Context, in *BackupScheduleCreateRequest, opts ...grpc.CallOption) (*BackupScheduleCreateResponse, error)
-	// Update updates a backup schedule
+	// Updates a backup schedule
 	Update(ctx context.Context, in *BackupScheduleUpdateRequest, opts ...grpc.CallOption) (*BackupScheduleUpdateResponse, error)
 	// Enumerate returns a list of backup schedule
 	Enumerate(ctx context.Context, in *BackupScheduleEnumerateRequest, opts ...grpc.CallOption) (*BackupScheduleEnumerateResponse, error)
@@ -18033,9 +18033,9 @@ func (c *backupScheduleClient) Delete(ctx context.Context, in *BackupScheduleDel
 
 // BackupScheduleServer is the server API for BackupSchedule service.
 type BackupScheduleServer interface {
-	// Create creates new backup schedule
+	// Creates new backup schedule
 	Create(context.Context, *BackupScheduleCreateRequest) (*BackupScheduleCreateResponse, error)
-	// Update updates a backup schedule
+	// Updates a backup schedule
 	Update(context.Context, *BackupScheduleUpdateRequest) (*BackupScheduleUpdateResponse, error)
 	// Enumerate returns a list of backup schedule
 	Enumerate(context.Context, *BackupScheduleEnumerateRequest) (*BackupScheduleEnumerateResponse, error)
@@ -18192,7 +18192,7 @@ var _BackupSchedule_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ClusterClient interface {
-	// Create creates a new cluster
+	// Creates a new cluster
 	Create(ctx context.Context, in *ClusterCreateRequest, opts ...grpc.CallOption) (*ClusterCreateResponse, error)
 	// Update given cluster details
 	Update(ctx context.Context, in *ClusterUpdateRequest, opts ...grpc.CallOption) (*ClusterUpdateResponse, error)
@@ -18259,7 +18259,7 @@ func (c *clusterClient) Delete(ctx context.Context, in *ClusterDeleteRequest, op
 
 // ClusterServer is the server API for Cluster service.
 type ClusterServer interface {
-	// Create creates a new cluster
+	// Creates a new cluster
 	Create(context.Context, *ClusterCreateRequest) (*ClusterCreateResponse, error)
 	// Update given cluster details
 	Update(context.Context, *ClusterUpdateRequest) (*ClusterUpdateResponse, error)
@@ -18418,7 +18418,7 @@ var _Cluster_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type CloudCredentialClient interface {
-	// Create creates new cloud credential
+	// Creates new cloud credential
 	Create(ctx context.Context, in *CloudCredentialCreateRequest, opts ...grpc.CallOption) (*CloudCredentialCreateResponse, error)
 	// Update given cloud credential details
 	Update(ctx context.Context, in *CloudCredentialUpdateRequest, opts ...grpc.CallOption) (*CloudCredentialUpdateResponse, error)
@@ -18496,7 +18496,7 @@ func (c *cloudCredentialClient) UpdateOwnership(ctx context.Context, in *CloudCr
 
 // CloudCredentialServer is the server API for CloudCredential service.
 type CloudCredentialServer interface {
-	// Create creates new cloud credential
+	// Creates new cloud credential
 	Create(context.Context, *CloudCredentialCreateRequest) (*CloudCredentialCreateResponse, error)
 	// Update given cloud credential details
 	Update(context.Context, *CloudCredentialUpdateRequest) (*CloudCredentialUpdateResponse, error)
@@ -18682,7 +18682,7 @@ var _CloudCredential_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type BackupLocationClient interface {
-	// Create creates new backup location
+	// Creates new backup location
 	Create(ctx context.Context, in *BackupLocationCreateRequest, opts ...grpc.CallOption) (*BackupLocationCreateResponse, error)
 	// Update given backup location details
 	Update(ctx context.Context, in *BackupLocationUpdateRequest, opts ...grpc.CallOption) (*BackupLocationUpdateResponse, error)
@@ -18771,7 +18771,7 @@ func (c *backupLocationClient) UpdateOwnership(ctx context.Context, in *BackupLo
 
 // BackupLocationServer is the server API for BackupLocation service.
 type BackupLocationServer interface {
-	// Create creates new backup location
+	// Creates new backup location
 	Create(context.Context, *BackupLocationCreateRequest) (*BackupLocationCreateResponse, error)
 	// Update given backup location details
 	Update(context.Context, *BackupLocationUpdateRequest) (*BackupLocationUpdateResponse, error)
@@ -19056,7 +19056,7 @@ var _Metrics_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type BackupClient interface {
-	// Create creates a new backup object
+	// Creates a new backup object
 	Create(ctx context.Context, in *BackupCreateRequest, opts ...grpc.CallOption) (*BackupCreateResponse, error)
 	// Update given backup details
 	Update(ctx context.Context, in *BackupUpdateRequest, opts ...grpc.CallOption) (*BackupUpdateResponse, error)
@@ -19123,7 +19123,7 @@ func (c *backupClient) Delete(ctx context.Context, in *BackupDeleteRequest, opts
 
 // BackupServer is the server API for Backup service.
 type BackupServer interface {
-	// Create creates a new backup object
+	// Creates a new backup object
 	Create(context.Context, *BackupCreateRequest) (*BackupCreateResponse, error)
 	// Update given backup details
 	Update(context.Context, *BackupUpdateRequest) (*BackupUpdateResponse, error)
@@ -19282,7 +19282,7 @@ var _Backup_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type RestoreClient interface {
-	// Create creates new restore object in datastore
+	// Creates new restore object in datastore
 	// It will also trigger a restore operation on the target cluster
 	Create(ctx context.Context, in *RestoreCreateRequest, opts ...grpc.CallOption) (*RestoreCreateResponse, error)
 	// Update given restore details
@@ -19350,7 +19350,7 @@ func (c *restoreClient) Delete(ctx context.Context, in *RestoreDeleteRequest, op
 
 // RestoreServer is the server API for Restore service.
 type RestoreServer interface {
-	// Create creates new restore object in datastore
+	// Creates new restore object in datastore
 	// It will also trigger a restore operation on the target cluster
 	Create(context.Context, *RestoreCreateRequest) (*RestoreCreateResponse, error)
 	// Update given restore details
@@ -19510,7 +19510,7 @@ var _Restore_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type OrganizationClient interface {
-	// Create creates new organization object in datastore
+	// Creates new organization object in datastore
 	Create(ctx context.Context, in *OrganizationCreateRequest, opts ...grpc.CallOption) (*OrganizationCreateResponse, error)
 	// Enumerate returns a list of organization object
 	Enumerate(ctx context.Context, in *OrganizationEnumerateRequest, opts ...grpc.CallOption) (*OrganizationEnumerateResponse, error)
@@ -19555,7 +19555,7 @@ func (c *organizationClient) Inspect(ctx context.Context, in *OrganizationInspec
 
 // OrganizationServer is the server API for Organization service.
 type OrganizationServer interface {
-	// Create creates new organization object in datastore
+	// Creates new organization object in datastore
 	Create(context.Context, *OrganizationCreateRequest) (*OrganizationCreateResponse, error)
 	// Enumerate returns a list of organization object
 	Enumerate(context.Context, *OrganizationEnumerateRequest) (*OrganizationEnumerateResponse, error)
@@ -19660,7 +19660,7 @@ var _Organization_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type RulesClient interface {
-	// Create creates new rule
+	// Creates new rule
 	Create(ctx context.Context, in *RuleCreateRequest, opts ...grpc.CallOption) (*RuleCreateResponse, error)
 	// Update given rule details
 	Update(ctx context.Context, in *RuleUpdateRequest, opts ...grpc.CallOption) (*RuleUpdateResponse, error)
@@ -19738,7 +19738,7 @@ func (c *rulesClient) UpdateOwnership(ctx context.Context, in *RuleOwnershipUpda
 
 // RulesServer is the server API for Rules service.
 type RulesServer interface {
-	// Create creates new rule
+	// Creates new rule
 	Create(context.Context, *RuleCreateRequest) (*RuleCreateResponse, error)
 	// Update given rule details
 	Update(context.Context, *RuleUpdateRequest) (*RuleUpdateResponse, error)
@@ -20002,7 +20002,7 @@ type LicenseClient interface {
 	Activate(ctx context.Context, in *LicenseActivateRequest, opts ...grpc.CallOption) (*LicenseActivateResponse, error)
 	// Enumerate returns a list of license for given cluster
 	Inspect(ctx context.Context, in *LicenseInspectRequest, opts ...grpc.CallOption) (*LicenseInspectResponse, error)
-	// Update updates Usage Based activation ID
+	// Updates Usage Based activation ID
 	Update(ctx context.Context, in *LicenseUpdateRequest, opts ...grpc.CallOption) (*LicenseUpdateResponse, error)
 }
 
@@ -20047,7 +20047,7 @@ type LicenseServer interface {
 	Activate(context.Context, *LicenseActivateRequest) (*LicenseActivateResponse, error)
 	// Enumerate returns a list of license for given cluster
 	Inspect(context.Context, *LicenseInspectRequest) (*LicenseInspectResponse, error)
-	// Update updates Usage Based activation ID
+	// Updates Usage Based activation ID
 	Update(context.Context, *LicenseUpdateRequest) (*LicenseUpdateResponse, error)
 }
 
@@ -20222,7 +20222,7 @@ var _ActivityTimeLine_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type RoleClient interface {
-	// Create creates new role object in datastore
+	// Creates new role object in datastore
 	Create(ctx context.Context, in *RoleCreateRequest, opts ...grpc.CallOption) (*RoleCreateResponse, error)
 	// Enumerate returns a list of roles object
 	Enumerate(ctx context.Context, in *RoleEnumerateRequest, opts ...grpc.CallOption) (*RoleEnumerateResponse, error)
@@ -20300,7 +20300,7 @@ func (c *roleClient) Permission(ctx context.Context, in *RolePermissionRequest, 
 
 // RoleServer is the server API for Role service.
 type RoleServer interface {
-	// Create creates new role object in datastore
+	// Creates new role object in datastore
 	Create(context.Context, *RoleCreateRequest) (*RoleCreateResponse, error)
 	// Enumerate returns a list of roles object
 	Enumerate(context.Context, *RoleEnumerateRequest) (*RoleEnumerateResponse, error)

@@ -612,7 +612,7 @@ message EnumerateOptions {
 }
 
 service SchedulePolicy {
-    // Create creates new schedule policy.
+    // Creates new schedule policy.
     rpc Create(SchedulePolicyCreateRequest)
         returns (SchedulePolicyCreateResponse) {
         option (google.api.http) = {
@@ -717,7 +717,7 @@ message SchedulePolicyOwnershipUpdateRequest {
 message SchedulePolicyOwnershipUpdateResponse {}
 
 service BackupSchedule {
-    // Create creates new backup schedule
+    // Creates new backup schedule
     rpc Create(BackupScheduleCreateRequest)
         returns (BackupScheduleCreateResponse) {
         option (google.api.http) = {
@@ -726,7 +726,7 @@ service BackupSchedule {
         };
     }
 
-    // Update updates a backup schedule
+    // Updates a backup schedule
     rpc Update(BackupScheduleUpdateRequest)
         returns (BackupScheduleUpdateResponse) {
         option (google.api.http) = {
@@ -874,7 +874,7 @@ message BackupScheduleDeleteResponse {}
 
 service Cluster {
 
-    // Create creates a new cluster
+    // Creates a new cluster
     rpc Create(ClusterCreateRequest) returns (ClusterCreateResponse) {
         option (google.api.http) = {
             post : "/v1/cluster"
@@ -987,7 +987,7 @@ message ClusterDeleteRequest {
 message ClusterDeleteResponse {}
 
 service CloudCredential {
-    // Create creates new cloud credential
+    // Creates new cloud credential
     rpc Create(CloudCredentialCreateRequest)
         returns (CloudCredentialCreateResponse) {
         option (google.api.http) = {
@@ -1102,7 +1102,7 @@ message CloudCredentialOwnershipUpdateRequest {
 message CloudCredentialOwnershipUpdateResponse {}
 
 service BackupLocation {
-    // Create creates new backup location
+    // Creates new backup location
     rpc Create(BackupLocationCreateRequest)
         returns (BackupLocationCreateResponse) {
         option (google.api.http) = {
@@ -1267,7 +1267,7 @@ message MetricsInspectResponse {
 }
 
 service Backup {
-    // Create creates a new backup object
+    // Creates a new backup object
     rpc Create(BackupCreateRequest) returns (BackupCreateResponse) {
         option (google.api.http) = {
             post : "/v1/backup"
@@ -1392,7 +1392,7 @@ message BackupDeleteRequest {
 message BackupDeleteResponse {}
 
 service Restore {
-    // Create creates new restore object in datastore
+    // Creates new restore object in datastore
     // It will also trigger a restore operation on the target cluster
     rpc Create(RestoreCreateRequest) returns (RestoreCreateResponse) {
         option (google.api.http) = {
@@ -1494,7 +1494,7 @@ message RestoreDeleteRequest {
 message RestoreDeleteResponse {}
 
 service Organization {
-    // Create creates new organization object in datastore
+    // Creates new organization object in datastore
     rpc Create(OrganizationCreateRequest) returns (OrganizationCreateResponse) {
         option (google.api.http) = {
             post : "/v1/organization"
@@ -1595,7 +1595,7 @@ message RuleOwnershipUpdateRequest {
 message RuleOwnershipUpdateResponse {}
 
 service Rules {
-    // Create creates new rule
+    // Creates new rule
     rpc Create(RuleCreateRequest) returns (RuleCreateResponse) {
         option (google.api.http) = {
             post : "/v1/rule"
@@ -1736,7 +1736,7 @@ service License {
         };
     }
 
-    // Update updates Usage Based activation ID
+    // Updates Usage Based activation ID
     rpc Update(LicenseUpdateRequest) returns (LicenseUpdateResponse) {
         option (google.api.http) = {
             put : "/v1/license"
@@ -1810,7 +1810,7 @@ message RoleConfig {
 }
 
 service Role {
-    // Create creates new role object in datastore
+    // Creates new role object in datastore
     rpc Create(RoleCreateRequest) returns (RoleCreateResponse) {
         option (google.api.http) = {
             post : "/v1/role"
