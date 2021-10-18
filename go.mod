@@ -11,15 +11,16 @@ require (
 	github.com/golang/glog v1.0.0 // indirect
 	github.com/golang/protobuf v1.5.2
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.6.0
 	github.com/kisielk/errcheck v1.6.0 // indirect
 	github.com/portworx/sched-ops v1.20.4-rc1.0.20210917175300-a553cdf14ddc
 	github.com/sirupsen/logrus v1.8.1
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
 	golang.org/x/mod v0.5.1 // indirect
-	golang.org/x/oauth2 v0.0.0-20201208152858-08078c50e5b5
-	golang.org/x/sys v0.0.0-20211013075003-97ac67df715c // indirect
+	golang.org/x/oauth2 v0.0.0-20210819190943-2bc19b11175f
+	golang.org/x/sys v0.0.0-20211015200801-69063c4bb744 // indirect
 	golang.org/x/tools v0.1.7 // indirect
-	google.golang.org/genproto v0.0.0-20211013025323-ce878158c4d4 // indirect
+	google.golang.org/genproto v0.0.0-20211016002631-37fc39342514 // indirect
 	google.golang.org/grpc v1.40.0
 	honnef.co/go/tools v0.2.1 // indirect
 	k8s.io/apiextensions-apiserver v0.20.4 // indirect
