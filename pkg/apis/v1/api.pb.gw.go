@@ -191,10 +191,6 @@ func local_request_SchedulePolicy_Enumerate_0(ctx context.Context, marshaler run
 
 }
 
-var (
-	filter_SchedulePolicy_Inspect_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0, "name": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
-)
-
 func request_SchedulePolicy_Inspect_0(ctx context.Context, marshaler runtime.Marshaler, client SchedulePolicyClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SchedulePolicyInspectRequest
 	var metadata runtime.ServerMetadata
@@ -228,11 +224,15 @@ func request_SchedulePolicy_Inspect_0(ctx context.Context, marshaler runtime.Mar
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SchedulePolicy_Inspect_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	msg, err := client.Inspect(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -273,21 +273,21 @@ func local_request_SchedulePolicy_Inspect_0(ctx context.Context, marshaler runti
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SchedulePolicy_Inspect_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	msg, err := server.Inspect(ctx, &protoReq)
 	return msg, metadata, err
 
 }
-
-var (
-	filter_SchedulePolicy_Delete_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0, "name": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
-)
 
 func request_SchedulePolicy_Delete_0(ctx context.Context, marshaler runtime.Marshaler, client SchedulePolicyClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SchedulePolicyDeleteRequest
@@ -322,11 +322,15 @@ func request_SchedulePolicy_Delete_0(ctx context.Context, marshaler runtime.Mars
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SchedulePolicy_Delete_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	msg, err := client.Delete(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -367,11 +371,15 @@ func local_request_SchedulePolicy_Delete_0(ctx context.Context, marshaler runtim
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SchedulePolicy_Delete_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	msg, err := server.Delete(ctx, &protoReq)
@@ -553,10 +561,6 @@ func local_request_BackupSchedule_Enumerate_0(ctx context.Context, marshaler run
 
 }
 
-var (
-	filter_BackupSchedule_Inspect_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0, "name": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
-)
-
 func request_BackupSchedule_Inspect_0(ctx context.Context, marshaler runtime.Marshaler, client BackupScheduleClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq BackupScheduleInspectRequest
 	var metadata runtime.ServerMetadata
@@ -590,11 +594,15 @@ func request_BackupSchedule_Inspect_0(ctx context.Context, marshaler runtime.Mar
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_BackupSchedule_Inspect_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	msg, err := client.Inspect(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -635,11 +643,15 @@ func local_request_BackupSchedule_Inspect_0(ctx context.Context, marshaler runti
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_BackupSchedule_Inspect_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	msg, err := server.Inspect(ctx, &protoReq)
@@ -648,7 +660,7 @@ func local_request_BackupSchedule_Inspect_0(ctx context.Context, marshaler runti
 }
 
 var (
-	filter_BackupSchedule_Delete_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0, "name": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
+	filter_BackupSchedule_Delete_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0, "name": 1, "uid": 2}, Base: []int{1, 1, 2, 3, 0, 0, 0}, Check: []int{0, 1, 1, 1, 2, 3, 4}}
 )
 
 func request_BackupSchedule_Delete_0(ctx context.Context, marshaler runtime.Marshaler, client BackupScheduleClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
@@ -682,6 +694,17 @@ func request_BackupSchedule_Delete_0(ctx context.Context, marshaler runtime.Mars
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
+	}
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	if err := req.ParseForm(); err != nil {
@@ -727,6 +750,17 @@ func local_request_BackupSchedule_Delete_0(ctx context.Context, marshaler runtim
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
+	}
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	if err := req.ParseForm(); err != nil {
@@ -1210,7 +1244,7 @@ func local_request_CloudCredential_Enumerate_0(ctx context.Context, marshaler ru
 }
 
 var (
-	filter_CloudCredential_Inspect_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0, "name": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
+	filter_CloudCredential_Inspect_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0, "name": 1, "uid": 2}, Base: []int{1, 1, 2, 3, 0, 0, 0}, Check: []int{0, 1, 1, 1, 2, 3, 4}}
 )
 
 func request_CloudCredential_Inspect_0(ctx context.Context, marshaler runtime.Marshaler, client CloudCredentialClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
@@ -1244,6 +1278,17 @@ func request_CloudCredential_Inspect_0(ctx context.Context, marshaler runtime.Ma
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
+	}
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	if err := req.ParseForm(); err != nil {
@@ -1291,6 +1336,17 @@ func local_request_CloudCredential_Inspect_0(ctx context.Context, marshaler runt
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
+	}
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
+	}
+
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
@@ -1302,10 +1358,6 @@ func local_request_CloudCredential_Inspect_0(ctx context.Context, marshaler runt
 	return msg, metadata, err
 
 }
-
-var (
-	filter_CloudCredential_Delete_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0, "name": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
-)
 
 func request_CloudCredential_Delete_0(ctx context.Context, marshaler runtime.Marshaler, client CloudCredentialClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CloudCredentialDeleteRequest
@@ -1340,11 +1392,15 @@ func request_CloudCredential_Delete_0(ctx context.Context, marshaler runtime.Mar
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_CloudCredential_Delete_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	msg, err := client.Delete(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -1385,11 +1441,15 @@ func local_request_CloudCredential_Delete_0(ctx context.Context, marshaler runti
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_CloudCredential_Delete_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	msg, err := server.Delete(ctx, &protoReq)
@@ -1571,10 +1631,6 @@ func local_request_BackupLocation_Enumerate_0(ctx context.Context, marshaler run
 
 }
 
-var (
-	filter_BackupLocation_Inspect_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0, "name": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
-)
-
 func request_BackupLocation_Inspect_0(ctx context.Context, marshaler runtime.Marshaler, client BackupLocationClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq BackupLocationInspectRequest
 	var metadata runtime.ServerMetadata
@@ -1608,11 +1664,15 @@ func request_BackupLocation_Inspect_0(ctx context.Context, marshaler runtime.Mar
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_BackupLocation_Inspect_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	msg, err := client.Inspect(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -1653,11 +1713,15 @@ func local_request_BackupLocation_Inspect_0(ctx context.Context, marshaler runti
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_BackupLocation_Inspect_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	msg, err := server.Inspect(ctx, &protoReq)
@@ -1666,7 +1730,7 @@ func local_request_BackupLocation_Inspect_0(ctx context.Context, marshaler runti
 }
 
 var (
-	filter_BackupLocation_Delete_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0, "name": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
+	filter_BackupLocation_Delete_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0, "name": 1, "uid": 2}, Base: []int{1, 1, 2, 3, 0, 0, 0}, Check: []int{0, 1, 1, 1, 2, 3, 4}}
 )
 
 func request_BackupLocation_Delete_0(ctx context.Context, marshaler runtime.Marshaler, client BackupLocationClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
@@ -1700,6 +1764,17 @@ func request_BackupLocation_Delete_0(ctx context.Context, marshaler runtime.Mars
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
+	}
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	if err := req.ParseForm(); err != nil {
@@ -1745,6 +1820,17 @@ func local_request_BackupLocation_Delete_0(ctx context.Context, marshaler runtim
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
+	}
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	if err := req.ParseForm(); err != nil {
@@ -2711,10 +2797,6 @@ func local_request_Rules_Enumerate_0(ctx context.Context, marshaler runtime.Mars
 
 }
 
-var (
-	filter_Rules_Inspect_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0, "name": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
-)
-
 func request_Rules_Inspect_0(ctx context.Context, marshaler runtime.Marshaler, client RulesClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq RuleInspectRequest
 	var metadata runtime.ServerMetadata
@@ -2748,11 +2830,15 @@ func request_Rules_Inspect_0(ctx context.Context, marshaler runtime.Marshaler, c
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Rules_Inspect_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	msg, err := client.Inspect(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -2793,21 +2879,21 @@ func local_request_Rules_Inspect_0(ctx context.Context, marshaler runtime.Marsha
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Rules_Inspect_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	msg, err := server.Inspect(ctx, &protoReq)
 	return msg, metadata, err
 
 }
-
-var (
-	filter_Rules_Delete_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0, "name": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
-)
 
 func request_Rules_Delete_0(ctx context.Context, marshaler runtime.Marshaler, client RulesClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq RuleDeleteRequest
@@ -2842,11 +2928,15 @@ func request_Rules_Delete_0(ctx context.Context, marshaler runtime.Marshaler, cl
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Rules_Delete_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	msg, err := client.Delete(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -2887,11 +2977,15 @@ func local_request_Rules_Delete_0(ctx context.Context, marshaler runtime.Marshal
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Rules_Delete_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	msg, err := server.Delete(ctx, &protoReq)
@@ -3301,10 +3395,6 @@ func local_request_Role_Enumerate_0(ctx context.Context, marshaler runtime.Marsh
 
 }
 
-var (
-	filter_Role_Inspect_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0, "name": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
-)
-
 func request_Role_Inspect_0(ctx context.Context, marshaler runtime.Marshaler, client RoleClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq RoleInspectRequest
 	var metadata runtime.ServerMetadata
@@ -3338,11 +3428,15 @@ func request_Role_Inspect_0(ctx context.Context, marshaler runtime.Marshaler, cl
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Role_Inspect_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	msg, err := client.Inspect(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -3383,11 +3477,15 @@ func local_request_Role_Inspect_0(ctx context.Context, marshaler runtime.Marshal
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Role_Inspect_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	msg, err := server.Inspect(ctx, &protoReq)
@@ -3429,10 +3527,6 @@ func local_request_Role_Update_0(ctx context.Context, marshaler runtime.Marshale
 
 }
 
-var (
-	filter_Role_Delete_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0, "name": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
-)
-
 func request_Role_Delete_0(ctx context.Context, marshaler runtime.Marshaler, client RoleClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq RoleDeleteRequest
 	var metadata runtime.ServerMetadata
@@ -3466,11 +3560,15 @@ func request_Role_Delete_0(ctx context.Context, marshaler runtime.Marshaler, cli
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Role_Delete_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	msg, err := client.Delete(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -3511,11 +3609,15 @@ func local_request_Role_Delete_0(ctx context.Context, marshaler runtime.Marshale
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok = pathParams["uid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Role_Delete_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.Uid, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	msg, err := server.Delete(ctx, &protoReq)
@@ -5334,9 +5436,9 @@ var (
 
 	pattern_SchedulePolicy_Enumerate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "schedulepolicy", "org_id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_SchedulePolicy_Inspect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "schedulepolicy", "org_id", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_SchedulePolicy_Inspect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "schedulepolicy", "org_id", "name", "uid"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_SchedulePolicy_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "schedulepolicy", "org_id", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_SchedulePolicy_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "schedulepolicy", "org_id", "name", "uid"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_SchedulePolicy_UpdateOwnership_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "schedulepolicy", "updateownership"}, "", runtime.AssumeColonVerbOpt(true)))
 )
@@ -5503,9 +5605,9 @@ var (
 
 	pattern_BackupSchedule_Enumerate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "backupschedule", "org_id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_BackupSchedule_Inspect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "backupschedule", "org_id", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_BackupSchedule_Inspect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "backupschedule", "org_id", "name", "uid"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_BackupSchedule_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "backupschedule", "org_id", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_BackupSchedule_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "backupschedule", "org_id", "name", "uid"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
@@ -5853,9 +5955,9 @@ var (
 
 	pattern_CloudCredential_Enumerate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "cloudcredential", "org_id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_CloudCredential_Inspect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "cloudcredential", "org_id", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_CloudCredential_Inspect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "cloudcredential", "org_id", "name", "uid"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_CloudCredential_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "cloudcredential", "org_id", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_CloudCredential_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "cloudcredential", "org_id", "name", "uid"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_CloudCredential_UpdateOwnership_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "cloudcredential", "updateownership"}, "", runtime.AssumeColonVerbOpt(true)))
 )
@@ -6062,9 +6164,9 @@ var (
 
 	pattern_BackupLocation_Enumerate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "backuplocation", "org_id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_BackupLocation_Inspect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "backuplocation", "org_id", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_BackupLocation_Inspect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "backuplocation", "org_id", "name", "uid"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_BackupLocation_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "backuplocation", "org_id", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_BackupLocation_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "backuplocation", "org_id", "name", "uid"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_BackupLocation_Validate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "backuplocation", "validate"}, "", runtime.AssumeColonVerbOpt(true)))
 
@@ -6771,9 +6873,9 @@ var (
 
 	pattern_Rules_Enumerate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "rule", "org_id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Rules_Inspect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "rule", "org_id", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Rules_Inspect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "rule", "org_id", "name", "uid"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Rules_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "rule", "org_id", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Rules_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "rule", "org_id", "name", "uid"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Rules_UpdateOwnership_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "rule", "updateownership"}, "", runtime.AssumeColonVerbOpt(true)))
 )
@@ -7213,11 +7315,11 @@ var (
 
 	pattern_Role_Enumerate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "role", "org_id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Role_Inspect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "role", "org_id", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Role_Inspect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "role", "org_id", "name", "uid"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Role_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "role"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Role_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "role", "org_id", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Role_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "role", "org_id", "name", "uid"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Role_Permission_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "role"}, "", runtime.AssumeColonVerbOpt(true)))
 )

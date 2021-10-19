@@ -642,7 +642,7 @@ service SchedulePolicy {
     rpc Inspect(SchedulePolicyInspectRequest)
         returns (SchedulePolicyInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/schedulepolicy/{org_id}/{name}"
+            get : "/v1/schedulepolicy/{org_id}/{name}/{uid}"
         };
     }
 
@@ -650,7 +650,7 @@ service SchedulePolicy {
     rpc Delete(SchedulePolicyDeleteRequest)
         returns (SchedulePolicyDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/schedulepolicy/{org_id}/{name}"
+            delete : "/v1/schedulepolicy/{org_id}/{name}/{uid}"
         };
     }
 
@@ -747,7 +747,7 @@ service BackupSchedule {
     rpc Inspect(BackupScheduleInspectRequest)
         returns (BackupScheduleInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/backupschedule/{org_id}/{name}"
+            get : "/v1/backupschedule/{org_id}/{name}/{uid}"
         };
     }
 
@@ -755,7 +755,7 @@ service BackupSchedule {
     rpc Delete(BackupScheduleDeleteRequest)
         returns (BackupScheduleDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/backupschedule/{org_id}/{name}"
+            delete : "/v1/backupschedule/{org_id}/{name}/{uid}"
         };
     }
 }
@@ -1017,7 +1017,7 @@ service CloudCredential {
     rpc Inspect(CloudCredentialInspectRequest)
         returns (CloudCredentialInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/cloudcredential/{org_id}/{name}"
+            get : "/v1/cloudcredential/{org_id}/{name}/{uid}"
         };
     }
 
@@ -1025,7 +1025,7 @@ service CloudCredential {
     rpc Delete(CloudCredentialDeleteRequest)
         returns (CloudCredentialDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/cloudcredential/{org_id}/{name}"
+            delete : "/v1/cloudcredential/{org_id}/{name}/{uid}"
         };
     }
 
@@ -1132,7 +1132,7 @@ service BackupLocation {
     rpc Inspect(BackupLocationInspectRequest)
         returns (BackupLocationInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/backuplocation/{org_id}/{name}"
+            get : "/v1/backuplocation/{org_id}/{name}/{uid}"
         };
     }
 
@@ -1140,7 +1140,7 @@ service BackupLocation {
     rpc Delete(BackupLocationDeleteRequest)
         returns (BackupLocationDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/backuplocation/{org_id}/{name}"
+            delete : "/v1/backuplocation/{org_id}/{name}/{uid}"
         };
     }
 
@@ -1621,14 +1621,14 @@ service Rules {
     // Inspect returns detailed information about the specified rule
     rpc Inspect(RuleInspectRequest) returns (RuleInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/rule/{org_id}/{name}"
+            get : "/v1/rule/{org_id}/{name}/{uid}"
         };
     }
 
     // Delete removes rule from px-backup
     rpc Delete(RuleDeleteRequest) returns (RuleDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/rule/{org_id}/{name}"
+            delete : "/v1/rule/{org_id}/{name}/{uid}"
         };
     }
 
@@ -1827,7 +1827,7 @@ service Role {
     // Inspect returns detailed information about requested role object
     rpc Inspect(RoleInspectRequest) returns (RoleInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/role/{org_id}/{name}"
+            get : "/v1/role/{org_id}/{name}/{uid}"
         };
     }
     // Update given role information
@@ -1840,7 +1840,7 @@ service Role {
     // Delete removes given role from px-backup
     rpc Delete(RoleDeleteRequest) returns (RoleDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/role/{org_id}/{name}"
+            delete : "/v1/role/{org_id}/{name}/{uid}"
         };
     }
     // Permission returns list of service,apis permission for given user
