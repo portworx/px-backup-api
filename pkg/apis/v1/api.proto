@@ -747,7 +747,7 @@ service BackupSchedule {
     rpc Inspect(BackupScheduleInspectRequest)
         returns (BackupScheduleInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/backupschedule/{org_id}/{name}/{uid}"
+            get : "/v1/backupschedule/{org_id}/{name}"
         };
     }
 
@@ -755,7 +755,7 @@ service BackupSchedule {
     rpc Delete(BackupScheduleDeleteRequest)
         returns (BackupScheduleDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/backupschedule/{org_id}/{name}/{uid}"
+            delete : "/v1/backupschedule/{org_id}/{name}"
         };
     }
 }

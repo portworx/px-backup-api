@@ -621,7 +621,7 @@
         ]
       }
     },
-    "/v1/backupschedule/{org_id}/{name}/{uid}": {
+    "/v1/backupschedule/{org_id}/{name}": {
       "get": {
         "summary": "Inspect returns detail information about a specified backup schedule",
         "operationId": "BackupSchedule_Inspect",
@@ -654,8 +654,8 @@
           },
           {
             "name": "uid",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string"
           }
         ],
@@ -694,17 +694,17 @@
             "type": "string"
           },
           {
-            "name": "uid",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
             "name": "delete_backups",
             "description": "delete_backups indicates whether the cloud backup files need to\nbe deleted or retained.",
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
