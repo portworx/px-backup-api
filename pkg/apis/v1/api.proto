@@ -436,6 +436,8 @@ message BackupInfo {
         uint64 actual_size = 10;
         string storage_class = 11;
         string pvc_id = 12;
+        string provisioner = 13;
+        string volumesnapshot = 14;
     }
 
     // Message for maintaining status of the object.
