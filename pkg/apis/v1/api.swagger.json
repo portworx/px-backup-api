@@ -2353,7 +2353,7 @@
     },
     "/v1/version": {
       "get": {
-        "summary": "Get gets the version of the server",
+        "summary": "gets the version of the server",
         "operationId": "Version_Get",
         "responses": {
           "200": {

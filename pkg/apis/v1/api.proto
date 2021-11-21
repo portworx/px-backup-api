@@ -1645,7 +1645,7 @@ service Rules {
 }
 
 service Version {
-    // Get gets the version of the server
+    // gets the version of the server
     rpc Get(VersionGetRequest) returns (VersionGetResponse) {
         option (google.api.http) = {
             get : "/v1/version"
