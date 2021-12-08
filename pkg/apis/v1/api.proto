@@ -1249,6 +1249,7 @@ message BackupLocationOwnershipUpdateRequest {
 message BackupLocationOwnershipUpdateResponse {}
 
 service Metrics {
+    // Returns metrics details of backups
     rpc Inspect(MetricsInspectRequest) returns (MetricsInspectResponse) {
         option (google.api.http) = {
             get : "/v1/metrics/{org_id}"
