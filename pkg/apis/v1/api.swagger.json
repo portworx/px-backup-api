@@ -1268,6 +1268,7 @@
     },
     "/v1/metrics/{org_id}": {
       "get": {
+        "summary": "Returns metrics details of backups",
         "operationId": "Metrics_Inspect",
         "responses": {
           "200": {
