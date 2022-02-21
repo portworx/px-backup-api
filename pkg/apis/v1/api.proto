@@ -12,31 +12,26 @@ import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "pkg/apis/v1/common.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-option (gogoproto.populate_all) = true;
-option (gogoproto.equal_all) = true;
-option (gogoproto.testgen_all) = true;
-option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+option(gogoproto.populate_all) = true;
+option(gogoproto.equal_all) = true;
+option(gogoproto.testgen_all) = true;
+option(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     security_definitions : {
         security : {
-            key : "bearer"
-            value : {
-                type : TYPE_API_KEY
-                in : IN_HEADER
-                name : "Authorization"
-                description : "Authentication token, prefixed by Bearer: "
-                              "Bearer <token>"
+            key : "bearer" value : {
+                type : TYPE_API_KEY in : IN_HEADER name :
+                "Authorization" description :
+                "Authentication token, prefixed by Bearer: "
+                "Bearer <token>"
             }
         }
-    }
-    security : {security_requirement : {key : "bearer"}}
+    } security : { security_requirement : { key : "bearer" } }
 };
 
-message OrganizationObject {
-    Metadata metadata = 1 [ (gogoproto.embed) = true ];
-}
+message OrganizationObject { Metadata metadata = 1 [(gogoproto.embed) = true]; }
 
 message ClusterInfo {
-    PXConfig px_config = 1 [ (gogoproto.jsontag) = "pxconfig" ];
+    PXConfig px_config = 1 [(gogoproto.jsontag) = "pxconfig"];
     string kubeconfig = 2 [
         (gogoproto.jsontag) = "kubeconfig",
         (gogoproto.moretags) = "secure:\"true\""
@@ -67,17 +62,17 @@ message ClusterInfo {
 }
 
 message ClusterObject {
-    Metadata metadata = 1 [ (gogoproto.embed) = true ];
-    ClusterInfo clusterInfo = 2
-        [ (gogoproto.jsontag) = "clusterinfo", (gogoproto.embed) = true ];
+    Metadata metadata = 1 [(gogoproto.embed) = true];
+    ClusterInfo clusterInfo =
+        2 [ (gogoproto.jsontag) = "clusterinfo", (gogoproto.embed) = true ];
 }
 
 message PXConfig {
-    string access_token = 1 [ (gogoproto.jsontag) = "accesstoken" ];
+    string access_token = 1 [(gogoproto.jsontag) = "accesstoken"];
 }
 
 message AWSConfig {
-    string access_key = 1 [ (gogoproto.jsontag) = "accesskey" ];
+    string access_key = 1 [(gogoproto.jsontag) = "accesskey"];
     string secret_key = 2 [
         (gogoproto.jsontag) = "secretkey",
         (gogoproto.moretags) = "secure:\"true\""
@@ -151,14 +146,14 @@ message CloudCredentialInfo {
 }
 
 message CloudCredentialObject {
-    Metadata metadata = 1
-        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    Metadata metadata =
+        1 [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
     CloudCredentialInfo cloud_credential_info = 2;
 }
 
 message SchedulePolicyInfo {
     message IncrementalCount {
-        uint64 count = 1 [ (gogoproto.jsontag) = "count" ];
+        uint64 count = 1 [(gogoproto.jsontag) = "count"];
     }
 
     message IntervalPolicy {
@@ -224,9 +219,9 @@ message SchedulePolicyInfo {
 }
 
 message SchedulePolicyObject {
-    Metadata metadata = 1
-        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
-    SchedulePolicyInfo schedule_policy_info = 2 [ (gogoproto.embed) = true ];
+    Metadata metadata =
+        1 [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    SchedulePolicyInfo schedule_policy_info = 2 [(gogoproto.embed) = true];
 }
 
 message BackupScheduleInfo {
@@ -306,9 +301,9 @@ message BackupScheduleInfo {
 }
 
 message BackupScheduleObject {
-    Metadata metadata = 1
-        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
-    BackupScheduleInfo backup_schedule_info = 2 [ (gogoproto.embed) = true ];
+    Metadata metadata =
+        1 [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    BackupScheduleInfo backup_schedule_info = 2 [(gogoproto.embed) = true];
 }
 
 message BackupLocationInfo {
@@ -343,11 +338,12 @@ message BackupLocationInfo {
         Status status = 1;
         string reason = 2;
     }
+    bool objLockEnbled = 9;
 }
 
 message BackupLocationObject {
-    Metadata metadata = 1
-        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    Metadata metadata =
+        1 [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
     BackupLocationInfo backup_location_info = 2;
 }
 
@@ -463,33 +459,32 @@ message BackupInfo {
 
 // Message for Backup object which will be stored in Datastore.
 message BackupObject {
-    Metadata metadata = 1 [ (gogoproto.embed) = true ];
-    BackupInfo backup_info = 2 [ (gogoproto.embed) = true ];
+    Metadata metadata = 1 [(gogoproto.embed) = true];
+    BackupInfo backup_info = 2 [(gogoproto.embed) = true];
 }
 
 // Message for passing pre and post exec rules for backup
 message RulesInfo {
-    repeated RuleItem rules = 1 [ (gogoproto.moretags) = "yaml:\"rules\"" ];
+    repeated RuleItem rules = 1 [(gogoproto.moretags) = "yaml:\"rules\""];
 
     message RuleItem {
-        map<string, string> pod_selector = 1
-            [ (gogoproto.moretags) = "yaml:\"podSelector\"" ];
-        repeated Action actions = 2
-            [ (gogoproto.moretags) = "yaml:\"actions\"" ];
+        map<string, string> pod_selector =
+            1 [(gogoproto.moretags) = "yaml:\"podSelector\""];
+        repeated Action actions = 2 [(gogoproto.moretags) = "yaml:\"actions\""];
         string container = 3;
     }
 
     message Action {
-        bool background = 1 [ (gogoproto.moretags) = "yaml:\"background\"" ];
-        bool run_in_single_pod = 2
-            [ (gogoproto.moretags) = "yaml:\"runInSinglePod\"" ];
+        bool background = 1 [(gogoproto.moretags) = "yaml:\"background\""];
+        bool run_in_single_pod =
+            2 [(gogoproto.moretags) = "yaml:\"runInSinglePod\""];
         string value = 3;
     }
 }
 
 message RuleObject {
-    Metadata metadata = 1 [ (gogoproto.embed) = true ];
-    RulesInfo rules_info = 2 [ (gogoproto.embed) = true ];
+    Metadata metadata = 1 [(gogoproto.embed) = true];
+    RulesInfo rules_info = 2 [(gogoproto.embed) = true];
 }
 
 message ReplacePolicy {
@@ -569,16 +564,14 @@ message RestoreInfo {
 
 // Message for Restore object which will be stored in Datastore.
 message RestoreObject {
-    Metadata metadata = 1 [ (gogoproto.embed) = true ];
-    RestoreInfo restore_info = 2 [ (gogoproto.embed) = true ];
+    Metadata metadata = 1 [(gogoproto.embed) = true];
+    RestoreInfo restore_info = 2 [(gogoproto.embed) = true];
 }
 
 service Health {
     // Status checks the health of the server
-    rpc Status(HealthStatusRequest) returns (HealthStatusResponse) {
-        option (google.api.http) = {
-            get : "/v1/health"
-        };
+    rpc Status(HealthStatusRequest) returns(HealthStatusResponse) {
+        option(google.api.http) = { get : "/v1/health" };
     }
 }
 
@@ -616,66 +609,57 @@ message EnumerateOptions {
 service SchedulePolicy {
     // Creates new schedule policy.
     rpc Create(SchedulePolicyCreateRequest)
-        returns (SchedulePolicyCreateResponse) {
-        option (google.api.http) = {
-            post : "/v1/schedulepolicy"
-            body : "*"
-        };
+        returns(SchedulePolicyCreateResponse) {
+        option(google.api.http) = { post : "/v1/schedulepolicy" body : "*" };
     }
 
     // Update given schedule policy details
     rpc Update(SchedulePolicyUpdateRequest)
-        returns (SchedulePolicyUpdateResponse) {
-        option (google.api.http) = {
-            put : "/v1/schedulepolicy"
-            body : "*"
-        };
+        returns(SchedulePolicyUpdateResponse) {
+        option(google.api.http) = { put : "/v1/schedulepolicy" body : "*" };
     }
 
     // Enumerate returns a list of schedule policy
     rpc Enumerate(SchedulePolicyEnumerateRequest)
-        returns (SchedulePolicyEnumerateResponse) {
-        option (google.api.http) = {
-            get : "/v1/schedulepolicy/{org_id}"
-        };
+        returns(SchedulePolicyEnumerateResponse) {
+        option(google.api.http) = { get : "/v1/schedulepolicy/{org_id}" };
     }
 
     // Inspect returns detail information about a specified schedule policy
     rpc Inspect(SchedulePolicyInspectRequest)
-        returns (SchedulePolicyInspectResponse) {
-        option (google.api.http) = {
+        returns(SchedulePolicyInspectResponse) {
+        option(google.api.http) = {
             get : "/v1/schedulepolicy/{org_id}/{name}/{uid}"
         };
     }
 
     // Delete removes a schedule policy
     rpc Delete(SchedulePolicyDeleteRequest)
-        returns (SchedulePolicyDeleteResponse) {
-        option (google.api.http) = {
+        returns(SchedulePolicyDeleteResponse) {
+        option(google.api.http) = {
             delete : "/v1/schedulepolicy/{org_id}/{name}/{uid}"
         };
     }
 
     // UpdateOwnership updates ownership of existing object
     rpc UpdateOwnership(SchedulePolicyOwnershipUpdateRequest)
-        returns (SchedulePolicyOwnershipUpdateResponse) {
-        option (google.api.http) = {
-            put : "/v1/schedulepolicy/updateownership"
-            body : "*"
+        returns(SchedulePolicyOwnershipUpdateResponse) {
+        option(google.api.http) = {
+            put : "/v1/schedulepolicy/updateownership" body : "*"
         };
     }
 }
 
 // Define SchedulePolicyCreateRequest struct
 message SchedulePolicyCreateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
     SchedulePolicyInfo schedule_policy = 2;
 }
 // Define SchedulePolicyCreateResponse struct
 message SchedulePolicyCreateResponse {}
 // Define SchedulePolicyUpdateRequest struct
 message SchedulePolicyUpdateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
     SchedulePolicyInfo schedule_policy = 2;
 }
 // Define SchedulePolicyUpdateResponse struct
@@ -721,42 +705,33 @@ message SchedulePolicyOwnershipUpdateResponse {}
 service BackupSchedule {
     // Creates new backup schedule
     rpc Create(BackupScheduleCreateRequest)
-        returns (BackupScheduleCreateResponse) {
-        option (google.api.http) = {
-            post : "/v1/backupschedule"
-            body : "*"
-        };
+        returns(BackupScheduleCreateResponse) {
+        option(google.api.http) = { post : "/v1/backupschedule" body : "*" };
     }
 
     // Updates a backup schedule
     rpc Update(BackupScheduleUpdateRequest)
-        returns (BackupScheduleUpdateResponse) {
-        option (google.api.http) = {
-            put : "/v1/backupschedule"
-            body : "*"
-        };
+        returns(BackupScheduleUpdateResponse) {
+        option(google.api.http) = { put : "/v1/backupschedule" body : "*" };
     }
 
     // Enumerate returns a list of backup schedule
     rpc Enumerate(BackupScheduleEnumerateRequest)
-        returns (BackupScheduleEnumerateResponse) {
-        option (google.api.http) = {
-            get : "/v1/backupschedule/{org_id}"
-        };
+        returns(BackupScheduleEnumerateResponse) {
+        option(google.api.http) = { get : "/v1/backupschedule/{org_id}" };
     }
 
     // Inspect returns detail information about a specified backup schedule
     rpc Inspect(BackupScheduleInspectRequest)
-        returns (BackupScheduleInspectResponse) {
-        option (google.api.http) = {
-            get : "/v1/backupschedule/{org_id}/{name}"
-        };
+        returns(BackupScheduleInspectResponse) {
+        option(
+            google.api.http) = { get : "/v1/backupschedule/{org_id}/{name}" };
     }
 
     // Delete removes a backup schedule
     rpc Delete(BackupScheduleDeleteRequest)
-        returns (BackupScheduleDeleteResponse) {
-        option (google.api.http) = {
+        returns(BackupScheduleDeleteResponse) {
+        option(google.api.http) = {
             delete : "/v1/backupschedule/{org_id}/{name}"
         };
     }
@@ -764,7 +739,7 @@ service BackupSchedule {
 
 // Define BackupScheduleCreateRequest struct
 message BackupScheduleCreateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
     // schedule_policy is deprecated, not to be used
     string schedule_policy = 2;
     BackupScheduleInfo.ReclaimPolicyType reclaim_policy = 3;
@@ -803,7 +778,7 @@ message BackupScheduleCreateResponse {}
 
 // Define BackupScheduleUpdateRequest struct
 message BackupScheduleUpdateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
     // schedule_policy is deprecated, not to be used
     string schedule_policy = 2;
     BackupScheduleInfo.ReclaimPolicyType reclaim_policy = 3;
@@ -877,47 +852,35 @@ message BackupScheduleDeleteResponse {}
 service Cluster {
 
     // Creates a new cluster
-    rpc Create(ClusterCreateRequest) returns (ClusterCreateResponse) {
-        option (google.api.http) = {
-            post : "/v1/cluster"
-            body : "*"
-        };
+    rpc Create(ClusterCreateRequest) returns(ClusterCreateResponse) {
+        option(google.api.http) = { post : "/v1/cluster" body : "*" };
     }
 
     // Update given cluster details
-    rpc Update(ClusterUpdateRequest) returns (ClusterUpdateResponse) {
-        option (google.api.http) = {
-            put : "/v1/cluster"
-            body : "*"
-        };
+    rpc Update(ClusterUpdateRequest) returns(ClusterUpdateResponse) {
+        option(google.api.http) = { put : "/v1/cluster" body : "*" };
     }
 
     // Enumerate returns a list of clusters
-    rpc Enumerate(ClusterEnumerateRequest) returns (ClusterEnumerateResponse) {
-        option (google.api.http) = {
-            get : "/v1/cluster/{org_id}"
-        };
+    rpc Enumerate(ClusterEnumerateRequest) returns(ClusterEnumerateResponse) {
+        option(google.api.http) = { get : "/v1/cluster/{org_id}" };
     }
 
     // Inspect returns detail information about a specified cluster
-    rpc Inspect(ClusterInspectRequest) returns (ClusterInspectResponse) {
-        option (google.api.http) = {
-            get : "/v1/cluster/{org_id}/{name}"
-        };
+    rpc Inspect(ClusterInspectRequest) returns(ClusterInspectResponse) {
+        option(google.api.http) = { get : "/v1/cluster/{org_id}/{name}" };
     }
 
     // Delete removes a cluster
-    rpc Delete(ClusterDeleteRequest) returns (ClusterDeleteResponse) {
-        option (google.api.http) = {
-            delete : "/v1/cluster/{org_id}/{name}"
-        };
+    rpc Delete(ClusterDeleteRequest) returns(ClusterDeleteResponse) {
+        option(google.api.http) = { delete : "/v1/cluster/{org_id}/{name}" };
     }
 }
 
 // Define ClusterCreateRequest struct
 message ClusterCreateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
-    PXConfig px_config = 2 [ (gogoproto.jsontag) = "pxconfig" ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
+    PXConfig px_config = 2 [(gogoproto.jsontag) = "pxconfig"];
     string kubeconfig = 3 [
         (gogoproto.jsontag) = "kubeconfig",
         (gogoproto.moretags) = "secure:\"true\""
@@ -932,8 +895,8 @@ message ClusterCreateResponse {}
 
 // Define ClusterUpdateRequest struct
 message ClusterUpdateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
-    PXConfig px_config = 2 [ (gogoproto.jsontag) = "pxconfig" ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
+    PXConfig px_config = 2 [(gogoproto.jsontag) = "pxconfig"];
     string kubeconfig = 3 [
         (gogoproto.jsontag) = "kubeconfig",
         (gogoproto.moretags) = "secure:\"true\""
@@ -991,59 +954,50 @@ message ClusterDeleteResponse {}
 service CloudCredential {
     // Creates new cloud credential
     rpc Create(CloudCredentialCreateRequest)
-        returns (CloudCredentialCreateResponse) {
-        option (google.api.http) = {
-            post : "/v1/cloudcredential"
-            body : "*"
-        };
+        returns(CloudCredentialCreateResponse) {
+        option(google.api.http) = { post : "/v1/cloudcredential" body : "*" };
     }
 
     // Update given cloud credential details
     rpc Update(CloudCredentialUpdateRequest)
-        returns (CloudCredentialUpdateResponse) {
-        option (google.api.http) = {
-            put : "/v1/cloudcredential"
-            body : "*"
-        };
+        returns(CloudCredentialUpdateResponse) {
+        option(google.api.http) = { put : "/v1/cloudcredential" body : "*" };
     }
 
     // Enumerate returns a list of cloud credentials
     rpc Enumerate(CloudCredentialEnumerateRequest)
-        returns (CloudCredentialEnumerateResponse) {
-        option (google.api.http) = {
-            get : "/v1/cloudcredential/{org_id}"
-        };
+        returns(CloudCredentialEnumerateResponse) {
+        option(google.api.http) = { get : "/v1/cloudcredential/{org_id}" };
     }
 
     // Inspect returns detailed information about the specified cloud credential
     rpc Inspect(CloudCredentialInspectRequest)
-        returns (CloudCredentialInspectResponse) {
-        option (google.api.http) = {
+        returns(CloudCredentialInspectResponse) {
+        option(google.api.http) = {
             get : "/v1/cloudcredential/{org_id}/{name}/{uid}"
         };
     }
 
     // Delete removes a cloud credential
     rpc Delete(CloudCredentialDeleteRequest)
-        returns (CloudCredentialDeleteResponse) {
-        option (google.api.http) = {
+        returns(CloudCredentialDeleteResponse) {
+        option(google.api.http) = {
             delete : "/v1/cloudcredential/{org_id}/{name}/{uid}"
         };
     }
 
     // UpdateOwnership updates ownership of existing object
     rpc UpdateOwnership(CloudCredentialOwnershipUpdateRequest)
-        returns (CloudCredentialOwnershipUpdateResponse) {
-        option (google.api.http) = {
-            put : "/v1/cloudcredential/updateownership"
-            body : "*"
+        returns(CloudCredentialOwnershipUpdateResponse) {
+        option(google.api.http) = {
+            put : "/v1/cloudcredential/updateownership" body : "*"
         };
     }
 }
 
 // Define CloudCredentialCreateRequest struct
 message CloudCredentialCreateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
     CloudCredentialInfo cloud_credential = 2;
 }
 
@@ -1052,7 +1006,7 @@ message CloudCredentialCreateResponse {}
 
 // Define CloudCredentialUpdateRequest struct
 message CloudCredentialUpdateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
     CloudCredentialInfo cloud_credential = 2;
 }
 
@@ -1106,68 +1060,58 @@ message CloudCredentialOwnershipUpdateResponse {}
 service BackupLocation {
     // Creates new backup location
     rpc Create(BackupLocationCreateRequest)
-        returns (BackupLocationCreateResponse) {
-        option (google.api.http) = {
-            post : "/v1/backuplocation"
-            body : "*"
-        };
+        returns(BackupLocationCreateResponse) {
+        option(google.api.http) = { post : "/v1/backuplocation" body : "*" };
     }
 
     // Update given backup location details
     rpc Update(BackupLocationUpdateRequest)
-        returns (BackupLocationUpdateResponse) {
-        option (google.api.http) = {
-            put : "/v1/backuplocation"
-            body : "*"
-        };
+        returns(BackupLocationUpdateResponse) {
+        option(google.api.http) = { put : "/v1/backuplocation" body : "*" };
     }
 
     // Enumerate returns a list of backup locations
     rpc Enumerate(BackupLocationEnumerateRequest)
-        returns (BackupLocationEnumerateResponse) {
-        option (google.api.http) = {
-            get : "/v1/backuplocation/{org_id}"
-        };
+        returns(BackupLocationEnumerateResponse) {
+        option(google.api.http) = { get : "/v1/backuplocation/{org_id}" };
     }
 
     // Inspect returns detailed information about a specified backup location
     rpc Inspect(BackupLocationInspectRequest)
-        returns (BackupLocationInspectResponse) {
-        option (google.api.http) = {
+        returns(BackupLocationInspectResponse) {
+        option(google.api.http) = {
             get : "/v1/backuplocation/{org_id}/{name}/{uid}"
         };
     }
 
     // Delete removes a backup location
     rpc Delete(BackupLocationDeleteRequest)
-        returns (BackupLocationDeleteResponse) {
-        option (google.api.http) = {
+        returns(BackupLocationDeleteResponse) {
+        option(google.api.http) = {
             delete : "/v1/backuplocation/{org_id}/{name}/{uid}"
         };
     }
 
     // Verify if a backup location is valid
     rpc Validate(BackupLocationValidateRequest)
-        returns (BackupLocationValidateResponse) {
-        option (google.api.http) = {
-            post : "/v1/backuplocation/validate"
-            body : "*"
+        returns(BackupLocationValidateResponse) {
+        option(google.api.http) = {
+            post : "/v1/backuplocation/validate" body : "*"
         };
     }
 
     // UpdateOwnership updates ownership of existing object
     rpc UpdateOwnership(BackupLocationOwnershipUpdateRequest)
-        returns (BackupLocationOwnershipUpdateResponse) {
-        option (google.api.http) = {
-            put : "/v1/backuplocation/updateownership"
-            body : "*"
+        returns(BackupLocationOwnershipUpdateResponse) {
+        option(google.api.http) = {
+            put : "/v1/backuplocation/updateownership" body : "*"
         };
     }
 }
 
 // Define BackupLocationCreateRequest struct
 message BackupLocationCreateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
     BackupLocationInfo backup_location = 2;
 }
 
@@ -1176,7 +1120,7 @@ message BackupLocationCreateResponse {}
 
 // Define BackupLocationUpdateRequest struct
 message BackupLocationUpdateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
     BackupLocationInfo backup_location = 2;
 }
 
@@ -1250,10 +1194,8 @@ message BackupLocationOwnershipUpdateResponse {}
 
 service Metrics {
     // Returns metrics details of backups
-    rpc Inspect(MetricsInspectRequest) returns (MetricsInspectResponse) {
-        option (google.api.http) = {
-            get : "/v1/metrics/{org_id}"
-        };
+    rpc Inspect(MetricsInspectRequest) returns(MetricsInspectResponse) {
+        option(google.api.http) = { get : "/v1/metrics/{org_id}" };
     }
 }
 
@@ -1271,46 +1213,34 @@ message MetricsInspectResponse {
 
 service Backup {
     // Creates a new backup object
-    rpc Create(BackupCreateRequest) returns (BackupCreateResponse) {
-        option (google.api.http) = {
-            post : "/v1/backup"
-            body : "*"
-        };
+    rpc Create(BackupCreateRequest) returns(BackupCreateResponse) {
+        option(google.api.http) = { post : "/v1/backup" body : "*" };
     }
 
     // Update given backup details
-    rpc Update(BackupUpdateRequest) returns (BackupUpdateResponse) {
-        option (google.api.http) = {
-            put : "/v1/backup"
-            body : "*"
-        };
+    rpc Update(BackupUpdateRequest) returns(BackupUpdateResponse) {
+        option(google.api.http) = { put : "/v1/backup" body : "*" };
     }
 
     // Enumerate returns a list of objects
-    rpc Enumerate(BackupEnumerateRequest) returns (BackupEnumerateResponse) {
-        option (google.api.http) = {
-            get : "/v1/backup/{org_id}"
-        };
+    rpc Enumerate(BackupEnumerateRequest) returns(BackupEnumerateResponse) {
+        option(google.api.http) = { get : "/v1/backup/{org_id}" };
     }
 
     // Inspect returns detail information about a specified object
-    rpc Inspect(BackupInspectRequest) returns (BackupInspectResponse) {
-        option (google.api.http) = {
-            get : "/v1/backup/{org_id}/{name}"
-        };
+    rpc Inspect(BackupInspectRequest) returns(BackupInspectResponse) {
+        option(google.api.http) = { get : "/v1/backup/{org_id}/{name}" };
     }
 
     // Delete triggers delete of a backup
-    rpc Delete(BackupDeleteRequest) returns (BackupDeleteResponse) {
-        option (google.api.http) = {
-            delete : "/v1/backup/{org_id}/{name}"
-        };
+    rpc Delete(BackupDeleteRequest) returns(BackupDeleteResponse) {
+        option(google.api.http) = { delete : "/v1/backup/{org_id}/{name}" };
     }
 }
 
 // Request message structure for backup create
 message BackupCreateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
     // Name or UID + orgid of BackupLocation
     // backup_location is deprecated, not to be used.
     string backup_location = 2;
@@ -1349,7 +1279,7 @@ message BackupCreateResponse {}
 
 // Define BackupUpdateRequest struct
 message BackupUpdateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
     // Reference to cloud credential object used for backup
     // cloud_credential is deprecated, not to be used.
     string cloud_credential = 2;
@@ -1364,7 +1294,7 @@ message BackupEnumerateRequest {
     // Organization id
     string org_id = 1;
     // Optional arguments for enumeration
-    EnumerateOptions enumerate_options = 2 [ (gogoproto.embed) = true ];
+    EnumerateOptions enumerate_options = 2 [(gogoproto.embed) = true];
 }
 
 //  Response message structure for enumerate create
@@ -1397,46 +1327,34 @@ message BackupDeleteResponse {}
 service Restore {
     // Creates new restore object in datastore
     // It will also trigger a restore operation on the target cluster
-    rpc Create(RestoreCreateRequest) returns (RestoreCreateResponse) {
-        option (google.api.http) = {
-            post : "/v1/restore"
-            body : "*"
-        };
+    rpc Create(RestoreCreateRequest) returns(RestoreCreateResponse) {
+        option(google.api.http) = { post : "/v1/restore" body : "*" };
     }
 
     // Update given restore details
-    rpc Update(RestoreUpdateRequest) returns (RestoreUpdateResponse) {
-        option (google.api.http) = {
-            put : "/v1/restore"
-            body : "*"
-        };
+    rpc Update(RestoreUpdateRequest) returns(RestoreUpdateResponse) {
+        option(google.api.http) = { put : "/v1/restore" body : "*" };
     }
 
     // Enumerate returns a list of restore objects
-    rpc Enumerate(RestoreEnumerateRequest) returns (RestoreEnumerateResponse) {
-        option (google.api.http) = {
-            get : "/v1/restore/{org_id}"
-        };
+    rpc Enumerate(RestoreEnumerateRequest) returns(RestoreEnumerateResponse) {
+        option(google.api.http) = { get : "/v1/restore/{org_id}" };
     }
 
     // Inspect returns detailed information about specified restore object
-    rpc Inspect(RestoreInspectRequest) returns (RestoreInspectResponse) {
-        option (google.api.http) = {
-            get : "/v1/restore/{org_id}/{name}"
-        };
+    rpc Inspect(RestoreInspectRequest) returns(RestoreInspectResponse) {
+        option(google.api.http) = { get : "/v1/restore/{org_id}/{name}" };
     }
 
     // Delete removes a restore object
-    rpc Delete(RestoreDeleteRequest) returns (RestoreDeleteResponse) {
-        option (google.api.http) = {
-            delete : "/v1/restore/{org_id}/{name}"
-        };
+    rpc Delete(RestoreDeleteRequest) returns(RestoreDeleteResponse) {
+        option(google.api.http) = { delete : "/v1/restore/{org_id}/{name}" };
     }
 }
 
 // Define RestoreCreateRequest struct
 message RestoreCreateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
     // uid or name of backup
     string backup = 2;
     // uid or name of cluster
@@ -1458,7 +1376,7 @@ message RestoreCreateResponse {}
 
 // Define RestoreUpdateRequest struct
 message RestoreUpdateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
 }
 
 // Define RestoreUpdateResponse struct
@@ -1469,7 +1387,7 @@ message RestoreEnumerateRequest {
     // Organization id
     string org_id = 1;
     // Optional arguments for enumeration
-    EnumerateOptions enumerate_options = 2 [ (gogoproto.embed) = true ];
+    EnumerateOptions enumerate_options = 2 [(gogoproto.embed) = true];
 }
 
 // Define RestoreEnumerateResponse struct
@@ -1498,32 +1416,25 @@ message RestoreDeleteResponse {}
 
 service Organization {
     // Creates new organization object in datastore
-    rpc Create(OrganizationCreateRequest) returns (OrganizationCreateResponse) {
-        option (google.api.http) = {
-            post : "/v1/organization"
-            body : "*"
-        };
+    rpc Create(OrganizationCreateRequest) returns(OrganizationCreateResponse) {
+        option(google.api.http) = { post : "/v1/organization" body : "*" };
     }
     // Enumerate returns a list of organization object
     rpc Enumerate(OrganizationEnumerateRequest)
-        returns (OrganizationEnumerateResponse) {
-        option (google.api.http) = {
-            get : "/v1/organization"
-        };
+        returns(OrganizationEnumerateResponse) {
+        option(google.api.http) = { get : "/v1/organization" };
     }
 
     // Inspect returns detailed information about specified organization object
     rpc Inspect(OrganizationInspectRequest)
-        returns (OrganizationInspectResponse) {
-        option (google.api.http) = {
-            get : "/v1/organization/{name}"
-        };
+        returns(OrganizationInspectResponse) {
+        option(google.api.http) = { get : "/v1/organization/{name}" };
     }
 }
 
 // Define OrganizationCreateRequest struct
 message OrganizationCreateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
 }
 
 // Define OrganizationCreateResponse struct
@@ -1545,14 +1456,14 @@ message OrganizationInspectResponse { OrganizationObject organization = 1; }
 
 // Request message for creating rules
 message RuleCreateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
     RulesInfo rules_info = 2;
 }
 
 message RuleCreateResponse {}
 
 message RuleUpdateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
     RulesInfo rules_info = 2;
 }
 
@@ -1599,58 +1510,42 @@ message RuleOwnershipUpdateResponse {}
 
 service Rules {
     // Creates new rule
-    rpc Create(RuleCreateRequest) returns (RuleCreateResponse) {
-        option (google.api.http) = {
-            post : "/v1/rule"
-            body : "*"
-        };
+    rpc Create(RuleCreateRequest) returns(RuleCreateResponse) {
+        option(google.api.http) = { post : "/v1/rule" body : "*" };
     }
 
     // Update given rule details
-    rpc Update(RuleUpdateRequest) returns (RuleUpdateResponse) {
-        option (google.api.http) = {
-            put : "/v1/rule"
-            body : "*"
-        };
+    rpc Update(RuleUpdateRequest) returns(RuleUpdateResponse) {
+        option(google.api.http) = { put : "/v1/rule" body : "*" };
     }
 
     // Enumerate returns a list of rules
-    rpc Enumerate(RuleEnumerateRequest) returns (RuleEnumerateResponse) {
-        option (google.api.http) = {
-            get : "/v1/rule/{org_id}"
-        };
+    rpc Enumerate(RuleEnumerateRequest) returns(RuleEnumerateResponse) {
+        option(google.api.http) = { get : "/v1/rule/{org_id}" };
     }
 
     // Inspect returns detailed information about the specified rule
-    rpc Inspect(RuleInspectRequest) returns (RuleInspectResponse) {
-        option (google.api.http) = {
-            get : "/v1/rule/{org_id}/{name}/{uid}"
-        };
+    rpc Inspect(RuleInspectRequest) returns(RuleInspectResponse) {
+        option(google.api.http) = { get : "/v1/rule/{org_id}/{name}/{uid}" };
     }
 
     // Delete removes rule from px-backup
-    rpc Delete(RuleDeleteRequest) returns (RuleDeleteResponse) {
-        option (google.api.http) = {
-            delete : "/v1/rule/{org_id}/{name}/{uid}"
-        };
+    rpc Delete(RuleDeleteRequest) returns(RuleDeleteResponse) {
+        option(google.api.http) = { delete : "/v1/rule/{org_id}/{name}/{uid}" };
     }
 
     // UpdateOwnership updates ownership of existing object
     rpc UpdateOwnership(RuleOwnershipUpdateRequest)
-        returns (RuleOwnershipUpdateResponse) {
-        option (google.api.http) = {
-            put : "/v1/rule/updateownership"
-            body : "*"
-        };
+        returns(RuleOwnershipUpdateResponse) {
+        option(
+            google.api.http) = { put : "/v1/rule/updateownership" body : "*" };
     }
 }
 
 service Version {
     // gets the version of the server
-    rpc Get(VersionGetRequest) returns (VersionGetResponse) {
-        option (google.api.http) = {
-            get : "/v1/version"
-        };
+    rpc Get(VersionGetRequest) returns(VersionGetResponse) {
+        option(google.api.http) = { get : "/v1/version" };
     }
 }
 
@@ -1670,7 +1565,7 @@ message VersionGetResponse {
 }
 
 message LicenseActivateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
     oneof activation {
         string activation_id = 2;
         bytes license_data = 3;
@@ -1681,7 +1576,7 @@ message LicenseActivateRequest {
 message LicenseActivateResponse {}
 
 message LicenseUpdateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
     string usage_based_id = 2;
 }
 
@@ -1725,34 +1620,25 @@ message LicenseResponseInfo {
 
 service License {
     // Activate activate a new license
-    rpc Activate(LicenseActivateRequest) returns (LicenseActivateResponse) {
-        option (google.api.http) = {
-            post : "/v1/license"
-            body : "*"
-        };
+    rpc Activate(LicenseActivateRequest) returns(LicenseActivateResponse) {
+        option(google.api.http) = { post : "/v1/license" body : "*" };
     }
 
     // Enumerate returns a list of license for given cluster
-    rpc Inspect(LicenseInspectRequest) returns (LicenseInspectResponse) {
-        option (google.api.http) = {
-            get : "/v1/license/{org_id}"
-        };
+    rpc Inspect(LicenseInspectRequest) returns(LicenseInspectResponse) {
+        option(google.api.http) = { get : "/v1/license/{org_id}" };
     }
 
     // Updates Usage Based activation ID
-    rpc Update(LicenseUpdateRequest) returns (LicenseUpdateResponse) {
-        option (google.api.http) = {
-            put : "/v1/license"
-            body : "*"
-        };
+    rpc Update(LicenseUpdateRequest) returns(LicenseUpdateResponse) {
+        option(google.api.http) = { put : "/v1/license" body : "*" };
     }
 }
 
 service ActivityTimeLine {
     // Enumerate returns a list of activity data for a given time period
-    rpc Enumerate(ActivityEnumerateRequest)
-        returns (ActivityEnumerateResponse) {
-        option (google.api.http) = {
+    rpc Enumerate(ActivityEnumerateRequest) returns(ActivityEnumerateResponse) {
+        option(google.api.http) = {
             get : "/v1/restore/{org_id}/{days}/{interval}"
         };
     }
@@ -1795,7 +1681,7 @@ message ActivityEnumerateResponse {
 // Defines a RoleObject object.
 message RoleObject {
     // Metadata of the object
-    Metadata metadata = 1 [ (gogoproto.embed) = true ];
+    Metadata metadata = 1 [(gogoproto.embed) = true];
     // RoleConfig associated with role object
     repeated RoleConfig rules = 2;
     // Keyclock UID associated with role
@@ -1814,43 +1700,29 @@ message RoleConfig {
 
 service Role {
     // Creates new role object in datastore
-    rpc Create(RoleCreateRequest) returns (RoleCreateResponse) {
-        option (google.api.http) = {
-            post : "/v1/role"
-            body : "*"
-        };
+    rpc Create(RoleCreateRequest) returns(RoleCreateResponse) {
+        option(google.api.http) = { post : "/v1/role" body : "*" };
     }
     // Enumerate returns a list of roles object
-    rpc Enumerate(RoleEnumerateRequest) returns (RoleEnumerateResponse) {
-        option (google.api.http) = {
-            get : "/v1/role/{org_id}"
-        };
+    rpc Enumerate(RoleEnumerateRequest) returns(RoleEnumerateResponse) {
+        option(google.api.http) = { get : "/v1/role/{org_id}" };
     }
 
     // Inspect returns detailed information about requested role object
-    rpc Inspect(RoleInspectRequest) returns (RoleInspectResponse) {
-        option (google.api.http) = {
-            get : "/v1/role/{org_id}/{name}/{uid}"
-        };
+    rpc Inspect(RoleInspectRequest) returns(RoleInspectResponse) {
+        option(google.api.http) = { get : "/v1/role/{org_id}/{name}/{uid}" };
     }
     // Update given role information
-    rpc Update(RoleUpdateRequest) returns (RoleUpdateResponse) {
-        option (google.api.http) = {
-            put : "/v1/role"
-            body : "*"
-        };
+    rpc Update(RoleUpdateRequest) returns(RoleUpdateResponse) {
+        option(google.api.http) = { put : "/v1/role" body : "*" };
     }
     // Delete removes given role from px-backup
-    rpc Delete(RoleDeleteRequest) returns (RoleDeleteResponse) {
-        option (google.api.http) = {
-            delete : "/v1/role/{org_id}/{name}/{uid}"
-        };
+    rpc Delete(RoleDeleteRequest) returns(RoleDeleteResponse) {
+        option(google.api.http) = { delete : "/v1/role/{org_id}/{name}/{uid}" };
     }
     // Permission returns list of service,apis permission for given user
-    rpc Permission(RolePermissionRequest) returns (RolePermissionResponse) {
-        option (google.api.http) = {
-            get : "/v1/role"
-        };
+    rpc Permission(RolePermissionRequest) returns(RolePermissionResponse) {
+        option(google.api.http) = { get : "/v1/role" };
     }
 }
 
@@ -1858,7 +1730,7 @@ service Role {
 // Metadata with each role object
 // RoleConfig set of rules over api services for given role object
 message RoleCreateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
     repeated RoleConfig rules = 2;
     // Keyclock UID associated with role
     string role_id = 3;
@@ -1867,7 +1739,7 @@ message RoleCreateRequest {
 message RoleCreateResponse {}
 // RoleUpdateRequest defines roleobject update structure
 message RoleUpdateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    CreateMetadata metadata = 1 [(gogoproto.embed) = true];
     repeated RoleConfig rules = 2;
     // Keyclock UID associated with role
     string role_id = 3;
@@ -1880,7 +1752,7 @@ message RoleUpdateResponse {}
 message RoleEnumerateRequest {
     string org_id = 1;
     // Optional arguments for enumeration
-    EnumerateOptions enumerate_options = 2 [ (gogoproto.embed) = true ];
+    EnumerateOptions enumerate_options = 2 [(gogoproto.embed) = true];
 }
 
 // Define RoleEnumerateResponse struct
@@ -1917,7 +1789,7 @@ message Permission { bool full_access = 1; }
 
 // ActivityDataObject defines activity data to be stored
 message ActivityDataObject {
-    Metadata metadata = 1 [ (gogoproto.embed) = true ];
+    Metadata metadata = 1 [(gogoproto.embed) = true];
     string kind = 2;
     // Final status of activity
     Status status = 3;

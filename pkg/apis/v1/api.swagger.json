@@ -2880,6 +2880,9 @@
         },
         "s3_config": {
           "$ref": "#/definitions/S3Config"
+        },
+        "objLockEnbled": {
+          "type": "boolean"
         }
       }
     },

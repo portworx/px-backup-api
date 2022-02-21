@@ -3,7 +3,7 @@ module github.com/portworx/px-backup-api
 go 1.15
 
 require (
-	github.com/BurntSushi/toml v0.4.1 // indirect
+	github.com/BurntSushi/toml v1.0.0 // indirect
 	github.com/IBM-Cloud/bluemix-go v0.0.0-20210408042812-96aaa47da4cd
 	github.com/IBM/keyprotect-go-client v0.7.0 // indirect
 	github.com/gogo/googleapis v1.4.0
@@ -18,10 +18,10 @@ require (
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
 	golang.org/x/mod v0.5.1 // indirect
 	golang.org/x/oauth2 v0.0.0-20210819190943-2bc19b11175f
-	golang.org/x/sys v0.0.0-20211205182925-97ca703d548d // indirect
-	golang.org/x/tools v0.1.8 // indirect
-	google.golang.org/genproto v0.0.0-20211207154714-918901c715cf // indirect
-	google.golang.org/grpc v1.40.0
+	golang.org/x/sys v0.0.0-20220222200937-f2425489ef4c // indirect
+	golang.org/x/tools v0.1.9 // indirect
+	google.golang.org/genproto v0.0.0-20220222213610-43724f9ea8cf // indirect
+	google.golang.org/grpc v1.44.0
 	honnef.co/go/tools v0.2.2 // indirect
 	k8s.io/apiextensions-apiserver v0.20.4 // indirect
 	k8s.io/apimachinery v0.20.4
