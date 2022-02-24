@@ -2924,6 +2924,9 @@
         },
         "s3_config": {
           "$ref": "#/definitions/S3Config"
+        },
+        "object_lock_enabled": {
+          "type": "boolean"
         }
       }
     },

@@ -343,6 +343,7 @@ message BackupLocationInfo {
         Status status = 1;
         string reason = 2;
     }
+    bool object_lock_enabled = 9;
 }
 
 message BackupLocationObject {
