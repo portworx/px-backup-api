@@ -3678,6 +3678,14 @@
         },
         "cloud_credential_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "admin_kubeconfig": {
+          "type": "boolean",
+          "title": "admin kubeconfig or not"
+        },
+        "endpoint": {
+          "type": "string",
+          "title": "endpoint of the kubeconfig"
         }
       }
     },

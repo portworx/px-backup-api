@@ -52,7 +52,10 @@ message ClusterInfo {
     bool delete_restores = 6;
     string stork_version = 7;
     ObjectRef cloud_credential_ref = 8;
-
+    // admin kubeconfig or not
+    bool admin_kubeconfig = 9;
+    // endpoint of the kubeconfig
+    string endpoint = 10;
     // Message for maintaining status of the cluster.
     message StatusInfo {
         enum Status {
