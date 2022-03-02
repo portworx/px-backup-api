@@ -1292,20 +1292,46 @@
             "type": "string"
           },
           {
+            "name": "name",
+            "description": "Managed cluster name to be searched for.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cloud_credential.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cloud_credential.uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "include_secrets",
             "in": "query",
             "required": false,
             "type": "boolean"
           },
           {
-            "name": "cloud_credential",
-            "description": "cloud credential name.\nInspect will return detailed info of the requested cluster\nif this cloud credential has access to it.",
+            "name": "provider",
             "in": "query",
             "required": false,
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "AWS",
+              "Azure",
+              "Google"
+            ],
+            "default": "Invalid"
           },
           {
-            "name": "cluster_name",
+            "name": "aws_config.region",
+            "description": "Region for scanning clusters.",
             "in": "query",
             "required": false,
             "type": "string"
@@ -3942,6 +3968,34 @@
     "LicenseUpdateResponse": {
       "type": "object"
     },
+    "ManagedClusterEnumerateRequestAWSConfig": {
+      "type": "object",
+      "properties": {
+        "region": {
+          "type": "string",
+          "title": "Region for scanning clusters"
+        }
+      }
+    },
+    "ManagedClusterEnumerateRequestAzureConfig": {
+      "type": "object",
+      "title": "TODO: Will be added when Azure is supported"
+    },
+    "ManagedClusterEnumerateRequestGoogleConfig": {
+      "type": "object",
+      "title": "TODO: Will be added when Google is supported"
+    },
+    "ManagedClusterEnumerateRequestProvider": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "AWS",
+        "Azure",
+        "Google"
+      ],
+      "default": "Invalid",
+      "title": "Cloud provider type"
+    },
     "ManagedClusterEnumerateResponse": {
       "type": "object",
       "properties": {
@@ -3953,6 +4007,34 @@
         }
       },
       "title": "Define ClusterEnumerateResponse struct"
+    },
+    "ManagedClusterInspectRequestAWSConfig": {
+      "type": "object",
+      "properties": {
+        "region": {
+          "type": "string",
+          "title": "Region for scanning clusters"
+        }
+      }
+    },
+    "ManagedClusterInspectRequestAzureConfig": {
+      "type": "object",
+      "title": "TODO: Will be added when Azure is supported"
+    },
+    "ManagedClusterInspectRequestGoogleConfig": {
+      "type": "object",
+      "title": "TODO: Will be added when Google is supported"
+    },
+    "ManagedClusterInspectRequestProvider": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "AWS",
+        "Azure",
+        "Google"
+      ],
+      "default": "Invalid",
+      "title": "Cloud provider type"
     },
     "ManagedClusterInspectResponse": {
       "type": "object",
@@ -3975,15 +4057,32 @@
           "title": "UID of the managed cluster\nThis is the UID returned by the managed cluster provider"
         },
         "cloud_credential": {
-          "type": "string",
+          "$ref": "#/definitions/ObjectRef",
           "title": "Cloud Credential name used for fetching this cluster's details"
         },
         "kubeconfig": {
           "type": "string",
           "title": "Kubeconfig if the provider supports using kubeconfigs"
+        },
+        "k8s_version": {
+          "type": "string",
+          "title": "k8s version"
+        },
+        "status": {
+          "$ref": "#/definitions/ManagedClusterObjectStatus"
         }
       },
       "title": "Define ManagedClusterObject struct"
+    },
+    "ManagedClusterObjectStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "NotAdded",
+        "Added"
+      ],
+      "default": "Invalid",
+      "title": "Status hold if the cluster is already present in datastore or not"
     },
     "Metadata": {
       "type": "object",

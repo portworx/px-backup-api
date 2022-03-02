@@ -21,6 +21,8 @@ type PluginClient struct {
 	Rest *rest.Config
 	// Uid uniquely identifies the managed cluster by the cloud provider
 	Uid string
+	// k8s version
+	Version string
 }
 
 // Plugin is the interface the plugins need to implement
@@ -44,10 +46,12 @@ type Plugin interface {
 	GetClient(
 		cloudCred *api.CloudCredentialObject,
 		clusterName string,
+		region string,
 	) (*PluginClient, error)
 
 	GetAllClients(
 		cloudCred *api.CloudCredentialObject,
+		region string,
 	) (map[string]*PluginClient, error)
 }
 
@@ -108,10 +112,10 @@ func UpdateClientByCredObject(
 // GetClient gets the k8s client config from the cloud credential
 // The provided cloud credentials should have sufficient
 // permissions to fetch a token using the cloud's SDK APIs
-func GetClient(cloudCred *api.CloudCredentialObject, clusterName string) (*PluginClient, error) {
+func GetClient(cloudCred *api.CloudCredentialObject, clusterName string, region string) (*PluginClient, error) {
 	var getErr error
 	for _, plugin := range plugins {
-		client, err := plugin.GetClient(cloudCred, clusterName)
+		client, err := plugin.GetClient(cloudCred, clusterName, region)
 		if err == nil {
 			return client, nil
 		}
@@ -126,10 +130,12 @@ func GetClient(cloudCred *api.CloudCredentialObject, clusterName string) (*Plugi
 // which the provided cloud credential has access to.
 // The provided cloud credentials should have sufficient
 // permissions to fetch a token using the cloud's SDK APIs
-func GetAllClients(cloudCred *api.CloudCredentialObject) (map[string]*PluginClient, error) {
+// TODO: In future API needs to have options for accept needed params for GKE and Azure 
+// cluster scan
+func GetAllClients(cloudCred *api.CloudCredentialObject, region string) (map[string]*PluginClient, error) {
 	var getErr error
 	for _, plugin := range plugins {
-		clients, err := plugin.GetAllClients(cloudCred)
+		clients, err := plugin.GetAllClients(cloudCred, region)
 		if err == nil {
 			return clients, nil
 		}
@@ -150,5 +156,6 @@ func ValidateConfig(restConfig *rest.Config) (bool, error) {
 	if err == nil {
 		return true, nil
 	}
+
 	return false, err
 }

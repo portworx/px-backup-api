@@ -1777,11 +1777,35 @@ service ManagedClusters {
 // Define ManagedClusterEnumerateRequest struct
 message ManagedClusterEnumerateRequest {
     string org_id = 1;
-    bool include_secrets = 2;
     // cloud credential name.
     // Enumerate will return list of managed clusters that
     // this cloud credential has access to
-    string cloud_credential = 3;
+    ObjectRef cloud_credential = 2;
+    bool include_secrets = 3;
+
+    // Cloud provider type
+    enum Provider {
+        Invalid = 0;
+        AWS = 1;
+        Azure = 2;
+        Google = 3;
+    }
+
+    Provider provider = 4;
+    oneof Config {
+        AWSConfig aws_config = 100;
+        GoogleConfig google_config = 101;
+        AzureConfig azure_config = 102;
+    }
+
+    message AWSConfig {
+        // Region for scanning clusters
+        string region = 1;
+    }
+    // TODO: Will be added when Google is supported
+    message GoogleConfig {}
+    // TODO: Will be added when Azure is supported
+    message AzureConfig {}
 }
 
 // Define ManagedClusterObject struct
@@ -1793,12 +1817,27 @@ message ManagedClusterObject {
     // This is the UID returned by the managed cluster provider
     string uid = 2;
     // Cloud Credential name used for fetching this cluster's details
-    string cloud_credential = 3;
+    ObjectRef cloud_credential = 3;
     // Kubeconfig if the provider supports using kubeconfigs
     string kubeconfig = 4 [
         (gogoproto.jsontag) = "kubeconfig",
         (gogoproto.moretags) = "secure:\"true\""
     ];
+    // k8s version
+    string k8s_version = 5;
+    // This flag indicates if the discovered cluster is already added in the
+    // objectstore.
+    // This will help UI to help user understand which clusters are already
+    // added and need to
+    // be added.
+
+    // Status hold if the cluster is already present in datastore or not
+    enum Status {
+        Invalid = 0;
+        NotAdded = 1;
+        Added = 2;
+    }
+    Status status = 6;
 }
 
 // Define ClusterEnumerateResponse struct
@@ -1809,12 +1848,37 @@ message ManagedClusterEnumerateResponse {
 // Define ManagedClusterInspectRequest struct
 message ManagedClusterInspectRequest {
     string org_id = 1;
-    bool include_secrets = 2;
+    // Managed cluster name to be searched for
+    string name = 2;
     // cloud credential name.
-    // Inspect will return detailed info of the requested cluster
-    // if this cloud credential has access to it
-    string cloud_credential = 3;
-    string cluster_name = 4;
+    // Enumerate will return list of managed clusters that
+    // this cloud credential has access to
+    ObjectRef cloud_credential = 3;
+    bool include_secrets = 4;
+
+    // Cloud provider type
+    enum Provider {
+        Invalid = 0;
+        AWS = 1;
+        Azure = 2;
+        Google = 3;
+    }
+
+    Provider provider = 5;
+    oneof Config {
+        AWSConfig aws_config = 100;
+        GoogleConfig google_config = 101;
+        AzureConfig azure_config = 102;
+    }
+
+    message AWSConfig {
+        // Region for scanning clusters
+        string region = 1;
+    }
+    // TODO: Will be added when Google is supported
+    message GoogleConfig {}
+    // TODO: Will be added when Azure is supported
+    message AzureConfig {}
 }
 
 // Define ClusterInspectResponse struct

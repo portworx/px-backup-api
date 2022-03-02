@@ -125,12 +125,14 @@ func (g *gcp) UpdateClientByCredObject(
 func (g *gcp) GetClient(
 	cloudCredential *api.CloudCredentialObject,
 	clusterName string,
+	region string,
 ) (*kubeauth.PluginClient, error) {
 	return nil, fmt.Errorf("not supported")
 }
 
 func (g *gcp) GetAllClients(
 	cloudCredential *api.CloudCredentialObject,
+	region string,
 ) (map[string]*kubeauth.PluginClient, error) {
 	return nil, fmt.Errorf("not supported")
 

@@ -16,7 +16,6 @@ import (
 	awsapi "github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/eks"
-
 	awscredentials "github.com/libopenstorage/secrets/aws/credentials"
 )
 
@@ -139,28 +138,29 @@ func (a *aws) updateClient(
 func (a *aws) GetClient(
 	cloudCredential *api.CloudCredentialObject,
 	clusterName string,
+	region string,
 ) (*kubeauth.PluginClient, error) {
 	awsConfig := cloudCredential.GetCloudCredentialInfo().GetAwsConfig()
 	if awsConfig == nil {
 		return nil, fmt.Errorf("cloud credentials are not for aws")
 	}
-	return GetRestConfigForCluster(clusterName, awsConfig)
+	return GetRestConfigForCluster(clusterName, awsConfig, region)
 
 }
 
 func (a *aws) GetAllClients(
 	cloudCredential *api.CloudCredentialObject,
+	region string,
 ) (map[string]*kubeauth.PluginClient, error) {
 	awsConfig := cloudCredential.GetCloudCredentialInfo().GetAwsConfig()
 	if awsConfig == nil {
 		return nil, fmt.Errorf("cloud credentials are not for aws")
 	}
-	return GetRestConfigForAllClusters(awsConfig)
+	return GetRestConfigForAllClusters(awsConfig, region)
 
 }
 
-func GetRestConfigForCluster(clusterName string, awsConfig *api.AWSConfig) (*kubeauth.PluginClient, error) {
-	region := "us-east-1"
+func GetRestConfigForCluster(clusterName string, awsConfig *api.AWSConfig, region string) (*kubeauth.PluginClient, error) {
 	awsCreds, err := awscredentials.NewAWSCredentials(
 		awsConfig.GetAccessKey(),
 		awsConfig.GetSecretKey(),
@@ -198,8 +198,7 @@ func GetRestConfigForCluster(clusterName string, awsConfig *api.AWSConfig) (*kub
 	}, nil
 }
 
-func GetRestConfigForAllClusters(awsConfig *api.AWSConfig) (map[string]*kubeauth.PluginClient, error) {
-	region := "us-east-1"
+func GetRestConfigForAllClusters(awsConfig *api.AWSConfig, region string) (map[string]*kubeauth.PluginClient, error) {
 	awsCreds, err := awscredentials.NewAWSCredentials(
 		awsConfig.GetAccessKey(),
 		awsConfig.GetSecretKey(),
@@ -229,17 +228,22 @@ func GetRestConfigForAllClusters(awsConfig *api.AWSConfig) (map[string]*kubeauth
 		})
 		if err != nil {
 			logrus.Errorf("Failed to describe cluster %v: %v", *clusterName, err)
-			return nil, err
+			continue
 		}
 		restConfig, kubeConfig, err := getRestConfig(describeClusterOutput.Cluster, sess)
+		// On error continue to next cluster as we don't want to stop the 
+		// scan for one cluster error.
+		// Error could be genuine where IAM user doesn't have permission to access
+		// a cluster.
 		if err != nil {
-			logrus.Infof("Failed to create a clientset for cluster %v: %v", *clusterName, err)
-			return nil, err
+			logrus.Infof("skippng cluster %v",  awsapi.StringValue(clusterName))
+			continue
 		}
 		restConfigs[awsapi.StringValue(clusterName)] = &kubeauth.PluginClient{
 			Kubeconfig: kubeConfig,
 			Rest:       restConfig,
 			Uid:        awsapi.StringValue(clusterName), // aws does not have uid
+			Version:    awsapi.StringValue(describeClusterOutput.Cluster.Version),
 		}
 	}
 	return restConfigs, nil
@@ -247,7 +251,6 @@ func GetRestConfigForAllClusters(awsConfig *api.AWSConfig) (map[string]*kubeauth
 }
 
 func getRestConfig(cluster *eks.Cluster, sess *session.Session) (*rest.Config, string, error) {
-	logrus.Infof("%+v", cluster)
 	gen, err := token.NewGenerator(true, false)
 	if err != nil {
 		return nil, "", err
@@ -279,6 +282,7 @@ func getRestConfig(cluster *eks.Cluster, sess *session.Session) (*rest.Config, s
 	}
 	_, err = kubeauth.ValidateConfig(restConfig)
 	if err != nil {
+		logrus.Errorf("error validating kubeconfig for cluster %v: %v", awsapi.StringValue(cluster.Name), err)
 		return nil, "", err
 	}
 	return restConfig, buildKubeconfig(awsapi.StringValue(cluster.Endpoint), awsapi.StringValue(cluster.Name), ca), nil
