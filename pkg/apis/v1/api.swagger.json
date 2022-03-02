@@ -2730,6 +2730,10 @@
         },
         "cr_uid": {
           "type": "string"
+        },
+        "retention_period": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },

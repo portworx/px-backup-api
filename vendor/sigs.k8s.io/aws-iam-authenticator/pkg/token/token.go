@@ -38,9 +38,10 @@ import (
 	"github.com/aws/aws-sdk-go/service/sts/stsiface"
 	"github.com/sirupsen/logrus"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	clientauthv1alpha1 "k8s.io/client-go/pkg/apis/clientauthentication/v1alpha1"
+	clientauthv1beta1 "k8s.io/client-go/pkg/apis/clientauthentication/v1beta1"
 	"sigs.k8s.io/aws-iam-authenticator/pkg"
 	"sigs.k8s.io/aws-iam-authenticator/pkg/arn"
+	"sigs.k8s.io/aws-iam-authenticator/pkg/metrics"
 )
 
 // Identity is returned on successful Verify() results. It contains a parsed
@@ -70,7 +71,7 @@ type Identity struct {
 	SessionName string
 
 	// The AWS Access Key ID used to authenticate the request.  This can be used
-	// in conjuction with CloudTrail to determine the identity of the individual
+	// in conjunction with CloudTrail to determine the identity of the individual
 	// if the individual assumed an IAM role before making the request.
 	AccessKeyID string
 }
@@ -338,12 +339,12 @@ func (g generator) GetWithSTS(clusterID string, stsAPI stsiface.STSAPI) (Token, 
 // FormatJSON formats the json to support ExecCredential authentication
 func (g generator) FormatJSON(token Token) string {
 	expirationTimestamp := metav1.NewTime(token.Expiration)
-	execInput := &clientauthv1alpha1.ExecCredential{
+	execInput := &clientauthv1beta1.ExecCredential{
 		TypeMeta: metav1.TypeMeta{
-			APIVersion: "client.authentication.k8s.io/v1alpha1",
+			APIVersion: "client.authentication.k8s.io/v1beta1",
 			Kind:       "ExecCredential",
 		},
-		Status: &clientauthv1alpha1.ExecCredentialStatus{
+		Status: &clientauthv1beta1.ExecCredentialStatus{
 			ExpirationTimestamp: &expirationTimestamp,
 			Token:               token.Token,
 		},
@@ -510,6 +511,7 @@ func (v tokenVerifier) Verify(token string) (*Identity, error) {
 
 	response, err := v.client.Do(req)
 	if err != nil {
+		metrics.Get().StsConnectionFailure.Inc()
 		// special case to avoid printing the full URL if possible
 		if urlErr, ok := err.(*url.Error); ok {
 			return nil, NewSTSError(fmt.Sprintf("error during GET: %v", urlErr.Err))
@@ -523,6 +525,7 @@ func (v tokenVerifier) Verify(token string) (*Identity, error) {
 		return nil, NewSTSError(fmt.Sprintf("error reading HTTP result: %v", err))
 	}
 
+	metrics.Get().StsResponses.WithLabelValues(fmt.Sprint(response.StatusCode)).Inc()
 	if response.StatusCode != 200 {
 		return nil, NewSTSError(fmt.Sprintf("error from AWS (expected 200, got %d). Body: %s", response.StatusCode, string(responseBody[:])))
 	}

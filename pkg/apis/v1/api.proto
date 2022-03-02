@@ -398,6 +398,7 @@ message BackupInfo {
     // To get type of backup (generic or non-generic)
     BackupType backup_type = 25;
     string cr_uid = 26;
+    int64 retention_period = 27;
     message BackupType {
         Type type = 1;
         enum Type {
