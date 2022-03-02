@@ -6,7 +6,7 @@ require (
 	github.com/BurntSushi/toml v1.0.0 // indirect
 	github.com/IBM-Cloud/bluemix-go v0.0.0-20210408042812-96aaa47da4cd
 	github.com/IBM/keyprotect-go-client v0.7.0 // indirect
-	github.com/aws/aws-sdk-go v1.37.1
+	github.com/aws/aws-sdk-go v1.38.49
 	github.com/gogo/googleapis v1.4.0
 	github.com/gogo/protobuf v1.3.2
 	github.com/golang/glog v1.0.0 // indirect
@@ -14,23 +14,26 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.6.0
 	github.com/kisielk/errcheck v1.6.0 // indirect
+	github.com/libopenstorage/secrets v0.0.0-20200207034622-cdb443738c67
 	github.com/portworx/sched-ops v1.20.4-rc1.0.20210917175300-a553cdf14ddc
 	github.com/sirupsen/logrus v1.8.1
+	go.uber.org/multierr v1.6.0
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
 	golang.org/x/mod v0.5.1 // indirect
 	golang.org/x/oauth2 v0.0.0-20210819190943-2bc19b11175f
-	golang.org/x/sys v0.0.0-20220224003255-dbe011f71a99 // indirect
+	golang.org/x/sys v0.0.0-20220227234510-4e6760a101f9 // indirect
 	golang.org/x/tools v0.1.9 // indirect
-	google.golang.org/genproto v0.0.0-20220222213610-43724f9ea8cf // indirect
+	google.golang.org/genproto v0.0.0-20220302033224-9aa15565e42a // indirect
 	google.golang.org/grpc v1.44.0
 	honnef.co/go/tools v0.2.2 // indirect
 	k8s.io/apiextensions-apiserver v0.20.4 // indirect
-	k8s.io/apimachinery v0.20.4
+	k8s.io/apimachinery v0.22.1
 	k8s.io/cli-runtime v0.20.4
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/kube-openapi v0.0.0-20210216185858-15cd8face8d6 // indirect
 	k8s.io/kubectl v0.20.4 // indirect
 	k8s.io/kubernetes v1.20.4 // indirect
+	sigs.k8s.io/aws-iam-authenticator v0.5.5
 	sigs.k8s.io/gcp-compute-persistent-disk-csi-driver v0.7.0 // indirect
 	sigs.k8s.io/sig-storage-lib-external-provisioner/v6 v6.3.0 // indirect
 )
