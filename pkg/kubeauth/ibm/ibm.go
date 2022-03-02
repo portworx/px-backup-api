@@ -330,12 +330,14 @@ func parseConfig(clientConfig *clientcmdapi.Config) (string, string, error) {
 func (i *ibm) GetClient(
 	cloudCredential *api.CloudCredentialObject,
 	clusterName string,
+	region string,
 ) (*kubeauth.PluginClient, error) {
 	return nil, fmt.Errorf("not supported")
 }
 
 func (i *ibm) GetAllClients(
 	cloudCredential *api.CloudCredentialObject,
+	region string,
 ) (map[string]*kubeauth.PluginClient, error) {
 	return nil, fmt.Errorf("not supported")
 
