@@ -187,6 +187,7 @@ func GetRestConfigForCluster(clusterName string, awsConfig *api.AWSConfig, regio
 		return nil, err
 	}
 	restConfig, kubeConfig, err := getRestConfig(describeClusterOutput.Cluster, sess)
+	logrus.Infof("line 190 GetRestConfigForCluster kubeconfig: %+v", kubeConfig) 
 	if err != nil {
 		logrus.Infof("Failed to create a clientset for cluster %v: %v", clusterName, err)
 		return nil, err
@@ -264,11 +265,13 @@ func getRestConfig(cluster *eks.Cluster, sess *session.Session) (*rest.Config, s
 		return nil, "", err
 	}
 	ca, err := base64.StdEncoding.DecodeString(awsapi.StringValue(cluster.CertificateAuthority.Data))
+	logrus.Infof("line 268 ca: %s", ca)
 	if err != nil {
 
 		return nil, "", err
 	}
-
+	// Convert certificate data to base64 encoding
+	//encodedText := base64.StdEncoding.EncodeToString(ca)
 	restConfig := &rest.Config{
 		Host:        awsapi.StringValue(cluster.Endpoint),
 		BearerToken: tok.Token,
@@ -285,16 +288,19 @@ func getRestConfig(cluster *eks.Cluster, sess *session.Session) (*rest.Config, s
 		logrus.Errorf("error validating kubeconfig for cluster %v: %v", awsapi.StringValue(cluster.Name), err)
 		return nil, "", err
 	}
-	return restConfig, buildKubeconfig(awsapi.StringValue(cluster.Endpoint), awsapi.StringValue(cluster.Name), ca), nil
+	// Copy cert data as is kubeconfig
+	caData := awsapi.StringValue(cluster.CertificateAuthority.Data)
+	return restConfig, buildKubeconfig(awsapi.StringValue(cluster.Endpoint), awsapi.StringValue(cluster.Name), caData), nil
 }
 
 // the kubeconfig spec taken from - https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html#create-kubeconfig-manually
 func buildKubeconfig(
 	clusterEndpoint string,
 	clusterName string,
-	certData []byte,
+	//certData []byte,
+	certData string,
 ) string {
-	return fmt.Sprintf(`{
+	return fmt.Sprintf(`
 apiVersion: v1
 clusters:
 - cluster:
@@ -319,7 +325,7 @@ users:
         - "token"
         - "-i"
         - "%s"
-}`, clusterEndpoint, string(certData), clusterName)
+`, clusterEndpoint, string(certData), clusterName)
 }
 
 func init() {

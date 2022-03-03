@@ -152,7 +152,8 @@ func ValidateConfig(restConfig *rest.Config) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	_, err = coreInst.GetVersion()
+	ver, err := coreInst.GetVersion()
+	logrus.Infof("line 156  ValidateConfig: %+v", ver)
 	if err == nil {
 		return true, nil
 	}
