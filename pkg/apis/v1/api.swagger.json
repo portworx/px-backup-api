@@ -3162,6 +3162,10 @@
         "backup_type": {
           "$ref": "#/definitions/BackupScheduleCreateRequestBackupType",
           "title": "To get type of backup (generic or non-generic)"
+        },
+        "auto_delete": {
+          "type": "boolean",
+          "title": "auto-delete - this option is to indicate, whether the backup\nshould be deleted after the retention of the backup object is expired"
         }
       },
       "title": "Define BackupScheduleCreateRequest struct"
@@ -3285,6 +3289,10 @@
         "backup_type": {
           "$ref": "#/definitions/BackupScheduleInfoBackupType",
           "title": "To get type of backup (generic or non-generic)"
+        },
+        "auto_delete": {
+          "type": "boolean",
+          "title": "auto-delete - this option is to indicate, whether the backup\nshould be deleted after the retention of the backup object is expired"
         }
       }
     },
