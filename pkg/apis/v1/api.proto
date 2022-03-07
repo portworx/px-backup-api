@@ -262,6 +262,9 @@ message BackupScheduleInfo {
     ObjectRef post_exec_rule_ref = 21;
     // To get type of backup (generic or non-generic)
     BackupType backup_type = 22;
+    // auto-delete - this option is to indicate, whether the backup
+    // should be deleted after the retention of the backup object is expired
+    bool auto_delete = 23;
     message BackupType {
         Type type = 1;
         enum Type {
@@ -796,6 +799,9 @@ message BackupScheduleCreateRequest {
     ObjectRef post_exec_rule_ref = 16;
     // To get type of backup (generic or non-generic)
     BackupType backup_type = 17;
+    // auto-delete - this option is to indicate, whether the backup
+    // should be deleted after the retention of the backup object is expired
+    bool auto_delete = 18;
     enum BackupType {
         Invalid = 0;
         Generic = 1;
