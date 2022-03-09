@@ -193,7 +193,7 @@ func GetRestConfigForCluster(clusterName string, awsConfig *api.AWSConfig, regio
 	}
 	return &kubeauth.PluginClient{
 		Kubeconfig: kubeConfig,
-		Rest:       restConfig,
+		Rest:       restConfig, 
 		Uid:        clusterName, // aws does not have uid
 	}, nil
 }
@@ -285,16 +285,18 @@ func getRestConfig(cluster *eks.Cluster, sess *session.Session) (*rest.Config, s
 		logrus.Errorf("error validating kubeconfig for cluster %v: %v", awsapi.StringValue(cluster.Name), err)
 		return nil, "", err
 	}
-	return restConfig, buildKubeconfig(awsapi.StringValue(cluster.Endpoint), awsapi.StringValue(cluster.Name), ca), nil
+	// Copy cert data as is kubeconfig
+	caData := awsapi.StringValue(cluster.CertificateAuthority.Data)
+	return restConfig, buildKubeconfig(awsapi.StringValue(cluster.Endpoint), awsapi.StringValue(cluster.Name), caData), nil
 }
 
 // the kubeconfig spec taken from - https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html#create-kubeconfig-manually
 func buildKubeconfig(
 	clusterEndpoint string,
 	clusterName string,
-	certData []byte,
+	certData string,
 ) string {
-	return fmt.Sprintf(`{
+	return fmt.Sprintf(`
 apiVersion: v1
 clusters:
 - cluster:
@@ -319,7 +321,7 @@ users:
         - "token"
         - "-i"
         - "%s"
-}`, clusterEndpoint, string(certData), clusterName)
+`, clusterEndpoint, string(certData), clusterName)
 }
 
 func init() {

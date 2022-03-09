@@ -63,6 +63,12 @@ message ClusterInfo {
             Online = 1;
             Offline = 2;
             DeletePending = 3;
+            // Pending If a cluster addition is in pending state
+            Pending = 4;
+            // Failed If a cluster failed to be added
+            Failed = 5;
+            // Success If cluster was successfully added but not Online yet
+            Success = 6;
         }
         Status status = 1;
         string reason = 2;
@@ -1781,6 +1787,15 @@ service ManagedClusters {
             get : "/v1/managedcluster/{org_id}"
         };
     }
+
+    // Bulk add discovered clusters
+    rpc BulkAdd(ManagedClusterBulkAddRequest)
+        returns (ManagedClusterBulkAddResponse) {
+        option (google.api.http) = {
+            post : "/v1/managedclusters"
+            body : "*"
+        };
+    }
 }
 
 // Define ManagedClusterEnumerateRequest struct
@@ -1892,6 +1907,39 @@ message ManagedClusterInspectRequest {
 
 // Define ClusterInspectResponse struct
 message ManagedClusterInspectResponse { ManagedClusterObject cluster = 1; }
+
+message ManagedClusterBulkAddRequest {
+    string org_id = 1;
+    ObjectRef cloud_credential = 2;
+    // Region for scanning cluster
+    // cluster name to be added
+    repeated string cluster_name = 3;
+    // Cloud provider type
+    enum Provider {
+        Invalid = 0;
+        AWS = 1;
+        Azure = 2;
+        Google = 3;
+    }
+
+    Provider provider = 4;
+    oneof Config {
+        AWSConfig aws_config = 100;
+        GoogleConfig google_config = 101;
+        AzureConfig azure_config = 102;
+    }
+
+    message AWSConfig {
+        // Region for scanning clusters
+        string region = 1;
+    }
+    // TODO: Will be added when Google is supported
+    message GoogleConfig {}
+    // TODO: Will be added when Azure is supported
+    message AzureConfig {}
+}
+
+message ManagedClusterBulkAddResponse {}
 
 service ActivityTimeLine {
     // Enumerate returns a list of activity data for a given time period
