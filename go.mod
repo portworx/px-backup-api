@@ -21,9 +21,9 @@ require (
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
 	golang.org/x/mod v0.5.1 // indirect
 	golang.org/x/oauth2 v0.0.0-20210819190943-2bc19b11175f
-	golang.org/x/sys v0.0.0-20220227234510-4e6760a101f9 // indirect
+	golang.org/x/sys v0.0.0-20220307203707-22a9840ba4d7 // indirect
 	golang.org/x/tools v0.1.9 // indirect
-	google.golang.org/genproto v0.0.0-20220304144024-325a89244dc8 // indirect
+	google.golang.org/genproto v0.0.0-20220307174427-659dce7fcb03 // indirect
 	google.golang.org/grpc v1.44.0
 	honnef.co/go/tools v0.2.2 // indirect
 	k8s.io/apiextensions-apiserver v0.20.4 // indirect
