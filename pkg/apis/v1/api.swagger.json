@@ -3534,6 +3534,11 @@
     },
     "CloudCredentialCreateResponse": {
       "type": "object",
+      "properties": {
+        "cloud_credential": {
+          "$ref": "#/definitions/CloudCredentialObject"
+        }
+      },
       "title": "Define CloudCredentialCreateResponse struct"
     },
     "CloudCredentialDeleteResponse": {
