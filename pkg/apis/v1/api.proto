@@ -1065,7 +1065,9 @@ message CloudCredentialCreateRequest {
 }
 
 // Define CloudCredentialCreateResponse struct
-message CloudCredentialCreateResponse {}
+message CloudCredentialCreateResponse {
+    CloudCredentialObject cloud_credential = 1;
+}
 
 // Define CloudCredentialUpdateRequest struct
 message CloudCredentialUpdateRequest {
