@@ -150,13 +150,14 @@ func (a *aws) GetClient(
 
 func (a *aws) GetAllClients(
 	cloudCredential *api.CloudCredentialObject,
-	region string,
-) (map[string]*kubeauth.PluginClient, error) {
+	maxResults int64,
+	config interface{},
+) (map[string]*kubeauth.PluginClient, *string, error) {
 	awsConfig := cloudCredential.GetCloudCredentialInfo().GetAwsConfig()
 	if awsConfig == nil {
-		return nil, fmt.Errorf("cloud credentials are not for aws")
+		return nil, nil, fmt.Errorf("cloud credentials are not for aws")
 	}
-	return GetRestConfigForAllClusters(awsConfig, region)
+	return GetRestConfigForAllClusters(awsConfig, maxResults, config)
 
 }
 
@@ -198,29 +199,45 @@ func GetRestConfigForCluster(clusterName string, awsConfig *api.AWSConfig, regio
 	}, nil
 }
 
-func GetRestConfigForAllClusters(awsConfig *api.AWSConfig, region string) (map[string]*kubeauth.PluginClient, error) {
+//func GetRestConfigForAllClusters(awsConfig *api.AWSConfig, region string) (map[string]*kubeauth.PluginClient, error) {
+func GetRestConfigForAllClusters(
+	awsConfig *api.AWSConfig,
+	maxResults int64,
+	config interface{},
+) (map[string]*kubeauth.PluginClient, *string, error) {
+	funct := "GetRestConfigForAllClusters"
+	awsCfg := config.(*api.ManagedClusterEnumerateRequest_AWSConfig)
 	awsCreds, err := awscredentials.NewAWSCredentials(
 		awsConfig.GetAccessKey(),
 		awsConfig.GetSecretKey(),
 		"",
 	)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	creds, err := awsCreds.Get()
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	sess := session.Must(session.NewSession(&awsapi.Config{
-		Region:      awsapi.String(region),
+		Region:      awsapi.String(awsCfg.Region),
 		Credentials: creds,
 	}))
 	eksSvc := eks.New(sess)
-
-	listClusterOutput, err := eksSvc.ListClusters(&eks.ListClustersInput{})
-	if err != nil {
-		return nil, err
+	listClustersInput := eks.ListClustersInput{}
+	if maxResults != 0 {
+		listClustersInput.MaxResults = &maxResults
 	}
+	
+	if len(awsCfg.NextToken) != 0 {
+		listClustersInput.NextToken = &awsCfg.NextToken
+	}
+
+	listClusterOutput, err := eksSvc.ListClusters(&listClustersInput)
+	if err != nil {
+		return nil, nil, err
+	}
+	logrus.Tracef("%s: listClusterOutput: %v", funct, listClusterOutput)
 	restConfigs := make(map[string]*kubeauth.PluginClient)
 	for _, clusterName := range listClusterOutput.Clusters {
 		describeClusterOutput, err := eksSvc.DescribeCluster(&eks.DescribeClusterInput{
@@ -236,7 +253,7 @@ func GetRestConfigForAllClusters(awsConfig *api.AWSConfig, region string) (map[s
 		// Error could be genuine where IAM user doesn't have permission to access
 		// a cluster.
 		if err != nil {
-			logrus.Infof("skippng cluster %v",  awsapi.StringValue(clusterName))
+			logrus.Infof("skipping cluster %v",  awsapi.StringValue(clusterName))
 			continue
 		}
 		restConfigs[awsapi.StringValue(clusterName)] = &kubeauth.PluginClient{
@@ -246,7 +263,7 @@ func GetRestConfigForAllClusters(awsConfig *api.AWSConfig, region string) (map[s
 			Version:    awsapi.StringValue(describeClusterOutput.Cluster.Version),
 		}
 	}
-	return restConfigs, nil
+	return restConfigs, listClusterOutput.NextToken, nil
 
 }
 
@@ -280,11 +297,7 @@ func getRestConfig(cluster *eks.Cluster, sess *session.Session) (*rest.Config, s
 	if err != nil {
 		return nil, "", err
 	}
-	_, err = kubeauth.ValidateConfig(restConfig)
-	if err != nil {
-		logrus.Errorf("error validating kubeconfig for cluster %v: %v", awsapi.StringValue(cluster.Name), err)
-		return nil, "", err
-	}
+
 	// Copy cert data as is kubeconfig
 	caData := awsapi.StringValue(cluster.CertificateAuthority.Data)
 	return restConfig, buildKubeconfig(awsapi.StringValue(cluster.Endpoint), awsapi.StringValue(cluster.Name), caData), nil

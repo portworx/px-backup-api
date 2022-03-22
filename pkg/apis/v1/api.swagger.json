@@ -4058,12 +4058,10 @@
       }
     },
     "ManagedClusterBulkAddRequestAzureConfig": {
-      "type": "object",
-      "title": "TODO: Will be added when Azure is supported"
+      "type": "object"
     },
     "ManagedClusterBulkAddRequestGoogleConfig": {
-      "type": "object",
-      "title": "TODO: Will be added when Google is supported"
+      "type": "object"
     },
     "ManagedClusterBulkAddRequestProvider": {
       "type": "string",
@@ -4085,16 +4083,18 @@
         "region": {
           "type": "string",
           "title": "Region for scanning clusters"
+        },
+        "next_token": {
+          "type": "string",
+          "title": "Used for sending token, needed for pagination"
         }
       }
     },
     "ManagedClusterEnumerateRequestAzureConfig": {
-      "type": "object",
-      "title": "TODO: Will be added when Azure is supported"
+      "type": "object"
     },
     "ManagedClusterEnumerateRequestGoogleConfig": {
-      "type": "object",
-      "title": "TODO: Will be added when Google is supported"
+      "type": "object"
     },
     "ManagedClusterEnumerateRequestProvider": {
       "type": "string",
@@ -4115,9 +4115,47 @@
           "items": {
             "$ref": "#/definitions/ManagedClusterObject"
           }
+        },
+        "provider": {
+          "$ref": "#/definitions/ManagedClusterEnumerateResponseProvider"
+        },
+        "aws_config": {
+          "$ref": "#/definitions/ManagedClusterEnumerateResponseAWSConfig"
+        },
+        "google_config": {
+          "$ref": "#/definitions/ManagedClusterEnumerateResponseGoogleConfig"
+        },
+        "azure_config": {
+          "$ref": "#/definitions/ManagedClusterEnumerateResponseAzureConfig"
         }
       },
       "title": "Define ClusterEnumerateResponse struct"
+    },
+    "ManagedClusterEnumerateResponseAWSConfig": {
+      "type": "object",
+      "properties": {
+        "next_token": {
+          "type": "string",
+          "title": "For ListClusters() AWS provides pagination and next_token\nis pointer for next set of cluster fetch"
+        }
+      }
+    },
+    "ManagedClusterEnumerateResponseAzureConfig": {
+      "type": "object"
+    },
+    "ManagedClusterEnumerateResponseGoogleConfig": {
+      "type": "object"
+    },
+    "ManagedClusterEnumerateResponseProvider": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "AWS",
+        "Azure",
+        "Google"
+      ],
+      "default": "Invalid",
+      "title": "Cloud provider type"
     },
     "ManagedClusterInspectRequestAWSConfig": {
       "type": "object",
@@ -4129,12 +4167,10 @@
       }
     },
     "ManagedClusterInspectRequestAzureConfig": {
-      "type": "object",
-      "title": "TODO: Will be added when Azure is supported"
+      "type": "object"
     },
     "ManagedClusterInspectRequestGoogleConfig": {
-      "type": "object",
-      "title": "TODO: Will be added when Google is supported"
+      "type": "object"
     },
     "ManagedClusterInspectRequestProvider": {
       "type": "string",
