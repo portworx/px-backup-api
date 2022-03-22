@@ -337,9 +337,10 @@ func (i *ibm) GetClient(
 
 func (i *ibm) GetAllClients(
 	cloudCredential *api.CloudCredentialObject,
-	region string,
-) (map[string]*kubeauth.PluginClient, error) {
-	return nil, fmt.Errorf("not supported")
+	maxResult int64,
+	config interface{},
+) (map[string]*kubeauth.PluginClient,  *string, error) {
+	return nil, nil, fmt.Errorf("not supported")
 
 }
 

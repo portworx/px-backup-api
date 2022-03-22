@@ -51,8 +51,9 @@ type Plugin interface {
 
 	GetAllClients(
 		cloudCred *api.CloudCredentialObject,
-		region string,
-	) (map[string]*PluginClient, error)
+		maxResults int64,
+		config interface{},
+	) (map[string]*PluginClient, *string, error)
 }
 
 var (
@@ -132,17 +133,23 @@ func GetClient(cloudCred *api.CloudCredentialObject, clusterName string, region 
 // permissions to fetch a token using the cloud's SDK APIs
 // TODO: In future API needs to have options for accept needed params for GKE and Azure 
 // cluster scan
-func GetAllClients(cloudCred *api.CloudCredentialObject, region string) (map[string]*PluginClient, error) {
-	var getErr error
+func GetAllClients(
+	cloudCred *api.CloudCredentialObject,
+	maxResult int64,
+	config interface{},
+) (map[string]*PluginClient, *string, error) {
+	var getErr, err error
+	var nextToken *string
+	var clients map[string]*PluginClient
 	for _, plugin := range plugins {
-		clients, err := plugin.GetAllClients(cloudCred, region)
+		clients, nextToken, err = plugin.GetAllClients(cloudCred, maxResult, config)
 		if err == nil {
-			return clients, nil
+			return clients, nextToken, nil
 		}
 		getErr = multierr.Append(getErr, err)
 
 	}
-	return nil, getErr
+	return nil, nextToken, getErr
 }
 
 // ValidateConfig validates the provided rest config
