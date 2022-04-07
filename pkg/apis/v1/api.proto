@@ -52,10 +52,6 @@ message ClusterInfo {
     bool delete_restores = 6;
     string stork_version = 7;
     ObjectRef cloud_credential_ref = 8;
-    // admin kubeconfig or not
-    bool admin_kubeconfig = 9;
-    // endpoint of the kubeconfig
-    string endpoint = 10;
     // Message for maintaining status of the cluster.
     message StatusInfo {
         enum Status {
@@ -1213,6 +1209,8 @@ message BackupLocationEnumerateRequest {
     // cloud_credential is deprecated, not to be used.
     string cloud_credential = 3;
     ObjectRef cloud_credential_ref = 4;
+    // enable include_secrets to get the encryptionKey value.
+    bool include_secrets = 5;
 }
 
 // Define BackupLocationEnumerateResponse struct
@@ -1225,6 +1223,8 @@ message BackupLocationInspectRequest {
     string org_id = 1;
     string name = 2;
     string uid = 3;
+    // enable include_secrets to get the encryptionKey value.
+    bool include_secrets = 4;
 }
 
 // Define BackupLocationInspectResponse struct
