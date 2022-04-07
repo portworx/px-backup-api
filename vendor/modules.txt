@@ -169,11 +169,9 @@ go.uber.org/atomic
 # go.uber.org/multierr v1.6.0
 ## explicit
 go.uber.org/multierr
-# golang.org/x/crypto v0.0.0-20201208171446-5f87f3452ae9
+# golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
 golang.org/x/crypto/ssh/terminal
 # golang.org/x/lint v0.0.0-20210508222113-6edffad5e616
-## explicit
-# golang.org/x/mod v0.5.1
 ## explicit
 # golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f
 golang.org/x/net/context
@@ -194,7 +192,7 @@ golang.org/x/oauth2/google/internal/externalaccount
 golang.org/x/oauth2/internal
 golang.org/x/oauth2/jws
 golang.org/x/oauth2/jwt
-# golang.org/x/sys v0.0.0-20220307203707-22a9840ba4d7
+# golang.org/x/sys v0.0.0-20220406163625-3f8b81556e12
 ## explicit
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/plan9
@@ -209,7 +207,7 @@ golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
 # golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac
 golang.org/x/time/rate
-# golang.org/x/tools v0.1.9
+# golang.org/x/tools v0.1.10
 ## explicit
 # google.golang.org/appengine v1.6.7
 google.golang.org/appengine
@@ -222,12 +220,12 @@ google.golang.org/appengine/internal/modules
 google.golang.org/appengine/internal/remote_api
 google.golang.org/appengine/internal/urlfetch
 google.golang.org/appengine/urlfetch
-# google.golang.org/genproto v0.0.0-20220307174427-659dce7fcb03
+# google.golang.org/genproto v0.0.0-20220405205423-9d709892a2bf
 ## explicit
 google.golang.org/genproto/googleapis/api/httpbody
 google.golang.org/genproto/googleapis/rpc/status
 google.golang.org/genproto/protobuf/field_mask
-# google.golang.org/grpc v1.44.0
+# google.golang.org/grpc v1.45.0
 ## explicit
 google.golang.org/grpc
 google.golang.org/grpc/attributes
@@ -274,7 +272,8 @@ google.golang.org/grpc/serviceconfig
 google.golang.org/grpc/stats
 google.golang.org/grpc/status
 google.golang.org/grpc/tap
-# google.golang.org/protobuf v1.27.1
+# google.golang.org/protobuf v1.28.0
+## explicit
 google.golang.org/protobuf/encoding/protojson
 google.golang.org/protobuf/encoding/prototext
 google.golang.org/protobuf/encoding/protowire

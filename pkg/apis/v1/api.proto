@@ -1213,6 +1213,8 @@ message BackupLocationEnumerateRequest {
     // cloud_credential is deprecated, not to be used.
     string cloud_credential = 3;
     ObjectRef cloud_credential_ref = 4;
+    // enable include_secrets to get the encryptionKey value.
+    bool include_secrets = 5;
 }
 
 // Define BackupLocationEnumerateResponse struct
@@ -1225,6 +1227,8 @@ message BackupLocationInspectRequest {
     string org_id = 1;
     string name = 2;
     string uid = 3;
+    // enable include_secrets to get the encryptionKey value.
+    bool include_secrets = 4;
 }
 
 // Define BackupLocationInspectResponse struct

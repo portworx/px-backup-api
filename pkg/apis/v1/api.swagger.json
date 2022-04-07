@@ -409,6 +409,13 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "include_secrets",
+            "description": "enable include_secrets to get the encryptionKey value.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -452,6 +459,13 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "include_secrets",
+            "description": "enable include_secrets to get the encryptionKey value.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
