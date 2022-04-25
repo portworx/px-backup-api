@@ -166,6 +166,7 @@ func GetRestConfigForCluster(clusterName string, awsConfig *api.AWSConfig, regio
 		awsConfig.GetAccessKey(),
 		awsConfig.GetSecretKey(),
 		"",
+		true,
 	)
 	if err != nil {
 		return nil, err
@@ -211,6 +212,7 @@ func GetRestConfigForAllClusters(
 		awsConfig.GetAccessKey(),
 		awsConfig.GetSecretKey(),
 		"",
+		true,
 	)
 	if err != nil {
 		return nil, nil, err

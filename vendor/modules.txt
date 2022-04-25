@@ -1,7 +1,5 @@
 # cloud.google.com/go v0.65.0
 cloud.google.com/go/compute/metadata
-# github.com/BurntSushi/toml v1.0.0
-## explicit
 # github.com/IBM-Cloud/bluemix-go v0.0.0-20210408042812-96aaa47da4cd
 ## explicit
 github.com/IBM-Cloud/bluemix-go
@@ -18,9 +16,7 @@ github.com/IBM-Cloud/bluemix-go/models
 github.com/IBM-Cloud/bluemix-go/rest
 github.com/IBM-Cloud/bluemix-go/session
 github.com/IBM-Cloud/bluemix-go/trace
-# github.com/IBM/keyprotect-go-client v0.7.0
-## explicit
-# github.com/aws/aws-sdk-go v1.38.49
+# github.com/aws/aws-sdk-go v1.40.39
 ## explicit
 github.com/aws/aws-sdk-go/aws
 github.com/aws/aws-sdk-go/aws/arn
@@ -90,8 +86,6 @@ github.com/gogo/protobuf/proto
 github.com/gogo/protobuf/protoc-gen-gogo/descriptor
 github.com/gogo/protobuf/sortkeys
 github.com/gogo/protobuf/types
-# github.com/golang/glog v1.0.0
-## explicit
 # github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e
 github.com/golang/groupcache/lru
 # github.com/golang/protobuf v1.5.2
@@ -128,7 +122,7 @@ github.com/jmespath/go-jmespath
 github.com/json-iterator/go
 # github.com/kisielk/errcheck v1.6.0
 ## explicit
-# github.com/libopenstorage/secrets v0.0.0-20200207034622-cdb443738c67
+# github.com/libopenstorage/secrets v0.0.0-20210908194121-a1d19aa9713a
 ## explicit
 github.com/libopenstorage/secrets/aws/credentials
 # github.com/liggitt/tabwriter v0.0.0-20181228230101-89fcab3d43de
@@ -170,10 +164,10 @@ go.uber.org/atomic
 ## explicit
 go.uber.org/multierr
 # golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
-golang.org/x/crypto/ssh/terminal
-# golang.org/x/lint v0.0.0-20210508222113-6edffad5e616
 ## explicit
+golang.org/x/crypto/ssh/terminal
 # golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f
+## explicit
 golang.org/x/net/context
 golang.org/x/net/context/ctxhttp
 golang.org/x/net/http/httpguts
@@ -192,7 +186,7 @@ golang.org/x/oauth2/google/internal/externalaccount
 golang.org/x/oauth2/internal
 golang.org/x/oauth2/jws
 golang.org/x/oauth2/jwt
-# golang.org/x/sys v0.0.0-20220406163625-3f8b81556e12
+# golang.org/x/sys v0.0.0-20220422013727-9388b58f7150
 ## explicit
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/plan9
@@ -201,6 +195,7 @@ golang.org/x/sys/windows
 # golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1
 golang.org/x/term
 # golang.org/x/text v0.3.7
+## explicit
 golang.org/x/text/secure/bidirule
 golang.org/x/text/transform
 golang.org/x/text/unicode/bidi
@@ -208,6 +203,8 @@ golang.org/x/text/unicode/norm
 # golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac
 golang.org/x/time/rate
 # golang.org/x/tools v0.1.10
+## explicit
+# golang.org/x/xerrors v0.0.0-20220411194840-2f41105eb62f
 ## explicit
 # google.golang.org/appengine v1.6.7
 google.golang.org/appengine
@@ -220,7 +217,7 @@ google.golang.org/appengine/internal/modules
 google.golang.org/appengine/internal/remote_api
 google.golang.org/appengine/internal/urlfetch
 google.golang.org/appengine/urlfetch
-# google.golang.org/genproto v0.0.0-20220405205423-9d709892a2bf
+# google.golang.org/genproto v0.0.0-20220422154200-b37d22cd5731
 ## explicit
 google.golang.org/genproto/googleapis/api/httpbody
 google.golang.org/genproto/googleapis/rpc/status
@@ -273,7 +270,6 @@ google.golang.org/grpc/stats
 google.golang.org/grpc/status
 google.golang.org/grpc/tap
 # google.golang.org/protobuf v1.28.0
-## explicit
 google.golang.org/protobuf/encoding/protojson
 google.golang.org/protobuf/encoding/prototext
 google.golang.org/protobuf/encoding/protowire
@@ -315,8 +311,6 @@ gopkg.in/inf.v0
 gopkg.in/yaml.v2
 # gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
 gopkg.in/yaml.v3
-# honnef.co/go/tools v0.2.2
-## explicit
 # k8s.io/api v0.22.1 => k8s.io/api v0.20.4
 k8s.io/api/admissionregistration/v1
 k8s.io/api/admissionregistration/v1beta1
@@ -361,8 +355,6 @@ k8s.io/api/scheduling/v1beta1
 k8s.io/api/storage/v1
 k8s.io/api/storage/v1alpha1
 k8s.io/api/storage/v1beta1
-# k8s.io/apiextensions-apiserver v0.20.4 => k8s.io/apiextensions-apiserver v0.20.4
-## explicit
 # k8s.io/apimachinery v0.22.1 => k8s.io/apimachinery v0.20.4
 ## explicit
 k8s.io/apimachinery/pkg/api/errors
@@ -490,12 +482,7 @@ k8s.io/client-go/util/workqueue
 # k8s.io/klog/v2 v2.9.0
 k8s.io/klog/v2
 # k8s.io/kube-openapi v0.0.0-20210216185858-15cd8face8d6
-## explicit
 k8s.io/kube-openapi/pkg/util/proto
-# k8s.io/kubectl v0.20.4 => k8s.io/kubectl v0.20.4
-## explicit
-# k8s.io/kubernetes v1.20.4 => k8s.io/kubernetes v1.20.4
-## explicit
 # k8s.io/utils v0.0.0-20210111153108-fddb29f9d009
 k8s.io/utils/integer
 # sigs.k8s.io/aws-iam-authenticator v0.5.5
@@ -504,10 +491,6 @@ sigs.k8s.io/aws-iam-authenticator/pkg
 sigs.k8s.io/aws-iam-authenticator/pkg/arn
 sigs.k8s.io/aws-iam-authenticator/pkg/metrics
 sigs.k8s.io/aws-iam-authenticator/pkg/token
-# sigs.k8s.io/gcp-compute-persistent-disk-csi-driver v0.7.0
-## explicit
-# sigs.k8s.io/sig-storage-lib-external-provisioner/v6 v6.3.0 => sigs.k8s.io/sig-storage-lib-external-provisioner/v6 v6.3.0
-## explicit
 # sigs.k8s.io/structured-merge-diff/v4 v4.0.2
 sigs.k8s.io/structured-merge-diff/v4/value
 # sigs.k8s.io/yaml v1.2.0
