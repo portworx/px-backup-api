@@ -17,6 +17,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/eks"
 	awscredentials "github.com/libopenstorage/secrets/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/ec2metadata"
 )
 
 const (
@@ -161,11 +162,27 @@ func (a *aws) GetAllClients(
 
 }
 
+func runningOnEc2() bool {
+	// Check if we are running on EC2 instance
+	var runningOnEc2 bool
+	s, err := session.NewSession()
+	if err != nil {
+		return runningOnEc2
+	}
+	c := ec2metadata.New(s)
+	_, err = c.GetMetadata("mac")
+	if err == nil {
+		runningOnEc2 = true
+	}
+	return runningOnEc2
+}
+
 func GetRestConfigForCluster(clusterName string, awsConfig *api.AWSConfig, region string) (*kubeauth.PluginClient, error) {
 	awsCreds, err := awscredentials.NewAWSCredentials(
 		awsConfig.GetAccessKey(),
 		awsConfig.GetSecretKey(),
 		"",
+		runningOnEc2(),
 	)
 	if err != nil {
 		return nil, err
@@ -211,6 +228,7 @@ func GetRestConfigForAllClusters(
 		awsConfig.GetAccessKey(),
 		awsConfig.GetSecretKey(),
 		"",
+		runningOnEc2(),
 	)
 	if err != nil {
 		return nil, nil, err

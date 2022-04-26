@@ -61,7 +61,7 @@ func (c *EKS) AssociateEncryptionConfigRequest(input *AssociateEncryptionConfigI
 //
 // You can use this API to enable encryption on existing clusters which do not
 // have encryption already enabled. This allows you to implement a defense-in-depth
-// security strategy without migrating applications to new EKS clusters.
+// security strategy without migrating applications to new Amazon EKS clusters.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -379,9 +379,10 @@ func (c *EKS) CreateClusterRequest(input *CreateClusterInput) (req *request.Requ
 //
 // The Amazon EKS control plane consists of control plane instances that run
 // the Kubernetes software, such as etcd and the API server. The control plane
-// runs in an account managed by AWS, and the Kubernetes API is exposed via
-// the Amazon EKS API server endpoint. Each Amazon EKS cluster control plane
-// is single-tenant and unique and runs on its own set of Amazon EC2 instances.
+// runs in an account managed by Amazon Web Services, and the Kubernetes API
+// is exposed via the Amazon EKS API server endpoint. Each Amazon EKS cluster
+// control plane is single-tenant and unique and runs on its own set of Amazon
+// EC2 instances.
 //
 // The cluster control plane is provisioned across multiple Availability Zones
 // and fronted by an Elastic Load Balancing Network Load Balancer. Amazon EKS
@@ -389,9 +390,9 @@ func (c *EKS) CreateClusterRequest(input *CreateClusterInput) (req *request.Requ
 // connectivity from the control plane instances to the nodes (for example,
 // to support kubectl exec, logs, and proxy data flows).
 //
-// Amazon EKS nodes run in your AWS account and connect to your cluster's control
-// plane via the Kubernetes API server endpoint and a certificate file that
-// is created for your cluster.
+// Amazon EKS nodes run in your Amazon Web Services account and connect to your
+// cluster's control plane via the Kubernetes API server endpoint and a certificate
+// file that is created for your cluster.
 //
 // Cluster creation typically takes several minutes. After you create an Amazon
 // EKS cluster, you must configure your Kubernetes tooling to communicate with
@@ -501,8 +502,8 @@ func (c *EKS) CreateFargateProfileRequest(input *CreateFargateProfileInput) (req
 
 // CreateFargateProfile API operation for Amazon Elastic Kubernetes Service.
 //
-// Creates an AWS Fargate profile for your Amazon EKS cluster. You must have
-// at least one Fargate profile in a cluster to be able to run pods on Fargate.
+// Creates an Fargate profile for your Amazon EKS cluster. You must have at
+// least one Fargate profile in a cluster to be able to run pods on Fargate.
 //
 // The Fargate profile allows an administrator to declare which pods run on
 // Fargate and specify which pods run on which Fargate profile. This declaration
@@ -531,7 +532,7 @@ func (c *EKS) CreateFargateProfileRequest(input *CreateFargateProfileInput) (req
 // wait for that Fargate profile to finish deleting before you can create any
 // other profiles in that cluster.
 //
-// For more information, see AWS Fargate Profile (https://docs.aws.amazon.com/eks/latest/userguide/fargate-profile.html)
+// For more information, see Fargate Profile (https://docs.aws.amazon.com/eks/latest/userguide/fargate-profile.html)
 // in the Amazon EKS User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
@@ -641,9 +642,9 @@ func (c *EKS) CreateNodegroupRequest(input *CreateNodegroupInput) (req *request.
 // using launch templates, see Launch template support (https://docs.aws.amazon.com/eks/latest/userguide/launch-templates.html).
 //
 // An Amazon EKS managed node group is an Amazon EC2 Auto Scaling group and
-// associated Amazon EC2 instances that are managed by AWS for an Amazon EKS
-// cluster. Each node group uses a version of the Amazon EKS optimized Amazon
-// Linux 2 AMI. For more information, see Managed Node Groups (https://docs.aws.amazon.com/eks/latest/userguide/managed-node-groups.html)
+// associated Amazon EC2 instances that are managed by Amazon Web Services for
+// an Amazon EKS cluster. Each node group uses a version of the Amazon EKS optimized
+// Amazon Linux 2 AMI. For more information, see Managed Node Groups (https://docs.aws.amazon.com/eks/latest/userguide/managed-node-groups.html)
 // in the Amazon EKS User Guide.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
@@ -951,7 +952,7 @@ func (c *EKS) DeleteFargateProfileRequest(input *DeleteFargateProfileInput) (req
 
 // DeleteFargateProfile API operation for Amazon Elastic Kubernetes Service.
 //
-// Deletes an AWS Fargate profile.
+// Deletes an Fargate profile.
 //
 // When you delete a Fargate profile, any pods running on Fargate that were
 // created with the profile are deleted. If those pods match another Fargate
@@ -1104,6 +1105,102 @@ func (c *EKS) DeleteNodegroup(input *DeleteNodegroupInput) (*DeleteNodegroupOutp
 // for more information on using Contexts.
 func (c *EKS) DeleteNodegroupWithContext(ctx aws.Context, input *DeleteNodegroupInput, opts ...request.Option) (*DeleteNodegroupOutput, error) {
 	req, out := c.DeleteNodegroupRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opDeregisterCluster = "DeregisterCluster"
+
+// DeregisterClusterRequest generates a "aws/request.Request" representing the
+// client's request for the DeregisterCluster operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See DeregisterCluster for more information on using the DeregisterCluster
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the DeregisterClusterRequest method.
+//    req, resp := client.DeregisterClusterRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/eks-2017-11-01/DeregisterCluster
+func (c *EKS) DeregisterClusterRequest(input *DeregisterClusterInput) (req *request.Request, output *DeregisterClusterOutput) {
+	op := &request.Operation{
+		Name:       opDeregisterCluster,
+		HTTPMethod: "DELETE",
+		HTTPPath:   "/cluster-registrations/{name}",
+	}
+
+	if input == nil {
+		input = &DeregisterClusterInput{}
+	}
+
+	output = &DeregisterClusterOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// DeregisterCluster API operation for Amazon Elastic Kubernetes Service.
+//
+// Deregisters a connected cluster to remove it from the Amazon EKS control
+// plane.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon Elastic Kubernetes Service's
+// API operation DeregisterCluster for usage and error information.
+//
+// Returned Error Types:
+//   * ResourceInUseException
+//   The specified resource is in use.
+//
+//   * ResourceNotFoundException
+//   The specified resource could not be found. You can view your available clusters
+//   with ListClusters. You can view your available managed node groups with ListNodegroups.
+//   Amazon EKS clusters and node groups are Region-specific.
+//
+//   * ClientException
+//   These errors are usually caused by a client action. Actions can include using
+//   an action or resource on behalf of a user that doesn't have permissions to
+//   use the action or resource or specifying an identifier that is not valid.
+//
+//   * ServerException
+//   These errors are usually caused by a server-side issue.
+//
+//   * ServiceUnavailableException
+//   The service is unavailable. Back off and retry the operation.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/eks-2017-11-01/DeregisterCluster
+func (c *EKS) DeregisterCluster(input *DeregisterClusterInput) (*DeregisterClusterOutput, error) {
+	req, out := c.DeregisterClusterRequest(input)
+	return out, req.Send()
+}
+
+// DeregisterClusterWithContext is the same as DeregisterCluster with the addition of
+// the ability to pass a context and additional request options.
+//
+// See DeregisterCluster for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *EKS) DeregisterClusterWithContext(ctx aws.Context, input *DeregisterClusterInput, opts ...request.Option) (*DeregisterClusterOutput, error) {
+	req, out := c.DeregisterClusterRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -1496,7 +1593,7 @@ func (c *EKS) DescribeFargateProfileRequest(input *DescribeFargateProfileInput) 
 
 // DescribeFargateProfile API operation for Amazon Elastic Kubernetes Service.
 //
-// Returns descriptive information about an AWS Fargate profile.
+// Returns descriptive information about an Fargate profile.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -1882,7 +1979,7 @@ func (c *EKS) DisassociateIdentityProviderConfigRequest(input *DisassociateIdent
 // Disassociates an identity provider configuration from a cluster. If you disassociate
 // an identity provider from your cluster, users included in the provider can
 // no longer access the cluster. However, you can still access the cluster with
-// AWS IAM users.
+// Amazon Web Services IAM users.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -2143,7 +2240,8 @@ func (c *EKS) ListClustersRequest(input *ListClustersInput) (req *request.Reques
 
 // ListClusters API operation for Amazon Elastic Kubernetes Service.
 //
-// Lists the Amazon EKS clusters in your AWS account in the specified Region.
+// Lists the Amazon EKS clusters in your Amazon Web Services account in the
+// specified Region.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -2292,8 +2390,8 @@ func (c *EKS) ListFargateProfilesRequest(input *ListFargateProfilesInput) (req *
 
 // ListFargateProfiles API operation for Amazon Elastic Kubernetes Service.
 //
-// Lists the AWS Fargate profiles associated with the specified cluster in your
-// AWS account in the specified Region.
+// Lists the Fargate profiles associated with the specified cluster in your
+// Amazon Web Services account in the specified Region.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -2599,8 +2697,8 @@ func (c *EKS) ListNodegroupsRequest(input *ListNodegroupsInput) (req *request.Re
 // ListNodegroups API operation for Amazon Elastic Kubernetes Service.
 //
 // Lists the Amazon EKS managed node groups associated with the specified cluster
-// in your AWS account in the specified Region. Self-managed node groups are
-// not listed.
+// in your Amazon Web Services account in the specified Region. Self-managed
+// node groups are not listed.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -2839,7 +2937,7 @@ func (c *EKS) ListUpdatesRequest(input *ListUpdatesInput) (req *request.Request,
 // ListUpdates API operation for Amazon Elastic Kubernetes Service.
 //
 // Lists the updates associated with an Amazon EKS cluster or managed node group
-// in your AWS account, in the specified Region.
+// in your Amazon Web Services account, in the specified Region.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -2938,6 +3036,115 @@ func (c *EKS) ListUpdatesPagesWithContext(ctx aws.Context, input *ListUpdatesInp
 	}
 
 	return p.Err()
+}
+
+const opRegisterCluster = "RegisterCluster"
+
+// RegisterClusterRequest generates a "aws/request.Request" representing the
+// client's request for the RegisterCluster operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See RegisterCluster for more information on using the RegisterCluster
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the RegisterClusterRequest method.
+//    req, resp := client.RegisterClusterRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/eks-2017-11-01/RegisterCluster
+func (c *EKS) RegisterClusterRequest(input *RegisterClusterInput) (req *request.Request, output *RegisterClusterOutput) {
+	op := &request.Operation{
+		Name:       opRegisterCluster,
+		HTTPMethod: "POST",
+		HTTPPath:   "/cluster-registrations",
+	}
+
+	if input == nil {
+		input = &RegisterClusterInput{}
+	}
+
+	output = &RegisterClusterOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// RegisterCluster API operation for Amazon Elastic Kubernetes Service.
+//
+// Connects a Kubernetes cluster to the Amazon EKS control plane.
+//
+// Any Kubernetes cluster can be connected to the Amazon EKS control plane to
+// view current information about the cluster and its nodes.
+//
+// Cluster connection requires two steps. First, send a RegisterClusterRequest
+// to add it to the Amazon EKS control plane.
+//
+// Second, a Manifest (https://amazon-eks.s3.us-west-2.amazonaws.com/eks-connector/manifests/eks-connector/latest/eks-connector.yaml)
+// containing the activationID and activationCode must be applied to the Kubernetes
+// cluster through it's native provider to provide visibility.
+//
+// After the Manifest is updated and applied, then the connected cluster is
+// visible to the Amazon EKS control plane. If the Manifest is not applied within
+// a set amount of time, then the connected cluster will no longer be visible
+// and must be deregistered. See DeregisterCluster.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon Elastic Kubernetes Service's
+// API operation RegisterCluster for usage and error information.
+//
+// Returned Error Types:
+//   * ResourceLimitExceededException
+//   You have encountered a service limit on the specified resource.
+//
+//   * InvalidParameterException
+//   The specified parameter is invalid. Review the available parameters for the
+//   API request.
+//
+//   * ClientException
+//   These errors are usually caused by a client action. Actions can include using
+//   an action or resource on behalf of a user that doesn't have permissions to
+//   use the action or resource or specifying an identifier that is not valid.
+//
+//   * ServerException
+//   These errors are usually caused by a server-side issue.
+//
+//   * ServiceUnavailableException
+//   The service is unavailable. Back off and retry the operation.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/eks-2017-11-01/RegisterCluster
+func (c *EKS) RegisterCluster(input *RegisterClusterInput) (*RegisterClusterOutput, error) {
+	req, out := c.RegisterClusterRequest(input)
+	return out, req.Send()
+}
+
+// RegisterClusterWithContext is the same as RegisterCluster with the addition of
+// the ability to pass a context and additional request options.
+//
+// See RegisterCluster for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *EKS) RegisterClusterWithContext(ctx aws.Context, input *RegisterClusterInput, opts ...request.Option) (*RegisterClusterOutput, error) {
+	req, out := c.RegisterClusterRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
 }
 
 const opTagResource = "TagResource"
@@ -3272,13 +3479,13 @@ func (c *EKS) UpdateClusterConfigRequest(input *UpdateClusterConfigInput) (req *
 // in the Amazon EKS User Guide .
 //
 // CloudWatch Logs ingestion, archive storage, and data scanning rates apply
-// to exported control plane logs. For more information, see Amazon CloudWatch
-// Pricing (http://aws.amazon.com/cloudwatch/pricing/).
+// to exported control plane logs. For more information, see CloudWatch Pricing
+// (http://aws.amazon.com/cloudwatch/pricing/).
 //
 // You can also use this API operation to enable or disable public and private
 // access to your cluster's Kubernetes API server endpoint. By default, public
 // access is enabled, and private access is disabled. For more information,
-// see Amazon EKS Cluster Endpoint Access Control (https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
+// see Amazon EKS cluster endpoint access control (https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
 // in the Amazon EKS User Guide .
 //
 // You can't update the subnets or security group IDs for an existing cluster.
@@ -4334,6 +4541,9 @@ type Cluster struct {
 	// of the request.
 	ClientRequestToken *string `locationName:"clientRequestToken" type:"string"`
 
+	// The configuration used to connect to a cluster for registration.
+	ConnectorConfig *ConnectorConfigResponse `locationName:"connectorConfig" type:"structure"`
+
 	// The Unix epoch timestamp in seconds for when the cluster was created.
 	CreatedAt *time.Time `locationName:"createdAt" type:"timestamp"`
 
@@ -4368,8 +4578,8 @@ type Cluster struct {
 	ResourcesVpcConfig *VpcConfigResponse `locationName:"resourcesVpcConfig" type:"structure"`
 
 	// The Amazon Resource Name (ARN) of the IAM role that provides permissions
-	// for the Kubernetes control plane to make calls to AWS API operations on your
-	// behalf.
+	// for the Kubernetes control plane to make calls to Amazon Web Services API
+	// operations on your behalf.
 	RoleArn *string `locationName:"roleArn" type:"string"`
 
 	// The current status of the cluster.
@@ -4410,6 +4620,12 @@ func (s *Cluster) SetCertificateAuthority(v *Certificate) *Cluster {
 // SetClientRequestToken sets the ClientRequestToken field's value.
 func (s *Cluster) SetClientRequestToken(v string) *Cluster {
 	s.ClientRequestToken = &v
+	return s
+}
+
+// SetConnectorConfig sets the ConnectorConfig field's value.
+func (s *Cluster) SetConnectorConfig(v *ConnectorConfigResponse) *Cluster {
+	s.ConnectorConfig = v
 	return s
 }
 
@@ -4533,11 +4749,127 @@ func (s *Compatibility) SetPlatformVersions(v []*string) *Compatibility {
 	return s
 }
 
+// The configuration sent to a cluster for configuration.
+type ConnectorConfigRequest struct {
+	_ struct{} `type:"structure"`
+
+	// The cloud provider for the target cluster to connect.
+	//
+	// Provider is a required field
+	Provider *string `locationName:"provider" type:"string" required:"true" enum:"ConnectorConfigProvider"`
+
+	// The Amazon Resource Name (ARN) of the role that is authorized to request
+	// the connector configuration.
+	//
+	// RoleArn is a required field
+	RoleArn *string `locationName:"roleArn" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s ConnectorConfigRequest) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ConnectorConfigRequest) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *ConnectorConfigRequest) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "ConnectorConfigRequest"}
+	if s.Provider == nil {
+		invalidParams.Add(request.NewErrParamRequired("Provider"))
+	}
+	if s.RoleArn == nil {
+		invalidParams.Add(request.NewErrParamRequired("RoleArn"))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetProvider sets the Provider field's value.
+func (s *ConnectorConfigRequest) SetProvider(v string) *ConnectorConfigRequest {
+	s.Provider = &v
+	return s
+}
+
+// SetRoleArn sets the RoleArn field's value.
+func (s *ConnectorConfigRequest) SetRoleArn(v string) *ConnectorConfigRequest {
+	s.RoleArn = &v
+	return s
+}
+
+// The full description of your connected cluster.
+type ConnectorConfigResponse struct {
+	_ struct{} `type:"structure"`
+
+	// A unique code associated with the cluster for registration purposes.
+	ActivationCode *string `locationName:"activationCode" type:"string"`
+
+	// The expiration time of the connected cluster. The cluster's YAML file must
+	// be applied through the native provider.
+	ActivationExpiry *time.Time `locationName:"activationExpiry" type:"timestamp"`
+
+	// A unique ID associated with the cluster for registration purposes.
+	ActivationId *string `locationName:"activationId" type:"string"`
+
+	// The cluster's cloud service provider.
+	Provider *string `locationName:"provider" type:"string"`
+
+	// The Amazon Resource Name (ARN) of the role that is used by the EKS connector
+	// to communicate with AWS services from the connected Kubernetes cluster.
+	RoleArn *string `locationName:"roleArn" type:"string"`
+}
+
+// String returns the string representation
+func (s ConnectorConfigResponse) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ConnectorConfigResponse) GoString() string {
+	return s.String()
+}
+
+// SetActivationCode sets the ActivationCode field's value.
+func (s *ConnectorConfigResponse) SetActivationCode(v string) *ConnectorConfigResponse {
+	s.ActivationCode = &v
+	return s
+}
+
+// SetActivationExpiry sets the ActivationExpiry field's value.
+func (s *ConnectorConfigResponse) SetActivationExpiry(v time.Time) *ConnectorConfigResponse {
+	s.ActivationExpiry = &v
+	return s
+}
+
+// SetActivationId sets the ActivationId field's value.
+func (s *ConnectorConfigResponse) SetActivationId(v string) *ConnectorConfigResponse {
+	s.ActivationId = &v
+	return s
+}
+
+// SetProvider sets the Provider field's value.
+func (s *ConnectorConfigResponse) SetProvider(v string) *ConnectorConfigResponse {
+	s.Provider = &v
+	return s
+}
+
+// SetRoleArn sets the RoleArn field's value.
+func (s *ConnectorConfigResponse) SetRoleArn(v string) *ConnectorConfigResponse {
+	s.RoleArn = &v
+	return s
+}
+
 type CreateAddonInput struct {
 	_ struct{} `type:"structure"`
 
 	// The name of the add-on. The name must match one of the names returned by
-	// ListAddons (https://docs.aws.amazon.com/eks/latest/APIReference/API_ListAddons.html).
+	// DescribeAddonVersions (https://docs.aws.amazon.com/eks/latest/APIReference/API_DescribeAddonVersions.html).
 	//
 	// AddonName is a required field
 	AddonName *string `locationName:"addonName" type:"string" required:"true"`
@@ -4692,13 +5024,13 @@ type CreateClusterInput struct {
 
 	// Enable or disable exporting the Kubernetes control plane logs for your cluster
 	// to CloudWatch Logs. By default, cluster control plane logs aren't exported
-	// to CloudWatch Logs. For more information, see Amazon EKS Cluster Control
-	// Plane Logs (https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html)
+	// to CloudWatch Logs. For more information, see Amazon EKS Cluster control
+	// plane logs (https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html)
 	// in the Amazon EKS User Guide .
 	//
 	// CloudWatch Logs ingestion, archive storage, and data scanning rates apply
-	// to exported control plane logs. For more information, see Amazon CloudWatch
-	// Pricing (http://aws.amazon.com/cloudwatch/pricing/).
+	// to exported control plane logs. For more information, see CloudWatch Pricing
+	// (http://aws.amazon.com/cloudwatch/pricing/).
 	Logging *Logging `locationName:"logging" type:"structure"`
 
 	// The unique name to give to your cluster.
@@ -4718,8 +5050,9 @@ type CreateClusterInput struct {
 	ResourcesVpcConfig *VpcConfigRequest `locationName:"resourcesVpcConfig" type:"structure" required:"true"`
 
 	// The Amazon Resource Name (ARN) of the IAM role that provides permissions
-	// for the Kubernetes control plane to make calls to AWS API operations on your
-	// behalf. For more information, see Amazon EKS Service IAM Role (https://docs.aws.amazon.com/eks/latest/userguide/service_IAM_role.html)
+	// for the Kubernetes control plane to make calls to Amazon Web Services API
+	// operations on your behalf. For more information, see Amazon EKS Service IAM
+	// Role (https://docs.aws.amazon.com/eks/latest/userguide/service_IAM_role.html)
 	// in the Amazon EKS User Guide .
 	//
 	// RoleArn is a required field
@@ -5047,12 +5380,12 @@ type CreateNodegroupInput struct {
 	LaunchTemplate *LaunchTemplateSpecification `locationName:"launchTemplate" type:"structure"`
 
 	// The Amazon Resource Name (ARN) of the IAM role to associate with your node
-	// group. The Amazon EKS worker node kubelet daemon makes calls to AWS APIs
-	// on your behalf. Nodes receive permissions for these API calls through an
-	// IAM instance profile and associated policies. Before you can launch nodes
-	// and register them into a cluster, you must create an IAM role for those nodes
-	// to use when they are launched. For more information, see Amazon EKS node
-	// IAM role (https://docs.aws.amazon.com/eks/latest/userguide/worker_node_IAM_role.html)
+	// group. The Amazon EKS worker node kubelet daemon makes calls to Amazon Web
+	// Services APIs on your behalf. Nodes receive permissions for these API calls
+	// through an IAM instance profile and associated policies. Before you can launch
+	// nodes and register them into a cluster, you must create an IAM role for those
+	// nodes to use when they are launched. For more information, see Amazon EKS
+	// node IAM role (https://docs.aws.amazon.com/eks/latest/userguide/worker_node_IAM_role.html)
 	// in the Amazon EKS User Guide . If you specify launchTemplate, then don't
 	// specify IamInstanceProfile (https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_IamInstanceProfile.html)
 	// in your launch template, or the node group deployment will fail. For more
@@ -5109,6 +5442,9 @@ type CreateNodegroupInput struct {
 	// The Kubernetes taints to be applied to the nodes in the node group.
 	Taints []*Taint `locationName:"taints" type:"list"`
 
+	// The node group update configuration.
+	UpdateConfig *NodegroupUpdateConfig `locationName:"updateConfig" type:"structure"`
+
 	// The Kubernetes version to use for your managed nodes. By default, the Kubernetes
 	// version of the cluster is used, and this is the only accepted specified value.
 	// If you specify launchTemplate, and your launch template uses a custom AMI,
@@ -5163,6 +5499,11 @@ func (s *CreateNodegroupInput) Validate() error {
 			if err := v.Validate(); err != nil {
 				invalidParams.AddNested(fmt.Sprintf("%s[%v]", "Taints", i), err.(request.ErrInvalidParams))
 			}
+		}
+	}
+	if s.UpdateConfig != nil {
+		if err := s.UpdateConfig.Validate(); err != nil {
+			invalidParams.AddNested("UpdateConfig", err.(request.ErrInvalidParams))
 		}
 	}
 
@@ -5268,6 +5609,12 @@ func (s *CreateNodegroupInput) SetTaints(v []*Taint) *CreateNodegroupInput {
 	return s
 }
 
+// SetUpdateConfig sets the UpdateConfig field's value.
+func (s *CreateNodegroupInput) SetUpdateConfig(v *NodegroupUpdateConfig) *CreateNodegroupInput {
+	s.UpdateConfig = v
+	return s
+}
+
 // SetVersion sets the Version field's value.
 func (s *CreateNodegroupInput) SetVersion(v string) *CreateNodegroupInput {
 	s.Version = &v
@@ -5310,6 +5657,11 @@ type DeleteAddonInput struct {
 	//
 	// ClusterName is a required field
 	ClusterName *string `location:"uri" locationName:"name" min:"1" type:"string" required:"true"`
+
+	// Specifying this option preserves the add-on software on your cluster but
+	// Amazon EKS stops managing any settings for the add-on. If an IAM account
+	// is associated with the add-on, it is not removed.
+	Preserve *bool `location:"querystring" locationName:"preserve" type:"boolean"`
 }
 
 // String returns the string representation
@@ -5353,6 +5705,12 @@ func (s *DeleteAddonInput) SetAddonName(v string) *DeleteAddonInput {
 // SetClusterName sets the ClusterName field's value.
 func (s *DeleteAddonInput) SetClusterName(v string) *DeleteAddonInput {
 	s.ClusterName = &v
+	return s
+}
+
+// SetPreserve sets the Preserve field's value.
+func (s *DeleteAddonInput) SetPreserve(v bool) *DeleteAddonInput {
+	s.Preserve = &v
 	return s
 }
 
@@ -5603,6 +5961,70 @@ func (s DeleteNodegroupOutput) GoString() string {
 // SetNodegroup sets the Nodegroup field's value.
 func (s *DeleteNodegroupOutput) SetNodegroup(v *Nodegroup) *DeleteNodegroupOutput {
 	s.Nodegroup = v
+	return s
+}
+
+type DeregisterClusterInput struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the connected cluster to deregister.
+	//
+	// Name is a required field
+	Name *string `location:"uri" locationName:"name" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s DeregisterClusterInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DeregisterClusterInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *DeregisterClusterInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "DeregisterClusterInput"}
+	if s.Name == nil {
+		invalidParams.Add(request.NewErrParamRequired("Name"))
+	}
+	if s.Name != nil && len(*s.Name) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Name", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetName sets the Name field's value.
+func (s *DeregisterClusterInput) SetName(v string) *DeregisterClusterInput {
+	s.Name = &v
+	return s
+}
+
+type DeregisterClusterOutput struct {
+	_ struct{} `type:"structure"`
+
+	// An object representing an Amazon EKS cluster.
+	Cluster *Cluster `locationName:"cluster" type:"structure"`
+}
+
+// String returns the string representation
+func (s DeregisterClusterOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DeregisterClusterOutput) GoString() string {
+	return s.String()
+}
+
+// SetCluster sets the Cluster field's value.
+func (s *DeregisterClusterOutput) SetCluster(v *Cluster) *DeregisterClusterOutput {
+	s.Cluster = v
 	return s
 }
 
@@ -6302,8 +6724,7 @@ func (s *DisassociateIdentityProviderConfigOutput) SetUpdate(v *Update) *Disasso
 type EncryptionConfig struct {
 	_ struct{} `type:"structure"`
 
-	// AWS Key Management Service (AWS KMS) key. Either the ARN or the alias can
-	// be used.
+	// Key Management Service (KMS) key. Either the ARN or the alias can be used.
 	Provider *Provider `locationName:"provider" type:"structure"`
 
 	// Specifies the resources to be encrypted. The only supported value is "secrets".
@@ -6393,7 +6814,7 @@ func (s *ErrorDetail) SetResourceIds(v []*string) *ErrorDetail {
 	return s
 }
 
-// An object representing an AWS Fargate profile.
+// An object representing an Fargate profile.
 type FargateProfile struct {
 	_ struct{} `type:"structure"`
 
@@ -6496,7 +6917,7 @@ func (s *FargateProfile) SetTags(v map[string]*string) *FargateProfile {
 	return s
 }
 
-// An object representing an AWS Fargate profile selector.
+// An object representing an Fargate profile selector.
 type FargateProfileSelector struct {
 	_ struct{} `type:"structure"`
 
@@ -6609,7 +7030,7 @@ func (s *IdentityProviderConfig) SetType(v string) *IdentityProviderConfig {
 	return s
 }
 
-// An object that represents an identity configuration.
+// The full description of your identity configuration.
 type IdentityProviderConfigResponse struct {
 	_ struct{} `type:"structure"`
 
@@ -6819,9 +7240,9 @@ type Issue struct {
 	//    node group. You may be able to recreate an IAM role with the same settings
 	//    to recover.
 	//
-	//    * InstanceLimitExceeded: Your AWS account is unable to launch any more
-	//    instances of the specified instance type. You may be able to request an
-	//    Amazon EC2 instance limit increase to recover.
+	//    * InstanceLimitExceeded: Your Amazon Web Services account is unable to
+	//    launch any more instances of the specified instance type. You may be able
+	//    to request an Amazon EC2 instance limit increase to recover.
 	//
 	//    * InsufficientFreeAddresses: One or more of the subnets associated with
 	//    your managed node group does not have enough available IP addresses for
@@ -6839,7 +7260,7 @@ type Issue struct {
 	// The error message associated with the issue.
 	Message *string `locationName:"message" type:"string"`
 
-	// The AWS resources that are afflicted by this issue.
+	// The Amazon Web Services resources that are afflicted by this issue.
 	ResourceIds []*string `locationName:"resourceIds" type:"list"`
 }
 
@@ -7108,6 +7529,10 @@ func (s *ListAddonsOutput) SetNextToken(v string) *ListAddonsOutput {
 type ListClustersInput struct {
 	_ struct{} `type:"structure"`
 
+	// Indicates whether connected clusters are included in the returned list. Default
+	// value is 'ALL'.
+	Include []*string `location:"querystring" locationName:"include" type:"list"`
+
 	// The maximum number of cluster results returned by ListClusters in paginated
 	// output. When you use this parameter, ListClusters returns only maxResults
 	// results in a single page along with a nextToken response element. You can
@@ -7148,6 +7573,12 @@ func (s *ListClustersInput) Validate() error {
 		return invalidParams
 	}
 	return nil
+}
+
+// SetInclude sets the Include field's value.
+func (s *ListClustersInput) SetInclude(v []*string) *ListClustersInput {
+	s.Include = v
+	return s
 }
 
 // SetMaxResults sets the MaxResults field's value.
@@ -7200,7 +7631,7 @@ func (s *ListClustersOutput) SetNextToken(v string) *ListClustersOutput {
 type ListFargateProfilesInput struct {
 	_ struct{} `type:"structure"`
 
-	// The name of the Amazon EKS cluster that you would like to listFargate profiles
+	// The name of the Amazon EKS cluster that you would like to list Fargate profiles
 	// in.
 	//
 	// ClusterName is a required field
@@ -7815,8 +8246,9 @@ type Nodegroup struct {
 	ModifiedAt *time.Time `locationName:"modifiedAt" type:"timestamp"`
 
 	// The IAM role associated with your node group. The Amazon EKS node kubelet
-	// daemon makes calls to AWS APIs on your behalf. Nodes receive permissions
-	// for these API calls through an IAM instance profile and associated policies.
+	// daemon makes calls to Amazon Web Services APIs on your behalf. Nodes receive
+	// permissions for these API calls through an IAM instance profile and associated
+	// policies.
 	NodeRole *string `locationName:"nodeRole" type:"string"`
 
 	// The Amazon Resource Name (ARN) associated with the managed node group.
@@ -7858,10 +8290,13 @@ type Nodegroup struct {
 	Tags map[string]*string `locationName:"tags" min:"1" type:"map"`
 
 	// The Kubernetes taints to be applied to the nodes in the node group when they
-	// are created. Effect is one of NoSchedule, PreferNoSchedule, or NoExecute.
+	// are created. Effect is one of No_Schedule, Prefer_No_Schedule, or No_Execute.
 	// Kubernetes taints can be used together with tolerations to control how workloads
 	// are scheduled to your nodes.
 	Taints []*Taint `locationName:"taints" type:"list"`
+
+	// The node group update configuration.
+	UpdateConfig *NodegroupUpdateConfig `locationName:"updateConfig" type:"structure"`
 
 	// The Kubernetes version of the managed node group.
 	Version *string `locationName:"version" type:"string"`
@@ -8003,6 +8438,12 @@ func (s *Nodegroup) SetTaints(v []*Taint) *Nodegroup {
 	return s
 }
 
+// SetUpdateConfig sets the UpdateConfig field's value.
+func (s *Nodegroup) SetUpdateConfig(v *NodegroupUpdateConfig) *Nodegroup {
+	s.UpdateConfig = v
+	return s
+}
+
 // SetVersion sets the Version field's value.
 func (s *Nodegroup) SetVersion(v string) *Nodegroup {
 	s.Version = &v
@@ -8085,7 +8526,6 @@ type NodegroupScalingConfig struct {
 	MaxSize *int64 `locationName:"maxSize" min:"1" type:"integer"`
 
 	// The minimum number of nodes that the managed node group can scale in to.
-	// This number must be greater than zero.
 	MinSize *int64 `locationName:"minSize" type:"integer"`
 }
 
@@ -8127,6 +8567,59 @@ func (s *NodegroupScalingConfig) SetMaxSize(v int64) *NodegroupScalingConfig {
 // SetMinSize sets the MinSize field's value.
 func (s *NodegroupScalingConfig) SetMinSize(v int64) *NodegroupScalingConfig {
 	s.MinSize = &v
+	return s
+}
+
+// The node group update configuration.
+type NodegroupUpdateConfig struct {
+	_ struct{} `type:"structure"`
+
+	// The maximum number of nodes unavailable at once during a version update.
+	// Nodes will be updated in parallel. This value or maxUnavailablePercentage
+	// is required to have a value.The maximum number is 100.
+	MaxUnavailable *int64 `locationName:"maxUnavailable" min:"1" type:"integer"`
+
+	// The maximum percentage of nodes unavailable during a version update. This
+	// percentage of nodes will be updated in parallel, up to 100 nodes at once.
+	// This value or maxUnavailable is required to have a value.
+	MaxUnavailablePercentage *int64 `locationName:"maxUnavailablePercentage" min:"1" type:"integer"`
+}
+
+// String returns the string representation
+func (s NodegroupUpdateConfig) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s NodegroupUpdateConfig) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *NodegroupUpdateConfig) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "NodegroupUpdateConfig"}
+	if s.MaxUnavailable != nil && *s.MaxUnavailable < 1 {
+		invalidParams.Add(request.NewErrParamMinValue("MaxUnavailable", 1))
+	}
+	if s.MaxUnavailablePercentage != nil && *s.MaxUnavailablePercentage < 1 {
+		invalidParams.Add(request.NewErrParamMinValue("MaxUnavailablePercentage", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetMaxUnavailable sets the MaxUnavailable field's value.
+func (s *NodegroupUpdateConfig) SetMaxUnavailable(v int64) *NodegroupUpdateConfig {
+	s.MaxUnavailable = &v
+	return s
+}
+
+// SetMaxUnavailablePercentage sets the MaxUnavailablePercentage field's value.
+func (s *NodegroupUpdateConfig) SetMaxUnavailablePercentage(v int64) *NodegroupUpdateConfig {
+	s.MaxUnavailablePercentage = &v
 	return s
 }
 
@@ -8480,8 +8973,7 @@ func (s *OidcIdentityProviderConfigRequest) SetUsernamePrefix(v string) *OidcIde
 	return s
 }
 
-// Identifies the AWS Key Management Service (AWS KMS) key used to encrypt the
-// secrets.
+// Identifies the Key Management Service (KMS) key used to encrypt the secrets.
 type Provider struct {
 	_ struct{} `type:"structure"`
 
@@ -8489,7 +8981,7 @@ type Provider struct {
 	// created in the same region as the cluster, and if the KMS key was created
 	// in a different account, the user must have access to the KMS key. For more
 	// information, see Allowing Users in Other Accounts to Use a KMS key (https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-modifying-external-accounts.html)
-	// in the AWS Key Management Service Developer Guide.
+	// in the Key Management Service Developer Guide.
 	KeyArn *string `locationName:"keyArn" type:"string"`
 }
 
@@ -8509,14 +9001,108 @@ func (s *Provider) SetKeyArn(v string) *Provider {
 	return s
 }
 
+type RegisterClusterInput struct {
+	_ struct{} `type:"structure"`
+
+	// Unique, case-sensitive identifier that you provide to ensure the idempotency
+	// of the request.
+	ClientRequestToken *string `locationName:"clientRequestToken" type:"string" idempotencyToken:"true"`
+
+	// The configuration settings required to connect the Kubernetes cluster to
+	// the Amazon EKS control plane.
+	//
+	// ConnectorConfig is a required field
+	ConnectorConfig *ConnectorConfigRequest `locationName:"connectorConfig" type:"structure" required:"true"`
+
+	// Define a unique name for this cluster within your AWS account.
+	//
+	// Name is a required field
+	Name *string `locationName:"name" min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s RegisterClusterInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s RegisterClusterInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *RegisterClusterInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "RegisterClusterInput"}
+	if s.ConnectorConfig == nil {
+		invalidParams.Add(request.NewErrParamRequired("ConnectorConfig"))
+	}
+	if s.Name == nil {
+		invalidParams.Add(request.NewErrParamRequired("Name"))
+	}
+	if s.Name != nil && len(*s.Name) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Name", 1))
+	}
+	if s.ConnectorConfig != nil {
+		if err := s.ConnectorConfig.Validate(); err != nil {
+			invalidParams.AddNested("ConnectorConfig", err.(request.ErrInvalidParams))
+		}
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetClientRequestToken sets the ClientRequestToken field's value.
+func (s *RegisterClusterInput) SetClientRequestToken(v string) *RegisterClusterInput {
+	s.ClientRequestToken = &v
+	return s
+}
+
+// SetConnectorConfig sets the ConnectorConfig field's value.
+func (s *RegisterClusterInput) SetConnectorConfig(v *ConnectorConfigRequest) *RegisterClusterInput {
+	s.ConnectorConfig = v
+	return s
+}
+
+// SetName sets the Name field's value.
+func (s *RegisterClusterInput) SetName(v string) *RegisterClusterInput {
+	s.Name = &v
+	return s
+}
+
+type RegisterClusterOutput struct {
+	_ struct{} `type:"structure"`
+
+	// An object representing an Amazon EKS cluster.
+	Cluster *Cluster `locationName:"cluster" type:"structure"`
+}
+
+// String returns the string representation
+func (s RegisterClusterOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s RegisterClusterOutput) GoString() string {
+	return s.String()
+}
+
+// SetCluster sets the Cluster field's value.
+func (s *RegisterClusterOutput) SetCluster(v *Cluster) *RegisterClusterOutput {
+	s.Cluster = v
+	return s
+}
+
 // An object representing the remote access configuration for the managed node
 // group.
 type RemoteAccessConfig struct {
 	_ struct{} `type:"structure"`
 
 	// The Amazon EC2 SSH key that provides access for SSH communication with the
-	// nodes in the managed node group. For more information, see Amazon EC2 Key
-	// Pairs (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html)
+	// nodes in the managed node group. For more information, see Amazon EC2 key
+	// pairs and Linux instances (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html)
 	// in the Amazon Elastic Compute Cloud User Guide for Linux Instances.
 	Ec2SshKey *string `locationName:"ec2SshKey" type:"string"`
 
@@ -9349,13 +9935,13 @@ type UpdateClusterConfigInput struct {
 
 	// Enable or disable exporting the Kubernetes control plane logs for your cluster
 	// to CloudWatch Logs. By default, cluster control plane logs aren't exported
-	// to CloudWatch Logs. For more information, see Amazon EKS Cluster Control
-	// Plane Logs (https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html)
+	// to CloudWatch Logs. For more information, see Amazon EKS cluster control
+	// plane logs (https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html)
 	// in the Amazon EKS User Guide .
 	//
 	// CloudWatch Logs ingestion, archive storage, and data scanning rates apply
-	// to exported control plane logs. For more information, see Amazon CloudWatch
-	// Pricing (http://aws.amazon.com/cloudwatch/pricing/).
+	// to exported control plane logs. For more information, see CloudWatch Pricing
+	// (http://aws.amazon.com/cloudwatch/pricing/).
 	Logging *Logging `locationName:"logging" type:"structure"`
 
 	// The name of the Amazon EKS cluster to update.
@@ -9588,6 +10174,9 @@ type UpdateNodegroupConfigInput struct {
 	// The Kubernetes taints to be applied to the nodes in the node group after
 	// the update.
 	Taints *UpdateTaintsPayload `locationName:"taints" type:"structure"`
+
+	// The node group update configuration.
+	UpdateConfig *NodegroupUpdateConfig `locationName:"updateConfig" type:"structure"`
 }
 
 // String returns the string representation
@@ -9623,6 +10212,11 @@ func (s *UpdateNodegroupConfigInput) Validate() error {
 	if s.Taints != nil {
 		if err := s.Taints.Validate(); err != nil {
 			invalidParams.AddNested("Taints", err.(request.ErrInvalidParams))
+		}
+	}
+	if s.UpdateConfig != nil {
+		if err := s.UpdateConfig.Validate(); err != nil {
+			invalidParams.AddNested("UpdateConfig", err.(request.ErrInvalidParams))
 		}
 	}
 
@@ -9665,6 +10259,12 @@ func (s *UpdateNodegroupConfigInput) SetScalingConfig(v *NodegroupScalingConfig)
 // SetTaints sets the Taints field's value.
 func (s *UpdateNodegroupConfigInput) SetTaints(v *UpdateTaintsPayload) *UpdateNodegroupConfigInput {
 	s.Taints = v
+	return s
+}
+
+// SetUpdateConfig sets the UpdateConfig field's value.
+func (s *UpdateNodegroupConfigInput) SetUpdateConfig(v *NodegroupUpdateConfig) *UpdateNodegroupConfigInput {
+	s.UpdateConfig = v
 	return s
 }
 
@@ -9944,9 +10544,9 @@ type VpcConfigRequest struct {
 	// from within your cluster's VPC use the private VPC endpoint. The default
 	// value for this parameter is false, which disables private access for your
 	// Kubernetes API server. If you disable private access and you have nodes or
-	// AWS Fargate pods in the cluster, then ensure that publicAccessCidrs includes
+	// Fargate pods in the cluster, then ensure that publicAccessCidrs includes
 	// the necessary CIDR blocks for communication with the nodes or Fargate pods.
-	// For more information, see Amazon EKS Cluster Endpoint Access Control (https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
+	// For more information, see Amazon EKS cluster endpoint access control (https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
 	// in the Amazon EKS User Guide .
 	EndpointPrivateAccess *bool `locationName:"endpointPrivateAccess" type:"boolean"`
 
@@ -9954,22 +10554,22 @@ type VpcConfigRequest struct {
 	// API server endpoint. If you disable public access, your cluster's Kubernetes
 	// API server can only receive requests from within the cluster VPC. The default
 	// value for this parameter is true, which enables public access for your Kubernetes
-	// API server. For more information, see Amazon EKS Cluster Endpoint Access
-	// Control (https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
+	// API server. For more information, see Amazon EKS cluster endpoint access
+	// control (https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
 	// in the Amazon EKS User Guide .
 	EndpointPublicAccess *bool `locationName:"endpointPublicAccess" type:"boolean"`
 
 	// The CIDR blocks that are allowed access to your cluster's public Kubernetes
 	// API server endpoint. Communication to the endpoint from addresses outside
 	// of the CIDR blocks that you specify is denied. The default value is 0.0.0.0/0.
-	// If you've disabled private endpoint access and you have nodes or AWS Fargate
+	// If you've disabled private endpoint access and you have nodes or Fargate
 	// pods in the cluster, then ensure that you specify the necessary CIDR blocks.
-	// For more information, see Amazon EKS Cluster Endpoint Access Control (https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
+	// For more information, see Amazon EKS cluster endpoint access control (https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
 	// in the Amazon EKS User Guide .
 	PublicAccessCidrs []*string `locationName:"publicAccessCidrs" type:"list"`
 
 	// Specify one or more security groups for the cross-account elastic network
-	// interfaces that Amazon EKS creates to use to allow communication between
+	// interfaces that Amazon EKS creates to use that allow communication between
 	// your nodes and the Kubernetes control plane. If you don't specify any security
 	// groups, then familiarize yourself with the difference between Amazon EKS
 	// defaults for clusters deployed with Kubernetes:
@@ -10041,9 +10641,9 @@ type VpcConfigResponse struct {
 	// is enabled. If the Amazon EKS private API server endpoint is enabled, Kubernetes
 	// API requests that originate from within your cluster's VPC use the private
 	// VPC endpoint instead of traversing the internet. If this value is disabled
-	// and you have nodes or AWS Fargate pods in the cluster, then ensure that publicAccessCidrs
+	// and you have nodes or Fargate pods in the cluster, then ensure that publicAccessCidrs
 	// includes the necessary CIDR blocks for communication with the nodes or Fargate
-	// pods. For more information, see Amazon EKS Cluster Endpoint Access Control
+	// pods. For more information, see Amazon EKS cluster endpoint access control
 	// (https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
 	// in the Amazon EKS User Guide .
 	EndpointPrivateAccess *bool `locationName:"endpointPrivateAccess" type:"boolean"`
@@ -10057,9 +10657,9 @@ type VpcConfigResponse struct {
 	// The CIDR blocks that are allowed access to your cluster's public Kubernetes
 	// API server endpoint. Communication to the endpoint from addresses outside
 	// of the listed CIDR blocks is denied. The default value is 0.0.0.0/0. If you've
-	// disabled private endpoint access and you have nodes or AWS Fargate pods in
-	// the cluster, then ensure that the necessary CIDR blocks are listed. For more
-	// information, see Amazon EKS Cluster Endpoint Access Control (https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
+	// disabled private endpoint access and you have nodes or Fargate pods in the
+	// cluster, then ensure that the necessary CIDR blocks are listed. For more
+	// information, see Amazon EKS cluster endpoint access control (https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
 	// in the Amazon EKS User Guide .
 	PublicAccessCidrs []*string `locationName:"publicAccessCidrs" type:"list"`
 
@@ -10169,6 +10769,12 @@ const (
 
 	// AddonIssueCodeAdmissionRequestDenied is a AddonIssueCode enum value
 	AddonIssueCodeAdmissionRequestDenied = "AdmissionRequestDenied"
+
+	// AddonIssueCodeUnsupportedAddonModification is a AddonIssueCode enum value
+	AddonIssueCodeUnsupportedAddonModification = "UnsupportedAddonModification"
+
+	// AddonIssueCodeK8sResourceNotFound is a AddonIssueCode enum value
+	AddonIssueCodeK8sResourceNotFound = "K8sResourceNotFound"
 )
 
 // AddonIssueCode_Values returns all elements of the AddonIssueCode enum
@@ -10180,6 +10786,8 @@ func AddonIssueCode_Values() []string {
 		AddonIssueCodeInsufficientNumberOfReplicas,
 		AddonIssueCodeConfigurationConflict,
 		AddonIssueCodeAdmissionRequestDenied,
+		AddonIssueCodeUnsupportedAddonModification,
+		AddonIssueCodeK8sResourceNotFound,
 	}
 }
 
@@ -10250,6 +10858,9 @@ const (
 
 	// ClusterStatusUpdating is a ClusterStatus enum value
 	ClusterStatusUpdating = "UPDATING"
+
+	// ClusterStatusPending is a ClusterStatus enum value
+	ClusterStatusPending = "PENDING"
 )
 
 // ClusterStatus_Values returns all elements of the ClusterStatus enum
@@ -10260,6 +10871,7 @@ func ClusterStatus_Values() []string {
 		ClusterStatusDeleting,
 		ClusterStatusFailed,
 		ClusterStatusUpdating,
+		ClusterStatusPending,
 	}
 }
 
@@ -10280,6 +10892,50 @@ func ConfigStatus_Values() []string {
 		ConfigStatusCreating,
 		ConfigStatusDeleting,
 		ConfigStatusActive,
+	}
+}
+
+const (
+	// ConnectorConfigProviderEksAnywhere is a ConnectorConfigProvider enum value
+	ConnectorConfigProviderEksAnywhere = "EKS_ANYWHERE"
+
+	// ConnectorConfigProviderAnthos is a ConnectorConfigProvider enum value
+	ConnectorConfigProviderAnthos = "ANTHOS"
+
+	// ConnectorConfigProviderGke is a ConnectorConfigProvider enum value
+	ConnectorConfigProviderGke = "GKE"
+
+	// ConnectorConfigProviderAks is a ConnectorConfigProvider enum value
+	ConnectorConfigProviderAks = "AKS"
+
+	// ConnectorConfigProviderOpenshift is a ConnectorConfigProvider enum value
+	ConnectorConfigProviderOpenshift = "OPENSHIFT"
+
+	// ConnectorConfigProviderTanzu is a ConnectorConfigProvider enum value
+	ConnectorConfigProviderTanzu = "TANZU"
+
+	// ConnectorConfigProviderRancher is a ConnectorConfigProvider enum value
+	ConnectorConfigProviderRancher = "RANCHER"
+
+	// ConnectorConfigProviderEc2 is a ConnectorConfigProvider enum value
+	ConnectorConfigProviderEc2 = "EC2"
+
+	// ConnectorConfigProviderOther is a ConnectorConfigProvider enum value
+	ConnectorConfigProviderOther = "OTHER"
+)
+
+// ConnectorConfigProvider_Values returns all elements of the ConnectorConfigProvider enum
+func ConnectorConfigProvider_Values() []string {
+	return []string{
+		ConnectorConfigProviderEksAnywhere,
+		ConnectorConfigProviderAnthos,
+		ConnectorConfigProviderGke,
+		ConnectorConfigProviderAks,
+		ConnectorConfigProviderOpenshift,
+		ConnectorConfigProviderTanzu,
+		ConnectorConfigProviderRancher,
+		ConnectorConfigProviderEc2,
+		ConnectorConfigProviderOther,
 	}
 }
 
@@ -10328,6 +10984,12 @@ const (
 
 	// ErrorCodeAdmissionRequestDenied is a ErrorCode enum value
 	ErrorCodeAdmissionRequestDenied = "AdmissionRequestDenied"
+
+	// ErrorCodeUnsupportedAddonModification is a ErrorCode enum value
+	ErrorCodeUnsupportedAddonModification = "UnsupportedAddonModification"
+
+	// ErrorCodeK8sResourceNotFound is a ErrorCode enum value
+	ErrorCodeK8sResourceNotFound = "K8sResourceNotFound"
 )
 
 // ErrorCode_Values returns all elements of the ErrorCode enum
@@ -10348,6 +11010,8 @@ func ErrorCode_Values() []string {
 		ErrorCodeInsufficientNumberOfReplicas,
 		ErrorCodeConfigurationConflict,
 		ErrorCodeAdmissionRequestDenied,
+		ErrorCodeUnsupportedAddonModification,
+		ErrorCodeK8sResourceNotFound,
 	}
 }
 
@@ -10622,6 +11286,12 @@ const (
 
 	// UpdateParamTypeResolveConflicts is a UpdateParamType enum value
 	UpdateParamTypeResolveConflicts = "ResolveConflicts"
+
+	// UpdateParamTypeMaxUnavailable is a UpdateParamType enum value
+	UpdateParamTypeMaxUnavailable = "MaxUnavailable"
+
+	// UpdateParamTypeMaxUnavailablePercentage is a UpdateParamType enum value
+	UpdateParamTypeMaxUnavailablePercentage = "MaxUnavailablePercentage"
 )
 
 // UpdateParamType_Values returns all elements of the UpdateParamType enum
@@ -10648,6 +11318,8 @@ func UpdateParamType_Values() []string {
 		UpdateParamTypeAddonVersion,
 		UpdateParamTypeServiceAccountRoleArn,
 		UpdateParamTypeResolveConflicts,
+		UpdateParamTypeMaxUnavailable,
+		UpdateParamTypeMaxUnavailablePercentage,
 	}
 }
 
