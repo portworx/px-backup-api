@@ -21,6 +21,8 @@ enum LicenseType {
     IBM = 4;
     AWS = 5;
     GCP = 6;
+    // In future we might have different baas licensing
+    BaasStd = 7;
 }
 
 message Metadata {
