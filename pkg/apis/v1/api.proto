@@ -1325,6 +1325,15 @@ service Backup {
             delete : "/v1/backup/{org_id}/{name}"
         };
     }
+
+    // UpdateOwnership updates ownership of existing backup object
+    rpc UpdateOwnership(BackupOwnershipUpdateRequest)
+        returns (BackupOwnershipUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/backup/{org_id}/{name}/updateownership"
+            body : "*"
+        };
+    }
 }
 
 // Request message structure for backup create
@@ -1412,6 +1421,18 @@ message BackupDeleteRequest {
 
 // Response message structure for object delete
 message BackupDeleteResponse {}
+
+// Define BackupOwnershipUpdateRequest struct
+message BackupOwnershipUpdateRequest {
+    string org_id = 1;
+    // Backup to be updated
+    string name = 2;
+    Ownership ownership = 3;
+    string uid = 4;
+}
+
+// Define BackupOwnershipUpdateResponse struct
+message BackupOwnershipUpdateResponse {}
 
 service Restore {
     // Creates new restore object in datastore

@@ -236,6 +236,52 @@
         ]
       }
     },
+    "/v1/backup/{org_id}/{name}/updateownership": {
+      "put": {
+        "summary": "UpdateOwnership updates ownership of existing backup object",
+        "operationId": "Backup_UpdateOwnership",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupOwnershipUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "description": "Backup to be updated",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupOwnershipUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
     "/v1/backuplocation": {
       "post": {
         "summary": "Creates new backup location",
@@ -3133,6 +3179,29 @@
         }
       },
       "description": "Message for Backup object which will be stored in Datastore."
+    },
+    "BackupOwnershipUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "title": "Backup to be updated"
+        },
+        "ownership": {
+          "$ref": "#/definitions/Ownership"
+        },
+        "uid": {
+          "type": "string"
+        }
+      },
+      "title": "Define BackupOwnershipUpdateRequest struct"
+    },
+    "BackupOwnershipUpdateResponse": {
+      "type": "object",
+      "title": "Define BackupOwnershipUpdateResponse struct"
     },
     "BackupScheduleCreateRequest": {
       "type": "object",
