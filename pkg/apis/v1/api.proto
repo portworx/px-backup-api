@@ -52,6 +52,7 @@ message ClusterInfo {
     bool delete_restores = 6;
     string stork_version = 7;
     ObjectRef cloud_credential_ref = 8;
+    BackupShare backup_share = 9;
     // Message for maintaining status of the cluster.
     message StatusInfo {
         enum Status {
@@ -925,7 +926,25 @@ service Cluster {
             delete : "/v1/cluster/{org_id}/{name}"
         };
     }
+    // UpdateBackupShare updates ownership details for backup share at cluster
+    // level
+    rpc UpdateBackupShare(ClusterBackupShareUpdateRequest)
+        returns (ClusterBackupShareUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/schedulepolicy/updatebackupshare"
+            body : "*"
+        };
+    }
 }
+
+message ClusterBackupShareUpdateRequest {
+    string org_id = 1;
+    string name = 2;
+    BackupShare backupShare = 3;
+    string uid = 4;
+}
+
+message ClusterBackupShareUpdateResponse {}
 
 // Define ClusterCreateRequest struct
 message ClusterCreateRequest {

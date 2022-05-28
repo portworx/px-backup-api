@@ -2373,6 +2373,39 @@
         ]
       }
     },
+    "/v1/schedulepolicy/updatebackupshare": {
+      "put": {
+        "summary": "UpdateBackupShare updates ownership details for backup share at cluster\nlevel",
+        "operationId": "Cluster_UpdateBackupShare",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ClusterBackupShareUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ClusterBackupShareUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Cluster"
+        ]
+      }
+    },
     "/v1/schedulepolicy/updateownership": {
       "put": {
         "summary": "UpdateOwnership updates ownership of existing object",
@@ -3583,6 +3616,48 @@
       "type": "object",
       "title": "Define BackupScheduleUpdateResponse struct"
     },
+    "BackupShare": {
+      "type": "object",
+      "properties": {
+        "groups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupShareAccessConfig"
+          },
+          "description": "Group access to objects which must match the group set in the\nauthorization token.\nCan be set by the owner or the system administrator only.\nPossible values are:\n1. no groups: Means no groups are given access.\n2. `[\"*\"]`: All groups are allowed.\n3. `[\"group1\", \"group2\"]`: Only certain groups are allowed. In this\nexample only\n_group1_ and _group2_ are allowed."
+        },
+        "collaborators": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupShareAccessConfig"
+          },
+          "description": "Collaborator access to objects gives access to other user.\nMust be the username (unique id) set in the authorization token.\nThe owner or the administrator can set this value. Possible values\nare:\n1. no collaborators: Means no users are given access.\n2. `[\"*\"]`: All users are allowed.\n3. `[\"username1\", \"username2\"]`: Only certain usernames are allowed.\nIn this example only\n_username1_ and _username2_ are allowed."
+        }
+      },
+      "title": "BackupShare for storing user and group details for whom the backups\nwill be shared"
+    },
+    "BackupShareAccessConfig": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "access": {
+          "$ref": "#/definitions/BackupShareAccessType"
+        }
+      }
+    },
+    "BackupShareAccessType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "View",
+        "Restorable",
+        "FullAccess"
+      ],
+      "default": "Invalid",
+      "title": "- View: view access means the backup is shared for view only\nIt can not be used for restore\n - Restorable: Restorable access means the backup is shared for view and it can be\nrestore as well\n - FullAccess: The FullAccess means the backup is shared for view/restore and other\nadmin operations like update and delete"
+    },
     "BackupUpdateRequest": {
       "type": "object",
       "properties": {
@@ -3728,6 +3803,26 @@
       "type": "object",
       "title": "Define CloudCredentialUpdateResponse struct"
     },
+    "ClusterBackupShareUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "backupShare": {
+          "$ref": "#/definitions/BackupShare"
+        },
+        "uid": {
+          "type": "string"
+        }
+      }
+    },
+    "ClusterBackupShareUpdateResponse": {
+      "type": "object"
+    },
     "ClusterCreateRequest": {
       "type": "object",
       "properties": {
@@ -3799,6 +3894,9 @@
         },
         "cloud_credential_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "backup_share": {
+          "$ref": "#/definitions/BackupShare"
         }
       }
     },
