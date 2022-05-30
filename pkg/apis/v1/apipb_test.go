@@ -6855,15 +6855,15 @@ func TestBackupDeleteResponseMarshalTo(t *testing.T) {
 	}
 }
 
-func TestBackupOwnershipUpdateRequestProto(t *testing.T) {
+func TestBackupShareUpdateRequestProto(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedBackupOwnershipUpdateRequest(popr, false)
+	p := NewPopulatedBackupShareUpdateRequest(popr, false)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &BackupOwnershipUpdateRequest{}
+	msg := &BackupShareUpdateRequest{}
 	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -6886,10 +6886,10 @@ func TestBackupOwnershipUpdateRequestProto(t *testing.T) {
 	}
 }
 
-func TestBackupOwnershipUpdateRequestMarshalTo(t *testing.T) {
+func TestBackupShareUpdateRequestMarshalTo(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedBackupOwnershipUpdateRequest(popr, false)
+	p := NewPopulatedBackupShareUpdateRequest(popr, false)
 	size := p.Size()
 	dAtA := make([]byte, size)
 	for i := range dAtA {
@@ -6899,7 +6899,7 @@ func TestBackupOwnershipUpdateRequestMarshalTo(t *testing.T) {
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &BackupOwnershipUpdateRequest{}
+	msg := &BackupShareUpdateRequest{}
 	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -6911,15 +6911,15 @@ func TestBackupOwnershipUpdateRequestMarshalTo(t *testing.T) {
 	}
 }
 
-func TestBackupOwnershipUpdateResponseProto(t *testing.T) {
+func TestBackupShareUpdateResponseProto(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedBackupOwnershipUpdateResponse(popr, false)
+	p := NewPopulatedBackupShareUpdateResponse(popr, false)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &BackupOwnershipUpdateResponse{}
+	msg := &BackupShareUpdateResponse{}
 	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -6942,10 +6942,10 @@ func TestBackupOwnershipUpdateResponseProto(t *testing.T) {
 	}
 }
 
-func TestBackupOwnershipUpdateResponseMarshalTo(t *testing.T) {
+func TestBackupShareUpdateResponseMarshalTo(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedBackupOwnershipUpdateResponse(popr, false)
+	p := NewPopulatedBackupShareUpdateResponse(popr, false)
 	size := p.Size()
 	dAtA := make([]byte, size)
 	for i := range dAtA {
@@ -6955,7 +6955,7 @@ func TestBackupOwnershipUpdateResponseMarshalTo(t *testing.T) {
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &BackupOwnershipUpdateResponse{}
+	msg := &BackupShareUpdateResponse{}
 	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -13643,16 +13643,16 @@ func TestBackupDeleteResponseJSON(t *testing.T) {
 		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
 	}
 }
-func TestBackupOwnershipUpdateRequestJSON(t *testing.T) {
+func TestBackupShareUpdateRequestJSON(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedBackupOwnershipUpdateRequest(popr, true)
+	p := NewPopulatedBackupShareUpdateRequest(popr, true)
 	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
 	jsondata, err := marshaler.MarshalToString(p)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &BackupOwnershipUpdateRequest{}
+	msg := &BackupShareUpdateRequest{}
 	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
@@ -13661,16 +13661,16 @@ func TestBackupOwnershipUpdateRequestJSON(t *testing.T) {
 		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
 	}
 }
-func TestBackupOwnershipUpdateResponseJSON(t *testing.T) {
+func TestBackupShareUpdateResponseJSON(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedBackupOwnershipUpdateResponse(popr, true)
+	p := NewPopulatedBackupShareUpdateResponse(popr, true)
 	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
 	jsondata, err := marshaler.MarshalToString(p)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &BackupOwnershipUpdateResponse{}
+	msg := &BackupShareUpdateResponse{}
 	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
@@ -18535,12 +18535,12 @@ func TestBackupDeleteResponseProtoCompactText(t *testing.T) {
 	}
 }
 
-func TestBackupOwnershipUpdateRequestProtoText(t *testing.T) {
+func TestBackupShareUpdateRequestProtoText(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedBackupOwnershipUpdateRequest(popr, true)
+	p := NewPopulatedBackupShareUpdateRequest(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
-	msg := &BackupOwnershipUpdateRequest{}
+	msg := &BackupShareUpdateRequest{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -18549,12 +18549,12 @@ func TestBackupOwnershipUpdateRequestProtoText(t *testing.T) {
 	}
 }
 
-func TestBackupOwnershipUpdateRequestProtoCompactText(t *testing.T) {
+func TestBackupShareUpdateRequestProtoCompactText(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedBackupOwnershipUpdateRequest(popr, true)
+	p := NewPopulatedBackupShareUpdateRequest(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
-	msg := &BackupOwnershipUpdateRequest{}
+	msg := &BackupShareUpdateRequest{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -18563,12 +18563,12 @@ func TestBackupOwnershipUpdateRequestProtoCompactText(t *testing.T) {
 	}
 }
 
-func TestBackupOwnershipUpdateResponseProtoText(t *testing.T) {
+func TestBackupShareUpdateResponseProtoText(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedBackupOwnershipUpdateResponse(popr, true)
+	p := NewPopulatedBackupShareUpdateResponse(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
-	msg := &BackupOwnershipUpdateResponse{}
+	msg := &BackupShareUpdateResponse{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -18577,12 +18577,12 @@ func TestBackupOwnershipUpdateResponseProtoText(t *testing.T) {
 	}
 }
 
-func TestBackupOwnershipUpdateResponseProtoCompactText(t *testing.T) {
+func TestBackupShareUpdateResponseProtoCompactText(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedBackupOwnershipUpdateResponse(popr, true)
+	p := NewPopulatedBackupShareUpdateResponse(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
-	msg := &BackupOwnershipUpdateResponse{}
+	msg := &BackupShareUpdateResponse{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -23515,10 +23515,10 @@ func TestBackupDeleteResponseSize(t *testing.T) {
 	}
 }
 
-func TestBackupOwnershipUpdateRequestSize(t *testing.T) {
+func TestBackupShareUpdateRequestSize(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedBackupOwnershipUpdateRequest(popr, true)
+	p := NewPopulatedBackupShareUpdateRequest(popr, true)
 	size2 := github_com_gogo_protobuf_proto.Size(p)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {
@@ -23537,10 +23537,10 @@ func TestBackupOwnershipUpdateRequestSize(t *testing.T) {
 	}
 }
 
-func TestBackupOwnershipUpdateResponseSize(t *testing.T) {
+func TestBackupShareUpdateResponseSize(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedBackupOwnershipUpdateResponse(popr, true)
+	p := NewPopulatedBackupShareUpdateResponse(popr, true)
 	size2 := github_com_gogo_protobuf_proto.Size(p)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {

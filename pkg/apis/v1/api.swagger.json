@@ -75,6 +75,39 @@
         ]
       }
     },
+    "/v1/backup/updatebackupshare": {
+      "put": {
+        "summary": "UpdateBackupShare updates sharing details for backup object",
+        "operationId": "Backup_UpdateBackupShare",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupShareUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupShareUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
     "/v1/backup/{org_id}": {
       "get": {
         "summary": "Enumerate returns a list of objects",
@@ -229,52 +262,6 @@
             "in": "query",
             "required": false,
             "type": "string"
-          }
-        ],
-        "tags": [
-          "Backup"
-        ]
-      }
-    },
-    "/v1/backup/{org_id}/{name}/updateownership": {
-      "put": {
-        "summary": "UpdateOwnership updates ownership of existing backup object",
-        "operationId": "Backup_UpdateOwnership",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/BackupOwnershipUpdateResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "description": "Backup to be updated",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/BackupOwnershipUpdateRequest"
-            }
           }
         ],
         "tags": [
@@ -1052,6 +1039,39 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/ClusterUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Cluster"
+        ]
+      }
+    },
+    "/v1/cluster/updatebackupshare": {
+      "put": {
+        "summary": "UpdateBackupShare updates ownership details for backup share at cluster\nlevel",
+        "operationId": "Cluster_UpdateBackupShare",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ClusterBackupShareUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ClusterBackupShareUpdateRequest"
             }
           }
         ],
@@ -2373,39 +2393,6 @@
         ]
       }
     },
-    "/v1/schedulepolicy/updatebackupshare": {
-      "put": {
-        "summary": "UpdateBackupShare updates ownership details for backup share at cluster\nlevel",
-        "operationId": "Cluster_UpdateBackupShare",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/ClusterBackupShareUpdateResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ClusterBackupShareUpdateRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Cluster"
-        ]
-      }
-    },
     "/v1/schedulepolicy/updateownership": {
       "put": {
         "summary": "UpdateOwnership updates ownership of existing object",
@@ -2886,6 +2873,9 @@
         "retention_period": {
           "type": "string",
           "format": "int64"
+        },
+        "backup_share": {
+          "$ref": "#/definitions/BackupShare"
         }
       }
     },
@@ -3212,29 +3202,6 @@
         }
       },
       "description": "Message for Backup object which will be stored in Datastore."
-    },
-    "BackupOwnershipUpdateRequest": {
-      "type": "object",
-      "properties": {
-        "org_id": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string",
-          "title": "Backup to be updated"
-        },
-        "ownership": {
-          "$ref": "#/definitions/Ownership"
-        },
-        "uid": {
-          "type": "string"
-        }
-      },
-      "title": "Define BackupOwnershipUpdateRequest struct"
-    },
-    "BackupOwnershipUpdateResponse": {
-      "type": "object",
-      "title": "Define BackupOwnershipUpdateResponse struct"
     },
     "BackupScheduleCreateRequest": {
       "type": "object",
@@ -3657,6 +3624,28 @@
       ],
       "default": "Invalid",
       "title": "- View: view access means the backup is shared for view only\nIt can not be used for restore\n - Restorable: Restorable access means the backup is shared for view and it can be\nrestore as well\n - FullAccess: The FullAccess means the backup is shared for view/restore and other\nadmin operations like update and delete"
+    },
+    "BackupShareUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "backupShare": {
+          "$ref": "#/definitions/BackupShare"
+        },
+        "uid": {
+          "type": "string"
+        }
+      },
+      "title": "Request message for backup share update request"
+    },
+    "BackupShareUpdateResponse": {
+      "type": "object",
+      "title": "Response message for backup share update request"
     },
     "BackupUpdateRequest": {
       "type": "object",
