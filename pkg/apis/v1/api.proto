@@ -411,7 +411,6 @@ message BackupInfo {
     BackupType backup_type = 25;
     string cr_uid = 26;
     int64 retention_period = 27;
-    BackupShare backup_share = 28;
     message BackupType {
         Type type = 1;
         enum Type {
@@ -932,7 +931,7 @@ service Cluster {
     rpc UpdateBackupShare(ClusterBackupShareUpdateRequest)
         returns (ClusterBackupShareUpdateResponse) {
         option (google.api.http) = {
-            put : "/v1/cluster/updatebackupshare"
+            put : "/v1/schedulepolicy/updatebackupshare"
             body : "*"
         };
     }
@@ -1346,11 +1345,11 @@ service Backup {
         };
     }
 
-    // UpdateBackupShare updates sharing details for backup object
-    rpc UpdateBackupShare(BackupShareUpdateRequest)
-        returns (BackupShareUpdateResponse) {
+    // UpdateOwnership updates ownership of existing backup object
+    rpc UpdateOwnership(BackupOwnershipUpdateRequest)
+        returns (BackupOwnershipUpdateResponse) {
         option (google.api.http) = {
-            put : "/v1/backup/updatebackupshare"
+            put : "/v1/backup/{org_id}/{name}/updateownership"
             body : "*"
         };
     }
@@ -1442,16 +1441,17 @@ message BackupDeleteRequest {
 // Response message structure for object delete
 message BackupDeleteResponse {}
 
-// Request message for backup share update request
-message BackupShareUpdateRequest {
+// Define BackupOwnershipUpdateRequest struct
+message BackupOwnershipUpdateRequest {
     string org_id = 1;
+    // Backup to be updated
     string name = 2;
-    BackupShare backupShare = 3;
+    Ownership ownership = 3;
     string uid = 4;
 }
 
-// Response message for backup share update request
-message BackupShareUpdateResponse {}
+// Define BackupOwnershipUpdateResponse struct
+message BackupOwnershipUpdateResponse {}
 
 service Restore {
     // Creates new restore object in datastore
