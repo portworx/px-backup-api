@@ -931,7 +931,7 @@ service Cluster {
     rpc UpdateBackupShare(ClusterBackupShareUpdateRequest)
         returns (ClusterBackupShareUpdateResponse) {
         option (google.api.http) = {
-            put : "/v1/schedulepolicy/updatebackupshare"
+            put : "/v1/cluster/updatebackupshare"
             body : "*"
         };
     }

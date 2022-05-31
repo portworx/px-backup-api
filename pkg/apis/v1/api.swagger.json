@@ -1060,6 +1060,39 @@
         ]
       }
     },
+    "/v1/cluster/updatebackupshare": {
+      "put": {
+        "summary": "UpdateBackupShare updates ownership details for backup share at cluster\nlevel",
+        "operationId": "Cluster_UpdateBackupShare",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ClusterBackupShareUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ClusterBackupShareUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Cluster"
+        ]
+      }
+    },
     "/v1/cluster/{org_id}": {
       "get": {
         "summary": "Enumerate returns a list of clusters",
@@ -2370,39 +2403,6 @@
         ],
         "tags": [
           "SchedulePolicy"
-        ]
-      }
-    },
-    "/v1/schedulepolicy/updatebackupshare": {
-      "put": {
-        "summary": "UpdateBackupShare updates ownership details for backup share at cluster\nlevel",
-        "operationId": "Cluster_UpdateBackupShare",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/ClusterBackupShareUpdateResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ClusterBackupShareUpdateRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Cluster"
         ]
       }
     },
