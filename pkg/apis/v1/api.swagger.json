@@ -4009,9 +4009,11 @@
         "UsageBased",
         "IBM",
         "AWS",
-        "GCP"
+        "GCP",
+        "BaasStd"
       ],
-      "default": "Invalid"
+      "default": "Invalid",
+      "title": "- BaasStd: In future we might have different baas licensing"
     },
     "LicenseUpdateRequest": {
       "type": "object",
