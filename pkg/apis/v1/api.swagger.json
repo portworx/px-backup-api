@@ -5292,6 +5292,9 @@
         "patch": {
           "type": "string"
         },
+        "changes": {
+          "type": "string"
+        },
         "git_commit": {
           "type": "string"
         },
