@@ -9574,8 +9574,9 @@ type VersionInfo struct {
 	Major     string `protobuf:"bytes,1,opt,name=major,proto3" json:"major,omitempty"`
 	Minor     string `protobuf:"bytes,2,opt,name=minor,proto3" json:"minor,omitempty"`
 	Patch     string `protobuf:"bytes,3,opt,name=patch,proto3" json:"patch,omitempty"`
-	GitCommit string `protobuf:"bytes,4,opt,name=git_commit,json=gitCommit,proto3" json:"git_commit,omitempty"`
-	BuildDate string `protobuf:"bytes,5,opt,name=build_date,json=buildDate,proto3" json:"build_date,omitempty"`
+	Changes   string `protobuf:"bytes,4,opt,name=changes,proto3" json:"changes,omitempty"`
+	GitCommit string `protobuf:"bytes,5,opt,name=git_commit,json=gitCommit,proto3" json:"git_commit,omitempty"`
+	BuildDate string `protobuf:"bytes,6,opt,name=build_date,json=buildDate,proto3" json:"build_date,omitempty"`
 }
 
 func (m *VersionInfo) Reset()         { *m = VersionInfo{} }
@@ -9628,6 +9629,13 @@ func (m *VersionInfo) GetMinor() string {
 func (m *VersionInfo) GetPatch() string {
 	if m != nil {
 		return m.Patch
+	}
+	return ""
+}
+
+func (m *VersionInfo) GetChanges() string {
+	if m != nil {
+		return m.Changes
 	}
 	return ""
 }
@@ -18184,6 +18192,9 @@ func (this *VersionInfo) Equal(that interface{}) bool {
 		return false
 	}
 	if this.Patch != that1.Patch {
+		return false
+	}
+	if this.Changes != that1.Changes {
 		return false
 	}
 	if this.GitCommit != that1.GitCommit {
@@ -30574,12 +30585,19 @@ func (m *VersionInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.BuildDate)
 		i = encodeVarintApi(dAtA, i, uint64(len(m.BuildDate)))
 		i--
-		dAtA[i] = 0x2a
+		dAtA[i] = 0x32
 	}
 	if len(m.GitCommit) > 0 {
 		i -= len(m.GitCommit)
 		copy(dAtA[i:], m.GitCommit)
 		i = encodeVarintApi(dAtA, i, uint64(len(m.GitCommit)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if len(m.Changes) > 0 {
+		i -= len(m.Changes)
+		copy(dAtA[i:], m.Changes)
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Changes)))
 		i--
 		dAtA[i] = 0x22
 	}
@@ -35033,6 +35051,7 @@ func NewPopulatedVersionInfo(r randyApi, easy bool) *VersionInfo {
 	this.Major = string(randStringApi(r))
 	this.Minor = string(randStringApi(r))
 	this.Patch = string(randStringApi(r))
+	this.Changes = string(randStringApi(r))
 	this.GitCommit = string(randStringApi(r))
 	this.BuildDate = string(randStringApi(r))
 	if !easy && r.Intn(10) != 0 {
@@ -38989,6 +39008,10 @@ func (m *VersionInfo) Size() (n int) {
 		n += 1 + l + sovApi(uint64(l))
 	}
 	l = len(m.Patch)
+	if l > 0 {
+		n += 1 + l + sovApi(uint64(l))
+	}
+	l = len(m.Changes)
 	if l > 0 {
 		n += 1 + l + sovApi(uint64(l))
 	}
@@ -62539,6 +62562,38 @@ func (m *VersionInfo) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Changes", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Changes = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field GitCommit", wireType)
 			}
 			var stringLen uint64
@@ -62569,7 +62624,7 @@ func (m *VersionInfo) Unmarshal(dAtA []byte) error {
 			}
 			m.GitCommit = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 5:
+		case 6:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field BuildDate", wireType)
 			}
