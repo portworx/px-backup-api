@@ -410,6 +410,7 @@ message BackupInfo {
     BackupType backup_type = 25;
     string cr_uid = 26;
     int64 retention_period = 27;
+    bool encrypt_supported = 28;
     message BackupType {
         Type type = 1;
         enum Type {
