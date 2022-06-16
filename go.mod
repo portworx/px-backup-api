@@ -15,15 +15,16 @@ require (
 	github.com/portworx/sched-ops v1.20.4-rc1.0.20210917175300-a553cdf14ddc
 	github.com/sirupsen/logrus v1.8.1
 	go.uber.org/multierr v1.6.0
-	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
-	golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f // indirect
+	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
 	golang.org/x/oauth2 v0.0.0-20210819190943-2bc19b11175f
 	golang.org/x/sys v0.0.0-20220610221304-9f5ed59c137d // indirect
-	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/tools v0.1.11 // indirect
 	golang.org/x/xerrors v0.0.0-20220609144429-65e65417b02f // indirect
 	google.golang.org/genproto v0.0.0-20220608133413-ed9918b62aac // indirect
 	google.golang.org/grpc v1.47.0
+	google.golang.org/protobuf v1.28.0 // indirect
+	honnef.co/go/tools v0.2.2 // indirect
+	k8s.io/apiextensions-apiserver v0.20.4 // indirect
 	k8s.io/apimachinery v0.22.1
 	k8s.io/cli-runtime v0.20.4
 	k8s.io/client-go v12.0.0+incompatible
