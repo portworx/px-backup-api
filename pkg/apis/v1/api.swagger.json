@@ -3887,8 +3887,34 @@
         },
         "backup_share": {
           "$ref": "#/definitions/BackupShare"
+        },
+        "backup_share_status_info": {
+          "$ref": "#/definitions/ClusterInfoBackupShareStatusInfo"
         }
       }
+    },
+    "ClusterInfoBackupShareStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/ClusterInfoBackupShareStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "description": "Message for maintaining status of the backup share."
+    },
+    "ClusterInfoBackupShareStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "InProgress",
+        "Failed",
+        "Success"
+      ],
+      "default": "Invalid",
+      "title": "- InProgress: InProgress if backupshare is going on for backups belonging to\nthe cluster\n - Failed: Failed if backupshare fails for some backups belonging to the\ncluster\n - Success: Success if backupshare is successful for all current backups\nbelonging to the cluster"
     },
     "ClusterInfoStatusInfo": {
       "type": "object",
