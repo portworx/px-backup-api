@@ -53,6 +53,7 @@ message ClusterInfo {
     string stork_version = 7;
     ObjectRef cloud_credential_ref = 8;
     BackupShare backup_share = 9;
+    BackupShareStatusInfo backup_share_status_info = 10;
     // Message for maintaining status of the cluster.
     message StatusInfo {
         enum Status {
@@ -66,6 +67,23 @@ message ClusterInfo {
             Failed = 5;
             // Success If cluster was successfully added but not Online yet
             Success = 6;
+        }
+        Status status = 1;
+        string reason = 2;
+    }
+    // Message for maintaining status of the backup share.
+    message BackupShareStatusInfo {
+        enum Status {
+            Invalid = 0;
+            // InProgress if backupshare is going on for backups belonging to
+            // the cluster
+            InProgress = 1;
+            // Failed if backupshare fails for some backups belonging to the
+            // cluster
+            Failed = 2;
+            // Success if backupshare is successful for all current backups
+            // belonging to the cluster
+            Success = 3;
         }
         Status status = 1;
         string reason = 2;
