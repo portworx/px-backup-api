@@ -2807,9 +2807,6 @@
         "retention_period": {
           "type": "string",
           "format": "int64"
-        },
-        "encrypt_supported": {
-          "type": "boolean"
         }
       }
     },

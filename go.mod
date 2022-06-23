@@ -17,10 +17,10 @@ require (
 	go.uber.org/multierr v1.6.0
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
 	golang.org/x/oauth2 v0.0.0-20210819190943-2bc19b11175f
-	golang.org/x/sys v0.0.0-20220615213510-4f61da869c0c // indirect
+	golang.org/x/sys v0.0.0-20220622161953-175b2fd9d664 // indirect
 	golang.org/x/tools v0.1.11 // indirect
 	golang.org/x/xerrors v0.0.0-20220609144429-65e65417b02f // indirect
-	google.golang.org/genproto v0.0.0-20220615141314-f1464d18c36b // indirect
+	google.golang.org/genproto v0.0.0-20220622171453-ea41d75dfa0f // indirect
 	google.golang.org/grpc v1.47.0
 	google.golang.org/protobuf v1.28.0 // indirect
 	honnef.co/go/tools v0.2.2 // indirect
