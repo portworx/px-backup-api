@@ -1816,10 +1816,18 @@ message LicenseUsageAirgappedObject {
     int64 report_time = 3;
 }
 
-message LicenseUsageAirgappedRequest { string org_id = 1; }
+message LicenseUsageAirgappedRequest {
+    string org_id = 1;
+    // index from where object fetch has to happen
+    uint64 object_index = 2;
+    // max objects to fetch
+    uint64 max_objects = 3;
+}
 
 message LicenseUsageAirgappedResponse {
     repeated LicenseUsageAirgappedObject licenseUsageAirgapped = 1;
+    bool complete = 2;
+    uint64 total_count = 3;
 }
 
 service License {

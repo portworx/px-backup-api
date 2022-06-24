@@ -1369,6 +1369,22 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "object_index",
+            "description": "index from where object fetch has to happen.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "max_objects",
+            "description": "max objects to fetch.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
           }
         ],
         "tags": [
@@ -4281,6 +4297,13 @@
           "items": {
             "$ref": "#/definitions/LicenseUsageAirgappedObject"
           }
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "total_count": {
+          "type": "string",
+          "format": "uint64"
         }
       }
     },
