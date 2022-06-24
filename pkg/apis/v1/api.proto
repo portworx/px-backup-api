@@ -1695,6 +1695,7 @@ message LicenseActivateRequest {
         string activation_id = 2;
         bytes license_data = 3;
         string usage_based_id = 4;
+        string usaged_based_airgapped_id = 5;
     }
 }
 
@@ -1743,6 +1744,19 @@ message LicenseResponseInfo {
     }
 }
 
+message LicenseUsageAirgappedObject {
+    Metadata metadata = 1 [ (gogoproto.embed) = true ];
+    int64 node_count = 2;
+    // Time at which license consumption is recorded in epoch time format
+    int64 report_time = 3;
+}
+
+message LicenseUsageAirgappedRequest { string org_id = 1; }
+
+message LicenseUsageAirgappedResponse {
+    repeated LicenseUsageAirgappedObject licenseUsageAirgapped = 1;
+}
+
 service License {
     // Activate activate a new license
     rpc Activate(LicenseActivateRequest) returns (LicenseActivateResponse) {
@@ -1764,6 +1778,13 @@ service License {
         option (google.api.http) = {
             put : "/v1/license"
             body : "*"
+        };
+    }
+
+    rpc EnumerateLicenseUsageAirGapped(LicenseUsageAirgappedRequest)
+        returns (LicenseUsageAirgappedResponse) {
+        option (google.api.http) = {
+            get : "/v1/license/{org_id}/license_usage_airgapped"
         };
     }
 }

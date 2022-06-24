@@ -1280,6 +1280,36 @@
         ]
       }
     },
+    "/v1/license/{org_id}/license_usage_airgapped": {
+      "get": {
+        "operationId": "License_EnumerateLicenseUsageAirGapped",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LicenseUsageAirgappedResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "License"
+        ]
+      }
+    },
     "/v1/managedcluster/{org_id}": {
       "get": {
         "summary": "Inspect returns detailed information on a managed cluster from providers\nlike\nAWS, Azure, GCE, IBM\nusing the given credentials",
@@ -3911,6 +3941,9 @@
         },
         "usage_based_id": {
           "type": "string"
+        },
+        "usaged_based_airgapped_id": {
+          "type": "string"
         }
       }
     },
@@ -4007,7 +4040,8 @@
         "IBM",
         "AWS",
         "GCP",
-        "BaasStd"
+        "BaasStd",
+        "UsageBasedAirGapped"
       ],
       "default": "Invalid",
       "title": "- BaasStd: In future we might have different baas licensing"
@@ -4025,6 +4059,34 @@
     },
     "LicenseUpdateResponse": {
       "type": "object"
+    },
+    "LicenseUsageAirgappedObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "node_count": {
+          "type": "string",
+          "format": "int64"
+        },
+        "report_time": {
+          "type": "string",
+          "format": "int64",
+          "title": "Time at which license consumption is recorded in epoch time format"
+        }
+      }
+    },
+    "LicenseUsageAirgappedResponse": {
+      "type": "object",
+      "properties": {
+        "licenseUsageAirgapped": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LicenseUsageAirgappedObject"
+          }
+        }
+      }
     },
     "ManagedClusterBulkAddRequest": {
       "type": "object",
