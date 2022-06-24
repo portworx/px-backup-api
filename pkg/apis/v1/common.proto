@@ -23,6 +23,7 @@ enum LicenseType {
     GCP = 6;
     // In future we might have different baas licensing
     BaasStd = 7;
+    UsageBasedAirGapped = 8;
 }
 
 message Metadata {
