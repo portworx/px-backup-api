@@ -52,8 +52,9 @@ message ClusterInfo {
     bool delete_restores = 6;
     string stork_version = 7;
     ObjectRef cloud_credential_ref = 8;
-    BackupShare backup_share = 9;
-    BackupShareStatusInfo backup_share_status_info = 10;
+    BackupShare add_backup_share = 9;
+    BackupShare del_backup_share = 10;
+    BackupShareStatusInfo backup_share_status_info = 11;
     // Message for maintaining status of the cluster.
     message StatusInfo {
         enum Status {
@@ -959,8 +960,9 @@ service Cluster {
 message ClusterBackupShareUpdateRequest {
     string org_id = 1;
     string name = 2;
-    BackupShare backupShare = 3;
-    string uid = 4;
+    BackupShare add_backup_share = 3;
+    BackupShare del_backup_share = 4;
+    string uid = 5;
 }
 
 message ClusterBackupShareUpdateResponse {}
