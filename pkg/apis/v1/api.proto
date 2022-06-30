@@ -85,6 +85,9 @@ message ClusterInfo {
             // Success if backupshare is successful for all current backups
             // belonging to the cluster
             Success = 3;
+            // Parital Success if backupshare is successful for only few
+            // backups.
+            PartialSuccess = 4;
         }
         Status status = 1;
         string reason = 2;

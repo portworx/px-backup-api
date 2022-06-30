@@ -3917,10 +3917,11 @@
         "Invalid",
         "InProgress",
         "Failed",
-        "Success"
+        "Success",
+        "PartialSuccess"
       ],
       "default": "Invalid",
-      "title": "- InProgress: InProgress if backupshare is going on for backups belonging to\nthe cluster\n - Failed: Failed if backupshare fails for some backups belonging to the\ncluster\n - Success: Success if backupshare is successful for all current backups\nbelonging to the cluster"
+      "description": " - InProgress: InProgress if backupshare is going on for backups belonging to\nthe cluster\n - Failed: Failed if backupshare fails for some backups belonging to the\ncluster\n - Success: Success if backupshare is successful for all current backups\nbelonging to the cluster\n - PartialSuccess: Parital Success if backupshare is successful for only few\nbackups."
     },
     "ClusterInfoStatusInfo": {
       "type": "object",
