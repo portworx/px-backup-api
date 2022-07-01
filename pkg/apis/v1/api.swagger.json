@@ -75,6 +75,39 @@
         ]
       }
     },
+    "/v1/backup/updatebackupshare": {
+      "put": {
+        "summary": "UpdateBackupShare updates backupshare of existing backup object",
+        "operationId": "Backup_UpdateBackupShare",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupShareUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupShareUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
     "/v1/backup/{org_id}": {
       "get": {
         "summary": "Enumerate returns a list of objects",
@@ -1006,6 +1039,39 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/ClusterUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Cluster"
+        ]
+      }
+    },
+    "/v1/cluster/updatebackupshare": {
+      "put": {
+        "summary": "UpdateBackupShare updates ownership details for backup share at cluster\nlevel",
+        "operationId": "Cluster_UpdateBackupShare",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ClusterBackupShareUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ClusterBackupShareUpdateRequest"
             }
           }
         ],
@@ -2837,6 +2903,9 @@
         "retention_period": {
           "type": "string",
           "format": "int64"
+        },
+        "backup_share": {
+          "$ref": "#/definitions/BackupShare"
         }
       }
     },
@@ -3544,6 +3613,71 @@
       "type": "object",
       "title": "Define BackupScheduleUpdateResponse struct"
     },
+    "BackupShare": {
+      "type": "object",
+      "properties": {
+        "groups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupShareAccessConfig"
+          },
+          "description": "Group access to objects which must match the group set in the\nauthorization token.\nCan be set by the owner or the system administrator only.\nPossible values are:\n1. no groups: Means no groups are given access.\n2. `[\"*\"]`: All groups are allowed.\n3. `[\"group1\", \"group2\"]`: Only certain groups are allowed. In this\nexample only\n_group1_ and _group2_ are allowed."
+        },
+        "collaborators": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupShareAccessConfig"
+          },
+          "description": "Collaborator access to objects gives access to other user.\nMust be the username (unique id) set in the authorization token.\nThe owner or the administrator can set this value. Possible values\nare:\n1. no collaborators: Means no users are given access.\n2. `[\"*\"]`: All users are allowed.\n3. `[\"username1\", \"username2\"]`: Only certain usernames are allowed.\nIn this example only\n_username1_ and _username2_ are allowed."
+        }
+      },
+      "title": "BackupShare for storing user and group details for whom the backups\nwill be shared"
+    },
+    "BackupShareAccessConfig": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "access": {
+          "$ref": "#/definitions/BackupShareAccessType"
+        }
+      }
+    },
+    "BackupShareAccessType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "View",
+        "Restorable",
+        "FullAccess"
+      ],
+      "default": "Invalid",
+      "title": "- View: view access means the backup is shared for view only\nIt can not be used for restore\n - Restorable: Restorable access means the backup is shared for view and it can be\nrestore as well\n - FullAccess: The FullAccess means the backup is shared for view/restore and other\nadmin operations like update and delete"
+    },
+    "BackupShareUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "title": "Backup to be updated"
+        },
+        "backupshare": {
+          "$ref": "#/definitions/BackupShare"
+        },
+        "uid": {
+          "type": "string"
+        }
+      },
+      "title": "Request message for backup share update request"
+    },
+    "BackupShareUpdateResponse": {
+      "type": "object",
+      "title": "Response message for backup share update request"
+    },
     "BackupUpdateRequest": {
       "type": "object",
       "properties": {
@@ -3689,6 +3823,29 @@
       "type": "object",
       "title": "Define CloudCredentialUpdateResponse struct"
     },
+    "ClusterBackupShareUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "add_backup_share": {
+          "$ref": "#/definitions/BackupShare"
+        },
+        "del_backup_share": {
+          "$ref": "#/definitions/BackupShare"
+        },
+        "uid": {
+          "type": "string"
+        }
+      }
+    },
+    "ClusterBackupShareUpdateResponse": {
+      "type": "object"
+    },
     "ClusterCreateRequest": {
       "type": "object",
       "properties": {
@@ -3760,8 +3917,41 @@
         },
         "cloud_credential_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "add_backup_share": {
+          "$ref": "#/definitions/BackupShare"
+        },
+        "del_backup_share": {
+          "$ref": "#/definitions/BackupShare"
+        },
+        "backup_share_status_info": {
+          "$ref": "#/definitions/ClusterInfoBackupShareStatusInfo"
         }
       }
+    },
+    "ClusterInfoBackupShareStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/ClusterInfoBackupShareStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "description": "Message for maintaining status of the backup share."
+    },
+    "ClusterInfoBackupShareStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "InProgress",
+        "Failed",
+        "Success",
+        "PartialSuccess"
+      ],
+      "default": "Invalid",
+      "description": " - InProgress: InProgress if backupshare is going on for backups belonging to\nthe cluster\n - Failed: Failed if backupshare fails for some backups belonging to the\ncluster\n - Success: Success if backupshare is successful for all current backups\nbelonging to the cluster\n - PartialSuccess: Parital Success if backupshare is successful for only few\nbackups."
     },
     "ClusterInfoStatusInfo": {
       "type": "object",

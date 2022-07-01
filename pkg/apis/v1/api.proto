@@ -52,6 +52,9 @@ message ClusterInfo {
     bool delete_restores = 6;
     string stork_version = 7;
     ObjectRef cloud_credential_ref = 8;
+    BackupShare add_backup_share = 9;
+    BackupShare del_backup_share = 10;
+    BackupShareStatusInfo backup_share_status_info = 11;
     // Message for maintaining status of the cluster.
     message StatusInfo {
         enum Status {
@@ -65,6 +68,26 @@ message ClusterInfo {
             Failed = 5;
             // Success If cluster was successfully added but not Online yet
             Success = 6;
+        }
+        Status status = 1;
+        string reason = 2;
+    }
+    // Message for maintaining status of the backup share.
+    message BackupShareStatusInfo {
+        enum Status {
+            Invalid = 0;
+            // InProgress if backupshare is going on for backups belonging to
+            // the cluster
+            InProgress = 1;
+            // Failed if backupshare fails for some backups belonging to the
+            // cluster
+            Failed = 2;
+            // Success if backupshare is successful for all current backups
+            // belonging to the cluster
+            Success = 3;
+            // Parital Success if backupshare is successful for only few
+            // backups.
+            PartialSuccess = 4;
         }
         Status status = 1;
         string reason = 2;
@@ -410,6 +433,7 @@ message BackupInfo {
     BackupType backup_type = 25;
     string cr_uid = 26;
     int64 retention_period = 27;
+    BackupShare backup_share = 28;
     message BackupType {
         Type type = 1;
         enum Type {
@@ -925,7 +949,26 @@ service Cluster {
             delete : "/v1/cluster/{org_id}/{name}"
         };
     }
+    // UpdateBackupShare updates ownership details for backup share at cluster
+    // level
+    rpc UpdateBackupShare(ClusterBackupShareUpdateRequest)
+        returns (ClusterBackupShareUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/cluster/updatebackupshare"
+            body : "*"
+        };
+    }
 }
+
+message ClusterBackupShareUpdateRequest {
+    string org_id = 1;
+    string name = 2;
+    BackupShare add_backup_share = 3;
+    BackupShare del_backup_share = 4;
+    string uid = 5;
+}
+
+message ClusterBackupShareUpdateResponse {}
 
 // Define ClusterCreateRequest struct
 message ClusterCreateRequest {
@@ -1325,6 +1368,15 @@ service Backup {
             delete : "/v1/backup/{org_id}/{name}"
         };
     }
+
+    // UpdateBackupShare updates backupshare of existing backup object
+    rpc UpdateBackupShare(BackupShareUpdateRequest)
+        returns (BackupShareUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/backup/updatebackupshare"
+            body : "*"
+        };
+    }
 }
 
 // Request message structure for backup create
@@ -1412,6 +1464,18 @@ message BackupDeleteRequest {
 
 // Response message structure for object delete
 message BackupDeleteResponse {}
+
+// Request message for backup share update request
+message BackupShareUpdateRequest {
+    string org_id = 1;
+    // Backup to be updated
+    string name = 2;
+    BackupShare backupshare = 3;
+    string uid = 4;
+}
+
+// Response message for backup share update request
+message BackupShareUpdateResponse {}
 
 service Restore {
     // Creates new restore object in datastore
