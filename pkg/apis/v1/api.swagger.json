@@ -3896,6 +3896,12 @@
         },
         "backup_share_status_info": {
           "$ref": "#/definitions/ClusterInfoBackupShareStatusInfo"
+        },
+        "owner_group_list": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
