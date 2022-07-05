@@ -55,6 +55,7 @@ message ClusterInfo {
     BackupShare add_backup_share = 9;
     BackupShare del_backup_share = 10;
     BackupShareStatusInfo backup_share_status_info = 11;
+    repeated string owner_group_list = 12;
     // Message for maintaining status of the cluster.
     message StatusInfo {
         enum Status {
