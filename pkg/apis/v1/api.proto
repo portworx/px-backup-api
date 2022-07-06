@@ -1450,6 +1450,7 @@ message BackupEnumerateResponse {
 message BackupInspectRequest {
     string name = 1;
     string org_id = 2;
+    string uid = 4;
 }
 
 // Response message structure for object inspect
@@ -1461,6 +1462,7 @@ message BackupDeleteRequest {
     string org_id = 2;
     // cluster name or uid to perform delete through
     string cluster = 3;
+    string uid = 4;
 }
 
 // Response message structure for object delete
