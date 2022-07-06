@@ -220,6 +220,12 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -259,6 +265,12 @@
           {
             "name": "cluster",
             "description": "cluster name or uid to perform delete through.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "uid",
             "in": "query",
             "required": false,
             "type": "string"
