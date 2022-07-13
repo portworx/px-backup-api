@@ -435,6 +435,7 @@ message BackupInfo {
     string cr_uid = 26;
     int64 retention_period = 27;
     BackupShare backup_share = 28;
+    BackupShare.AccessType user_backupshare_access = 29;
     message BackupType {
         Type type = 1;
         enum Type {
