@@ -2934,6 +2934,9 @@
         },
         "backup_share": {
           "$ref": "#/definitions/BackupShare"
+        },
+        "user_backupshare_access": {
+          "$ref": "#/definitions/BackupShareAccessType"
         }
       }
     },
