@@ -4778,7 +4778,7 @@
         },
         "backup": {
           "type": "string",
-          "title": "uid or name of backup"
+          "description": "backup is deprecated, not to be used."
         },
         "cluster": {
           "type": "string",
@@ -4815,6 +4815,10 @@
             "type": "string"
           },
           "title": "storage class mapping for generic backup \u003csource, destination\u003e"
+        },
+        "backup_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "backup object reference having name and id"
         }
       },
       "title": "Define RestoreCreateRequest struct"
@@ -4851,7 +4855,7 @@
       "properties": {
         "backup": {
           "type": "string",
-          "title": "Name of backup to restore from"
+          "description": "backup is deprecated, not to be used."
         },
         "backup_location": {
           "type": "string",
@@ -4926,6 +4930,10 @@
             "type": "string"
           },
           "title": "storage class mapping for generic backup \u003csource, destination\u003e"
+        },
+        "backup_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "backup to restore from"
         }
       },
       "title": "Message for restore info"
