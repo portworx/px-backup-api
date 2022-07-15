@@ -541,7 +541,7 @@ message ReplacePolicy {
 
 // Message for restore info
 message RestoreInfo {
-    // Name of backup to restore from
+    // backup is deprecated, not to be used.
     string backup = 1;
     // Name of backup location to restore from.
     // backup_location is deprecated, not to be used.
@@ -565,6 +565,8 @@ message RestoreInfo {
     ObjectRef backup_location_ref = 15;
     // storage class mapping for generic backup <source, destination>
     map<string, string> storage_class_mapping = 16;
+    // backup to restore from
+    ObjectRef backup_ref = 17;
 
     message RestoredResource {
         string name = 1;
@@ -1524,7 +1526,7 @@ service Restore {
 // Define RestoreCreateRequest struct
 message RestoreCreateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
-    // uid or name of backup
+    // backup is deprecated, not to be used.
     string backup = 2;
     // uid or name of cluster
     string cluster = 3;
@@ -1538,6 +1540,8 @@ message RestoreCreateRequest {
     repeated ResourceInfo include_resources = 7;
     // storage class mapping for generic backup <source, destination>
     map<string, string> storage_class_mapping = 8;
+    // backup object reference having name and id
+    ObjectRef backup_ref = 9;
 }
 
 // Define RestoreCreateResponse struct
