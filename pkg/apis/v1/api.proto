@@ -1018,6 +1018,8 @@ message ClusterEnumerateRequest {
     // cloud_credential is deprecated, not to be used.
     string cloud_credential = 4;
     ObjectRef cloud_credential_ref = 5;
+    // Set this to true, to get the backupshare enabled cluster list
+    bool only_backup_share = 6;
 }
 
 // Define ClusterEnumerateResponse struct

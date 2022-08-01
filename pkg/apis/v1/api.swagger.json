@@ -1141,6 +1141,13 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "only_backup_share",
+            "description": "Set this to true, to get the backupshare enabled cluster list.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
