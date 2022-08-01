@@ -167,7 +167,7 @@ go.uber.org/multierr
 golang.org/x/crypto/ssh/terminal
 # golang.org/x/lint v0.0.0-20210508222113-6edffad5e616
 ## explicit
-# golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f
+# golang.org/x/net v0.0.0-20220722155237-a158d28d115b
 golang.org/x/net/context
 golang.org/x/net/context/ctxhttp
 golang.org/x/net/http/httpguts
@@ -186,13 +186,13 @@ golang.org/x/oauth2/google/internal/externalaccount
 golang.org/x/oauth2/internal
 golang.org/x/oauth2/jws
 golang.org/x/oauth2/jwt
-# golang.org/x/sys v0.0.0-20220712014510-0a85c31ab51e
+# golang.org/x/sys v0.0.0-20220731174439-a90be440212d
 ## explicit
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/plan9
 golang.org/x/sys/unix
 golang.org/x/sys/windows
-# golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1
+# golang.org/x/term v0.0.0-20210927222741-03fcf44c2211
 golang.org/x/term
 # golang.org/x/text v0.3.7
 golang.org/x/text/secure/bidirule
@@ -201,7 +201,7 @@ golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
 # golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac
 golang.org/x/time/rate
-# golang.org/x/tools v0.1.11
+# golang.org/x/tools v0.1.12
 ## explicit
 # golang.org/x/xerrors v0.0.0-20220609144429-65e65417b02f
 ## explicit
@@ -216,12 +216,12 @@ google.golang.org/appengine/internal/modules
 google.golang.org/appengine/internal/remote_api
 google.golang.org/appengine/internal/urlfetch
 google.golang.org/appengine/urlfetch
-# google.golang.org/genproto v0.0.0-20220714211235-042d03aeabc9
+# google.golang.org/genproto v0.0.0-20220728213248-dd149ef739b9
 ## explicit
 google.golang.org/genproto/googleapis/api/httpbody
 google.golang.org/genproto/googleapis/rpc/status
 google.golang.org/genproto/protobuf/field_mask
-# google.golang.org/grpc v1.47.0
+# google.golang.org/grpc v1.48.0
 ## explicit
 google.golang.org/grpc
 google.golang.org/grpc/attributes
@@ -271,7 +271,7 @@ google.golang.org/grpc/serviceconfig
 google.golang.org/grpc/stats
 google.golang.org/grpc/status
 google.golang.org/grpc/tap
-# google.golang.org/protobuf v1.28.0
+# google.golang.org/protobuf v1.28.1
 ## explicit
 google.golang.org/protobuf/encoding/protojson
 google.golang.org/protobuf/encoding/prototext
