@@ -3172,6 +3172,9 @@
         "s3_config": {
           "$ref": "#/definitions/S3Config"
         },
+        "nfs_config": {
+          "$ref": "#/definitions/NFSConfig"
+        },
         "object_lock_enabled": {
           "type": "boolean"
         }
@@ -3204,7 +3207,8 @@
         "Invalid",
         "S3",
         "Azure",
-        "Google"
+        "Google",
+        "NFS"
       ],
       "default": "Invalid"
     },
@@ -4646,6 +4650,14 @@
         "num_schedules": {
           "type": "string",
           "format": "uint64"
+        }
+      }
+    },
+    "NFSConfig": {
+      "type": "object",
+      "properties": {
+        "nfs_server_addr": {
+          "type": "string"
         }
       }
     },
