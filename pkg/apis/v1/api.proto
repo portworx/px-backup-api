@@ -346,12 +346,15 @@ message BackupScheduleObject {
     BackupScheduleInfo backup_schedule_info = 2 [ (gogoproto.embed) = true ];
 }
 
+message NFSConfig { string nfs_server_addr = 1; }
+
 message BackupLocationInfo {
     enum Type {
         Invalid = 0;
         S3 = 1;
         Azure = 2;
         Google = 3;
+        NFS = 4;
     }
 
     Type type = 1;
@@ -366,7 +369,10 @@ message BackupLocationInfo {
     bool delete_backups = 6;
     bool validate_cloud_credential = 7;
     ObjectRef cloud_credential_ref = 8;
-    oneof config { S3Config s3_config = 100; }
+    oneof config {
+        S3Config s3_config = 100;
+        NFSConfig nfs_config = 101;
+    }
     // Message for maintaining status of the object.
     message StatusInfo {
         enum Status {
