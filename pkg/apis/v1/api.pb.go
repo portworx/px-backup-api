@@ -10594,7 +10594,7 @@ func (m *LicenseResponseInfo_FeatureInfo) GetEntitlementInfo() []*LicenseRespons
 }
 
 type LicenseResponseInfo_EntitlementInfo struct {
-	// License count
+	// Entitled count
 	Count int64 `protobuf:"varint,1,opt,name=count,proto3" json:"count,omitempty"`
 	// Expiry time of license
 	Expires *types.Timestamp `protobuf:"bytes,3,opt,name=expires,proto3" json:"expires,omitempty"`
@@ -36861,7 +36861,7 @@ func NewPopulatedLicenseResponseInfo_EntitlementInfo(r randyApi, easy bool) *Lic
 	if r.Intn(5) != 0 {
 		this.Starts = types.NewPopulatedTimestamp(r, easy)
 	}
-	this.Type = LicenseType([]int32{0, 1, 2, 3, 4, 5, 6, 7, 8}[r.Intn(9)])
+	this.Type = LicenseType([]int32{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}[r.Intn(10)])
 	if !easy && r.Intn(10) != 0 {
 	}
 	return this

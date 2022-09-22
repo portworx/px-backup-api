@@ -24,6 +24,7 @@ enum LicenseType {
     // In future we might have different baas licensing
     BaasStd = 7;
     UsageBasedAirGapped = 8;
+    BaaSFreemium = 9;
 }
 
 message Metadata {
