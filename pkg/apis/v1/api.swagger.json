@@ -4243,7 +4243,7 @@
         "count": {
           "type": "string",
           "format": "int64",
-          "title": "License count"
+          "title": "Entitled count"
         },
         "expires": {
           "type": "string",
@@ -4306,7 +4306,8 @@
         "AWS",
         "GCP",
         "BaasStd",
-        "UsageBasedAirGapped"
+        "UsageBasedAirGapped",
+        "BaaSFreemium"
       ],
       "default": "Invalid",
       "title": "- BaasStd: In future we might have different baas licensing"

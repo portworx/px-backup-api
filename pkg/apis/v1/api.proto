@@ -1807,7 +1807,7 @@ message LicenseResponseInfo {
     }
 
     message EntitlementInfo {
-        // License count
+        // Entitled count
         int64 count = 1;
         // Expiry time of license
         google.protobuf.Timestamp expires = 3;
