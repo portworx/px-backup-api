@@ -2973,7 +2973,7 @@
           "$ref": "#/definitions/ObjectRef"
         },
         "validated": {
-          "type": "boolean"
+          "$ref": "#/definitions/BackupInfoVerificationStatus"
         },
         "validation_time": {
           "type": "string",
@@ -3048,6 +3048,24 @@
         "PartialSuccess",
         "DeletePending",
         "CloudBackupMissing"
+      ],
+      "default": "Invalid"
+    },
+    "BackupInfoVerificationStatus": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/BackupInfoVerificationStatusStatus"
+        }
+      }
+    },
+    "BackupInfoVerificationStatusStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Unverified",
+        "Failed",
+        "Success"
       ],
       "default": "Invalid"
     },
