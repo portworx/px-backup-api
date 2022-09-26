@@ -2971,6 +2971,13 @@
         },
         "cluster_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "validated": {
+          "type": "boolean"
+        },
+        "validation_time": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -4972,6 +4979,9 @@
         "backup_ref": {
           "$ref": "#/definitions/ObjectRef",
           "title": "backup to restore from"
+        },
+        "dummy": {
+          "type": "boolean"
         }
       },
       "title": "Message for restore info"
