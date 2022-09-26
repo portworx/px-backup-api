@@ -437,7 +437,7 @@ message BackupInfo {
     BackupShare backup_share = 28;
     BackupShare.AccessType user_backupshare_access = 29;
     ObjectRef cluster_ref = 30;
-    bool validated = 31;
+    VerificationStatus validated = 31;
     int64 validation_time = 32;
 
     message BackupType {
@@ -501,6 +501,16 @@ message BackupInfo {
 
         Status status = 1;
         string reason = 2;
+    }
+
+    message VerificationStatus {
+        Status status = 1;
+        enum Status {
+            Invalid = 0;
+            Unverified = 1;
+            Failed = 2;
+            Success = 3;
+        }
     }
 }
 
