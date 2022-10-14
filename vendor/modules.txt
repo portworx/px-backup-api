@@ -1,4 +1,4 @@
-# cloud.google.com/go v0.65.0
+# cloud.google.com/go/compute v1.7.0
 cloud.google.com/go/compute/metadata
 # github.com/IBM-Cloud/bluemix-go v0.0.0-20210408042812-96aaa47da4cd
 ## explicit
@@ -120,8 +120,6 @@ github.com/imdario/mergo
 github.com/jmespath/go-jmespath
 # github.com/json-iterator/go v1.1.11
 github.com/json-iterator/go
-# github.com/kisielk/errcheck v1.6.2
-## explicit
 # github.com/libopenstorage/secrets v0.0.0-20210908194121-a1d19aa9713a
 ## explicit
 github.com/libopenstorage/secrets/aws/credentials
@@ -164,10 +162,9 @@ go.uber.org/atomic
 ## explicit
 go.uber.org/multierr
 # golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
-golang.org/x/crypto/ssh/terminal
-# golang.org/x/lint v0.0.0-20210508222113-6edffad5e616
 ## explicit
-# golang.org/x/net v0.0.0-20220722155237-a158d28d115b
+golang.org/x/crypto/ssh/terminal
+# golang.org/x/net v0.0.0-20220909164309-bea034e7d591
 golang.org/x/net/context
 golang.org/x/net/context/ctxhttp
 golang.org/x/net/http/httpguts
@@ -177,7 +174,7 @@ golang.org/x/net/idna
 golang.org/x/net/internal/timeseries
 golang.org/x/net/trace
 golang.org/x/net/websocket
-# golang.org/x/oauth2 v0.0.0-20210819190943-2bc19b11175f
+# golang.org/x/oauth2 v0.0.0-20220909003341-f21342109be1
 ## explicit
 golang.org/x/oauth2
 golang.org/x/oauth2/authhandler
@@ -186,7 +183,7 @@ golang.org/x/oauth2/google/internal/externalaccount
 golang.org/x/oauth2/internal
 golang.org/x/oauth2/jws
 golang.org/x/oauth2/jwt
-# golang.org/x/sys v0.0.0-20220829200755-d48e67d00261
+# golang.org/x/sys v0.0.0-20221013171732-95e765b1cc43
 ## explicit
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/plan9
@@ -201,10 +198,6 @@ golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
 # golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac
 golang.org/x/time/rate
-# golang.org/x/tools v0.1.12
-## explicit
-# golang.org/x/xerrors v0.0.0-20220609144429-65e65417b02f
-## explicit
 # google.golang.org/appengine v1.6.7
 google.golang.org/appengine
 google.golang.org/appengine/internal
@@ -216,12 +209,12 @@ google.golang.org/appengine/internal/modules
 google.golang.org/appengine/internal/remote_api
 google.golang.org/appengine/internal/urlfetch
 google.golang.org/appengine/urlfetch
-# google.golang.org/genproto v0.0.0-20220829175752-36a9c930ecbf
+# google.golang.org/genproto v0.0.0-20221013201013-33fc6f83cba4
 ## explicit
 google.golang.org/genproto/googleapis/api/httpbody
 google.golang.org/genproto/googleapis/rpc/status
 google.golang.org/genproto/protobuf/field_mask
-# google.golang.org/grpc v1.48.0
+# google.golang.org/grpc v1.50.0
 ## explicit
 google.golang.org/grpc
 google.golang.org/grpc/attributes
@@ -272,7 +265,6 @@ google.golang.org/grpc/stats
 google.golang.org/grpc/status
 google.golang.org/grpc/tap
 # google.golang.org/protobuf v1.28.1
-## explicit
 google.golang.org/protobuf/encoding/protojson
 google.golang.org/protobuf/encoding/prototext
 google.golang.org/protobuf/encoding/protowire
@@ -314,8 +306,6 @@ gopkg.in/inf.v0
 gopkg.in/yaml.v2
 # gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
 gopkg.in/yaml.v3
-# honnef.co/go/tools v0.2.2
-## explicit
 # k8s.io/api v0.22.1 => k8s.io/api v0.20.4
 k8s.io/api/admissionregistration/v1
 k8s.io/api/admissionregistration/v1beta1
@@ -360,8 +350,6 @@ k8s.io/api/scheduling/v1beta1
 k8s.io/api/storage/v1
 k8s.io/api/storage/v1alpha1
 k8s.io/api/storage/v1beta1
-# k8s.io/apiextensions-apiserver v0.20.4 => k8s.io/apiextensions-apiserver v0.20.4
-## explicit
 # k8s.io/apimachinery v0.22.1 => k8s.io/apimachinery v0.20.4
 ## explicit
 k8s.io/apimachinery/pkg/api/errors
