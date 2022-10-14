@@ -346,7 +346,11 @@ message BackupScheduleObject {
     BackupScheduleInfo backup_schedule_info = 2 [ (gogoproto.embed) = true ];
 }
 
-message NFSConfig { string nfs_server_addr = 1; }
+message NFSConfig {
+    string server_addr = 1;
+    string fileshare_path = 2;
+    string mount_option = 3;
+}
 
 message BackupLocationInfo {
     enum Type {

@@ -4656,7 +4656,13 @@
     "NFSConfig": {
       "type": "object",
       "properties": {
-        "nfs_server_addr": {
+        "server_addr": {
+          "type": "string"
+        },
+        "fileshare_path": {
+          "type": "string"
+        },
+        "mount_option": {
           "type": "string"
         }
       }
