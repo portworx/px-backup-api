@@ -4659,7 +4659,7 @@
         "server_addr": {
           "type": "string"
         },
-        "fileshare_path": {
+        "sub_path": {
           "type": "string"
         },
         "mount_option": {
