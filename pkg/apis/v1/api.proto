@@ -348,7 +348,7 @@ message BackupScheduleObject {
 
 message NFSConfig {
     string server_addr = 1;
-    string fileshare_path = 2;
+    string sub_path = 2;
     string mount_option = 3;
 }
 
