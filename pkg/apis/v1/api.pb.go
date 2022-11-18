@@ -37082,7 +37082,7 @@ func NewPopulatedLicenseResponseInfo_EntitlementInfo(r randyApi, easy bool) *Lic
 	if r.Intn(5) != 0 {
 		this.Starts = types.NewPopulatedTimestamp(r, easy)
 	}
-	this.Type = LicenseType([]int32{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}[r.Intn(10)])
+	this.Type = LicenseType([]int32{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}[r.Intn(11)])
 	if !easy && r.Intn(10) != 0 {
 	}
 	return this

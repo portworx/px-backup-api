@@ -4311,7 +4311,8 @@
         "GCP",
         "BaasStd",
         "UsageBasedAirGapped",
-        "BaaSFreemium"
+        "BaaSFreemium",
+        "AWSSaaS"
       ],
       "default": "Invalid",
       "title": "- BaasStd: In future we might have different baas licensing"

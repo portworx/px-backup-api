@@ -25,6 +25,7 @@ enum LicenseType {
     BaasStd = 7;
     UsageBasedAirGapped = 8;
     BaaSFreemium = 9;
+    AWSSaaS = 10;
 }
 
 message Metadata {
