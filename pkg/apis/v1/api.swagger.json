@@ -468,6 +468,13 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "include_validation_state",
+            "description": "If true, include backuplocation that are in ValidationInProgress state as well.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -3197,7 +3204,8 @@
       "enum": [
         "Invalid",
         "Valid",
-        "DeletePending"
+        "DeletePending",
+        "ValidationInProgress"
       ],
       "default": "Invalid"
     },

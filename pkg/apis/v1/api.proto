@@ -383,6 +383,7 @@ message BackupLocationInfo {
             Invalid = 0;
             Valid = 1;
             DeletePending = 2;
+            ValidationInProgress = 3;
         }
 
         Status status = 1;
@@ -1276,6 +1277,8 @@ message BackupLocationEnumerateRequest {
     ObjectRef cloud_credential_ref = 4;
     // enable include_secrets to get the encryptionKey value.
     bool include_secrets = 5;
+    // If true, include backuplocation that are in ValidationInProgress state as well
+    bool include_validation_state = 6;
 }
 
 // Define BackupLocationEnumerateResponse struct
