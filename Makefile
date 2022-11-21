@@ -25,8 +25,11 @@ centos:
 	curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.14.0/$(PROTOC_ZIP) 
 	unzip -o $(PROTOC_ZIP) -d /usr bin/protoc
 	rm -f $(PROTOC_ZIP)
+	scl enable llvm-toolset-7 "clang-format -i $(PROTOC_FILES)"
+
 
 proto:
+	apt install clang-format
 	rm -rf ${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/
 	mkdir -p ${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/
 	curl -OL https://github.com/grpc-ecosystem/grpc-gateway/archive/refs/tags/v2.2.0.tar.gz
@@ -37,7 +40,6 @@ proto:
 	mkdir -p ${GOPATH}/src/github.com/gogo/protobuf/
 	git clone git@github.com:gogo/protobuf.git ${GOPATH}/src/github.com/gogo/protobuf
 
-	scl enable llvm-toolset-7 "clang-format -i $(PROTOC_FILES)"
 	go get -u \
 	        github.com/gogo/protobuf/protoc-gen-gogo \
 	        github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway \
