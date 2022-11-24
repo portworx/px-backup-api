@@ -384,6 +384,7 @@ message BackupLocationInfo {
             Valid = 1;
             DeletePending = 2;
             ValidationInProgress = 3;
+            ValidationFailed = 4;
         }
 
         Status status = 1;
