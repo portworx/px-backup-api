@@ -471,7 +471,7 @@
           },
           {
             "name": "include_validation_state",
-            "description": "If true, include backuplocation that are in ValidationInProgress state as well.",
+            "description": "If true, include backuplocation that are in ValidationInProgress state as\nwell.",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -2817,6 +2817,12 @@
         },
         "cluster_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "ns_label_selectors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       },
       "title": "Request message structure for backup create"
@@ -2978,6 +2984,12 @@
         },
         "cluster_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "ns_label_selectors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       }
     },
@@ -3386,6 +3398,12 @@
         "backup_type": {
           "$ref": "#/definitions/BackupScheduleCreateRequestBackupType",
           "title": "To get type of backup (generic or non-generic)"
+        },
+        "ns_label_selectors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       },
       "title": "Define BackupScheduleCreateRequest struct"
@@ -3509,6 +3527,13 @@
         "backup_type": {
           "$ref": "#/definitions/BackupScheduleInfoBackupType",
           "title": "To get type of backup (generic or non-generic)"
+        },
+        "ns_label_selectors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Label selectors to choose namespaces"
         }
       }
     },

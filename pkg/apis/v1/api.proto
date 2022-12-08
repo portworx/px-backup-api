@@ -294,6 +294,8 @@ message BackupScheduleInfo {
     ObjectRef post_exec_rule_ref = 21;
     // To get type of backup (generic or non-generic)
     BackupType backup_type = 22;
+    // Label selectors to choose namespaces
+    map<string, string> ns_label_selectors = 23;
     message BackupType {
         Type type = 1;
         enum Type {
@@ -449,6 +451,7 @@ message BackupInfo {
     BackupShare backup_share = 28;
     BackupShare.AccessType user_backupshare_access = 29;
     ObjectRef cluster_ref = 30;
+    map<string, string> ns_label_selectors = 31;
     message BackupType {
         Type type = 1;
         enum Type {
@@ -850,6 +853,7 @@ message BackupScheduleCreateRequest {
     ObjectRef post_exec_rule_ref = 16;
     // To get type of backup (generic or non-generic)
     BackupType backup_type = 17;
+    map<string, string> ns_label_selectors = 18;
     enum BackupType {
         Invalid = 0;
         Generic = 1;
@@ -1278,7 +1282,8 @@ message BackupLocationEnumerateRequest {
     ObjectRef cloud_credential_ref = 4;
     // enable include_secrets to get the encryptionKey value.
     bool include_secrets = 5;
-    // If true, include backuplocation that are in ValidationInProgress state as well
+    // If true, include backuplocation that are in ValidationInProgress state as
+    // well
     bool include_validation_state = 6;
 }
 
@@ -1435,6 +1440,7 @@ message BackupCreateRequest {
     // To get type of backup (generic or non-generic)
     BackupType backup_type = 14;
     ObjectRef cluster_ref = 15;
+    map<string, string> ns_label_selectors = 16;
     enum BackupType {
         Invalid = 0;
         Generic = 1;
