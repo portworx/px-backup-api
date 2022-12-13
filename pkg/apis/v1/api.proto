@@ -56,6 +56,7 @@ message ClusterInfo {
     BackupShare del_backup_share = 10;
     BackupShareStatusInfo backup_share_status_info = 11;
     repeated string owner_group_list = 12;
+    string teleport_cluster_id = 13;
     // Message for maintaining status of the cluster.
     message StatusInfo {
         enum Status {
@@ -1003,6 +1004,9 @@ message ClusterCreateRequest {
     // cloud_credential is deprecated, not to be used.
     string cloud_credential = 4;
     ObjectRef cloud_credential_ref = 5;
+    string teleport_cluster_id = 6;
+    // For now this is hardcode in the code as we have only one tenant
+    string tc_tenant = 7;
 }
 
 // Define ClusterCreateResponse struct

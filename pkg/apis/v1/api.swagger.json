@@ -3942,6 +3942,13 @@
         },
         "cloud_credential_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "teleport_cluster_id": {
+          "type": "string"
+        },
+        "tc_tenant": {
+          "type": "string",
+          "title": "For now this is hardcode in the code as we have only one tenant"
         }
       },
       "title": "Define ClusterCreateRequest struct"
@@ -4010,6 +4017,9 @@
           "items": {
             "type": "string"
           }
+        },
+        "teleport_cluster_id": {
+          "type": "string"
         }
       }
     },
