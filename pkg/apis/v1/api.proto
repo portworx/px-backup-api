@@ -449,6 +449,8 @@ message BackupInfo {
     BackupShare backup_share = 28;
     BackupShare.AccessType user_backupshare_access = 29;
     ObjectRef cluster_ref = 30;
+    // Name of projects associated with resources
+    repeated string projects = 31;
     message BackupType {
         Type type = 1;
         enum Type {
@@ -1278,7 +1280,8 @@ message BackupLocationEnumerateRequest {
     ObjectRef cloud_credential_ref = 4;
     // enable include_secrets to get the encryptionKey value.
     bool include_secrets = 5;
-    // If true, include backuplocation that are in ValidationInProgress state as well
+    // If true, include backuplocation that are in ValidationInProgress state as
+    // well
     bool include_validation_state = 6;
 }
 
@@ -1565,6 +1568,8 @@ message RestoreCreateRequest {
     map<string, string> storage_class_mapping = 8;
     // backup object reference having name and id
     ObjectRef backup_ref = 9;
+    // mapping of the projects from the backup to which restore should be done
+    map<string, string> project_mapping = 10;
 }
 
 // Define RestoreCreateResponse struct

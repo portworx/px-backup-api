@@ -471,7 +471,7 @@
           },
           {
             "name": "include_validation_state",
-            "description": "If true, include backuplocation that are in ValidationInProgress state as well.",
+            "description": "If true, include backuplocation that are in ValidationInProgress state as\nwell.",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -2978,6 +2978,13 @@
         },
         "cluster_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "projects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Name of projects associated with resources"
         }
       }
     },
@@ -4886,6 +4893,13 @@
         "backup_ref": {
           "$ref": "#/definitions/ObjectRef",
           "title": "backup object reference having name and id"
+        },
+        "project_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "mapping of the projects from the backup to which restore should be done"
         }
       },
       "title": "Define RestoreCreateRequest struct"
