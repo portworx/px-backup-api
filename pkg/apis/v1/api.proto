@@ -452,6 +452,8 @@ message BackupInfo {
     BackupShare.AccessType user_backupshare_access = 29;
     ObjectRef cluster_ref = 30;
     map<string, string> ns_label_selectors = 31;
+    // Name of rancher projects associated with resources
+    repeated string rancher_projects = 32;
     message BackupType {
         Type type = 1;
         enum Type {
@@ -583,6 +585,8 @@ message RestoreInfo {
     map<string, string> storage_class_mapping = 16;
     // backup to restore from
     ObjectRef backup_ref = 17;
+    // mapping of the rancher projects from the backup to which restore should be done
+    map<string, string> rancher_project_mapping = 18;
 
     message RestoredResource {
         string name = 1;
@@ -1571,6 +1575,8 @@ message RestoreCreateRequest {
     map<string, string> storage_class_mapping = 8;
     // backup object reference having name and id
     ObjectRef backup_ref = 9;
+    // mapping of the rancher projects from the backup to which restore should be done
+    map<string, string> rancher_project_mapping = 10;
 }
 
 // Define RestoreCreateResponse struct
