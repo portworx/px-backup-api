@@ -2990,6 +2990,13 @@
           "additionalProperties": {
             "type": "string"
           }
+        },
+        "rancher_projects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Name of rancher projects associated with resources"
         }
       }
     },
@@ -4911,6 +4918,13 @@
         "backup_ref": {
           "$ref": "#/definitions/ObjectRef",
           "title": "backup object reference having name and id"
+        },
+        "rancher_project_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "mapping of the rancher projects from the backup to which restore should be done"
         }
       },
       "title": "Define RestoreCreateRequest struct"
@@ -5026,6 +5040,13 @@
         "backup_ref": {
           "$ref": "#/definitions/ObjectRef",
           "title": "backup to restore from"
+        },
+        "rancher_project_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "mapping of the rancher projects from the backup to which restore should be done"
         }
       },
       "title": "Message for restore info"
