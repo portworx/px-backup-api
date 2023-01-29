@@ -1445,6 +1445,8 @@ message BackupCreateRequest {
     BackupType backup_type = 14;
     ObjectRef cluster_ref = 15;
     map<string, string> ns_label_selectors = 16;
+    // Name of rancher projects associated with resources
+    repeated string rancher_projects = 17;
     enum BackupType {
         Invalid = 0;
         Generic = 1;
