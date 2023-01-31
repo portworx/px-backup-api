@@ -2992,8 +2992,8 @@
           }
         },
         "rancher_projects": {
-          "type": "array",
-          "items": {
+          "type": "object",
+          "additionalProperties": {
             "type": "string"
           },
           "title": "Name of rancher projects associated with resources"
@@ -3862,6 +3862,9 @@
         },
         "ibm_config": {
           "$ref": "#/definitions/IBMConfig"
+        },
+        "rancher_config": {
+          "$ref": "#/definitions/RancherConfig"
         }
       }
     },
@@ -3872,7 +3875,8 @@
         "AWS",
         "Azure",
         "Google",
-        "IBM"
+        "IBM",
+        "Rancher"
       ],
       "default": "Invalid"
     },
@@ -3974,6 +3978,9 @@
         },
         "cloud_credential_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "platform_credential_ref": {
+          "$ref": "#/definitions/ObjectRef"
         }
       },
       "title": "Define ClusterCreateRequest struct"
@@ -4042,6 +4049,9 @@
           "items": {
             "type": "string"
           }
+        },
+        "platform_credential_ref": {
+          "$ref": "#/definitions/ObjectRef"
         }
       }
     },
@@ -4132,6 +4142,9 @@
           "description": "cloud_credential is deprecated, not to be used."
         },
         "cloud_credential_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "project_credential_ref": {
           "$ref": "#/definitions/ObjectRef"
         }
       },
@@ -4840,6 +4853,17 @@
       },
       "title": "Define Permission struct"
     },
+    "RancherConfig": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string"
+        }
+      }
+    },
     "ReplacePolicyType": {
       "type": "string",
       "enum": [
@@ -4924,7 +4948,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "title": "mapping of the rancher projects from the backup to which restore should be done"
+          "title": "mapping of the rancher projects from the backup to which restore should\nbe done"
         }
       },
       "title": "Define RestoreCreateRequest struct"
@@ -5046,7 +5070,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "title": "mapping of the rancher projects from the backup to which restore should be done"
+          "title": "mapping of the rancher projects from the backup to which restore should\nbe done"
         }
       },
       "title": "Message for restore info"
