@@ -56,6 +56,7 @@ message ClusterInfo {
     BackupShare del_backup_share = 10;
     BackupShareStatusInfo backup_share_status_info = 11;
     repeated string owner_group_list = 12;
+    ObjectRef platform_credential_ref = 13;
     // Message for maintaining status of the cluster.
     message StatusInfo {
         enum Status {
@@ -120,6 +121,14 @@ message IBMConfig {
     ];
 }
 
+message RancherConfig {
+    string endpoint = 1 [ (gogoproto.jsontag) = "endpoint" ];
+    string token = 2 [
+        (gogoproto.jsontag) = "token",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
+}
+
 message S3Config {
     string endpoint = 1;
     string region = 2;
@@ -168,6 +177,7 @@ message CloudCredentialInfo {
         Azure = 2;
         Google = 3;
         IBM = 4;
+        Rancher = 5;
     }
 
     Type type = 1;
@@ -176,6 +186,7 @@ message CloudCredentialInfo {
         AzureConfig azure_config = 101;
         GoogleConfig google_config = 102;
         IBMConfig ibm_config = 103;
+        RancherConfig rancher_config = 104;
     }
 }
 
@@ -453,7 +464,7 @@ message BackupInfo {
     ObjectRef cluster_ref = 30;
     map<string, string> ns_label_selectors = 31;
     // Name of rancher projects associated with resources
-    repeated string rancher_projects = 32;
+    map<string, string> rancher_projects = 32;
     message BackupType {
         Type type = 1;
         enum Type {
@@ -585,7 +596,8 @@ message RestoreInfo {
     map<string, string> storage_class_mapping = 16;
     // backup to restore from
     ObjectRef backup_ref = 17;
-    // mapping of the rancher projects from the backup to which restore should be done
+    // mapping of the rancher projects from the backup to which restore should
+    // be done
     map<string, string> rancher_project_mapping = 18;
 
     message RestoredResource {
@@ -1011,6 +1023,7 @@ message ClusterCreateRequest {
     // cloud_credential is deprecated, not to be used.
     string cloud_credential = 4;
     ObjectRef cloud_credential_ref = 5;
+    ObjectRef platform_credential_ref = 6;
 }
 
 // Define ClusterCreateResponse struct
@@ -1027,6 +1040,7 @@ message ClusterUpdateRequest {
     // cloud_credential is deprecated, not to be used.
     string cloud_credential = 4;
     ObjectRef cloud_credential_ref = 5;
+    ObjectRef project_credential_ref = 6;
 }
 
 // Define ClusterUpdateResponse struct
@@ -1575,7 +1589,8 @@ message RestoreCreateRequest {
     map<string, string> storage_class_mapping = 8;
     // backup object reference having name and id
     ObjectRef backup_ref = 9;
-    // mapping of the rancher projects from the backup to which restore should be done
+    // mapping of the rancher projects from the backup to which restore should
+    // be done
     map<string, string> rancher_project_mapping = 10;
 }
 
