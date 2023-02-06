@@ -57,6 +57,10 @@ message ClusterInfo {
     BackupShareStatusInfo backup_share_status_info = 11;
     repeated string owner_group_list = 12;
     ObjectRef platform_credential_ref = 13;
+    // Teleport cluster ID
+    string teleport_cluster_id = 14;
+    // Tenant ID
+    string tenant_id = 15;
     // Message for maintaining status of the cluster.
     message StatusInfo {
         enum Status {
@@ -1026,6 +1030,10 @@ message ClusterCreateRequest {
     string cloud_credential = 4;
     ObjectRef cloud_credential_ref = 5;
     ObjectRef platform_credential_ref = 6;
+    // Teleport cluster ID
+    string teleport_cluster_id = 7;
+    // Tenant ID of the user account (aka PDS account)
+    string tenant_id = 8;
 }
 
 // Define ClusterCreateResponse struct

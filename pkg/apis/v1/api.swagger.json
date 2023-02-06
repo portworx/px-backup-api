@@ -3977,6 +3977,14 @@
         },
         "platform_credential_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "teleport_cluster_id": {
+          "type": "string",
+          "title": "Teleport cluster ID"
+        },
+        "tenant_id": {
+          "type": "string",
+          "title": "Tenant ID of the user account (aka PDS account)"
         }
       },
       "title": "Define ClusterCreateRequest struct"
@@ -4048,6 +4056,14 @@
         },
         "platform_credential_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "teleport_cluster_id": {
+          "type": "string",
+          "title": "Teleport cluster ID"
+        },
+        "tenant_id": {
+          "type": "string",
+          "title": "Tenant ID"
         }
       }
     },
