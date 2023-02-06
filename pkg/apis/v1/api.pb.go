@@ -6363,20 +6363,6 @@ func (m *ClusterCreateRequest) GetPlatformCredentialRef() *ObjectRef {
 	return nil
 }
 
-func (m *ClusterCreateRequest) GetTeleportClusterId() string {
-	if m != nil {
-		return m.TeleportClusterId
-	}
-	return ""
-}
-
-func (m *ClusterCreateRequest) GetTenantId() string {
-	if m != nil {
-		return m.TenantId
-	}
-	return ""
-}
-
 // Define ClusterCreateResponse struct
 type ClusterCreateResponse struct {
 }
@@ -26081,13 +26067,25 @@ func (m *BackupScheduleInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		dAtA[i] = 0xc2
 	}
 	if len(m.NsLabelSelectors) > 0 {
-		i -= len(m.NsLabelSelectors)
-		copy(dAtA[i:], m.NsLabelSelectors)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.NsLabelSelectors)))
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xba
+		for k := range m.NsLabelSelectors {
+			v := m.NsLabelSelectors[k]
+			baseI := i
+			i -= len(v)
+			copy(dAtA[i:], v)
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i--
+			dAtA[i] = 0x12
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x1
+			i--
+			dAtA[i] = 0xba
+		}
 	}
 	if m.BackupType != nil {
 		{
@@ -26952,13 +26950,25 @@ func (m *BackupInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.NsLabelSelectors) > 0 {
-		i -= len(m.NsLabelSelectors)
-		copy(dAtA[i:], m.NsLabelSelectors)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.NsLabelSelectors)))
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xfa
+		for k := range m.NsLabelSelectors {
+			v := m.NsLabelSelectors[k]
+			baseI := i
+			i -= len(v)
+			copy(dAtA[i:], v)
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i--
+			dAtA[i] = 0x12
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x1
+			i--
+			dAtA[i] = 0xfa
+		}
 	}
 	if m.ClusterRef != nil {
 		{
@@ -29010,13 +29020,25 @@ func (m *BackupScheduleCreateRequest) MarshalToSizedBuffer(dAtA []byte) (int, er
 	var l int
 	_ = l
 	if len(m.NsLabelSelectors) > 0 {
-		i -= len(m.NsLabelSelectors)
-		copy(dAtA[i:], m.NsLabelSelectors)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.NsLabelSelectors)))
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0x92
+		for k := range m.NsLabelSelectors {
+			v := m.NsLabelSelectors[k]
+			baseI := i
+			i -= len(v)
+			copy(dAtA[i:], v)
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i--
+			dAtA[i] = 0x12
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x1
+			i--
+			dAtA[i] = 0x92
+		}
 	}
 	if m.BackupType != 0 {
 		i = encodeVarintApi(dAtA, i, uint64(m.BackupType))
@@ -31485,13 +31507,25 @@ func (m *BackupCreateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	var l int
 	_ = l
 	if len(m.NsLabelSelectors) > 0 {
-		i -= len(m.NsLabelSelectors)
-		copy(dAtA[i:], m.NsLabelSelectors)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.NsLabelSelectors)))
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0x82
+		for k := range m.NsLabelSelectors {
+			v := m.NsLabelSelectors[k]
+			baseI := i
+			i -= len(v)
+			copy(dAtA[i:], v)
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i--
+			dAtA[i] = 0x12
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x1
+			i--
+			dAtA[i] = 0x82
+		}
 	}
 	if m.ClusterRef != nil {
 		{
@@ -32093,25 +32127,6 @@ func (m *RestoreCreateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.RancherProjectNameMapping) > 0 {
-		for k := range m.RancherProjectNameMapping {
-			v := m.RancherProjectNameMapping[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x5a
-		}
-	}
 	if len(m.RancherProjectMapping) > 0 {
 		for k := range m.RancherProjectMapping {
 			v := m.RancherProjectMapping[k]
@@ -36153,9 +36168,9 @@ func NewPopulatedBackupScheduleInfo_SuspendedBy(r randyApi, easy bool) *BackupSc
 func NewPopulatedBackupScheduleInfo_StatusInfoList(r randyApi, easy bool) *BackupScheduleInfo_StatusInfoList {
 	this := &BackupScheduleInfo_StatusInfoList{}
 	if r.Intn(5) != 0 {
-		v8 := r.Intn(5)
-		this.Status = make([]*BackupScheduleInfo_StatusInfo, v8)
-		for i := 0; i < v8; i++ {
+		v9 := r.Intn(5)
+		this.Status = make([]*BackupScheduleInfo_StatusInfo, v9)
+		for i := 0; i < v9; i++ {
 			this.Status[i] = NewPopulatedBackupScheduleInfo_StatusInfo(r, easy)
 		}
 	}
@@ -36284,7 +36299,7 @@ func NewPopulatedBackupInfo(r randyApi, easy bool) *BackupInfo {
 		this.Namespaces[i] = string(randStringApi(r))
 	}
 	if r.Intn(5) != 0 {
-		v10 := r.Intn(10)
+		v11 := r.Intn(10)
 		this.LabelSelectors = make(map[string]string)
 		for i := 0; i < v10; i++ {
 			this.LabelSelectors[randStringApi(r)] = randStringApi(r)
@@ -36294,16 +36309,16 @@ func NewPopulatedBackupInfo(r randyApi, easy bool) *BackupInfo {
 		this.Status = NewPopulatedBackupInfo_StatusInfo(r, easy)
 	}
 	if r.Intn(5) != 0 {
-		v11 := r.Intn(5)
-		this.Resources = make([]*ResourceInfo, v11)
-		for i := 0; i < v11; i++ {
+		v12 := r.Intn(5)
+		this.Resources = make([]*ResourceInfo, v12)
+		for i := 0; i < v12; i++ {
 			this.Resources[i] = NewPopulatedResourceInfo(r, easy)
 		}
 	}
 	if r.Intn(5) != 0 {
-		v12 := r.Intn(5)
-		this.Volumes = make([]*BackupInfo_Volume, v12)
-		for i := 0; i < v12; i++ {
+		v13 := r.Intn(5)
+		this.Volumes = make([]*BackupInfo_Volume, v13)
+		for i := 0; i < v13; i++ {
 			this.Volumes[i] = NewPopulatedBackupInfo_Volume(r, easy)
 		}
 	}
@@ -36318,9 +36333,9 @@ func NewPopulatedBackupInfo(r randyApi, easy bool) *BackupInfo {
 	this.TotalSize = uint64(uint64(r.Uint32()))
 	this.CloudCredential = string(randStringApi(r))
 	if r.Intn(5) != 0 {
-		v13 := r.Intn(5)
-		this.IncludeResources = make([]*ResourceInfo, v13)
-		for i := 0; i < v13; i++ {
+		v14 := r.Intn(5)
+		this.IncludeResources = make([]*ResourceInfo, v14)
+		for i := 0; i < v14; i++ {
 			this.IncludeResources[i] = NewPopulatedResourceInfo(r, easy)
 		}
 	}
@@ -36359,9 +36374,15 @@ func NewPopulatedBackupInfo(r randyApi, easy bool) *BackupInfo {
 	if r.Intn(5) != 0 {
 		this.ClusterRef = NewPopulatedObjectRef(r, easy)
 	}
-	this.NsLabelSelectors = string(randStringApi(r))
 	if r.Intn(5) != 0 {
-		v15 := r.Intn(10)
+		v16 := r.Intn(10)
+		this.NsLabelSelectors = make(map[string]string)
+		for i := 0; i < v16; i++ {
+			this.NsLabelSelectors[randStringApi(r)] = randStringApi(r)
+		}
+	}
+	if r.Intn(5) != 0 {
+		v17 := r.Intn(10)
 		this.RancherProjects = make(map[string]string)
 		for i := 0; i < v15; i++ {
 			this.RancherProjects[randStringApi(r)] = randStringApi(r)
@@ -36407,7 +36428,7 @@ func NewPopulatedBackupInfo_Volume(r randyApi, easy bool) *BackupInfo_Volume {
 		this.Zones[i] = string(randStringApi(r))
 	}
 	if r.Intn(5) != 0 {
-		v17 := r.Intn(10)
+		v19 := r.Intn(10)
 		this.Options = make(map[string]string)
 		for i := 0; i < v17; i++ {
 			this.Options[randStringApi(r)] = randStringApi(r)
@@ -36449,9 +36470,9 @@ func NewPopulatedBackupObject(r randyApi, easy bool) *BackupObject {
 func NewPopulatedRulesInfo(r randyApi, easy bool) *RulesInfo {
 	this := &RulesInfo{}
 	if r.Intn(5) != 0 {
-		v18 := r.Intn(5)
-		this.Rules = make([]*RulesInfo_RuleItem, v18)
-		for i := 0; i < v18; i++ {
+		v20 := r.Intn(5)
+		this.Rules = make([]*RulesInfo_RuleItem, v20)
+		for i := 0; i < v20; i++ {
 			this.Rules[i] = NewPopulatedRulesInfo_RuleItem(r, easy)
 		}
 	}
@@ -36463,16 +36484,16 @@ func NewPopulatedRulesInfo(r randyApi, easy bool) *RulesInfo {
 func NewPopulatedRulesInfo_RuleItem(r randyApi, easy bool) *RulesInfo_RuleItem {
 	this := &RulesInfo_RuleItem{}
 	if r.Intn(5) != 0 {
-		v19 := r.Intn(10)
+		v21 := r.Intn(10)
 		this.PodSelector = make(map[string]string)
 		for i := 0; i < v19; i++ {
 			this.PodSelector[randStringApi(r)] = randStringApi(r)
 		}
 	}
 	if r.Intn(5) != 0 {
-		v20 := r.Intn(5)
-		this.Actions = make([]*RulesInfo_Action, v20)
-		for i := 0; i < v20; i++ {
+		v22 := r.Intn(5)
+		this.Actions = make([]*RulesInfo_Action, v22)
+		for i := 0; i < v22; i++ {
 			this.Actions[i] = NewPopulatedRulesInfo_Action(r, easy)
 		}
 	}
@@ -36517,14 +36538,14 @@ func NewPopulatedRestoreInfo(r randyApi, easy bool) *RestoreInfo {
 	this.Backup = string(randStringApi(r))
 	this.BackupLocation = string(randStringApi(r))
 	if r.Intn(5) != 0 {
-		v21 := r.Intn(10)
+		v23 := r.Intn(10)
 		this.LabelSelectors = make(map[string]string)
 		for i := 0; i < v21; i++ {
 			this.LabelSelectors[randStringApi(r)] = randStringApi(r)
 		}
 	}
 	if r.Intn(5) != 0 {
-		v22 := r.Intn(10)
+		v24 := r.Intn(10)
 		this.NamespaceMapping = make(map[string]string)
 		for i := 0; i < v22; i++ {
 			this.NamespaceMapping[randStringApi(r)] = randStringApi(r)
@@ -36535,16 +36556,16 @@ func NewPopulatedRestoreInfo(r randyApi, easy bool) *RestoreInfo {
 		this.Status = NewPopulatedRestoreInfo_StatusInfo(r, easy)
 	}
 	if r.Intn(5) != 0 {
-		v23 := r.Intn(5)
-		this.Resources = make([]*RestoreInfo_RestoredResource, v23)
-		for i := 0; i < v23; i++ {
+		v25 := r.Intn(5)
+		this.Resources = make([]*RestoreInfo_RestoredResource, v25)
+		for i := 0; i < v25; i++ {
 			this.Resources[i] = NewPopulatedRestoreInfo_RestoredResource(r, easy)
 		}
 	}
 	if r.Intn(5) != 0 {
-		v24 := r.Intn(5)
-		this.Volumes = make([]*RestoreInfo_Volume, v24)
-		for i := 0; i < v24; i++ {
+		v26 := r.Intn(5)
+		this.Volumes = make([]*RestoreInfo_Volume, v26)
+		for i := 0; i < v26; i++ {
 			this.Volumes[i] = NewPopulatedRestoreInfo_Volume(r, easy)
 		}
 	}
@@ -36556,9 +36577,9 @@ func NewPopulatedRestoreInfo(r randyApi, easy bool) *RestoreInfo {
 	}
 	this.TotalSize = uint64(uint64(r.Uint32()))
 	if r.Intn(5) != 0 {
-		v26 := r.Intn(5)
-		this.IncludeResources = make([]*ResourceInfo, v26)
-		for i := 0; i < v26; i++ {
+		v28 := r.Intn(5)
+		this.IncludeResources = make([]*ResourceInfo, v28)
+		for i := 0; i < v28; i++ {
 			this.IncludeResources[i] = NewPopulatedResourceInfo(r, easy)
 		}
 	}
@@ -36568,7 +36589,7 @@ func NewPopulatedRestoreInfo(r randyApi, easy bool) *RestoreInfo {
 		this.BackupLocationRef = NewPopulatedObjectRef(r, easy)
 	}
 	if r.Intn(5) != 0 {
-		v27 := r.Intn(10)
+		v29 := r.Intn(10)
 		this.StorageClassMapping = make(map[string]string)
 		for i := 0; i < v27; i++ {
 			this.StorageClassMapping[randStringApi(r)] = randStringApi(r)
@@ -36578,7 +36599,7 @@ func NewPopulatedRestoreInfo(r randyApi, easy bool) *RestoreInfo {
 		this.BackupRef = NewPopulatedObjectRef(r, easy)
 	}
 	if r.Intn(5) != 0 {
-		v28 := r.Intn(10)
+		v30 := r.Intn(10)
 		this.RancherProjectMapping = make(map[string]string)
 		for i := 0; i < v28; i++ {
 			this.RancherProjectMapping[randStringApi(r)] = randStringApi(r)
@@ -36640,7 +36661,7 @@ func NewPopulatedRestoreInfo_Volume(r randyApi, easy bool) *RestoreInfo_Volume {
 		this.Zones[i] = string(randStringApi(r))
 	}
 	if r.Intn(5) != 0 {
-		v31 := r.Intn(10)
+		v32 := r.Intn(10)
 		this.Options = make(map[string]string)
 		for i := 0; i < v31; i++ {
 			this.Options[randStringApi(r)] = randStringApi(r)
@@ -36704,7 +36725,7 @@ func NewPopulatedTimeRange(r randyApi, easy bool) *TimeRange {
 func NewPopulatedEnumerateOptions(r randyApi, easy bool) *EnumerateOptions {
 	this := &EnumerateOptions{}
 	if r.Intn(5) != 0 {
-		v32 := r.Intn(10)
+		v33 := r.Intn(10)
 		this.Labels = make(map[string]string)
 		for i := 0; i < v32; i++ {
 			this.Labels[randStringApi(r)] = randStringApi(r)
@@ -36768,7 +36789,7 @@ func NewPopulatedSchedulePolicyEnumerateRequest(r randyApi, easy bool) *Schedule
 	this := &SchedulePolicyEnumerateRequest{}
 	this.OrgId = string(randStringApi(r))
 	if r.Intn(5) != 0 {
-		v33 := r.Intn(10)
+		v34 := r.Intn(10)
 		this.Labels = make(map[string]string)
 		for i := 0; i < v33; i++ {
 			this.Labels[randStringApi(r)] = randStringApi(r)
@@ -36782,9 +36803,9 @@ func NewPopulatedSchedulePolicyEnumerateRequest(r randyApi, easy bool) *Schedule
 func NewPopulatedSchedulePolicyEnumerateResponse(r randyApi, easy bool) *SchedulePolicyEnumerateResponse {
 	this := &SchedulePolicyEnumerateResponse{}
 	if r.Intn(5) != 0 {
-		v34 := r.Intn(5)
-		this.SchedulePolicies = make([]*SchedulePolicyObject, v34)
-		for i := 0; i < v34; i++ {
+		v35 := r.Intn(5)
+		this.SchedulePolicies = make([]*SchedulePolicyObject, v35)
+		for i := 0; i < v35; i++ {
 			this.SchedulePolicies[i] = NewPopulatedSchedulePolicyObject(r, easy)
 		}
 	}
@@ -36865,7 +36886,7 @@ func NewPopulatedBackupScheduleCreateRequest(r randyApi, easy bool) *BackupSched
 		this.Namespaces[i] = string(randStringApi(r))
 	}
 	if r.Intn(5) != 0 {
-		v36 := r.Intn(10)
+		v37 := r.Intn(10)
 		this.LabelSelectors = make(map[string]string)
 		for i := 0; i < v36; i++ {
 			this.LabelSelectors[randStringApi(r)] = randStringApi(r)
@@ -36874,9 +36895,9 @@ func NewPopulatedBackupScheduleCreateRequest(r randyApi, easy bool) *BackupSched
 	this.PreExecRule = string(randStringApi(r))
 	this.PostExecRule = string(randStringApi(r))
 	if r.Intn(5) != 0 {
-		v37 := r.Intn(5)
-		this.IncludeResources = make([]*ResourceInfo, v37)
-		for i := 0; i < v37; i++ {
+		v38 := r.Intn(5)
+		this.IncludeResources = make([]*ResourceInfo, v38)
+		for i := 0; i < v38; i++ {
 			this.IncludeResources[i] = NewPopulatedResourceInfo(r, easy)
 		}
 	}
@@ -36899,7 +36920,13 @@ func NewPopulatedBackupScheduleCreateRequest(r randyApi, easy bool) *BackupSched
 		this.PostExecRuleRef = NewPopulatedObjectRef(r, easy)
 	}
 	this.BackupType = BackupScheduleCreateRequest_BackupType([]int32{0, 1, 2}[r.Intn(3)])
-	this.NsLabelSelectors = string(randStringApi(r))
+	if r.Intn(5) != 0 {
+		v40 := r.Intn(10)
+		this.NsLabelSelectors = make(map[string]string)
+		for i := 0; i < v40; i++ {
+			this.NsLabelSelectors[randStringApi(r)] = randStringApi(r)
+		}
+	}
 	if !easy && r.Intn(10) != 0 {
 	}
 	return this
@@ -36927,7 +36954,7 @@ func NewPopulatedBackupScheduleUpdateRequest(r randyApi, easy bool) *BackupSched
 		this.Namespaces[i] = string(randStringApi(r))
 	}
 	if r.Intn(5) != 0 {
-		v40 := r.Intn(10)
+		v42 := r.Intn(10)
 		this.LabelSelectors = make(map[string]string)
 		for i := 0; i < v40; i++ {
 			this.LabelSelectors[randStringApi(r)] = randStringApi(r)
@@ -36937,9 +36964,9 @@ func NewPopulatedBackupScheduleUpdateRequest(r randyApi, easy bool) *BackupSched
 	this.PostExecRule = string(randStringApi(r))
 	this.Suspend = bool(bool(r.Intn(2) == 0))
 	if r.Intn(5) != 0 {
-		v41 := r.Intn(5)
-		this.IncludeResources = make([]*ResourceInfo, v41)
-		for i := 0; i < v41; i++ {
+		v43 := r.Intn(5)
+		this.IncludeResources = make([]*ResourceInfo, v43)
+		for i := 0; i < v43; i++ {
 			this.IncludeResources[i] = NewPopulatedResourceInfo(r, easy)
 		}
 	}
@@ -36972,7 +36999,7 @@ func NewPopulatedBackupScheduleEnumerateRequest(r randyApi, easy bool) *BackupSc
 	this := &BackupScheduleEnumerateRequest{}
 	this.OrgId = string(randStringApi(r))
 	if r.Intn(5) != 0 {
-		v42 := r.Intn(10)
+		v44 := r.Intn(10)
 		this.Labels = make(map[string]string)
 		for i := 0; i < v42; i++ {
 			this.Labels[randStringApi(r)] = randStringApi(r)
@@ -36993,9 +37020,9 @@ func NewPopulatedBackupScheduleEnumerateRequest(r randyApi, easy bool) *BackupSc
 func NewPopulatedBackupScheduleEnumerateResponse(r randyApi, easy bool) *BackupScheduleEnumerateResponse {
 	this := &BackupScheduleEnumerateResponse{}
 	if r.Intn(5) != 0 {
-		v43 := r.Intn(5)
-		this.BackupSchedules = make([]*BackupScheduleObject, v43)
-		for i := 0; i < v43; i++ {
+		v45 := r.Intn(5)
+		this.BackupSchedules = make([]*BackupScheduleObject, v45)
+		for i := 0; i < v45; i++ {
 			this.BackupSchedules[i] = NewPopulatedBackupScheduleObject(r, easy)
 		}
 	}
@@ -37128,7 +37155,7 @@ func NewPopulatedClusterEnumerateRequest(r randyApi, easy bool) *ClusterEnumerat
 	this := &ClusterEnumerateRequest{}
 	this.OrgId = string(randStringApi(r))
 	if r.Intn(5) != 0 {
-		v44 := r.Intn(10)
+		v46 := r.Intn(10)
 		this.Labels = make(map[string]string)
 		for i := 0; i < v44; i++ {
 			this.Labels[randStringApi(r)] = randStringApi(r)
@@ -37148,9 +37175,9 @@ func NewPopulatedClusterEnumerateRequest(r randyApi, easy bool) *ClusterEnumerat
 func NewPopulatedClusterEnumerateResponse(r randyApi, easy bool) *ClusterEnumerateResponse {
 	this := &ClusterEnumerateResponse{}
 	if r.Intn(5) != 0 {
-		v45 := r.Intn(5)
-		this.Clusters = make([]*ClusterObject, v45)
-		for i := 0; i < v45; i++ {
+		v47 := r.Intn(5)
+		this.Clusters = make([]*ClusterObject, v47)
+		for i := 0; i < v47; i++ {
 			this.Clusters[i] = NewPopulatedClusterObject(r, easy)
 		}
 	}
@@ -37253,9 +37280,9 @@ func NewPopulatedCloudCredentialEnumerateRequest(r randyApi, easy bool) *CloudCr
 func NewPopulatedCloudCredentialEnumerateResponse(r randyApi, easy bool) *CloudCredentialEnumerateResponse {
 	this := &CloudCredentialEnumerateResponse{}
 	if r.Intn(5) != 0 {
-		v46 := r.Intn(5)
-		this.CloudCredentials = make([]*CloudCredentialObject, v46)
-		for i := 0; i < v46; i++ {
+		v48 := r.Intn(5)
+		this.CloudCredentials = make([]*CloudCredentialObject, v48)
+		for i := 0; i < v48; i++ {
 			this.CloudCredentials[i] = NewPopulatedCloudCredentialObject(r, easy)
 		}
 	}
@@ -37366,7 +37393,7 @@ func NewPopulatedBackupLocationEnumerateRequest(r randyApi, easy bool) *BackupLo
 	this := &BackupLocationEnumerateRequest{}
 	this.OrgId = string(randStringApi(r))
 	if r.Intn(5) != 0 {
-		v47 := r.Intn(10)
+		v49 := r.Intn(10)
 		this.Labels = make(map[string]string)
 		for i := 0; i < v47; i++ {
 			this.Labels[randStringApi(r)] = randStringApi(r)
@@ -37386,9 +37413,9 @@ func NewPopulatedBackupLocationEnumerateRequest(r randyApi, easy bool) *BackupLo
 func NewPopulatedBackupLocationEnumerateResponse(r randyApi, easy bool) *BackupLocationEnumerateResponse {
 	this := &BackupLocationEnumerateResponse{}
 	if r.Intn(5) != 0 {
-		v48 := r.Intn(5)
-		this.BackupLocations = make([]*BackupLocationObject, v48)
-		for i := 0; i < v48; i++ {
+		v50 := r.Intn(5)
+		this.BackupLocations = make([]*BackupLocationObject, v50)
+		for i := 0; i < v50; i++ {
 			this.BackupLocations[i] = NewPopulatedBackupLocationObject(r, easy)
 		}
 	}
@@ -37484,9 +37511,9 @@ func NewPopulatedMetricsInspectRequest(r randyApi, easy bool) *MetricsInspectReq
 func NewPopulatedMetricsInspectResponse(r randyApi, easy bool) *MetricsInspectResponse {
 	this := &MetricsInspectResponse{}
 	if r.Intn(5) != 0 {
-		v49 := r.Intn(5)
-		this.Stats = make([]*MetricsInspectResponse_Stats, v49)
-		for i := 0; i < v49; i++ {
+		v51 := r.Intn(5)
+		this.Stats = make([]*MetricsInspectResponse_Stats, v51)
+		for i := 0; i < v51; i++ {
 			this.Stats[i] = NewPopulatedMetricsInspectResponse_Stats(r, easy)
 		}
 	}
@@ -37519,7 +37546,7 @@ func NewPopulatedBackupCreateRequest(r randyApi, easy bool) *BackupCreateRequest
 		this.Namespaces[i] = string(randStringApi(r))
 	}
 	if r.Intn(5) != 0 {
-		v51 := r.Intn(10)
+		v53 := r.Intn(10)
 		this.LabelSelectors = make(map[string]string)
 		for i := 0; i < v51; i++ {
 			this.LabelSelectors[randStringApi(r)] = randStringApi(r)
@@ -37528,9 +37555,9 @@ func NewPopulatedBackupCreateRequest(r randyApi, easy bool) *BackupCreateRequest
 	this.PreExecRule = string(randStringApi(r))
 	this.PostExecRule = string(randStringApi(r))
 	if r.Intn(5) != 0 {
-		v52 := r.Intn(5)
-		this.IncludeResources = make([]*ResourceInfo, v52)
-		for i := 0; i < v52; i++ {
+		v54 := r.Intn(5)
+		this.IncludeResources = make([]*ResourceInfo, v54)
+		for i := 0; i < v54; i++ {
 			this.IncludeResources[i] = NewPopulatedResourceInfo(r, easy)
 		}
 	}
@@ -37553,7 +37580,13 @@ func NewPopulatedBackupCreateRequest(r randyApi, easy bool) *BackupCreateRequest
 	if r.Intn(5) != 0 {
 		this.ClusterRef = NewPopulatedObjectRef(r, easy)
 	}
-	this.NsLabelSelectors = string(randStringApi(r))
+	if r.Intn(5) != 0 {
+		v56 := r.Intn(10)
+		this.NsLabelSelectors = make(map[string]string)
+		for i := 0; i < v56; i++ {
+			this.NsLabelSelectors[randStringApi(r)] = randStringApi(r)
+		}
+	}
 	if !easy && r.Intn(10) != 0 {
 	}
 	return this
@@ -37601,9 +37634,9 @@ func NewPopulatedBackupEnumerateRequest(r randyApi, easy bool) *BackupEnumerateR
 func NewPopulatedBackupEnumerateResponse(r randyApi, easy bool) *BackupEnumerateResponse {
 	this := &BackupEnumerateResponse{}
 	if r.Intn(5) != 0 {
-		v54 := r.Intn(5)
-		this.Backups = make([]*BackupObject, v54)
-		for i := 0; i < v54; i++ {
+		v57 := r.Intn(5)
+		this.Backups = make([]*BackupObject, v57)
+		for i := 0; i < v57; i++ {
 			this.Backups[i] = NewPopulatedBackupObject(r, easy)
 		}
 	}
@@ -37680,7 +37713,7 @@ func NewPopulatedRestoreCreateRequest(r randyApi, easy bool) *RestoreCreateReque
 	this.Backup = string(randStringApi(r))
 	this.Cluster = string(randStringApi(r))
 	if r.Intn(5) != 0 {
-		v55 := r.Intn(10)
+		v58 := r.Intn(10)
 		this.NamespaceMapping = make(map[string]string)
 		for i := 0; i < v55; i++ {
 			this.NamespaceMapping[randStringApi(r)] = randStringApi(r)
@@ -37693,14 +37726,14 @@ func NewPopulatedRestoreCreateRequest(r randyApi, easy bool) *RestoreCreateReque
 		this.IncludeOptionalResourceTypes[i] = string(randStringApi(r))
 	}
 	if r.Intn(5) != 0 {
-		v57 := r.Intn(5)
-		this.IncludeResources = make([]*ResourceInfo, v57)
-		for i := 0; i < v57; i++ {
+		v60 := r.Intn(5)
+		this.IncludeResources = make([]*ResourceInfo, v60)
+		for i := 0; i < v60; i++ {
 			this.IncludeResources[i] = NewPopulatedResourceInfo(r, easy)
 		}
 	}
 	if r.Intn(5) != 0 {
-		v58 := r.Intn(10)
+		v61 := r.Intn(10)
 		this.StorageClassMapping = make(map[string]string)
 		for i := 0; i < v58; i++ {
 			this.StorageClassMapping[randStringApi(r)] = randStringApi(r)
@@ -37710,7 +37743,7 @@ func NewPopulatedRestoreCreateRequest(r randyApi, easy bool) *RestoreCreateReque
 		this.BackupRef = NewPopulatedObjectRef(r, easy)
 	}
 	if r.Intn(5) != 0 {
-		v59 := r.Intn(10)
+		v62 := r.Intn(10)
 		this.RancherProjectMapping = make(map[string]string)
 		for i := 0; i < v59; i++ {
 			this.RancherProjectMapping[randStringApi(r)] = randStringApi(r)
@@ -37766,9 +37799,9 @@ func NewPopulatedRestoreEnumerateRequest(r randyApi, easy bool) *RestoreEnumerat
 func NewPopulatedRestoreEnumerateResponse(r randyApi, easy bool) *RestoreEnumerateResponse {
 	this := &RestoreEnumerateResponse{}
 	if r.Intn(5) != 0 {
-		v61 := r.Intn(5)
-		this.Restores = make([]*RestoreObject, v61)
-		for i := 0; i < v61; i++ {
+		v63 := r.Intn(5)
+		this.Restores = make([]*RestoreObject, v63)
+		for i := 0; i < v63; i++ {
 			this.Restores[i] = NewPopulatedRestoreObject(r, easy)
 		}
 	}
@@ -37841,9 +37874,9 @@ func NewPopulatedOrganizationEnumerateRequest(r randyApi, easy bool) *Organizati
 func NewPopulatedOrganizationEnumerateResponse(r randyApi, easy bool) *OrganizationEnumerateResponse {
 	this := &OrganizationEnumerateResponse{}
 	if r.Intn(5) != 0 {
-		v62 := r.Intn(5)
-		this.Organizations = make([]*OrganizationObject, v62)
-		for i := 0; i < v62; i++ {
+		v64 := r.Intn(5)
+		this.Organizations = make([]*OrganizationObject, v64)
+		for i := 0; i < v64; i++ {
 			this.Organizations[i] = NewPopulatedOrganizationObject(r, easy)
 		}
 	}
@@ -37921,9 +37954,9 @@ func NewPopulatedRuleEnumerateRequest(r randyApi, easy bool) *RuleEnumerateReque
 func NewPopulatedRuleEnumerateResponse(r randyApi, easy bool) *RuleEnumerateResponse {
 	this := &RuleEnumerateResponse{}
 	if r.Intn(5) != 0 {
-		v63 := r.Intn(5)
-		this.Rules = make([]*RuleObject, v63)
-		for i := 0; i < v63; i++ {
+		v65 := r.Intn(5)
+		this.Rules = make([]*RuleObject, v65)
+		for i := 0; i < v65; i++ {
 			this.Rules[i] = NewPopulatedRuleObject(r, easy)
 		}
 	}
@@ -38110,9 +38143,9 @@ func NewPopulatedLicenseInspectResponse(r randyApi, easy bool) *LicenseInspectRe
 func NewPopulatedLicenseResponseInfo(r randyApi, easy bool) *LicenseResponseInfo {
 	this := &LicenseResponseInfo{}
 	if r.Intn(5) != 0 {
-		v65 := r.Intn(5)
-		this.FeatureInfo = make([]*LicenseResponseInfo_FeatureInfo, v65)
-		for i := 0; i < v65; i++ {
+		v67 := r.Intn(5)
+		this.FeatureInfo = make([]*LicenseResponseInfo_FeatureInfo, v67)
+		for i := 0; i < v67; i++ {
 			this.FeatureInfo[i] = NewPopulatedLicenseResponseInfo_FeatureInfo(r, easy)
 		}
 	}
@@ -38132,9 +38165,9 @@ func NewPopulatedLicenseResponseInfo_FeatureInfo(r randyApi, easy bool) *License
 		this.Consumed *= -1
 	}
 	if r.Intn(5) != 0 {
-		v66 := r.Intn(5)
-		this.EntitlementInfo = make([]*LicenseResponseInfo_EntitlementInfo, v66)
-		for i := 0; i < v66; i++ {
+		v68 := r.Intn(5)
+		this.EntitlementInfo = make([]*LicenseResponseInfo_EntitlementInfo, v68)
+		for i := 0; i < v68; i++ {
 			this.EntitlementInfo[i] = NewPopulatedLicenseResponseInfo_EntitlementInfo(r, easy)
 		}
 	}
@@ -38201,9 +38234,9 @@ func NewPopulatedLicenseUsageAirgappedRequest(r randyApi, easy bool) *LicenseUsa
 func NewPopulatedLicenseUsageAirgappedResponse(r randyApi, easy bool) *LicenseUsageAirgappedResponse {
 	this := &LicenseUsageAirgappedResponse{}
 	if r.Intn(5) != 0 {
-		v67 := r.Intn(5)
-		this.LicenseUsageAirgapped = make([]*LicenseUsageAirgappedObject, v67)
-		for i := 0; i < v67; i++ {
+		v69 := r.Intn(5)
+		this.LicenseUsageAirgapped = make([]*LicenseUsageAirgappedObject, v69)
+		for i := 0; i < v69; i++ {
 			this.LicenseUsageAirgapped[i] = NewPopulatedLicenseUsageAirgappedObject(r, easy)
 		}
 	}
@@ -38296,9 +38329,9 @@ func NewPopulatedManagedClusterObject(r randyApi, easy bool) *ManagedClusterObje
 func NewPopulatedManagedClusterEnumerateResponse(r randyApi, easy bool) *ManagedClusterEnumerateResponse {
 	this := &ManagedClusterEnumerateResponse{}
 	if r.Intn(5) != 0 {
-		v68 := r.Intn(5)
-		this.Cluster = make([]*ManagedClusterObject, v68)
-		for i := 0; i < v68; i++ {
+		v70 := r.Intn(5)
+		this.Cluster = make([]*ManagedClusterObject, v70)
+		for i := 0; i < v70; i++ {
 			this.Cluster[i] = NewPopulatedManagedClusterObject(r, easy)
 		}
 	}
@@ -38513,9 +38546,9 @@ func NewPopulatedActivityEnumerateRequest(r randyApi, easy bool) *ActivityEnumer
 func NewPopulatedActivityEnumerateResponse(r randyApi, easy bool) *ActivityEnumerateResponse {
 	this := &ActivityEnumerateResponse{}
 	if r.Intn(5) != 0 {
-		v70 := r.Intn(5)
-		this.ActivityData = make([]*ActivityEnumerateResponse_Data, v70)
-		for i := 0; i < v70; i++ {
+		v72 := r.Intn(5)
+		this.ActivityData = make([]*ActivityEnumerateResponse_Data, v72)
+		for i := 0; i < v72; i++ {
 			this.ActivityData[i] = NewPopulatedActivityEnumerateResponse_Data(r, easy)
 		}
 	}
@@ -38551,9 +38584,9 @@ func NewPopulatedRoleObject(r randyApi, easy bool) *RoleObject {
 		this.Metadata = NewPopulatedMetadata(r, easy)
 	}
 	if r.Intn(5) != 0 {
-		v71 := r.Intn(5)
-		this.Rules = make([]*RoleConfig, v71)
-		for i := 0; i < v71; i++ {
+		v73 := r.Intn(5)
+		this.Rules = make([]*RoleConfig, v73)
+		for i := 0; i < v73; i++ {
 			this.Rules[i] = NewPopulatedRoleConfig(r, easy)
 		}
 	}
@@ -38586,9 +38619,9 @@ func NewPopulatedRoleCreateRequest(r randyApi, easy bool) *RoleCreateRequest {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
 	if r.Intn(5) != 0 {
-		v74 := r.Intn(5)
-		this.Rules = make([]*RoleConfig, v74)
-		for i := 0; i < v74; i++ {
+		v76 := r.Intn(5)
+		this.Rules = make([]*RoleConfig, v76)
+		for i := 0; i < v76; i++ {
 			this.Rules[i] = NewPopulatedRoleConfig(r, easy)
 		}
 	}
@@ -38611,9 +38644,9 @@ func NewPopulatedRoleUpdateRequest(r randyApi, easy bool) *RoleUpdateRequest {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
 	if r.Intn(5) != 0 {
-		v75 := r.Intn(5)
-		this.Rules = make([]*RoleConfig, v75)
-		for i := 0; i < v75; i++ {
+		v77 := r.Intn(5)
+		this.Rules = make([]*RoleConfig, v77)
+		for i := 0; i < v77; i++ {
 			this.Rules[i] = NewPopulatedRoleConfig(r, easy)
 		}
 	}
@@ -38644,9 +38677,9 @@ func NewPopulatedRoleEnumerateRequest(r randyApi, easy bool) *RoleEnumerateReque
 func NewPopulatedRoleEnumerateResponse(r randyApi, easy bool) *RoleEnumerateResponse {
 	this := &RoleEnumerateResponse{}
 	if r.Intn(5) != 0 {
-		v76 := r.Intn(5)
-		this.Roles = make([]*RoleObject, v76)
-		for i := 0; i < v76; i++ {
+		v78 := r.Intn(5)
+		this.Roles = make([]*RoleObject, v78)
+		for i := 0; i < v78; i++ {
 			this.Roles[i] = NewPopulatedRoleObject(r, easy)
 		}
 	}
@@ -38703,7 +38736,7 @@ func NewPopulatedRolePermissionRequest(r randyApi, easy bool) *RolePermissionReq
 func NewPopulatedRolePermissionResponse(r randyApi, easy bool) *RolePermissionResponse {
 	this := &RolePermissionResponse{}
 	if r.Intn(5) != 0 {
-		v77 := r.Intn(10)
+		v79 := r.Intn(10)
 		this.Rules = make(map[string]*Permission)
 		for i := 0; i < v77; i++ {
 			this.Rules[randStringApi(r)] = NewPopulatedPermission(r, easy)
@@ -38734,9 +38767,9 @@ func NewPopulatedActivityDataObject(r randyApi, easy bool) *ActivityDataObject {
 		this.CompletionTime *= -1
 	}
 	if r.Intn(5) != 0 {
-		v78 := r.Intn(5)
-		this.Opcycle = make([]*ActivityDataObject_Opcycle, v78)
-		for i := 0; i < v78; i++ {
+		v80 := r.Intn(5)
+		this.Opcycle = make([]*ActivityDataObject_Opcycle, v80)
+		for i := 0; i < v80; i++ {
 			this.Opcycle[i] = NewPopulatedActivityDataObject_Opcycle(r, easy)
 		}
 	}
@@ -47693,7 +47726,103 @@ func (m *BackupScheduleInfo) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.NsLabelSelectors = string(dAtA[iNdEx:postIndex])
+			if m.NsLabelSelectors == nil {
+				m.NsLabelSelectors = make(map[string]string)
+			}
+			var mapkey string
+			var mapvalue string
+			for iNdEx < postIndex {
+				entryPreIndex := iNdEx
+				var wire uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowApi
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					wire |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				fieldNum := int32(wire >> 3)
+				if fieldNum == 1 {
+					var stringLenmapkey uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowApi
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapkey |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapkey := int(stringLenmapkey)
+					if intStringLenmapkey < 0 {
+						return ErrInvalidLengthApi
+					}
+					postStringIndexmapkey := iNdEx + intStringLenmapkey
+					if postStringIndexmapkey < 0 {
+						return ErrInvalidLengthApi
+					}
+					if postStringIndexmapkey > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					iNdEx = postStringIndexmapkey
+				} else if fieldNum == 2 {
+					var stringLenmapvalue uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowApi
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapvalue |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapvalue := int(stringLenmapvalue)
+					if intStringLenmapvalue < 0 {
+						return ErrInvalidLengthApi
+					}
+					postStringIndexmapvalue := iNdEx + intStringLenmapvalue
+					if postStringIndexmapvalue < 0 {
+						return ErrInvalidLengthApi
+					}
+					if postStringIndexmapvalue > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapvalue = string(dAtA[iNdEx:postStringIndexmapvalue])
+					iNdEx = postStringIndexmapvalue
+				} else {
+					iNdEx = entryPreIndex
+					skippy, err := skipApi(dAtA[iNdEx:])
+					if err != nil {
+						return err
+					}
+					if (skippy < 0) || (iNdEx+skippy) < 0 {
+						return ErrInvalidLengthApi
+					}
+					if (iNdEx + skippy) > postIndex {
+						return io.ErrUnexpectedEOF
+					}
+					iNdEx += skippy
+				}
+			}
+			m.NsLabelSelectors[mapkey] = mapvalue
 			iNdEx = postIndex
 		case 24:
 			if wireType != 2 {
@@ -50313,8 +50442,78 @@ func (m *BackupInfo) Unmarshal(dAtA []byte) error {
 				if shift >= 64 {
 					return ErrIntOverflowApi
 				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
+				fieldNum := int32(wire >> 3)
+				if fieldNum == 1 {
+					var stringLenmapkey uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowApi
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapkey |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapkey := int(stringLenmapkey)
+					if intStringLenmapkey < 0 {
+						return ErrInvalidLengthApi
+					}
+					postStringIndexmapkey := iNdEx + intStringLenmapkey
+					if postStringIndexmapkey < 0 {
+						return ErrInvalidLengthApi
+					}
+					if postStringIndexmapkey > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					iNdEx = postStringIndexmapkey
+				} else if fieldNum == 2 {
+					var stringLenmapvalue uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowApi
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapvalue |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapvalue := int(stringLenmapvalue)
+					if intStringLenmapvalue < 0 {
+						return ErrInvalidLengthApi
+					}
+					postStringIndexmapvalue := iNdEx + intStringLenmapvalue
+					if postStringIndexmapvalue < 0 {
+						return ErrInvalidLengthApi
+					}
+					if postStringIndexmapvalue > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapvalue = string(dAtA[iNdEx:postStringIndexmapvalue])
+					iNdEx = postStringIndexmapvalue
+				} else {
+					iNdEx = entryPreIndex
+					skippy, err := skipApi(dAtA[iNdEx:])
+					if err != nil {
+						return err
+					}
+					if (skippy < 0) || (iNdEx+skippy) < 0 {
+						return ErrInvalidLengthApi
+					}
+					if (iNdEx + skippy) > postIndex {
+						return io.ErrUnexpectedEOF
+					}
+					iNdEx += skippy
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
@@ -56863,7 +57062,103 @@ func (m *BackupScheduleCreateRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.NsLabelSelectors = string(dAtA[iNdEx:postIndex])
+			if m.NsLabelSelectors == nil {
+				m.NsLabelSelectors = make(map[string]string)
+			}
+			var mapkey string
+			var mapvalue string
+			for iNdEx < postIndex {
+				entryPreIndex := iNdEx
+				var wire uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowApi
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					wire |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				fieldNum := int32(wire >> 3)
+				if fieldNum == 1 {
+					var stringLenmapkey uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowApi
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapkey |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapkey := int(stringLenmapkey)
+					if intStringLenmapkey < 0 {
+						return ErrInvalidLengthApi
+					}
+					postStringIndexmapkey := iNdEx + intStringLenmapkey
+					if postStringIndexmapkey < 0 {
+						return ErrInvalidLengthApi
+					}
+					if postStringIndexmapkey > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					iNdEx = postStringIndexmapkey
+				} else if fieldNum == 2 {
+					var stringLenmapvalue uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowApi
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapvalue |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapvalue := int(stringLenmapvalue)
+					if intStringLenmapvalue < 0 {
+						return ErrInvalidLengthApi
+					}
+					postStringIndexmapvalue := iNdEx + intStringLenmapvalue
+					if postStringIndexmapvalue < 0 {
+						return ErrInvalidLengthApi
+					}
+					if postStringIndexmapvalue > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapvalue = string(dAtA[iNdEx:postStringIndexmapvalue])
+					iNdEx = postStringIndexmapvalue
+				} else {
+					iNdEx = entryPreIndex
+					skippy, err := skipApi(dAtA[iNdEx:])
+					if err != nil {
+						return err
+					}
+					if (skippy < 0) || (iNdEx+skippy) < 0 {
+						return ErrInvalidLengthApi
+					}
+					if (iNdEx + skippy) > postIndex {
+						return io.ErrUnexpectedEOF
+					}
+					iNdEx += skippy
+				}
+			}
+			m.NsLabelSelectors[mapkey] = mapvalue
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -64144,7 +64439,103 @@ func (m *BackupCreateRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.NsLabelSelectors = string(dAtA[iNdEx:postIndex])
+			if m.NsLabelSelectors == nil {
+				m.NsLabelSelectors = make(map[string]string)
+			}
+			var mapkey string
+			var mapvalue string
+			for iNdEx < postIndex {
+				entryPreIndex := iNdEx
+				var wire uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowApi
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					wire |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				fieldNum := int32(wire >> 3)
+				if fieldNum == 1 {
+					var stringLenmapkey uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowApi
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapkey |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapkey := int(stringLenmapkey)
+					if intStringLenmapkey < 0 {
+						return ErrInvalidLengthApi
+					}
+					postStringIndexmapkey := iNdEx + intStringLenmapkey
+					if postStringIndexmapkey < 0 {
+						return ErrInvalidLengthApi
+					}
+					if postStringIndexmapkey > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					iNdEx = postStringIndexmapkey
+				} else if fieldNum == 2 {
+					var stringLenmapvalue uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowApi
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapvalue |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapvalue := int(stringLenmapvalue)
+					if intStringLenmapvalue < 0 {
+						return ErrInvalidLengthApi
+					}
+					postStringIndexmapvalue := iNdEx + intStringLenmapvalue
+					if postStringIndexmapvalue < 0 {
+						return ErrInvalidLengthApi
+					}
+					if postStringIndexmapvalue > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapvalue = string(dAtA[iNdEx:postStringIndexmapvalue])
+					iNdEx = postStringIndexmapvalue
+				} else {
+					iNdEx = entryPreIndex
+					skippy, err := skipApi(dAtA[iNdEx:])
+					if err != nil {
+						return err
+					}
+					if (skippy < 0) || (iNdEx+skippy) < 0 {
+						return ErrInvalidLengthApi
+					}
+					if (iNdEx + skippy) > postIndex {
+						return io.ErrUnexpectedEOF
+					}
+					iNdEx += skippy
+				}
+			}
+			m.NsLabelSelectors[mapkey] = mapvalue
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
