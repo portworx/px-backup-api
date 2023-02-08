@@ -1040,7 +1040,7 @@ message ClusterUpdateRequest {
     // cloud_credential is deprecated, not to be used.
     string cloud_credential = 4;
     ObjectRef cloud_credential_ref = 5;
-    ObjectRef project_credential_ref = 6;
+    ObjectRef platform_credential_ref = 6;
 }
 
 // Define ClusterUpdateResponse struct
