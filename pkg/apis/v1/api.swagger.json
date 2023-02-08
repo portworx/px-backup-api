@@ -4144,7 +4144,7 @@
         "cloud_credential_ref": {
           "$ref": "#/definitions/ObjectRef"
         },
-        "project_credential_ref": {
+        "platform_credential_ref": {
           "$ref": "#/definitions/ObjectRef"
         }
       },
