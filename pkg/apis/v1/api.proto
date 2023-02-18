@@ -981,7 +981,7 @@ service Cluster {
     // Inspect returns detail information about a specified cluster
     rpc Inspect(ClusterInspectRequest) returns (ClusterInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/cluster/{org_id}/{name}"
+            get : "/v1/cluster/{org_id}/{name}/{uid}"
         };
     }
 
@@ -1070,6 +1070,7 @@ message ClusterInspectRequest {
     string org_id = 1;
     string name = 2;
     bool include_secrets = 3;
+    string uid = 4;
 }
 
 // Define ClusterInspectResponse struct
