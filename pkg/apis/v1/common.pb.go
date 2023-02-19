@@ -22,7 +22,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
+const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
 
 type LicenseType int32
 
@@ -186,7 +186,7 @@ func (m *Metadata) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Metadata.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -297,7 +297,7 @@ func (m *CreateMetadata) XXX_Marshal(b []byte, deterministic bool) ([]byte, erro
 		return xxx_messageInfo_CreateMetadata.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -397,7 +397,7 @@ func (m *BackupShare) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return xxx_messageInfo_BackupShare.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -449,7 +449,7 @@ func (m *BackupShare_AccessConfig) XXX_Marshal(b []byte, deterministic bool) ([]
 		return xxx_messageInfo_BackupShare_AccessConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -531,7 +531,7 @@ func (m *Ownership) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Ownership.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -597,7 +597,7 @@ func (m *Ownership_AccessConfig) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return xxx_messageInfo_Ownership_AccessConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -650,7 +650,7 @@ func (m *Ownership_PublicAccessControl) XXX_Marshal(b []byte, deterministic bool
 		return xxx_messageInfo_Ownership_PublicAccessControl.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -695,7 +695,7 @@ func (m *ObjectRef) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_ObjectRef.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1086,7 +1086,7 @@ func (this *ObjectRef) Equal(that interface{}) bool {
 func (m *Metadata) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -1094,110 +1094,93 @@ func (m *Metadata) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Metadata) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Metadata) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Ownership != nil {
-		{
-			size, err := m.Ownership.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintCommon(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x4a
-	}
-	if m.CreateTimeInSec != 0 {
-		i = encodeVarintCommon(dAtA, i, uint64(m.CreateTimeInSec))
-		i--
-		dAtA[i] = 0x40
-	}
-	if len(m.Labels) > 0 {
-		for k := range m.Labels {
-			v := m.Labels[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintCommon(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintCommon(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintCommon(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x3a
-		}
-	}
-	if m.LastUpdateTime != nil {
-		{
-			size, err := m.LastUpdateTime.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintCommon(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x32
-	}
-	if m.CreateTime != nil {
-		{
-			size, err := m.CreateTime.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintCommon(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintCommon(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.Owner) > 0 {
-		i -= len(m.Owner)
-		copy(dAtA[i:], m.Owner)
-		i = encodeVarintCommon(dAtA, i, uint64(len(m.Owner)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.Name) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
 	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintCommon(dAtA, i, uint64(len(m.Uid)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
 	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintCommon(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Owner) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(len(m.Owner)))
+		i += copy(dAtA[i:], m.Owner)
 	}
-	return len(dAtA) - i, nil
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
+	}
+	if m.CreateTime != nil {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(m.CreateTime.Size()))
+		n1, err1 := m.CreateTime.MarshalTo(dAtA[i:])
+		if err1 != nil {
+			return 0, err1
+		}
+		i += n1
+	}
+	if m.LastUpdateTime != nil {
+		dAtA[i] = 0x32
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(m.LastUpdateTime.Size()))
+		n2, err2 := m.LastUpdateTime.MarshalTo(dAtA[i:])
+		if err2 != nil {
+			return 0, err2
+		}
+		i += n2
+	}
+	if len(m.Labels) > 0 {
+		for k, _ := range m.Labels {
+			dAtA[i] = 0x3a
+			i++
+			v := m.Labels[k]
+			mapSize := 1 + len(k) + sovCommon(uint64(len(k))) + 1 + len(v) + sovCommon(uint64(len(v)))
+			i = encodeVarintCommon(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintCommon(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintCommon(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if m.CreateTimeInSec != 0 {
+		dAtA[i] = 0x40
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(m.CreateTimeInSec))
+	}
+	if m.Ownership != nil {
+		dAtA[i] = 0x4a
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(m.Ownership.Size()))
+		n3, err3 := m.Ownership.MarshalTo(dAtA[i:])
+		if err3 != nil {
+			return 0, err3
+		}
+		i += n3
+	}
+	return i, nil
 }
 
 func (m *CreateMetadata) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -1205,81 +1188,68 @@ func (m *CreateMetadata) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *CreateMetadata) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CreateMetadata) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintCommon(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x32
-	}
-	if m.Ownership != nil {
-		{
-			size, err := m.Ownership.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintCommon(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.Labels) > 0 {
-		for k := range m.Labels {
-			v := m.Labels[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintCommon(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintCommon(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintCommon(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x22
-		}
-	}
-	if len(m.Owner) > 0 {
-		i -= len(m.Owner)
-		copy(dAtA[i:], m.Owner)
-		i = encodeVarintCommon(dAtA, i, uint64(len(m.Owner)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.Name) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
 	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintCommon(dAtA, i, uint64(len(m.OrgId)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintCommon(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Owner) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(len(m.Owner)))
+		i += copy(dAtA[i:], m.Owner)
 	}
-	return len(dAtA) - i, nil
+	if len(m.Labels) > 0 {
+		for k, _ := range m.Labels {
+			dAtA[i] = 0x22
+			i++
+			v := m.Labels[k]
+			mapSize := 1 + len(k) + sovCommon(uint64(len(k))) + 1 + len(v) + sovCommon(uint64(len(v)))
+			i = encodeVarintCommon(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintCommon(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintCommon(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if m.Ownership != nil {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(m.Ownership.Size()))
+		n4, err4 := m.Ownership.MarshalTo(dAtA[i:])
+		if err4 != nil {
+			return 0, err4
+		}
+		i += n4
+	}
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x32
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
+	}
+	return i, nil
 }
 
 func (m *BackupShare) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -1287,50 +1257,41 @@ func (m *BackupShare) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupShare) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupShare) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Collaborators) > 0 {
-		for iNdEx := len(m.Collaborators) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Collaborators[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintCommon(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x1a
-		}
-	}
 	if len(m.Groups) > 0 {
-		for iNdEx := len(m.Groups) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Groups[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintCommon(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.Groups {
 			dAtA[i] = 0x12
+			i++
+			i = encodeVarintCommon(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	return len(dAtA) - i, nil
+	if len(m.Collaborators) > 0 {
+		for _, msg := range m.Collaborators {
+			dAtA[i] = 0x1a
+			i++
+			i = encodeVarintCommon(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	return i, nil
 }
 
 func (m *BackupShare_AccessConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -1338,34 +1299,28 @@ func (m *BackupShare_AccessConfig) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupShare_AccessConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupShare_AccessConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Access != 0 {
-		i = encodeVarintCommon(dAtA, i, uint64(m.Access))
-		i--
-		dAtA[i] = 0x10
-	}
 	if len(m.Id) > 0 {
-		i -= len(m.Id)
-		copy(dAtA[i:], m.Id)
-		i = encodeVarintCommon(dAtA, i, uint64(len(m.Id)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(len(m.Id)))
+		i += copy(dAtA[i:], m.Id)
 	}
-	return len(dAtA) - i, nil
+	if m.Access != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(m.Access))
+	}
+	return i, nil
 }
 
 func (m *Ownership) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -1373,69 +1328,57 @@ func (m *Ownership) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Ownership) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Ownership) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Public != nil {
-		{
-			size, err := m.Public.MarshalToSizedBuffer(dAtA[:i])
+	if len(m.Owner) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(len(m.Owner)))
+		i += copy(dAtA[i:], m.Owner)
+	}
+	if len(m.Groups) > 0 {
+		for _, msg := range m.Groups {
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintCommon(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
 			if err != nil {
 				return 0, err
 			}
-			i -= size
-			i = encodeVarintCommon(dAtA, i, uint64(size))
+			i += n
 		}
-		i--
-		dAtA[i] = 0x22
 	}
 	if len(m.Collaborators) > 0 {
-		for iNdEx := len(m.Collaborators) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Collaborators[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintCommon(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.Collaborators {
 			dAtA[i] = 0x1a
-		}
-	}
-	if len(m.Groups) > 0 {
-		for iNdEx := len(m.Groups) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Groups[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintCommon(dAtA, i, uint64(size))
+			i++
+			i = encodeVarintCommon(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
 			}
-			i--
-			dAtA[i] = 0x12
+			i += n
 		}
 	}
-	if len(m.Owner) > 0 {
-		i -= len(m.Owner)
-		copy(dAtA[i:], m.Owner)
-		i = encodeVarintCommon(dAtA, i, uint64(len(m.Owner)))
-		i--
-		dAtA[i] = 0xa
+	if m.Public != nil {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(m.Public.Size()))
+		n5, err5 := m.Public.MarshalTo(dAtA[i:])
+		if err5 != nil {
+			return 0, err5
+		}
+		i += n5
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *Ownership_AccessConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -1443,34 +1386,28 @@ func (m *Ownership_AccessConfig) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Ownership_AccessConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Ownership_AccessConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Access != 0 {
-		i = encodeVarintCommon(dAtA, i, uint64(m.Access))
-		i--
-		dAtA[i] = 0x10
-	}
 	if len(m.Id) > 0 {
-		i -= len(m.Id)
-		copy(dAtA[i:], m.Id)
-		i = encodeVarintCommon(dAtA, i, uint64(len(m.Id)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(len(m.Id)))
+		i += copy(dAtA[i:], m.Id)
 	}
-	return len(dAtA) - i, nil
+	if m.Access != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(m.Access))
+	}
+	return i, nil
 }
 
 func (m *Ownership_PublicAccessControl) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -1478,27 +1415,22 @@ func (m *Ownership_PublicAccessControl) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Ownership_PublicAccessControl) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Ownership_PublicAccessControl) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.Type != 0 {
-		i = encodeVarintCommon(dAtA, i, uint64(m.Type))
-		i--
 		dAtA[i] = 0x8
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(m.Type))
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ObjectRef) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -1506,42 +1438,33 @@ func (m *ObjectRef) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ObjectRef) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ObjectRef) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintCommon(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintCommon(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	return len(dAtA) - i, nil
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintCommon(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
+	}
+	return i, nil
 }
 
 func encodeVarintCommon(dAtA []byte, offset int, v uint64) int {
-	offset -= sovCommon(v)
-	base := offset
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		offset++
 	}
 	dAtA[offset] = uint8(v)
-	return base
+	return offset + 1
 }
 func NewPopulatedMetadata(r randyCommon, easy bool) *Metadata {
 	this := &Metadata{}
@@ -1549,13 +1472,13 @@ func NewPopulatedMetadata(r randyCommon, easy bool) *Metadata {
 	this.Uid = string(randStringCommon(r))
 	this.Owner = string(randStringCommon(r))
 	this.OrgId = string(randStringCommon(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateTime = types.NewPopulatedTimestamp(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.LastUpdateTime = types.NewPopulatedTimestamp(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v1 := r.Intn(10)
 		this.Labels = make(map[string]string)
 		for i := 0; i < v1; i++ {
@@ -1566,7 +1489,7 @@ func NewPopulatedMetadata(r randyCommon, easy bool) *Metadata {
 	if r.Intn(2) == 0 {
 		this.CreateTimeInSec *= -1
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Ownership = NewPopulatedOwnership(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -1579,14 +1502,14 @@ func NewPopulatedCreateMetadata(r randyCommon, easy bool) *CreateMetadata {
 	this.Name = string(randStringCommon(r))
 	this.OrgId = string(randStringCommon(r))
 	this.Owner = string(randStringCommon(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v2 := r.Intn(10)
 		this.Labels = make(map[string]string)
 		for i := 0; i < v2; i++ {
 			this.Labels[randStringCommon(r)] = randStringCommon(r)
 		}
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Ownership = NewPopulatedOwnership(r, easy)
 	}
 	this.Uid = string(randStringCommon(r))
@@ -1597,14 +1520,14 @@ func NewPopulatedCreateMetadata(r randyCommon, easy bool) *CreateMetadata {
 
 func NewPopulatedBackupShare(r randyCommon, easy bool) *BackupShare {
 	this := &BackupShare{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v3 := r.Intn(5)
 		this.Groups = make([]*BackupShare_AccessConfig, v3)
 		for i := 0; i < v3; i++ {
 			this.Groups[i] = NewPopulatedBackupShare_AccessConfig(r, easy)
 		}
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v4 := r.Intn(5)
 		this.Collaborators = make([]*BackupShare_AccessConfig, v4)
 		for i := 0; i < v4; i++ {
@@ -1628,21 +1551,21 @@ func NewPopulatedBackupShare_AccessConfig(r randyCommon, easy bool) *BackupShare
 func NewPopulatedOwnership(r randyCommon, easy bool) *Ownership {
 	this := &Ownership{}
 	this.Owner = string(randStringCommon(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v5 := r.Intn(5)
 		this.Groups = make([]*Ownership_AccessConfig, v5)
 		for i := 0; i < v5; i++ {
 			this.Groups[i] = NewPopulatedOwnership_AccessConfig(r, easy)
 		}
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v6 := r.Intn(5)
 		this.Collaborators = make([]*Ownership_AccessConfig, v6)
 		for i := 0; i < v6; i++ {
 			this.Collaborators[i] = NewPopulatedOwnership_AccessConfig(r, easy)
 		}
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Public = NewPopulatedOwnership_PublicAccessControl(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -2295,7 +2218,7 @@ func (m *Metadata) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthCommon
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -2367,7 +2290,10 @@ func (m *Metadata) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthCommon
 			}
 			if (iNdEx + skippy) > l {
@@ -2623,7 +2549,7 @@ func (m *CreateMetadata) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthCommon
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -2708,7 +2634,10 @@ func (m *CreateMetadata) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthCommon
 			}
 			if (iNdEx + skippy) > l {
@@ -2826,7 +2755,10 @@ func (m *BackupShare) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthCommon
 			}
 			if (iNdEx + skippy) > l {
@@ -2927,7 +2859,10 @@ func (m *BackupShare_AccessConfig) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthCommon
 			}
 			if (iNdEx + skippy) > l {
@@ -3113,7 +3048,10 @@ func (m *Ownership) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthCommon
 			}
 			if (iNdEx + skippy) > l {
@@ -3214,7 +3152,10 @@ func (m *Ownership_AccessConfig) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthCommon
 			}
 			if (iNdEx + skippy) > l {
@@ -3283,7 +3224,10 @@ func (m *Ownership_PublicAccessControl) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthCommon
 			}
 			if (iNdEx + skippy) > l {
@@ -3397,7 +3341,10 @@ func (m *ObjectRef) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthCommon
 			}
 			if (iNdEx + skippy) > l {
@@ -3415,7 +3362,6 @@ func (m *ObjectRef) Unmarshal(dAtA []byte) error {
 func skipCommon(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
-	depth := 0
 	for iNdEx < l {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
@@ -3447,8 +3393,10 @@ func skipCommon(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
+			return iNdEx, nil
 		case 1:
 			iNdEx += 8
+			return iNdEx, nil
 		case 2:
 			var length int
 			for shift := uint(0); ; shift += 7 {
@@ -3469,30 +3417,55 @@ func skipCommon(dAtA []byte) (n int, err error) {
 				return 0, ErrInvalidLengthCommon
 			}
 			iNdEx += length
-		case 3:
-			depth++
-		case 4:
-			if depth == 0 {
-				return 0, ErrUnexpectedEndOfGroupCommon
+			if iNdEx < 0 {
+				return 0, ErrInvalidLengthCommon
 			}
-			depth--
+			return iNdEx, nil
+		case 3:
+			for {
+				var innerWire uint64
+				var start int = iNdEx
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return 0, ErrIntOverflowCommon
+					}
+					if iNdEx >= l {
+						return 0, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					innerWire |= (uint64(b) & 0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				innerWireType := int(innerWire & 0x7)
+				if innerWireType == 4 {
+					break
+				}
+				next, err := skipCommon(dAtA[start:])
+				if err != nil {
+					return 0, err
+				}
+				iNdEx = start + next
+				if iNdEx < 0 {
+					return 0, ErrInvalidLengthCommon
+				}
+			}
+			return iNdEx, nil
+		case 4:
+			return iNdEx, nil
 		case 5:
 			iNdEx += 4
+			return iNdEx, nil
 		default:
 			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
 		}
-		if iNdEx < 0 {
-			return 0, ErrInvalidLengthCommon
-		}
-		if depth == 0 {
-			return iNdEx, nil
-		}
 	}
-	return 0, io.ErrUnexpectedEOF
+	panic("unreachable")
 }
 
 var (
-	ErrInvalidLengthCommon        = fmt.Errorf("proto: negative length found during unmarshaling")
-	ErrIntOverflowCommon          = fmt.Errorf("proto: integer overflow")
-	ErrUnexpectedEndOfGroupCommon = fmt.Errorf("proto: unexpected end of group")
+	ErrInvalidLengthCommon = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowCommon   = fmt.Errorf("proto: integer overflow")
 )
