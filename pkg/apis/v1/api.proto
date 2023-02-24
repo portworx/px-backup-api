@@ -306,7 +306,7 @@ message BackupScheduleInfo {
     // To get type of backup (generic or non-generic)
     BackupType backup_type = 22;
     // Label selectors to choose namespaces
-    map<string, string> ns_label_selectors = 23;
+    string ns_label_selectors = 23;
     message BackupType {
         Type type = 1;
         enum Type {
@@ -462,7 +462,7 @@ message BackupInfo {
     BackupShare backup_share = 28;
     BackupShare.AccessType user_backupshare_access = 29;
     ObjectRef cluster_ref = 30;
-    map<string, string> ns_label_selectors = 31;
+    string ns_label_selectors = 31;
     // Name of rancher projects associated with resources
     map<string, string> rancher_projects = 32;
     message BackupType {
@@ -869,7 +869,7 @@ message BackupScheduleCreateRequest {
     ObjectRef post_exec_rule_ref = 16;
     // To get type of backup (generic or non-generic)
     BackupType backup_type = 17;
-    map<string, string> ns_label_selectors = 18;
+    string ns_label_selectors = 18;
     enum BackupType {
         Invalid = 0;
         Generic = 1;
@@ -1458,7 +1458,7 @@ message BackupCreateRequest {
     // To get type of backup (generic or non-generic)
     BackupType backup_type = 14;
     ObjectRef cluster_ref = 15;
-    map<string, string> ns_label_selectors = 16;
+    string ns_label_selectors = 16;
     enum BackupType {
         Invalid = 0;
         Generic = 1;
