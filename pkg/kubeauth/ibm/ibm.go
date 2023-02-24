@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"io/ioutil"
 	"net/url"
 	"os"
 	"strings"
@@ -71,7 +70,7 @@ func (i *ibm) UpdateClient(
 			ctx,
 			&api.CloudCredentialInspectRequest{
 				Name:           cloudCredentialName,
-				Uid: cloudCredentialUID,
+				Uid:            cloudCredentialUID,
 				OrgId:          orgID,
 				IncludeSecrets: true,
 			},
@@ -214,7 +213,7 @@ func (i *ibm) updateClient(restConfig *rest.Config, clientConfig *clientcmdapi.C
 // This function will return an empty string if it fails to read the file or parse it
 // This function is inspired from "kubectl config view --minify --flatten" implementation
 func (i *ibm) getKubeconfig(kubeConfigPath string) string {
-	content, err := ioutil.ReadFile(kubeConfigPath)
+	content, err := os.ReadFile(kubeConfigPath)
 	if err != nil {
 		return ""
 	}
@@ -339,7 +338,7 @@ func (i *ibm) GetAllClients(
 	cloudCredential *api.CloudCredentialObject,
 	maxResult int64,
 	config interface{},
-) (map[string]*kubeauth.PluginClient,  *string, error) {
+) (map[string]*kubeauth.PluginClient, *string, error) {
 	return nil, nil, fmt.Errorf("not supported")
 
 }
