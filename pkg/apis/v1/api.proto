@@ -603,6 +603,8 @@ message RestoreInfo {
     // mapping of the rancher projects from the backup to which restore should
     // be done
     map<string, string> rancher_project_mapping = 18;
+    // mapping of source rancher project display names to target rancher project display names
+    map<string, string> rancher_project_name_mapping = 19;
 
     message RestoredResource {
         string name = 1;
@@ -1604,6 +1606,8 @@ message RestoreCreateRequest {
     // mapping of the rancher projects from the backup to which restore should
     // be done
     map<string, string> rancher_project_mapping = 10;
+    // mapping of source rancher project display names to target rancher project display names
+    map<string, string> rancher_project_name_mapping = 11;
 }
 
 // Define RestoreCreateResponse struct
