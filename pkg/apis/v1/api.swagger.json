@@ -5034,6 +5034,13 @@
             "type": "string"
           },
           "title": "mapping of the rancher projects from the backup to which restore should\nbe done"
+        },
+        "rancher_project_name_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "mapping of source rancher project display names to target rancher project display names"
         }
       },
       "title": "Define RestoreCreateRequest struct"
@@ -5156,6 +5163,13 @@
             "type": "string"
           },
           "title": "mapping of the rancher projects from the backup to which restore should\nbe done"
+        },
+        "rancher_project_name_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "mapping of source rancher project display names to target rancher project display names"
         }
       },
       "title": "Message for restore info"
