@@ -2884,10 +2884,7 @@
           "$ref": "#/definitions/ObjectRef"
         },
         "ns_label_selectors": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
+          "type": "string"
         }
       },
       "title": "Request message structure for backup create"
@@ -3051,10 +3048,7 @@
           "$ref": "#/definitions/ObjectRef"
         },
         "ns_label_selectors": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
+          "type": "string"
         },
         "rancher_projects": {
           "type": "object",
@@ -3472,10 +3466,7 @@
           "title": "To get type of backup (generic or non-generic)"
         },
         "ns_label_selectors": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
+          "type": "string"
         }
       },
       "title": "Define BackupScheduleCreateRequest struct"
@@ -3605,10 +3596,7 @@
           "title": "To get type of backup (generic or non-generic)"
         },
         "ns_label_selectors": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
+          "type": "string",
           "title": "Label selectors to choose namespaces"
         }
       }
