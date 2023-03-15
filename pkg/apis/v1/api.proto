@@ -925,11 +925,14 @@ message BackupScheduleEnumerateRequest {
     // backup_location is deprecated, not to be used.
     string backup_location = 3;
     ObjectRef backup_location_ref = 4;
+    // Optional arguments for enumeration
+    EnumerateOptions enumerate_options = 5;
 }
 
 // Define BackupScheduleEnumerateResponse struct
 message BackupScheduleEnumerateResponse {
     repeated BackupScheduleObject backup_schedules = 1;
+    uint64 total_count = 2;
 }
 
 // Define BackupScheduleInspectRequest struct
