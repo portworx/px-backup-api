@@ -4058,6 +4058,10 @@
         "tenant_id": {
           "type": "string",
           "title": "Tenant ID of the user account (aka PDS account)"
+        },
+        "service_token": {
+          "type": "string",
+          "title": "PDS account service token to fetch rest.Config for\nteleport based cluster"
         }
       },
       "title": "Define ClusterCreateRequest struct"
@@ -4137,6 +4141,9 @@
         "tenant_id": {
           "type": "string",
           "title": "Tenant ID"
+        },
+        "service_token": {
+          "type": "string"
         }
       }
     },
