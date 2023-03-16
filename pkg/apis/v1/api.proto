@@ -307,6 +307,8 @@ message BackupScheduleInfo {
     BackupType backup_type = 22;
     // Label selectors to choose namespaces
     string ns_label_selectors = 23;
+    // Target namespace of CR
+    string target_namespace = 24;
     message BackupType {
         Type type = 1;
         enum Type {
@@ -465,6 +467,8 @@ message BackupInfo {
     string ns_label_selectors = 31;
     // Name of rancher projects associated with resources
     map<string, string> rancher_projects = 32;
+    // Target namespace of CR
+    string target_namespace = 33;
     message BackupType {
         Type type = 1;
         enum Type {
