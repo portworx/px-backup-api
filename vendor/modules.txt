@@ -626,7 +626,7 @@ k8s.io/utils/integer
 k8s.io/utils/internal/third_party/forked/golang/net
 k8s.io/utils/net
 k8s.io/utils/strings/slices
-# sigs.k8s.io/aws-iam-authenticator v0.5.5
+# sigs.k8s.io/aws-iam-authenticator v0.5.9
 ## explicit; go 1.16
 sigs.k8s.io/aws-iam-authenticator/pkg
 sigs.k8s.io/aws-iam-authenticator/pkg/arn

@@ -38,6 +38,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/sts/stsiface"
 	"github.com/sirupsen/logrus"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/pkg/apis/clientauthentication"
 	clientauthv1beta1 "k8s.io/client-go/pkg/apis/clientauthentication/v1beta1"
 	"sigs.k8s.io/aws-iam-authenticator/pkg"
 	"sigs.k8s.io/aws-iam-authenticator/pkg/arn"
@@ -89,7 +90,9 @@ const (
 	clusterIDHeader        = "x-k8s-aws-id"
 	// Format of the X-Amz-Date header used for expiration
 	// https://golang.org/pkg/time/#pkg-constants
-	dateHeaderFormat = "20060102T150405Z"
+	dateHeaderFormat   = "20060102T150405Z"
+	kindExecCredential = "ExecCredential"
+	execInfoEnvKey     = "KUBERNETES_EXEC_INFO"
 )
 
 // Token is generated and used by Kubernetes client-go to authenticate with a Kubernetes cluster.
@@ -338,11 +341,20 @@ func (g generator) GetWithSTS(clusterID string, stsAPI stsiface.STSAPI) (Token, 
 
 // FormatJSON formats the json to support ExecCredential authentication
 func (g generator) FormatJSON(token Token) string {
+	apiVersion := clientauthv1beta1.SchemeGroupVersion.String()
+	env := os.Getenv(execInfoEnvKey)
+	if env != "" {
+		cred := &clientauthentication.ExecCredential{}
+		if err := json.Unmarshal([]byte(env), cred); err == nil {
+			apiVersion = cred.APIVersion
+		}
+	}
+
 	expirationTimestamp := metav1.NewTime(token.Expiration)
 	execInput := &clientauthv1beta1.ExecCredential{
 		TypeMeta: metav1.TypeMeta{
-			APIVersion: "client.authentication.k8s.io/v1beta1",
-			Kind:       "ExecCredential",
+			APIVersion: apiVersion,
+			Kind:       kindExecCredential,
 		},
 		Status: &clientauthv1beta1.ExecCredentialStatus{
 			ExpirationTimestamp: &expirationTimestamp,
@@ -461,6 +473,10 @@ func (v tokenVerifier) Verify(token string) (*Identity, error) {
 		return nil, FormatError{"malformed query parameter"}
 	}
 
+	if err = validateDuplicateParameters(queryParams); err != nil {
+		return nil, err
+	}
+
 	for key, values := range queryParams {
 		if !parameterWhitelist[strings.ToLower(key)] {
 			return nil, FormatError{fmt.Sprintf("non-whitelisted query parameter %q", key)}
@@ -562,6 +578,17 @@ func (v tokenVerifier) Verify(token string) (*Identity, error) {
 	}
 
 	return id, nil
+}
+
+func validateDuplicateParameters(queryParams url.Values) error {
+	duplicateCheck := make(map[string]bool)
+	for key, _ := range queryParams {
+		if _, found := duplicateCheck[strings.ToLower(key)]; found {
+			return FormatError{fmt.Sprintf("duplicate query parameter found: %q", key)}
+		}
+		duplicateCheck[strings.ToLower(key)] = true
+	}
+	return nil
 }
 
 func hasSignedClusterIDHeader(paramsLower *url.Values) bool {
