@@ -469,6 +469,8 @@ message BackupInfo {
     map<string, string> rancher_projects = 32;
     // Target namespace of CR
     string target_namespace = 33;
+    // this flag signifies if the backup involves large number of resources or not
+    bool large_resource_enabled = 34;
     message BackupType {
         Type type = 1;
         enum Type {
@@ -605,6 +607,8 @@ message RestoreInfo {
     map<string, string> rancher_project_mapping = 18;
     // mapping of source rancher project display names to target rancher project display names
     map<string, string> rancher_project_name_mapping = 19;
+    // a flag signifies if the restored backup involves large number of resources or not
+    bool large_resource_enabled = 20;
 
     message RestoredResource {
         string name = 1;
