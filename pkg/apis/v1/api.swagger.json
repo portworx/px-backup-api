@@ -3056,6 +3056,10 @@
             "type": "string"
           },
           "title": "Name of rancher projects associated with resources"
+        },
+        "large_resource_enabled": {
+          "type": "boolean",
+          "title": "flag signifies if the backup involves large number of resources or not"
         }
       }
     },
@@ -5158,6 +5162,10 @@
             "type": "string"
           },
           "title": "mapping of source rancher project display names to target rancher project display names"
+        },
+        "large_resource_enabled": {
+          "type": "boolean",
+          "title": "a flag signifies if the restored backup involves large number of resources or not"
         }
       },
       "title": "Message for restore info"
