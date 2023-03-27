@@ -3056,6 +3056,10 @@
             "type": "string"
           },
           "title": "Name of rancher projects associated with resources"
+        },
+        "target_namespace": {
+          "type": "string",
+          "title": "Target namespace of CR"
         }
       }
     },
@@ -3598,6 +3602,10 @@
         "ns_label_selectors": {
           "type": "string",
           "title": "Label selectors to choose namespaces"
+        },
+        "target_namespace": {
+          "type": "string",
+          "title": "Target namespace of CR"
         }
       }
     },
