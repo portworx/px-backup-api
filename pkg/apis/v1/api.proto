@@ -65,6 +65,8 @@ message ClusterInfo {
         (gogoproto.jsontag) = "servicetoken",
         (gogoproto.moretags) = "secure:\"true\""
     ];
+    Provider provider = 17;
+
     // Message for maintaining status of the cluster.
     message StatusInfo {
         enum Status {
@@ -102,6 +104,17 @@ message ClusterInfo {
         Status status = 1;
         string reason = 2;
     }
+
+     // Cloud provider type
+     enum Provider {
+        Invalid = 0;
+        AWS = 1;
+        Azure = 2;
+        Google = 3;
+        IBM = 4;
+        Rancher = 5;
+    }
+    
 }
 
 message ClusterObject {
@@ -1044,6 +1057,17 @@ message ClusterCreateRequest {
         (gogoproto.jsontag) = "servicetoken",
         (gogoproto.moretags) = "secure:\"true\""
     ];
+    // This is optional field and used by BaaS only
+    Provider provider = 10;
+     // Cloud provider type
+    enum Provider {
+        Invalid = 0;
+        AWS = 1;
+        Azure = 2;
+        Google = 3;
+        IBM = 4;
+        Rancher = 5;
+    }
 }
 
 // Define ClusterCreateResponse struct
