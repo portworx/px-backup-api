@@ -32,6 +32,44 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+// Cloud provider type
+type ClusterInfo_Provider int32
+
+const (
+	ClusterInfo_Invalid ClusterInfo_Provider = 0
+	ClusterInfo_AWS     ClusterInfo_Provider = 1
+	ClusterInfo_Azure   ClusterInfo_Provider = 2
+	ClusterInfo_Google  ClusterInfo_Provider = 3
+	ClusterInfo_IBM     ClusterInfo_Provider = 4
+	ClusterInfo_Rancher ClusterInfo_Provider = 5
+)
+
+var ClusterInfo_Provider_name = map[int32]string{
+	0: "Invalid",
+	1: "AWS",
+	2: "Azure",
+	3: "Google",
+	4: "IBM",
+	5: "Rancher",
+}
+
+var ClusterInfo_Provider_value = map[string]int32{
+	"Invalid": 0,
+	"AWS":     1,
+	"Azure":   2,
+	"Google":  3,
+	"IBM":     4,
+	"Rancher": 5,
+}
+
+func (x ClusterInfo_Provider) String() string {
+	return proto.EnumName(ClusterInfo_Provider_name, int32(x))
+}
+
+func (ClusterInfo_Provider) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_9943feda3d652502, []int{1, 0}
+}
+
 type ClusterInfo_StatusInfo_Status int32
 
 const (
@@ -608,6 +646,44 @@ func (BackupScheduleCreateRequest_BackupType) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_9943feda3d652502, []int{43, 0}
 }
 
+// Cloud provider type
+type ClusterCreateRequest_Provider int32
+
+const (
+	ClusterCreateRequest_Invalid ClusterCreateRequest_Provider = 0
+	ClusterCreateRequest_AWS     ClusterCreateRequest_Provider = 1
+	ClusterCreateRequest_Azure   ClusterCreateRequest_Provider = 2
+	ClusterCreateRequest_Google  ClusterCreateRequest_Provider = 3
+	ClusterCreateRequest_IBM     ClusterCreateRequest_Provider = 4
+	ClusterCreateRequest_Rancher ClusterCreateRequest_Provider = 5
+)
+
+var ClusterCreateRequest_Provider_name = map[int32]string{
+	0: "Invalid",
+	1: "AWS",
+	2: "Azure",
+	3: "Google",
+	4: "IBM",
+	5: "Rancher",
+}
+
+var ClusterCreateRequest_Provider_value = map[string]int32{
+	"Invalid": 0,
+	"AWS":     1,
+	"Azure":   2,
+	"Google":  3,
+	"IBM":     4,
+	"Rancher": 5,
+}
+
+func (x ClusterCreateRequest_Provider) String() string {
+	return proto.EnumName(ClusterCreateRequest_Provider_name, int32(x))
+}
+
+func (ClusterCreateRequest_Provider) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_9943feda3d652502, []int{55, 0}
+}
+
 type BackupCreateRequest_BackupType int32
 
 const (
@@ -917,8 +993,9 @@ type ClusterInfo struct {
 	// Teleport cluster ID
 	TeleportClusterId string `protobuf:"bytes,14,opt,name=teleport_cluster_id,json=teleportClusterId,proto3" json:"teleport_cluster_id,omitempty"`
 	// Tenant ID
-	TenantId     string `protobuf:"bytes,15,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
-	ServiceToken string `protobuf:"bytes,16,opt,name=service_token,json=serviceToken,proto3" json:"servicetoken" secure:"true"`
+	TenantId     string               `protobuf:"bytes,15,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	ServiceToken string               `protobuf:"bytes,16,opt,name=service_token,json=serviceToken,proto3" json:"servicetoken" secure:"true"`
+	Provider     ClusterInfo_Provider `protobuf:"varint,17,opt,name=provider,proto3,enum=ClusterInfo_Provider" json:"provider,omitempty"`
 }
 
 func (m *ClusterInfo) Reset()         { *m = ClusterInfo{} }
@@ -1064,6 +1141,13 @@ func (m *ClusterInfo) GetServiceToken() string {
 		return m.ServiceToken
 	}
 	return ""
+}
+
+func (m *ClusterInfo) GetProvider() ClusterInfo_Provider {
+	if m != nil {
+		return m.Provider
+	}
+	return ClusterInfo_Invalid
 }
 
 // Message for maintaining status of the cluster.
@@ -6304,6 +6388,8 @@ type ClusterCreateRequest struct {
 	// PDS account service token to fetch rest.Config for
 	// teleport based cluster
 	ServiceToken string `protobuf:"bytes,9,opt,name=service_token,json=serviceToken,proto3" json:"servicetoken" secure:"true"`
+	// This is optional field and used by BaaS only
+	Provider ClusterCreateRequest_Provider `protobuf:"varint,10,opt,name=provider,proto3,enum=ClusterCreateRequest_Provider" json:"provider,omitempty"`
 }
 
 func (m *ClusterCreateRequest) Reset()         { *m = ClusterCreateRequest{} }
@@ -13683,6 +13769,7 @@ func (m *ActivityDataObject_Opcycle) GetStatus() ActivityDataObject_Status {
 }
 
 func init() {
+	proto.RegisterEnum("ClusterInfo_Provider", ClusterInfo_Provider_name, ClusterInfo_Provider_value)
 	proto.RegisterEnum("ClusterInfo_StatusInfo_Status", ClusterInfo_StatusInfo_Status_name, ClusterInfo_StatusInfo_Status_value)
 	proto.RegisterEnum("ClusterInfo_BackupShareStatusInfo_Status", ClusterInfo_BackupShareStatusInfo_Status_name, ClusterInfo_BackupShareStatusInfo_Status_value)
 	proto.RegisterEnum("CloudCredentialInfo_Type", CloudCredentialInfo_Type_name, CloudCredentialInfo_Type_value)
@@ -13699,6 +13786,7 @@ func init() {
 	proto.RegisterEnum("RestoreInfo_RestoreResourceState_ResourceStatus", RestoreInfo_RestoreResourceState_ResourceStatus_name, RestoreInfo_RestoreResourceState_ResourceStatus_value)
 	proto.RegisterEnum("RestoreInfo_StatusInfo_Status", RestoreInfo_StatusInfo_Status_name, RestoreInfo_StatusInfo_Status_value)
 	proto.RegisterEnum("BackupScheduleCreateRequest_BackupType", BackupScheduleCreateRequest_BackupType_name, BackupScheduleCreateRequest_BackupType_value)
+	proto.RegisterEnum("ClusterCreateRequest_Provider", ClusterCreateRequest_Provider_name, ClusterCreateRequest_Provider_value)
 	proto.RegisterEnum("BackupCreateRequest_BackupType", BackupCreateRequest_BackupType_name, BackupCreateRequest_BackupType_value)
 	proto.RegisterEnum("ManagedClusterEnumerateRequest_Provider", ManagedClusterEnumerateRequest_Provider_name, ManagedClusterEnumerateRequest_Provider_value)
 	proto.RegisterEnum("ManagedClusterObject_Status", ManagedClusterObject_Status_name, ManagedClusterObject_Status_value)
@@ -14636,6 +14724,9 @@ func (this *ClusterInfo) Equal(that interface{}) bool {
 		return false
 	}
 	if this.ServiceToken != that1.ServiceToken {
+		return false
+	}
+	if this.Provider != that1.Provider {
 		return false
 	}
 	return true
@@ -17540,6 +17631,9 @@ func (this *ClusterCreateRequest) Equal(that interface{}) bool {
 		return false
 	}
 	if this.ServiceToken != that1.ServiceToken {
+		return false
+	}
+	if this.Provider != that1.Provider {
 		return false
 	}
 	return true
@@ -24917,6 +25011,13 @@ func (m *ClusterInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.Provider != 0 {
+		i = encodeVarintApi(dAtA, i, uint64(m.Provider))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0x88
+	}
 	if len(m.ServiceToken) > 0 {
 		i -= len(m.ServiceToken)
 		copy(dAtA[i:], m.ServiceToken)
@@ -29768,6 +29869,11 @@ func (m *ClusterCreateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.Provider != 0 {
+		i = encodeVarintApi(dAtA, i, uint64(m.Provider))
+		i--
+		dAtA[i] = 0x50
+	}
 	if len(m.ServiceToken) > 0 {
 		i -= len(m.ServiceToken)
 		copy(dAtA[i:], m.ServiceToken)
@@ -35754,6 +35860,7 @@ func NewPopulatedClusterInfo(r randyApi, easy bool) *ClusterInfo {
 	this.TeleportClusterId = string(randStringApi(r))
 	this.TenantId = string(randStringApi(r))
 	this.ServiceToken = string(randStringApi(r))
+	this.Provider = ClusterInfo_Provider([]int32{0, 1, 2, 3, 4, 5}[r.Intn(6)])
 	if !easy && r.Intn(10) != 0 {
 	}
 	return this
@@ -37059,6 +37166,7 @@ func NewPopulatedClusterCreateRequest(r randyApi, easy bool) *ClusterCreateReque
 	this.TeleportClusterId = string(randStringApi(r))
 	this.TenantId = string(randStringApi(r))
 	this.ServiceToken = string(randStringApi(r))
+	this.Provider = ClusterCreateRequest_Provider([]int32{0, 1, 2, 3, 4, 5}[r.Intn(6)])
 	if !easy && r.Intn(10) != 0 {
 	}
 	return this
@@ -38889,6 +38997,9 @@ func (m *ClusterInfo) Size() (n int) {
 	l = len(m.ServiceToken)
 	if l > 0 {
 		n += 2 + l + sovApi(uint64(l))
+	}
+	if m.Provider != 0 {
+		n += 2 + sovApi(uint64(m.Provider))
 	}
 	return n
 }
@@ -40948,6 +41059,9 @@ func (m *ClusterCreateRequest) Size() (n int) {
 	l = len(m.ServiceToken)
 	if l > 0 {
 		n += 1 + l + sovApi(uint64(l))
+	}
+	if m.Provider != 0 {
+		n += 1 + sovApi(uint64(m.Provider))
 	}
 	return n
 }
@@ -44072,6 +44186,25 @@ func (m *ClusterInfo) Unmarshal(dAtA []byte) error {
 			}
 			m.ServiceToken = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 17:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Provider", wireType)
+			}
+			m.Provider = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Provider |= ClusterInfo_Provider(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipApi(dAtA[iNdEx:])
@@ -59120,6 +59253,25 @@ func (m *ClusterCreateRequest) Unmarshal(dAtA []byte) error {
 			}
 			m.ServiceToken = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 10:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Provider", wireType)
+			}
+			m.Provider = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Provider |= ClusterCreateRequest_Provider(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipApi(dAtA[iNdEx:])
