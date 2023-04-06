@@ -607,8 +607,23 @@ message RestoreInfo {
     map<string, string> rancher_project_mapping = 18;
     // mapping of source rancher project display names to target rancher project display names
     map<string, string> rancher_project_name_mapping = 19;
-    // a flag signifies if the restored backup involves large number of resources or not
+    // flag signifies if the restored backup involves large number of resources or not
     bool large_resource_enabled = 20;
+    // counter to show number of already restored resources
+    uint64 restored_resource_count = 21;
+    // current activity while doing resource restore
+    RestoreResourceState restore_status = 22;
+
+    message RestoreResourceState {
+        enum ResourceStatus {
+            Preparing = 0;
+            Deleting = 1;
+            Verifying = 2;
+            Applying = 3;
+        }
+
+        ResourceStatus restore_status = 1;
+    }
 
     message RestoredResource {
         string name = 1;
