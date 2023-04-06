@@ -5173,10 +5173,27 @@
         },
         "large_resource_enabled": {
           "type": "boolean",
-          "title": "a flag signifies if the restored backup involves large number of resources or not"
+          "title": "flag signifies if the restored backup involves large number of resources or not"
+        },
+        "restored_resource_count": {
+          "type": "string",
+          "format": "uint64",
+          "title": "counter to show number of already restored resources"
+        },
+        "restore_status": {
+          "$ref": "#/definitions/RestoreInfoRestoreResourceState",
+          "title": "current activity while doing resource restore"
         }
       },
       "title": "Message for restore info"
+    },
+    "RestoreInfoRestoreResourceState": {
+      "type": "object",
+      "properties": {
+        "restore_status": {
+          "$ref": "#/definitions/RestoreResourceStateResourceStatus"
+        }
+      }
     },
     "RestoreInfoRestoredResource": {
       "type": "object",
@@ -5287,6 +5304,16 @@
         }
       },
       "description": "Message for Restore object which will be stored in Datastore."
+    },
+    "RestoreResourceStateResourceStatus": {
+      "type": "string",
+      "enum": [
+        "Preparing",
+        "Deleting",
+        "Verifying",
+        "Applying"
+      ],
+      "default": "Preparing"
     },
     "RestoreUpdateRequest": {
       "type": "object",
