@@ -61,6 +61,12 @@ message ClusterInfo {
     string teleport_cluster_id = 14;
     // Tenant ID
     string tenant_id = 15;
+    string service_token = 16 [
+        (gogoproto.jsontag) = "servicetoken",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
+    Provider provider = 17;
+
     // Message for maintaining status of the cluster.
     message StatusInfo {
         enum Status {
@@ -98,6 +104,17 @@ message ClusterInfo {
         Status status = 1;
         string reason = 2;
     }
+
+     // Cloud provider type
+     enum Provider {
+        Invalid = 0;
+        AWS = 1;
+        Azure = 2;
+        Google = 3;
+        IBM = 4;
+        Rancher = 5;
+    }
+    
 }
 
 message ClusterObject {
@@ -1060,6 +1077,23 @@ message ClusterCreateRequest {
     string teleport_cluster_id = 7;
     // Tenant ID of the user account (aka PDS account)
     string tenant_id = 8;
+    // PDS account service token to fetch rest.Config for
+    // teleport based cluster
+    string service_token = 9 [
+        (gogoproto.jsontag) = "servicetoken",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
+    // This is optional field and used by BaaS only
+    Provider provider = 10;
+     // Cloud provider type
+    enum Provider {
+        Invalid = 0;
+        AWS = 1;
+        Azure = 2;
+        Google = 3;
+        IBM = 4;
+        Rancher = 5;
+    }
 }
 
 // Define ClusterCreateResponse struct

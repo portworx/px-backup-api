@@ -4058,9 +4058,30 @@
         "tenant_id": {
           "type": "string",
           "title": "Tenant ID of the user account (aka PDS account)"
+        },
+        "service_token": {
+          "type": "string",
+          "title": "PDS account service token to fetch rest.Config for\nteleport based cluster"
+        },
+        "provider": {
+          "$ref": "#/definitions/ClusterCreateRequestProvider",
+          "title": "This is optional field and used by BaaS only"
         }
       },
       "title": "Define ClusterCreateRequest struct"
+    },
+    "ClusterCreateRequestProvider": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "AWS",
+        "Azure",
+        "Google",
+        "IBM",
+        "Rancher"
+      ],
+      "default": "Invalid",
+      "title": "Cloud provider type"
     },
     "ClusterCreateResponse": {
       "type": "object",
@@ -4137,6 +4158,12 @@
         "tenant_id": {
           "type": "string",
           "title": "Tenant ID"
+        },
+        "service_token": {
+          "type": "string"
+        },
+        "provider": {
+          "$ref": "#/definitions/ClusterInfoProvider"
         }
       }
     },
@@ -4163,6 +4190,19 @@
       ],
       "default": "Invalid",
       "description": " - InProgress: InProgress if backupshare is going on for backups belonging to\nthe cluster\n - Failed: Failed if backupshare fails for some backups belonging to the\ncluster\n - Success: Success if backupshare is successful for all current backups\nbelonging to the cluster\n - PartialSuccess: Parital Success if backupshare is successful for only few\nbackups."
+    },
+    "ClusterInfoProvider": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "AWS",
+        "Azure",
+        "Google",
+        "IBM",
+        "Rancher"
+      ],
+      "default": "Invalid",
+      "title": "Cloud provider type"
     },
     "ClusterInfoStatusInfo": {
       "type": "object",
