@@ -1713,6 +1713,35 @@
         "tags": [
           "Organization"
         ]
+      },
+      "delete": {
+        "operationId": "Organization_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/OrganizationDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "description": "Name of the org to be deleted",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Organization"
+        ]
       }
     },
     "/v1/restore": {
@@ -4871,6 +4900,10 @@
     "OrganizationCreateResponse": {
       "type": "object",
       "title": "Define OrganizationCreateResponse struct"
+    },
+    "OrganizationDeleteResponse": {
+      "type": "object",
+      "title": "Define OrganizationDeleteResponse struct"
     },
     "OrganizationEnumerateResponse": {
       "type": "object",
