@@ -1733,6 +1733,13 @@ service Organization {
             get : "/v1/organization/{name}"
         };
     }
+
+    rpc Delete(OrganizationDeleteRequest)
+        returns (OrganizationDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/organization/{name}"
+      };
+    }
 }
 
 // Define OrganizationCreateRequest struct
@@ -1756,6 +1763,15 @@ message OrganizationInspectRequest { string name = 2; }
 
 // Define OrganizationInspectResponse struct
 message OrganizationInspectResponse { OrganizationObject organization = 1; }
+
+// Define OrganizationDeleteRequest struct
+message OrganizationDeleteRequest {
+    // Name of the org to be deleted
+    string name = 1;
+}
+
+// Define OrganizationDeleteResponse struct
+message OrganizationDeleteResponse {}
 
 // Request message for creating rules
 message RuleCreateRequest {
