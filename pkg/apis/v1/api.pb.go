@@ -30,7 +30,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
+const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
 
 // Cloud provider type
 type ClusterInfo_Provider int32
@@ -952,7 +952,7 @@ func (m *OrganizationObject) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return xxx_messageInfo_OrganizationObject.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1012,7 +1012,7 @@ func (m *ClusterInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return xxx_messageInfo_ClusterInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1170,7 +1170,7 @@ func (m *ClusterInfo_StatusInfo) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return xxx_messageInfo_ClusterInfo_StatusInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1223,7 +1223,7 @@ func (m *ClusterInfo_BackupShareStatusInfo) XXX_Marshal(b []byte, deterministic 
 		return xxx_messageInfo_ClusterInfo_BackupShareStatusInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1275,7 +1275,7 @@ func (m *ClusterObject) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return xxx_messageInfo_ClusterObject.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1312,7 +1312,7 @@ func (m *PXConfig) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_PXConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1357,7 +1357,7 @@ func (m *AWSConfig) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_AWSConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1408,7 +1408,7 @@ func (m *IBMConfig) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_IBMConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1453,7 +1453,7 @@ func (m *RancherConfig) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return xxx_messageInfo_RancherConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1508,7 +1508,7 @@ func (m *S3Config) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_S3Config.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1586,7 +1586,7 @@ func (m *AzureConfig) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return xxx_messageInfo_AzureConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1666,7 +1666,7 @@ func (m *GoogleConfig) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		return xxx_messageInfo_GoogleConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1724,7 +1724,7 @@ func (m *CloudCredentialInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return xxx_messageInfo_CloudCredentialInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1751,19 +1751,19 @@ type isCloudCredentialInfo_Config interface {
 }
 
 type CloudCredentialInfo_AwsConfig struct {
-	AwsConfig *AWSConfig `protobuf:"bytes,100,opt,name=aws_config,json=awsConfig,proto3,oneof" json:"aws_config,omitempty"`
+	AwsConfig *AWSConfig `protobuf:"bytes,100,opt,name=aws_config,json=awsConfig,proto3,oneof"`
 }
 type CloudCredentialInfo_AzureConfig struct {
-	AzureConfig *AzureConfig `protobuf:"bytes,101,opt,name=azure_config,json=azureConfig,proto3,oneof" json:"azure_config,omitempty"`
+	AzureConfig *AzureConfig `protobuf:"bytes,101,opt,name=azure_config,json=azureConfig,proto3,oneof"`
 }
 type CloudCredentialInfo_GoogleConfig struct {
-	GoogleConfig *GoogleConfig `protobuf:"bytes,102,opt,name=google_config,json=googleConfig,proto3,oneof" json:"google_config,omitempty"`
+	GoogleConfig *GoogleConfig `protobuf:"bytes,102,opt,name=google_config,json=googleConfig,proto3,oneof"`
 }
 type CloudCredentialInfo_IbmConfig struct {
-	IbmConfig *IBMConfig `protobuf:"bytes,103,opt,name=ibm_config,json=ibmConfig,proto3,oneof" json:"ibm_config,omitempty"`
+	IbmConfig *IBMConfig `protobuf:"bytes,103,opt,name=ibm_config,json=ibmConfig,proto3,oneof"`
 }
 type CloudCredentialInfo_RancherConfig struct {
-	RancherConfig *RancherConfig `protobuf:"bytes,104,opt,name=rancher_config,json=rancherConfig,proto3,oneof" json:"rancher_config,omitempty"`
+	RancherConfig *RancherConfig `protobuf:"bytes,104,opt,name=rancher_config,json=rancherConfig,proto3,oneof"`
 }
 
 func (*CloudCredentialInfo_AwsConfig) isCloudCredentialInfo_Config()     {}
@@ -1821,15 +1821,135 @@ func (m *CloudCredentialInfo) GetRancherConfig() *RancherConfig {
 	return nil
 }
 
-// XXX_OneofWrappers is for the internal use of the proto package.
-func (*CloudCredentialInfo) XXX_OneofWrappers() []interface{} {
-	return []interface{}{
+// XXX_OneofFuncs is for the internal use of the proto package.
+func (*CloudCredentialInfo) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
+	return _CloudCredentialInfo_OneofMarshaler, _CloudCredentialInfo_OneofUnmarshaler, _CloudCredentialInfo_OneofSizer, []interface{}{
 		(*CloudCredentialInfo_AwsConfig)(nil),
 		(*CloudCredentialInfo_AzureConfig)(nil),
 		(*CloudCredentialInfo_GoogleConfig)(nil),
 		(*CloudCredentialInfo_IbmConfig)(nil),
 		(*CloudCredentialInfo_RancherConfig)(nil),
 	}
+}
+
+func _CloudCredentialInfo_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
+	m := msg.(*CloudCredentialInfo)
+	// config
+	switch x := m.Config.(type) {
+	case *CloudCredentialInfo_AwsConfig:
+		_ = b.EncodeVarint(100<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.AwsConfig); err != nil {
+			return err
+		}
+	case *CloudCredentialInfo_AzureConfig:
+		_ = b.EncodeVarint(101<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.AzureConfig); err != nil {
+			return err
+		}
+	case *CloudCredentialInfo_GoogleConfig:
+		_ = b.EncodeVarint(102<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.GoogleConfig); err != nil {
+			return err
+		}
+	case *CloudCredentialInfo_IbmConfig:
+		_ = b.EncodeVarint(103<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.IbmConfig); err != nil {
+			return err
+		}
+	case *CloudCredentialInfo_RancherConfig:
+		_ = b.EncodeVarint(104<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.RancherConfig); err != nil {
+			return err
+		}
+	case nil:
+	default:
+		return fmt.Errorf("CloudCredentialInfo.Config has unexpected type %T", x)
+	}
+	return nil
+}
+
+func _CloudCredentialInfo_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
+	m := msg.(*CloudCredentialInfo)
+	switch tag {
+	case 100: // config.aws_config
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(AWSConfig)
+		err := b.DecodeMessage(msg)
+		m.Config = &CloudCredentialInfo_AwsConfig{msg}
+		return true, err
+	case 101: // config.azure_config
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(AzureConfig)
+		err := b.DecodeMessage(msg)
+		m.Config = &CloudCredentialInfo_AzureConfig{msg}
+		return true, err
+	case 102: // config.google_config
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(GoogleConfig)
+		err := b.DecodeMessage(msg)
+		m.Config = &CloudCredentialInfo_GoogleConfig{msg}
+		return true, err
+	case 103: // config.ibm_config
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(IBMConfig)
+		err := b.DecodeMessage(msg)
+		m.Config = &CloudCredentialInfo_IbmConfig{msg}
+		return true, err
+	case 104: // config.rancher_config
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(RancherConfig)
+		err := b.DecodeMessage(msg)
+		m.Config = &CloudCredentialInfo_RancherConfig{msg}
+		return true, err
+	default:
+		return false, nil
+	}
+}
+
+func _CloudCredentialInfo_OneofSizer(msg proto.Message) (n int) {
+	m := msg.(*CloudCredentialInfo)
+	// config
+	switch x := m.Config.(type) {
+	case *CloudCredentialInfo_AwsConfig:
+		s := proto.Size(x.AwsConfig)
+		n += 2 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *CloudCredentialInfo_AzureConfig:
+		s := proto.Size(x.AzureConfig)
+		n += 2 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *CloudCredentialInfo_GoogleConfig:
+		s := proto.Size(x.GoogleConfig)
+		n += 2 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *CloudCredentialInfo_IbmConfig:
+		s := proto.Size(x.IbmConfig)
+		n += 2 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *CloudCredentialInfo_RancherConfig:
+		s := proto.Size(x.RancherConfig)
+		n += 2 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case nil:
+	default:
+		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
+	}
+	return n
 }
 
 type CloudCredentialObject struct {
@@ -1851,7 +1971,7 @@ func (m *CloudCredentialObject) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_CloudCredentialObject.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1906,7 +2026,7 @@ func (m *SchedulePolicyInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return xxx_messageInfo_SchedulePolicyInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1992,7 +2112,7 @@ func (m *SchedulePolicyInfo_IncrementalCount) XXX_Marshal(b []byte, deterministi
 		return xxx_messageInfo_SchedulePolicyInfo_IncrementalCount.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2042,7 +2162,7 @@ func (m *SchedulePolicyInfo_IntervalPolicy) XXX_Marshal(b []byte, deterministic 
 		return xxx_messageInfo_SchedulePolicyInfo_IntervalPolicy.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2107,7 +2227,7 @@ func (m *SchedulePolicyInfo_DailyPolicy) XXX_Marshal(b []byte, deterministic boo
 		return xxx_messageInfo_SchedulePolicyInfo_DailyPolicy.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2175,7 +2295,7 @@ func (m *SchedulePolicyInfo_WeeklyPolicy) XXX_Marshal(b []byte, deterministic bo
 		return xxx_messageInfo_SchedulePolicyInfo_WeeklyPolicy.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2255,7 +2375,7 @@ func (m *SchedulePolicyInfo_MonthlyPolicy) XXX_Marshal(b []byte, deterministic b
 		return xxx_messageInfo_SchedulePolicyInfo_MonthlyPolicy.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2321,7 +2441,7 @@ func (m *SchedulePolicyObject) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_SchedulePolicyObject.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2390,7 +2510,7 @@ func (m *BackupScheduleInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return xxx_messageInfo_BackupScheduleInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2595,7 +2715,7 @@ func (m *BackupScheduleInfo_BackupType) XXX_Marshal(b []byte, deterministic bool
 		return xxx_messageInfo_BackupScheduleInfo_BackupType.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2639,7 +2759,7 @@ func (m *BackupScheduleInfo_SuspendedBy) XXX_Marshal(b []byte, deterministic boo
 		return xxx_messageInfo_BackupScheduleInfo_SuspendedBy.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2683,7 +2803,7 @@ func (m *BackupScheduleInfo_StatusInfoList) XXX_Marshal(b []byte, deterministic 
 		return xxx_messageInfo_BackupScheduleInfo_StatusInfoList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2732,7 +2852,7 @@ func (m *BackupScheduleInfo_StatusInfo) XXX_Marshal(b []byte, deterministic bool
 		return xxx_messageInfo_BackupScheduleInfo_StatusInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2805,7 +2925,7 @@ func (m *BackupScheduleObject) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_BackupScheduleObject.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2844,7 +2964,7 @@ func (m *NFSConfig) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_NFSConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2915,7 +3035,7 @@ func (m *BackupLocationInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return xxx_messageInfo_BackupLocationInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2942,10 +3062,10 @@ type isBackupLocationInfo_Config interface {
 }
 
 type BackupLocationInfo_S3Config struct {
-	S3Config *S3Config `protobuf:"bytes,100,opt,name=s3_config,json=s3Config,proto3,oneof" json:"s3_config,omitempty"`
+	S3Config *S3Config `protobuf:"bytes,100,opt,name=s3_config,json=s3Config,proto3,oneof"`
 }
 type BackupLocationInfo_NfsConfig struct {
-	NfsConfig *NFSConfig `protobuf:"bytes,101,opt,name=nfs_config,json=nfsConfig,proto3,oneof" json:"nfs_config,omitempty"`
+	NfsConfig *NFSConfig `protobuf:"bytes,101,opt,name=nfs_config,json=nfsConfig,proto3,oneof"`
 }
 
 func (*BackupLocationInfo_S3Config) isBackupLocationInfo_Config()  {}
@@ -3035,12 +3155,78 @@ func (m *BackupLocationInfo) GetObjectLockEnabled() bool {
 	return false
 }
 
-// XXX_OneofWrappers is for the internal use of the proto package.
-func (*BackupLocationInfo) XXX_OneofWrappers() []interface{} {
-	return []interface{}{
+// XXX_OneofFuncs is for the internal use of the proto package.
+func (*BackupLocationInfo) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
+	return _BackupLocationInfo_OneofMarshaler, _BackupLocationInfo_OneofUnmarshaler, _BackupLocationInfo_OneofSizer, []interface{}{
 		(*BackupLocationInfo_S3Config)(nil),
 		(*BackupLocationInfo_NfsConfig)(nil),
 	}
+}
+
+func _BackupLocationInfo_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
+	m := msg.(*BackupLocationInfo)
+	// config
+	switch x := m.Config.(type) {
+	case *BackupLocationInfo_S3Config:
+		_ = b.EncodeVarint(100<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.S3Config); err != nil {
+			return err
+		}
+	case *BackupLocationInfo_NfsConfig:
+		_ = b.EncodeVarint(101<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.NfsConfig); err != nil {
+			return err
+		}
+	case nil:
+	default:
+		return fmt.Errorf("BackupLocationInfo.Config has unexpected type %T", x)
+	}
+	return nil
+}
+
+func _BackupLocationInfo_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
+	m := msg.(*BackupLocationInfo)
+	switch tag {
+	case 100: // config.s3_config
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(S3Config)
+		err := b.DecodeMessage(msg)
+		m.Config = &BackupLocationInfo_S3Config{msg}
+		return true, err
+	case 101: // config.nfs_config
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(NFSConfig)
+		err := b.DecodeMessage(msg)
+		m.Config = &BackupLocationInfo_NfsConfig{msg}
+		return true, err
+	default:
+		return false, nil
+	}
+}
+
+func _BackupLocationInfo_OneofSizer(msg proto.Message) (n int) {
+	m := msg.(*BackupLocationInfo)
+	// config
+	switch x := m.Config.(type) {
+	case *BackupLocationInfo_S3Config:
+		s := proto.Size(x.S3Config)
+		n += 2 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *BackupLocationInfo_NfsConfig:
+		s := proto.Size(x.NfsConfig)
+		n += 2 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case nil:
+	default:
+		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
+	}
+	return n
 }
 
 // Message for maintaining status of the object.
@@ -3063,7 +3249,7 @@ func (m *BackupLocationInfo_StatusInfo) XXX_Marshal(b []byte, deterministic bool
 		return xxx_messageInfo_BackupLocationInfo_StatusInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -3115,7 +3301,7 @@ func (m *BackupLocationObject) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_BackupLocationObject.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -3163,7 +3349,7 @@ func (m *ResourceInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		return xxx_messageInfo_ResourceInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -3282,7 +3468,7 @@ func (m *BackupInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_BackupInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -3557,7 +3743,7 @@ func (m *BackupInfo_BackupType) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_BackupInfo_BackupType.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -3602,7 +3788,7 @@ func (m *BackupInfo_BackupSchedule) XXX_Marshal(b []byte, deterministic bool) ([
 		return xxx_messageInfo_BackupInfo_BackupSchedule.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -3668,7 +3854,7 @@ func (m *BackupInfo_Volume) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return xxx_messageInfo_BackupInfo_Volume.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -3805,7 +3991,7 @@ func (m *BackupInfo_StatusInfo) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_BackupInfo_StatusInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -3858,7 +4044,7 @@ func (m *BackupObject) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		return xxx_messageInfo_BackupObject.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -3896,7 +4082,7 @@ func (m *RulesInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_RulesInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -3942,7 +4128,7 @@ func (m *RulesInfo_RuleItem) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return xxx_messageInfo_RulesInfo_RuleItem.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -4002,7 +4188,7 @@ func (m *RulesInfo_Action) XXX_Marshal(b []byte, deterministic bool) ([]byte, er
 		return xxx_messageInfo_RulesInfo_Action.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -4061,7 +4247,7 @@ func (m *RuleObject) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_RuleObject.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -4097,7 +4283,7 @@ func (m *ReplacePolicy) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return xxx_messageInfo_ReplacePolicy.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -4171,7 +4357,7 @@ func (m *RestoreInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return xxx_messageInfo_RestoreInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -4362,7 +4548,7 @@ func (m *RestoreInfo_RestoreResourceState) XXX_Marshal(b []byte, deterministic b
 		return xxx_messageInfo_RestoreInfo_RestoreResourceState.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -4411,7 +4597,7 @@ func (m *RestoreInfo_RestoredResource) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_RestoreInfo_RestoredResource.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -4498,7 +4684,7 @@ func (m *RestoreInfo_Volume) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return xxx_messageInfo_RestoreInfo_Volume.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -4600,7 +4786,7 @@ func (m *RestoreInfo_StatusInfo) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return xxx_messageInfo_RestoreInfo_StatusInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -4653,7 +4839,7 @@ func (m *RestoreObject) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return xxx_messageInfo_RestoreObject.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -4689,7 +4875,7 @@ func (m *HealthStatusRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return xxx_messageInfo_HealthStatusRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -4725,7 +4911,7 @@ func (m *HealthStatusResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_HealthStatusResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -4763,7 +4949,7 @@ func (m *TimeRange) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_TimeRange.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -4838,7 +5024,7 @@ func (m *EnumerateOptions) XXX_Marshal(b []byte, deterministic bool) ([]byte, er
 		return xxx_messageInfo_EnumerateOptions.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -4933,7 +5119,7 @@ func (m *SchedulePolicyCreateRequest) XXX_Marshal(b []byte, deterministic bool) 
 		return xxx_messageInfo_SchedulePolicyCreateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -4977,7 +5163,7 @@ func (m *SchedulePolicyCreateResponse) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_SchedulePolicyCreateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -5016,7 +5202,7 @@ func (m *SchedulePolicyUpdateRequest) XXX_Marshal(b []byte, deterministic bool) 
 		return xxx_messageInfo_SchedulePolicyUpdateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -5060,7 +5246,7 @@ func (m *SchedulePolicyUpdateResponse) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_SchedulePolicyUpdateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -5100,7 +5286,7 @@ func (m *SchedulePolicyEnumerateRequest) XXX_Marshal(b []byte, deterministic boo
 		return xxx_messageInfo_SchedulePolicyEnumerateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -5152,7 +5338,7 @@ func (m *SchedulePolicyEnumerateResponse) XXX_Marshal(b []byte, deterministic bo
 		return xxx_messageInfo_SchedulePolicyEnumerateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -5199,7 +5385,7 @@ func (m *SchedulePolicyInspectRequest) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_SchedulePolicyInspectRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -5258,7 +5444,7 @@ func (m *SchedulePolicyInspectResponse) XXX_Marshal(b []byte, deterministic bool
 		return xxx_messageInfo_SchedulePolicyInspectResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -5305,7 +5491,7 @@ func (m *SchedulePolicyDeleteRequest) XXX_Marshal(b []byte, deterministic bool) 
 		return xxx_messageInfo_SchedulePolicyDeleteRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -5363,7 +5549,7 @@ func (m *SchedulePolicyDeleteResponse) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_SchedulePolicyDeleteResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -5403,7 +5589,7 @@ func (m *SchedulePolicyOwnershipUpdateRequest) XXX_Marshal(b []byte, determinist
 		return xxx_messageInfo_SchedulePolicyOwnershipUpdateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -5467,7 +5653,7 @@ func (m *SchedulePolicyOwnershipUpdateResponse) XXX_Marshal(b []byte, determinis
 		return xxx_messageInfo_SchedulePolicyOwnershipUpdateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -5532,7 +5718,7 @@ func (m *BackupScheduleCreateRequest) XXX_Marshal(b []byte, deterministic bool) 
 		return xxx_messageInfo_BackupScheduleCreateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -5688,7 +5874,7 @@ func (m *BackupScheduleCreateResponse) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_BackupScheduleCreateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -5749,7 +5935,7 @@ func (m *BackupScheduleUpdateRequest) XXX_Marshal(b []byte, deterministic bool) 
 		return xxx_messageInfo_BackupScheduleUpdateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -5891,7 +6077,7 @@ func (m *BackupScheduleUpdateResponse) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_BackupScheduleUpdateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -5939,7 +6125,7 @@ func (m *BackupScheduleEnumerateRequest) XXX_Marshal(b []byte, deterministic boo
 		return xxx_messageInfo_BackupScheduleEnumerateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -6013,7 +6199,7 @@ func (m *BackupScheduleEnumerateResponse) XXX_Marshal(b []byte, deterministic bo
 		return xxx_messageInfo_BackupScheduleEnumerateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -6067,7 +6253,7 @@ func (m *BackupScheduleInspectRequest) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_BackupScheduleInspectRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -6126,7 +6312,7 @@ func (m *BackupScheduleInspectResponse) XXX_Marshal(b []byte, deterministic bool
 		return xxx_messageInfo_BackupScheduleInspectResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -6176,7 +6362,7 @@ func (m *BackupScheduleDeleteRequest) XXX_Marshal(b []byte, deterministic bool) 
 		return xxx_messageInfo_BackupScheduleDeleteRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -6241,7 +6427,7 @@ func (m *BackupScheduleDeleteResponse) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_BackupScheduleDeleteResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -6282,7 +6468,7 @@ func (m *ClusterBackupShareUpdateRequest) XXX_Marshal(b []byte, deterministic bo
 		return xxx_messageInfo_ClusterBackupShareUpdateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -6353,7 +6539,7 @@ func (m *ClusterBackupShareUpdateResponse) XXX_Marshal(b []byte, deterministic b
 		return xxx_messageInfo_ClusterBackupShareUpdateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -6406,7 +6592,7 @@ func (m *ClusterCreateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_ClusterCreateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -6506,7 +6692,7 @@ func (m *ClusterCreateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_ClusterCreateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -6550,7 +6736,7 @@ func (m *ClusterUpdateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_ClusterUpdateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -6622,7 +6808,7 @@ func (m *ClusterUpdateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_ClusterUpdateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -6671,7 +6857,7 @@ func (m *ClusterEnumerateRequest) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return xxx_messageInfo_ClusterEnumerateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -6751,7 +6937,7 @@ func (m *ClusterEnumerateResponse) XXX_Marshal(b []byte, deterministic bool) ([]
 		return xxx_messageInfo_ClusterEnumerateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -6799,7 +6985,7 @@ func (m *ClusterInspectRequest) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_ClusterInspectRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -6865,7 +7051,7 @@ func (m *ClusterInspectResponse) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return xxx_messageInfo_ClusterInspectResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -6917,7 +7103,7 @@ func (m *ClusterDeleteRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_ClusterDeleteRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -6982,7 +7168,7 @@ func (m *ClusterDeleteResponse) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_ClusterDeleteResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7021,7 +7207,7 @@ func (m *CloudCredentialCreateRequest) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_CloudCredentialCreateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7066,7 +7252,7 @@ func (m *CloudCredentialCreateResponse) XXX_Marshal(b []byte, deterministic bool
 		return xxx_messageInfo_CloudCredentialCreateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7112,7 +7298,7 @@ func (m *CloudCredentialUpdateRequest) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_CloudCredentialUpdateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7156,7 +7342,7 @@ func (m *CloudCredentialUpdateResponse) XXX_Marshal(b []byte, deterministic bool
 		return xxx_messageInfo_CloudCredentialUpdateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7195,7 +7381,7 @@ func (m *CloudCredentialEnumerateRequest) XXX_Marshal(b []byte, deterministic bo
 		return xxx_messageInfo_CloudCredentialEnumerateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7247,7 +7433,7 @@ func (m *CloudCredentialEnumerateResponse) XXX_Marshal(b []byte, deterministic b
 		return xxx_messageInfo_CloudCredentialEnumerateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7295,7 +7481,7 @@ func (m *CloudCredentialInspectRequest) XXX_Marshal(b []byte, deterministic bool
 		return xxx_messageInfo_CloudCredentialInspectRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7361,7 +7547,7 @@ func (m *CloudCredentialInspectResponse) XXX_Marshal(b []byte, deterministic boo
 		return xxx_messageInfo_CloudCredentialInspectResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7408,7 +7594,7 @@ func (m *CloudCredentialDeleteRequest) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_CloudCredentialDeleteRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7466,7 +7652,7 @@ func (m *CloudCredentialDeleteResponse) XXX_Marshal(b []byte, deterministic bool
 		return xxx_messageInfo_CloudCredentialDeleteResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7507,7 +7693,7 @@ func (m *CloudCredentialOwnershipUpdateRequest) XXX_Marshal(b []byte, determinis
 		return xxx_messageInfo_CloudCredentialOwnershipUpdateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7573,7 +7759,7 @@ func (m *CloudCredentialOwnershipUpdateResponse) XXX_Marshal(b []byte, determini
 		return xxx_messageInfo_CloudCredentialOwnershipUpdateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7612,7 +7798,7 @@ func (m *BackupLocationCreateRequest) XXX_Marshal(b []byte, deterministic bool) 
 		return xxx_messageInfo_BackupLocationCreateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7656,7 +7842,7 @@ func (m *BackupLocationCreateResponse) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_BackupLocationCreateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7695,7 +7881,7 @@ func (m *BackupLocationUpdateRequest) XXX_Marshal(b []byte, deterministic bool) 
 		return xxx_messageInfo_BackupLocationUpdateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7739,7 +7925,7 @@ func (m *BackupLocationUpdateResponse) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_BackupLocationUpdateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7790,7 +7976,7 @@ func (m *BackupLocationEnumerateRequest) XXX_Marshal(b []byte, deterministic boo
 		return xxx_messageInfo_BackupLocationEnumerateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7870,7 +8056,7 @@ func (m *BackupLocationEnumerateResponse) XXX_Marshal(b []byte, deterministic bo
 		return xxx_messageInfo_BackupLocationEnumerateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7919,7 +8105,7 @@ func (m *BackupLocationInspectRequest) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_BackupLocationInspectRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -7985,7 +8171,7 @@ func (m *BackupLocationInspectResponse) XXX_Marshal(b []byte, deterministic bool
 		return xxx_messageInfo_BackupLocationInspectResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -8035,7 +8221,7 @@ func (m *BackupLocationDeleteRequest) XXX_Marshal(b []byte, deterministic bool) 
 		return xxx_messageInfo_BackupLocationDeleteRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -8100,7 +8286,7 @@ func (m *BackupLocationDeleteResponse) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_BackupLocationDeleteResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -8140,7 +8326,7 @@ func (m *BackupLocationValidateRequest) XXX_Marshal(b []byte, deterministic bool
 		return xxx_messageInfo_BackupLocationValidateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -8198,7 +8384,7 @@ func (m *BackupLocationValidateResponse) XXX_Marshal(b []byte, deterministic boo
 		return xxx_messageInfo_BackupLocationValidateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -8240,7 +8426,7 @@ func (m *BackupLocationOwnershipUpdateRequest) XXX_Marshal(b []byte, determinist
 		return xxx_messageInfo_BackupLocationOwnershipUpdateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -8305,7 +8491,7 @@ func (m *BackupLocationOwnershipUpdateResponse) XXX_Marshal(b []byte, determinis
 		return xxx_messageInfo_BackupLocationOwnershipUpdateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -8342,7 +8528,7 @@ func (m *MetricsInspectRequest) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_MetricsInspectRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -8386,7 +8572,7 @@ func (m *MetricsInspectResponse) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return xxx_messageInfo_MetricsInspectResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -8433,7 +8619,7 @@ func (m *MetricsInspectResponse_Stats) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_MetricsInspectResponse_Stats.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -8527,7 +8713,7 @@ func (m *BackupCreateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return xxx_messageInfo_BackupCreateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -8669,7 +8855,7 @@ func (m *BackupCreateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_BackupCreateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -8711,7 +8897,7 @@ func (m *BackupUpdateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return xxx_messageInfo_BackupUpdateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -8762,7 +8948,7 @@ func (m *BackupUpdateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_BackupUpdateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -8803,7 +8989,7 @@ func (m *BackupEnumerateRequest) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return xxx_messageInfo_BackupEnumerateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -8850,7 +9036,7 @@ func (m *BackupEnumerateResponse) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return xxx_messageInfo_BackupEnumerateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -8911,7 +9097,7 @@ func (m *BackupInspectRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_BackupInspectRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -8970,7 +9156,7 @@ func (m *BackupInspectResponse) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_BackupInspectResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9019,7 +9205,7 @@ func (m *BackupDeleteRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return xxx_messageInfo_BackupDeleteRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9084,7 +9270,7 @@ func (m *BackupDeleteResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_BackupDeleteResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9126,7 +9312,7 @@ func (m *BackupShareUpdateRequest) XXX_Marshal(b []byte, deterministic bool) ([]
 		return xxx_messageInfo_BackupShareUpdateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9191,7 +9377,7 @@ func (m *BackupShareUpdateResponse) XXX_Marshal(b []byte, deterministic bool) ([
 		return xxx_messageInfo_BackupShareUpdateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9250,7 +9436,7 @@ func (m *RestoreCreateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_RestoreCreateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9357,7 +9543,7 @@ func (m *RestoreCreateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_RestoreCreateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9395,7 +9581,7 @@ func (m *RestoreUpdateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_RestoreUpdateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9432,7 +9618,7 @@ func (m *RestoreUpdateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_RestoreUpdateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9473,7 +9659,7 @@ func (m *RestoreEnumerateRequest) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return xxx_messageInfo_RestoreEnumerateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9520,7 +9706,7 @@ func (m *RestoreEnumerateResponse) XXX_Marshal(b []byte, deterministic bool) ([]
 		return xxx_messageInfo_RestoreEnumerateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9580,7 +9766,7 @@ func (m *RestoreInspectRequest) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_RestoreInspectRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9632,7 +9818,7 @@ func (m *RestoreInspectResponse) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return xxx_messageInfo_RestoreInspectResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9678,7 +9864,7 @@ func (m *RestoreDeleteRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_RestoreDeleteRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9729,7 +9915,7 @@ func (m *RestoreDeleteResponse) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_RestoreDeleteResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9767,7 +9953,7 @@ func (m *OrganizationCreateRequest) XXX_Marshal(b []byte, deterministic bool) ([
 		return xxx_messageInfo_OrganizationCreateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9804,7 +9990,7 @@ func (m *OrganizationCreateResponse) XXX_Marshal(b []byte, deterministic bool) (
 		return xxx_messageInfo_OrganizationCreateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9841,7 +10027,7 @@ func (m *OrganizationEnumerateRequest) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_OrganizationEnumerateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9879,7 +10065,7 @@ func (m *OrganizationEnumerateResponse) XXX_Marshal(b []byte, deterministic bool
 		return xxx_messageInfo_OrganizationEnumerateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9924,7 +10110,7 @@ func (m *OrganizationInspectRequest) XXX_Marshal(b []byte, deterministic bool) (
 		return xxx_messageInfo_OrganizationInspectRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -9969,7 +10155,7 @@ func (m *OrganizationInspectResponse) XXX_Marshal(b []byte, deterministic bool) 
 		return xxx_messageInfo_OrganizationInspectResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10015,7 +10201,7 @@ func (m *OrganizationDeleteRequest) XXX_Marshal(b []byte, deterministic bool) ([
 		return xxx_messageInfo_OrganizationDeleteRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10059,7 +10245,7 @@ func (m *OrganizationDeleteResponse) XXX_Marshal(b []byte, deterministic bool) (
 		return xxx_messageInfo_OrganizationDeleteResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10098,7 +10284,7 @@ func (m *RuleCreateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return xxx_messageInfo_RuleCreateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10141,7 +10327,7 @@ func (m *RuleCreateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return xxx_messageInfo_RuleCreateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10179,7 +10365,7 @@ func (m *RuleUpdateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return xxx_messageInfo_RuleUpdateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10223,7 +10409,7 @@ func (m *RuleUpdateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return xxx_messageInfo_RuleUpdateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10261,7 +10447,7 @@ func (m *RuleEnumerateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_RuleEnumerateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10306,7 +10492,7 @@ func (m *RuleEnumerateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_RuleEnumerateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10353,7 +10539,7 @@ func (m *RuleInspectRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return xxx_messageInfo_RuleInspectRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10412,7 +10598,7 @@ func (m *RuleInspectResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return xxx_messageInfo_RuleInspectResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10459,7 +10645,7 @@ func (m *RuleDeleteRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return xxx_messageInfo_RuleDeleteRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10517,7 +10703,7 @@ func (m *RuleDeleteResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return xxx_messageInfo_RuleDeleteResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10559,7 +10745,7 @@ func (m *RuleOwnershipUpdateRequest) XXX_Marshal(b []byte, deterministic bool) (
 		return xxx_messageInfo_RuleOwnershipUpdateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10624,7 +10810,7 @@ func (m *RuleOwnershipUpdateResponse) XXX_Marshal(b []byte, deterministic bool) 
 		return xxx_messageInfo_RuleOwnershipUpdateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10666,7 +10852,7 @@ func (m *VersionInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return xxx_messageInfo_VersionInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10744,7 +10930,7 @@ func (m *VersionGetRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return xxx_messageInfo_VersionGetRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10782,7 +10968,7 @@ func (m *VersionGetResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return xxx_messageInfo_VersionGetResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10832,7 +11018,7 @@ func (m *LicenseActivateRequest) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return xxx_messageInfo_LicenseActivateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10859,16 +11045,16 @@ type isLicenseActivateRequest_Activation interface {
 }
 
 type LicenseActivateRequest_ActivationId struct {
-	ActivationId string `protobuf:"bytes,2,opt,name=activation_id,json=activationId,proto3,oneof" json:"activation_id,omitempty"`
+	ActivationId string `protobuf:"bytes,2,opt,name=activation_id,json=activationId,proto3,oneof"`
 }
 type LicenseActivateRequest_LicenseData struct {
-	LicenseData []byte `protobuf:"bytes,3,opt,name=license_data,json=licenseData,proto3,oneof" json:"license_data,omitempty"`
+	LicenseData []byte `protobuf:"bytes,3,opt,name=license_data,json=licenseData,proto3,oneof"`
 }
 type LicenseActivateRequest_UsageBasedId struct {
-	UsageBasedId string `protobuf:"bytes,4,opt,name=usage_based_id,json=usageBasedId,proto3,oneof" json:"usage_based_id,omitempty"`
+	UsageBasedId string `protobuf:"bytes,4,opt,name=usage_based_id,json=usageBasedId,proto3,oneof"`
 }
 type LicenseActivateRequest_UsagedBasedAirgappedId struct {
-	UsagedBasedAirgappedId string `protobuf:"bytes,5,opt,name=usaged_based_airgapped_id,json=usagedBasedAirgappedId,proto3,oneof" json:"usaged_based_airgapped_id,omitempty"`
+	UsagedBasedAirgappedId string `protobuf:"bytes,5,opt,name=usaged_based_airgapped_id,json=usagedBasedAirgappedId,proto3,oneof"`
 }
 
 func (*LicenseActivateRequest_ActivationId) isLicenseActivateRequest_Activation()           {}
@@ -10911,14 +11097,100 @@ func (m *LicenseActivateRequest) GetUsagedBasedAirgappedId() string {
 	return ""
 }
 
-// XXX_OneofWrappers is for the internal use of the proto package.
-func (*LicenseActivateRequest) XXX_OneofWrappers() []interface{} {
-	return []interface{}{
+// XXX_OneofFuncs is for the internal use of the proto package.
+func (*LicenseActivateRequest) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
+	return _LicenseActivateRequest_OneofMarshaler, _LicenseActivateRequest_OneofUnmarshaler, _LicenseActivateRequest_OneofSizer, []interface{}{
 		(*LicenseActivateRequest_ActivationId)(nil),
 		(*LicenseActivateRequest_LicenseData)(nil),
 		(*LicenseActivateRequest_UsageBasedId)(nil),
 		(*LicenseActivateRequest_UsagedBasedAirgappedId)(nil),
 	}
+}
+
+func _LicenseActivateRequest_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
+	m := msg.(*LicenseActivateRequest)
+	// activation
+	switch x := m.Activation.(type) {
+	case *LicenseActivateRequest_ActivationId:
+		_ = b.EncodeVarint(2<<3 | proto.WireBytes)
+		_ = b.EncodeStringBytes(x.ActivationId)
+	case *LicenseActivateRequest_LicenseData:
+		_ = b.EncodeVarint(3<<3 | proto.WireBytes)
+		_ = b.EncodeRawBytes(x.LicenseData)
+	case *LicenseActivateRequest_UsageBasedId:
+		_ = b.EncodeVarint(4<<3 | proto.WireBytes)
+		_ = b.EncodeStringBytes(x.UsageBasedId)
+	case *LicenseActivateRequest_UsagedBasedAirgappedId:
+		_ = b.EncodeVarint(5<<3 | proto.WireBytes)
+		_ = b.EncodeStringBytes(x.UsagedBasedAirgappedId)
+	case nil:
+	default:
+		return fmt.Errorf("LicenseActivateRequest.Activation has unexpected type %T", x)
+	}
+	return nil
+}
+
+func _LicenseActivateRequest_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
+	m := msg.(*LicenseActivateRequest)
+	switch tag {
+	case 2: // activation.activation_id
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		x, err := b.DecodeStringBytes()
+		m.Activation = &LicenseActivateRequest_ActivationId{x}
+		return true, err
+	case 3: // activation.license_data
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		x, err := b.DecodeRawBytes(true)
+		m.Activation = &LicenseActivateRequest_LicenseData{x}
+		return true, err
+	case 4: // activation.usage_based_id
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		x, err := b.DecodeStringBytes()
+		m.Activation = &LicenseActivateRequest_UsageBasedId{x}
+		return true, err
+	case 5: // activation.usaged_based_airgapped_id
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		x, err := b.DecodeStringBytes()
+		m.Activation = &LicenseActivateRequest_UsagedBasedAirgappedId{x}
+		return true, err
+	default:
+		return false, nil
+	}
+}
+
+func _LicenseActivateRequest_OneofSizer(msg proto.Message) (n int) {
+	m := msg.(*LicenseActivateRequest)
+	// activation
+	switch x := m.Activation.(type) {
+	case *LicenseActivateRequest_ActivationId:
+		n += 1 // tag and wire
+		n += proto.SizeVarint(uint64(len(x.ActivationId)))
+		n += len(x.ActivationId)
+	case *LicenseActivateRequest_LicenseData:
+		n += 1 // tag and wire
+		n += proto.SizeVarint(uint64(len(x.LicenseData)))
+		n += len(x.LicenseData)
+	case *LicenseActivateRequest_UsageBasedId:
+		n += 1 // tag and wire
+		n += proto.SizeVarint(uint64(len(x.UsageBasedId)))
+		n += len(x.UsageBasedId)
+	case *LicenseActivateRequest_UsagedBasedAirgappedId:
+		n += 1 // tag and wire
+		n += proto.SizeVarint(uint64(len(x.UsagedBasedAirgappedId)))
+		n += len(x.UsagedBasedAirgappedId)
+	case nil:
+	default:
+		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
+	}
+	return n
 }
 
 type LicenseActivateResponse struct {
@@ -10938,7 +11210,7 @@ func (m *LicenseActivateResponse) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return xxx_messageInfo_LicenseActivateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -10976,7 +11248,7 @@ func (m *LicenseUpdateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_LicenseUpdateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -11019,7 +11291,7 @@ func (m *LicenseUpdateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_LicenseUpdateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -11056,7 +11328,7 @@ func (m *LicenseInspectRequest) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_LicenseInspectRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -11100,7 +11372,7 @@ func (m *LicenseInspectResponse) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return xxx_messageInfo_LicenseInspectResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -11145,7 +11417,7 @@ func (m *LicenseResponseInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return xxx_messageInfo_LicenseResponseInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -11201,7 +11473,7 @@ func (m *LicenseResponseInfo_FeatureInfo) XXX_Marshal(b []byte, deterministic bo
 		return xxx_messageInfo_LicenseResponseInfo_FeatureInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -11266,7 +11538,7 @@ func (m *LicenseResponseInfo_EntitlementInfo) XXX_Marshal(b []byte, deterministi
 		return xxx_messageInfo_LicenseResponseInfo_EntitlementInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -11334,7 +11606,7 @@ func (m *LicenseResponseInfo_Status) XXX_Marshal(b []byte, deterministic bool) (
 		return xxx_messageInfo_LicenseResponseInfo_Status.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -11388,7 +11660,7 @@ func (m *LicenseUsageAirgappedObject) XXX_Marshal(b []byte, deterministic bool) 
 		return xxx_messageInfo_LicenseUsageAirgappedObject.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -11443,7 +11715,7 @@ func (m *LicenseUsageAirgappedRequest) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_LicenseUsageAirgappedRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -11503,7 +11775,7 @@ func (m *LicenseUsageAirgappedResponse) XXX_Marshal(b []byte, deterministic bool
 		return xxx_messageInfo_LicenseUsageAirgappedResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -11575,7 +11847,7 @@ func (m *ManagedClusterEnumerateRequest) XXX_Marshal(b []byte, deterministic boo
 		return xxx_messageInfo_ManagedClusterEnumerateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -11602,13 +11874,13 @@ type isManagedClusterEnumerateRequest_Config interface {
 }
 
 type ManagedClusterEnumerateRequest_AwsConfig struct {
-	AwsConfig *ManagedClusterEnumerateRequest_AWSConfig `protobuf:"bytes,100,opt,name=aws_config,json=awsConfig,proto3,oneof" json:"aws_config,omitempty"`
+	AwsConfig *ManagedClusterEnumerateRequest_AWSConfig `protobuf:"bytes,100,opt,name=aws_config,json=awsConfig,proto3,oneof"`
 }
 type ManagedClusterEnumerateRequest_GoogleConfig_ struct {
-	GoogleConfig *ManagedClusterEnumerateRequest_GoogleConfig `protobuf:"bytes,101,opt,name=google_config,json=googleConfig,proto3,oneof" json:"google_config,omitempty"`
+	GoogleConfig *ManagedClusterEnumerateRequest_GoogleConfig `protobuf:"bytes,101,opt,name=google_config,json=googleConfig,proto3,oneof"`
 }
 type ManagedClusterEnumerateRequest_AzureConfig_ struct {
-	AzureConfig *ManagedClusterEnumerateRequest_AzureConfig `protobuf:"bytes,102,opt,name=azure_config,json=azureConfig,proto3,oneof" json:"azure_config,omitempty"`
+	AzureConfig *ManagedClusterEnumerateRequest_AzureConfig `protobuf:"bytes,102,opt,name=azure_config,json=azureConfig,proto3,oneof"`
 }
 
 func (*ManagedClusterEnumerateRequest_AwsConfig) isManagedClusterEnumerateRequest_Config()     {}
@@ -11678,13 +11950,97 @@ func (m *ManagedClusterEnumerateRequest) GetAzureConfig() *ManagedClusterEnumera
 	return nil
 }
 
-// XXX_OneofWrappers is for the internal use of the proto package.
-func (*ManagedClusterEnumerateRequest) XXX_OneofWrappers() []interface{} {
-	return []interface{}{
+// XXX_OneofFuncs is for the internal use of the proto package.
+func (*ManagedClusterEnumerateRequest) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
+	return _ManagedClusterEnumerateRequest_OneofMarshaler, _ManagedClusterEnumerateRequest_OneofUnmarshaler, _ManagedClusterEnumerateRequest_OneofSizer, []interface{}{
 		(*ManagedClusterEnumerateRequest_AwsConfig)(nil),
 		(*ManagedClusterEnumerateRequest_GoogleConfig_)(nil),
 		(*ManagedClusterEnumerateRequest_AzureConfig_)(nil),
 	}
+}
+
+func _ManagedClusterEnumerateRequest_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
+	m := msg.(*ManagedClusterEnumerateRequest)
+	// Config
+	switch x := m.Config.(type) {
+	case *ManagedClusterEnumerateRequest_AwsConfig:
+		_ = b.EncodeVarint(100<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.AwsConfig); err != nil {
+			return err
+		}
+	case *ManagedClusterEnumerateRequest_GoogleConfig_:
+		_ = b.EncodeVarint(101<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.GoogleConfig); err != nil {
+			return err
+		}
+	case *ManagedClusterEnumerateRequest_AzureConfig_:
+		_ = b.EncodeVarint(102<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.AzureConfig); err != nil {
+			return err
+		}
+	case nil:
+	default:
+		return fmt.Errorf("ManagedClusterEnumerateRequest.Config has unexpected type %T", x)
+	}
+	return nil
+}
+
+func _ManagedClusterEnumerateRequest_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
+	m := msg.(*ManagedClusterEnumerateRequest)
+	switch tag {
+	case 100: // Config.aws_config
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(ManagedClusterEnumerateRequest_AWSConfig)
+		err := b.DecodeMessage(msg)
+		m.Config = &ManagedClusterEnumerateRequest_AwsConfig{msg}
+		return true, err
+	case 101: // Config.google_config
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(ManagedClusterEnumerateRequest_GoogleConfig)
+		err := b.DecodeMessage(msg)
+		m.Config = &ManagedClusterEnumerateRequest_GoogleConfig_{msg}
+		return true, err
+	case 102: // Config.azure_config
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(ManagedClusterEnumerateRequest_AzureConfig)
+		err := b.DecodeMessage(msg)
+		m.Config = &ManagedClusterEnumerateRequest_AzureConfig_{msg}
+		return true, err
+	default:
+		return false, nil
+	}
+}
+
+func _ManagedClusterEnumerateRequest_OneofSizer(msg proto.Message) (n int) {
+	m := msg.(*ManagedClusterEnumerateRequest)
+	// Config
+	switch x := m.Config.(type) {
+	case *ManagedClusterEnumerateRequest_AwsConfig:
+		s := proto.Size(x.AwsConfig)
+		n += 2 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *ManagedClusterEnumerateRequest_GoogleConfig_:
+		s := proto.Size(x.GoogleConfig)
+		n += 2 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *ManagedClusterEnumerateRequest_AzureConfig_:
+		s := proto.Size(x.AzureConfig)
+		n += 2 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case nil:
+	default:
+		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
+	}
+	return n
 }
 
 type ManagedClusterEnumerateRequest_AWSConfig struct {
@@ -11710,7 +12066,7 @@ func (m *ManagedClusterEnumerateRequest_AWSConfig) XXX_Marshal(b []byte, determi
 		return xxx_messageInfo_ManagedClusterEnumerateRequest_AWSConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -11764,7 +12120,7 @@ func (m *ManagedClusterEnumerateRequest_GoogleConfig) XXX_Marshal(b []byte, dete
 		return xxx_messageInfo_ManagedClusterEnumerateRequest_GoogleConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -11804,7 +12160,7 @@ func (m *ManagedClusterEnumerateRequest_AzureConfig) XXX_Marshal(b []byte, deter
 		return xxx_messageInfo_ManagedClusterEnumerateRequest_AzureConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -11854,7 +12210,7 @@ func (m *ManagedClusterObject) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_ManagedClusterObject.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -11940,7 +12296,7 @@ func (m *ManagedClusterEnumerateResponse) XXX_Marshal(b []byte, deterministic bo
 		return xxx_messageInfo_ManagedClusterEnumerateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -11967,13 +12323,13 @@ type isManagedClusterEnumerateResponse_Config interface {
 }
 
 type ManagedClusterEnumerateResponse_AwsConfig struct {
-	AwsConfig *ManagedClusterEnumerateResponse_AWSConfig `protobuf:"bytes,100,opt,name=aws_config,json=awsConfig,proto3,oneof" json:"aws_config,omitempty"`
+	AwsConfig *ManagedClusterEnumerateResponse_AWSConfig `protobuf:"bytes,100,opt,name=aws_config,json=awsConfig,proto3,oneof"`
 }
 type ManagedClusterEnumerateResponse_GoogleConfig_ struct {
-	GoogleConfig *ManagedClusterEnumerateResponse_GoogleConfig `protobuf:"bytes,101,opt,name=google_config,json=googleConfig,proto3,oneof" json:"google_config,omitempty"`
+	GoogleConfig *ManagedClusterEnumerateResponse_GoogleConfig `protobuf:"bytes,101,opt,name=google_config,json=googleConfig,proto3,oneof"`
 }
 type ManagedClusterEnumerateResponse_AzureConfig_ struct {
-	AzureConfig *ManagedClusterEnumerateResponse_AzureConfig `protobuf:"bytes,102,opt,name=azure_config,json=azureConfig,proto3,oneof" json:"azure_config,omitempty"`
+	AzureConfig *ManagedClusterEnumerateResponse_AzureConfig `protobuf:"bytes,102,opt,name=azure_config,json=azureConfig,proto3,oneof"`
 }
 
 func (*ManagedClusterEnumerateResponse_AwsConfig) isManagedClusterEnumerateResponse_Config()     {}
@@ -12022,13 +12378,97 @@ func (m *ManagedClusterEnumerateResponse) GetAzureConfig() *ManagedClusterEnumer
 	return nil
 }
 
-// XXX_OneofWrappers is for the internal use of the proto package.
-func (*ManagedClusterEnumerateResponse) XXX_OneofWrappers() []interface{} {
-	return []interface{}{
+// XXX_OneofFuncs is for the internal use of the proto package.
+func (*ManagedClusterEnumerateResponse) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
+	return _ManagedClusterEnumerateResponse_OneofMarshaler, _ManagedClusterEnumerateResponse_OneofUnmarshaler, _ManagedClusterEnumerateResponse_OneofSizer, []interface{}{
 		(*ManagedClusterEnumerateResponse_AwsConfig)(nil),
 		(*ManagedClusterEnumerateResponse_GoogleConfig_)(nil),
 		(*ManagedClusterEnumerateResponse_AzureConfig_)(nil),
 	}
+}
+
+func _ManagedClusterEnumerateResponse_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
+	m := msg.(*ManagedClusterEnumerateResponse)
+	// Config
+	switch x := m.Config.(type) {
+	case *ManagedClusterEnumerateResponse_AwsConfig:
+		_ = b.EncodeVarint(100<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.AwsConfig); err != nil {
+			return err
+		}
+	case *ManagedClusterEnumerateResponse_GoogleConfig_:
+		_ = b.EncodeVarint(101<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.GoogleConfig); err != nil {
+			return err
+		}
+	case *ManagedClusterEnumerateResponse_AzureConfig_:
+		_ = b.EncodeVarint(102<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.AzureConfig); err != nil {
+			return err
+		}
+	case nil:
+	default:
+		return fmt.Errorf("ManagedClusterEnumerateResponse.Config has unexpected type %T", x)
+	}
+	return nil
+}
+
+func _ManagedClusterEnumerateResponse_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
+	m := msg.(*ManagedClusterEnumerateResponse)
+	switch tag {
+	case 100: // Config.aws_config
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(ManagedClusterEnumerateResponse_AWSConfig)
+		err := b.DecodeMessage(msg)
+		m.Config = &ManagedClusterEnumerateResponse_AwsConfig{msg}
+		return true, err
+	case 101: // Config.google_config
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(ManagedClusterEnumerateResponse_GoogleConfig)
+		err := b.DecodeMessage(msg)
+		m.Config = &ManagedClusterEnumerateResponse_GoogleConfig_{msg}
+		return true, err
+	case 102: // Config.azure_config
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(ManagedClusterEnumerateResponse_AzureConfig)
+		err := b.DecodeMessage(msg)
+		m.Config = &ManagedClusterEnumerateResponse_AzureConfig_{msg}
+		return true, err
+	default:
+		return false, nil
+	}
+}
+
+func _ManagedClusterEnumerateResponse_OneofSizer(msg proto.Message) (n int) {
+	m := msg.(*ManagedClusterEnumerateResponse)
+	// Config
+	switch x := m.Config.(type) {
+	case *ManagedClusterEnumerateResponse_AwsConfig:
+		s := proto.Size(x.AwsConfig)
+		n += 2 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *ManagedClusterEnumerateResponse_GoogleConfig_:
+		s := proto.Size(x.GoogleConfig)
+		n += 2 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *ManagedClusterEnumerateResponse_AzureConfig_:
+		s := proto.Size(x.AzureConfig)
+		n += 2 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case nil:
+	default:
+		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
+	}
+	return n
 }
 
 type ManagedClusterEnumerateResponse_AWSConfig struct {
@@ -12040,10 +12480,8 @@ type ManagedClusterEnumerateResponse_AWSConfig struct {
 func (m *ManagedClusterEnumerateResponse_AWSConfig) Reset() {
 	*m = ManagedClusterEnumerateResponse_AWSConfig{}
 }
-func (m *ManagedClusterEnumerateResponse_AWSConfig) String() string {
-	return proto.CompactTextString(m)
-}
-func (*ManagedClusterEnumerateResponse_AWSConfig) ProtoMessage() {}
+func (m *ManagedClusterEnumerateResponse_AWSConfig) String() string { return proto.CompactTextString(m) }
+func (*ManagedClusterEnumerateResponse_AWSConfig) ProtoMessage()    {}
 func (*ManagedClusterEnumerateResponse_AWSConfig) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9943feda3d652502, []int{150, 0}
 }
@@ -12055,7 +12493,7 @@ func (m *ManagedClusterEnumerateResponse_AWSConfig) XXX_Marshal(b []byte, determ
 		return xxx_messageInfo_ManagedClusterEnumerateResponse_AWSConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -12102,7 +12540,7 @@ func (m *ManagedClusterEnumerateResponse_GoogleConfig) XXX_Marshal(b []byte, det
 		return xxx_messageInfo_ManagedClusterEnumerateResponse_GoogleConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -12142,7 +12580,7 @@ func (m *ManagedClusterEnumerateResponse_AzureConfig) XXX_Marshal(b []byte, dete
 		return xxx_messageInfo_ManagedClusterEnumerateResponse_AzureConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -12193,7 +12631,7 @@ func (m *ManagedClusterInspectRequest) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_ManagedClusterInspectRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -12220,13 +12658,13 @@ type isManagedClusterInspectRequest_Config interface {
 }
 
 type ManagedClusterInspectRequest_AwsConfig struct {
-	AwsConfig *ManagedClusterInspectRequest_AWSConfig `protobuf:"bytes,100,opt,name=aws_config,json=awsConfig,proto3,oneof" json:"aws_config,omitempty"`
+	AwsConfig *ManagedClusterInspectRequest_AWSConfig `protobuf:"bytes,100,opt,name=aws_config,json=awsConfig,proto3,oneof"`
 }
 type ManagedClusterInspectRequest_GoogleConfig_ struct {
-	GoogleConfig *ManagedClusterInspectRequest_GoogleConfig `protobuf:"bytes,101,opt,name=google_config,json=googleConfig,proto3,oneof" json:"google_config,omitempty"`
+	GoogleConfig *ManagedClusterInspectRequest_GoogleConfig `protobuf:"bytes,101,opt,name=google_config,json=googleConfig,proto3,oneof"`
 }
 type ManagedClusterInspectRequest_AzureConfig_ struct {
-	AzureConfig *ManagedClusterInspectRequest_AzureConfig `protobuf:"bytes,102,opt,name=azure_config,json=azureConfig,proto3,oneof" json:"azure_config,omitempty"`
+	AzureConfig *ManagedClusterInspectRequest_AzureConfig `protobuf:"bytes,102,opt,name=azure_config,json=azureConfig,proto3,oneof"`
 }
 
 func (*ManagedClusterInspectRequest_AwsConfig) isManagedClusterInspectRequest_Config()     {}
@@ -12296,13 +12734,97 @@ func (m *ManagedClusterInspectRequest) GetAzureConfig() *ManagedClusterInspectRe
 	return nil
 }
 
-// XXX_OneofWrappers is for the internal use of the proto package.
-func (*ManagedClusterInspectRequest) XXX_OneofWrappers() []interface{} {
-	return []interface{}{
+// XXX_OneofFuncs is for the internal use of the proto package.
+func (*ManagedClusterInspectRequest) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
+	return _ManagedClusterInspectRequest_OneofMarshaler, _ManagedClusterInspectRequest_OneofUnmarshaler, _ManagedClusterInspectRequest_OneofSizer, []interface{}{
 		(*ManagedClusterInspectRequest_AwsConfig)(nil),
 		(*ManagedClusterInspectRequest_GoogleConfig_)(nil),
 		(*ManagedClusterInspectRequest_AzureConfig_)(nil),
 	}
+}
+
+func _ManagedClusterInspectRequest_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
+	m := msg.(*ManagedClusterInspectRequest)
+	// Config
+	switch x := m.Config.(type) {
+	case *ManagedClusterInspectRequest_AwsConfig:
+		_ = b.EncodeVarint(100<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.AwsConfig); err != nil {
+			return err
+		}
+	case *ManagedClusterInspectRequest_GoogleConfig_:
+		_ = b.EncodeVarint(101<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.GoogleConfig); err != nil {
+			return err
+		}
+	case *ManagedClusterInspectRequest_AzureConfig_:
+		_ = b.EncodeVarint(102<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.AzureConfig); err != nil {
+			return err
+		}
+	case nil:
+	default:
+		return fmt.Errorf("ManagedClusterInspectRequest.Config has unexpected type %T", x)
+	}
+	return nil
+}
+
+func _ManagedClusterInspectRequest_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
+	m := msg.(*ManagedClusterInspectRequest)
+	switch tag {
+	case 100: // Config.aws_config
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(ManagedClusterInspectRequest_AWSConfig)
+		err := b.DecodeMessage(msg)
+		m.Config = &ManagedClusterInspectRequest_AwsConfig{msg}
+		return true, err
+	case 101: // Config.google_config
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(ManagedClusterInspectRequest_GoogleConfig)
+		err := b.DecodeMessage(msg)
+		m.Config = &ManagedClusterInspectRequest_GoogleConfig_{msg}
+		return true, err
+	case 102: // Config.azure_config
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(ManagedClusterInspectRequest_AzureConfig)
+		err := b.DecodeMessage(msg)
+		m.Config = &ManagedClusterInspectRequest_AzureConfig_{msg}
+		return true, err
+	default:
+		return false, nil
+	}
+}
+
+func _ManagedClusterInspectRequest_OneofSizer(msg proto.Message) (n int) {
+	m := msg.(*ManagedClusterInspectRequest)
+	// Config
+	switch x := m.Config.(type) {
+	case *ManagedClusterInspectRequest_AwsConfig:
+		s := proto.Size(x.AwsConfig)
+		n += 2 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *ManagedClusterInspectRequest_GoogleConfig_:
+		s := proto.Size(x.GoogleConfig)
+		n += 2 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *ManagedClusterInspectRequest_AzureConfig_:
+		s := proto.Size(x.AzureConfig)
+		n += 2 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case nil:
+	default:
+		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
+	}
+	return n
 }
 
 type ManagedClusterInspectRequest_AWSConfig struct {
@@ -12326,7 +12848,7 @@ func (m *ManagedClusterInspectRequest_AWSConfig) XXX_Marshal(b []byte, determini
 		return xxx_messageInfo_ManagedClusterInspectRequest_AWSConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -12358,10 +12880,8 @@ type ManagedClusterInspectRequest_GoogleConfig struct {
 func (m *ManagedClusterInspectRequest_GoogleConfig) Reset() {
 	*m = ManagedClusterInspectRequest_GoogleConfig{}
 }
-func (m *ManagedClusterInspectRequest_GoogleConfig) String() string {
-	return proto.CompactTextString(m)
-}
-func (*ManagedClusterInspectRequest_GoogleConfig) ProtoMessage() {}
+func (m *ManagedClusterInspectRequest_GoogleConfig) String() string { return proto.CompactTextString(m) }
+func (*ManagedClusterInspectRequest_GoogleConfig) ProtoMessage()    {}
 func (*ManagedClusterInspectRequest_GoogleConfig) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9943feda3d652502, []int{151, 1}
 }
@@ -12373,7 +12893,7 @@ func (m *ManagedClusterInspectRequest_GoogleConfig) XXX_Marshal(b []byte, determ
 		return xxx_messageInfo_ManagedClusterInspectRequest_GoogleConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -12411,7 +12931,7 @@ func (m *ManagedClusterInspectRequest_AzureConfig) XXX_Marshal(b []byte, determi
 		return xxx_messageInfo_ManagedClusterInspectRequest_AzureConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -12449,7 +12969,7 @@ func (m *ManagedClusterInspectResponse) XXX_Marshal(b []byte, deterministic bool
 		return xxx_messageInfo_ManagedClusterInspectResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -12503,7 +13023,7 @@ func (m *ManagedClusterBulkAddRequest) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_ManagedClusterBulkAddRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -12530,13 +13050,13 @@ type isManagedClusterBulkAddRequest_Config interface {
 }
 
 type ManagedClusterBulkAddRequest_AwsConfig struct {
-	AwsConfig *ManagedClusterBulkAddRequest_AWSConfig `protobuf:"bytes,100,opt,name=aws_config,json=awsConfig,proto3,oneof" json:"aws_config,omitempty"`
+	AwsConfig *ManagedClusterBulkAddRequest_AWSConfig `protobuf:"bytes,100,opt,name=aws_config,json=awsConfig,proto3,oneof"`
 }
 type ManagedClusterBulkAddRequest_GoogleConfig_ struct {
-	GoogleConfig *ManagedClusterBulkAddRequest_GoogleConfig `protobuf:"bytes,101,opt,name=google_config,json=googleConfig,proto3,oneof" json:"google_config,omitempty"`
+	GoogleConfig *ManagedClusterBulkAddRequest_GoogleConfig `protobuf:"bytes,101,opt,name=google_config,json=googleConfig,proto3,oneof"`
 }
 type ManagedClusterBulkAddRequest_AzureConfig_ struct {
-	AzureConfig *ManagedClusterBulkAddRequest_AzureConfig `protobuf:"bytes,102,opt,name=azure_config,json=azureConfig,proto3,oneof" json:"azure_config,omitempty"`
+	AzureConfig *ManagedClusterBulkAddRequest_AzureConfig `protobuf:"bytes,102,opt,name=azure_config,json=azureConfig,proto3,oneof"`
 }
 
 func (*ManagedClusterBulkAddRequest_AwsConfig) isManagedClusterBulkAddRequest_Config()     {}
@@ -12599,13 +13119,97 @@ func (m *ManagedClusterBulkAddRequest) GetAzureConfig() *ManagedClusterBulkAddRe
 	return nil
 }
 
-// XXX_OneofWrappers is for the internal use of the proto package.
-func (*ManagedClusterBulkAddRequest) XXX_OneofWrappers() []interface{} {
-	return []interface{}{
+// XXX_OneofFuncs is for the internal use of the proto package.
+func (*ManagedClusterBulkAddRequest) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
+	return _ManagedClusterBulkAddRequest_OneofMarshaler, _ManagedClusterBulkAddRequest_OneofUnmarshaler, _ManagedClusterBulkAddRequest_OneofSizer, []interface{}{
 		(*ManagedClusterBulkAddRequest_AwsConfig)(nil),
 		(*ManagedClusterBulkAddRequest_GoogleConfig_)(nil),
 		(*ManagedClusterBulkAddRequest_AzureConfig_)(nil),
 	}
+}
+
+func _ManagedClusterBulkAddRequest_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
+	m := msg.(*ManagedClusterBulkAddRequest)
+	// Config
+	switch x := m.Config.(type) {
+	case *ManagedClusterBulkAddRequest_AwsConfig:
+		_ = b.EncodeVarint(100<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.AwsConfig); err != nil {
+			return err
+		}
+	case *ManagedClusterBulkAddRequest_GoogleConfig_:
+		_ = b.EncodeVarint(101<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.GoogleConfig); err != nil {
+			return err
+		}
+	case *ManagedClusterBulkAddRequest_AzureConfig_:
+		_ = b.EncodeVarint(102<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.AzureConfig); err != nil {
+			return err
+		}
+	case nil:
+	default:
+		return fmt.Errorf("ManagedClusterBulkAddRequest.Config has unexpected type %T", x)
+	}
+	return nil
+}
+
+func _ManagedClusterBulkAddRequest_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
+	m := msg.(*ManagedClusterBulkAddRequest)
+	switch tag {
+	case 100: // Config.aws_config
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(ManagedClusterBulkAddRequest_AWSConfig)
+		err := b.DecodeMessage(msg)
+		m.Config = &ManagedClusterBulkAddRequest_AwsConfig{msg}
+		return true, err
+	case 101: // Config.google_config
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(ManagedClusterBulkAddRequest_GoogleConfig)
+		err := b.DecodeMessage(msg)
+		m.Config = &ManagedClusterBulkAddRequest_GoogleConfig_{msg}
+		return true, err
+	case 102: // Config.azure_config
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(ManagedClusterBulkAddRequest_AzureConfig)
+		err := b.DecodeMessage(msg)
+		m.Config = &ManagedClusterBulkAddRequest_AzureConfig_{msg}
+		return true, err
+	default:
+		return false, nil
+	}
+}
+
+func _ManagedClusterBulkAddRequest_OneofSizer(msg proto.Message) (n int) {
+	m := msg.(*ManagedClusterBulkAddRequest)
+	// Config
+	switch x := m.Config.(type) {
+	case *ManagedClusterBulkAddRequest_AwsConfig:
+		s := proto.Size(x.AwsConfig)
+		n += 2 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *ManagedClusterBulkAddRequest_GoogleConfig_:
+		s := proto.Size(x.GoogleConfig)
+		n += 2 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *ManagedClusterBulkAddRequest_AzureConfig_:
+		s := proto.Size(x.AzureConfig)
+		n += 2 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case nil:
+	default:
+		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
+	}
+	return n
 }
 
 type ManagedClusterBulkAddRequest_AWSConfig struct {
@@ -12629,7 +13233,7 @@ func (m *ManagedClusterBulkAddRequest_AWSConfig) XXX_Marshal(b []byte, determini
 		return xxx_messageInfo_ManagedClusterBulkAddRequest_AWSConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -12661,10 +13265,8 @@ type ManagedClusterBulkAddRequest_GoogleConfig struct {
 func (m *ManagedClusterBulkAddRequest_GoogleConfig) Reset() {
 	*m = ManagedClusterBulkAddRequest_GoogleConfig{}
 }
-func (m *ManagedClusterBulkAddRequest_GoogleConfig) String() string {
-	return proto.CompactTextString(m)
-}
-func (*ManagedClusterBulkAddRequest_GoogleConfig) ProtoMessage() {}
+func (m *ManagedClusterBulkAddRequest_GoogleConfig) String() string { return proto.CompactTextString(m) }
+func (*ManagedClusterBulkAddRequest_GoogleConfig) ProtoMessage()    {}
 func (*ManagedClusterBulkAddRequest_GoogleConfig) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9943feda3d652502, []int{153, 1}
 }
@@ -12676,7 +13278,7 @@ func (m *ManagedClusterBulkAddRequest_GoogleConfig) XXX_Marshal(b []byte, determ
 		return xxx_messageInfo_ManagedClusterBulkAddRequest_GoogleConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -12714,7 +13316,7 @@ func (m *ManagedClusterBulkAddRequest_AzureConfig) XXX_Marshal(b []byte, determi
 		return xxx_messageInfo_ManagedClusterBulkAddRequest_AzureConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -12750,7 +13352,7 @@ func (m *ManagedClusterBulkAddResponse) XXX_Marshal(b []byte, deterministic bool
 		return xxx_messageInfo_ManagedClusterBulkAddResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -12796,7 +13398,7 @@ func (m *ActivityEnumerateRequest) XXX_Marshal(b []byte, deterministic bool) ([]
 		return xxx_messageInfo_ActivityEnumerateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -12875,7 +13477,7 @@ func (m *ActivityEnumerateResponse) XXX_Marshal(b []byte, deterministic bool) ([
 		return xxx_messageInfo_ActivityEnumerateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -12926,7 +13528,7 @@ func (m *ActivityEnumerateResponse_Data) XXX_Marshal(b []byte, deterministic boo
 		return xxx_messageInfo_ActivityEnumerateResponse_Data.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -13018,7 +13620,7 @@ func (m *RoleObject) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_RoleObject.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -13075,7 +13677,7 @@ func (m *RoleConfig) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_RoleConfig.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -13132,7 +13734,7 @@ func (m *RoleCreateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return xxx_messageInfo_RoleCreateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -13182,7 +13784,7 @@ func (m *RoleCreateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return xxx_messageInfo_RoleCreateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -13223,7 +13825,7 @@ func (m *RoleUpdateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return xxx_messageInfo_RoleUpdateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -13274,7 +13876,7 @@ func (m *RoleUpdateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return xxx_messageInfo_RoleUpdateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -13314,7 +13916,7 @@ func (m *RoleEnumerateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_RoleEnumerateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -13359,7 +13961,7 @@ func (m *RoleEnumerateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_RoleEnumerateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -13406,7 +14008,7 @@ func (m *RoleInspectRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return xxx_messageInfo_RoleInspectRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -13465,7 +14067,7 @@ func (m *RoleInspectResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return xxx_messageInfo_RoleInspectResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -13512,7 +14114,7 @@ func (m *RoleDeleteRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return xxx_messageInfo_RoleDeleteRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -13570,7 +14172,7 @@ func (m *RoleDeleteResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return xxx_messageInfo_RoleDeleteResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -13608,7 +14210,7 @@ func (m *RolePermissionRequest) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_RolePermissionRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -13653,7 +14255,7 @@ func (m *RolePermissionResponse) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return xxx_messageInfo_RolePermissionResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -13698,7 +14300,7 @@ func (m *Permission) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Permission.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -13751,7 +14353,7 @@ func (m *ActivityDataObject) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return xxx_messageInfo_ActivityDataObject.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -13825,7 +14427,7 @@ func (m *ActivityDataObject_Opcycle) XXX_Marshal(b []byte, deterministic bool) (
 		return xxx_messageInfo_ActivityDataObject_Opcycle.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -25155,7 +25757,7 @@ var _Role_serviceDesc = grpc.ServiceDesc{
 func (m *OrganizationObject) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -25163,34 +25765,27 @@ func (m *OrganizationObject) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *OrganizationObject) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *OrganizationObject) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.Metadata != nil {
-		{
-			size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Metadata.Size()))
+		n1, err1 := m.Metadata.MarshalTo(dAtA[i:])
+		if err1 != nil {
+			return 0, err1
+		}
+		i += n1
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ClusterInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -25198,186 +25793,167 @@ func (m *ClusterInfo) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ClusterInfo) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ClusterInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Provider != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Provider))
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0x88
-	}
-	if len(m.ServiceToken) > 0 {
-		i -= len(m.ServiceToken)
-		copy(dAtA[i:], m.ServiceToken)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.ServiceToken)))
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0x82
-	}
-	if len(m.TenantId) > 0 {
-		i -= len(m.TenantId)
-		copy(dAtA[i:], m.TenantId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.TenantId)))
-		i--
-		dAtA[i] = 0x7a
-	}
-	if len(m.TeleportClusterId) > 0 {
-		i -= len(m.TeleportClusterId)
-		copy(dAtA[i:], m.TeleportClusterId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.TeleportClusterId)))
-		i--
-		dAtA[i] = 0x72
-	}
-	if m.PlatformCredentialRef != nil {
-		{
-			size, err := m.PlatformCredentialRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+	if m.PxConfig != nil {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.PxConfig.Size()))
+		n2, err2 := m.PxConfig.MarshalTo(dAtA[i:])
+		if err2 != nil {
+			return 0, err2
 		}
-		i--
-		dAtA[i] = 0x6a
+		i += n2
 	}
-	if len(m.OwnerGroupList) > 0 {
-		for iNdEx := len(m.OwnerGroupList) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.OwnerGroupList[iNdEx])
-			copy(dAtA[i:], m.OwnerGroupList[iNdEx])
-			i = encodeVarintApi(dAtA, i, uint64(len(m.OwnerGroupList[iNdEx])))
-			i--
-			dAtA[i] = 0x62
+	if len(m.Kubeconfig) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Kubeconfig)))
+		i += copy(dAtA[i:], m.Kubeconfig)
+	}
+	if len(m.CloudCredential) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.CloudCredential)))
+		i += copy(dAtA[i:], m.CloudCredential)
+	}
+	if m.Status != nil {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Status.Size()))
+		n3, err3 := m.Status.MarshalTo(dAtA[i:])
+		if err3 != nil {
+			return 0, err3
 		}
-	}
-	if m.BackupShareStatusInfo != nil {
-		{
-			size, err := m.BackupShareStatusInfo.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x5a
-	}
-	if m.DelBackupShare != nil {
-		{
-			size, err := m.DelBackupShare.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x52
-	}
-	if m.AddBackupShare != nil {
-		{
-			size, err := m.AddBackupShare.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x4a
-	}
-	if m.CloudCredentialRef != nil {
-		{
-			size, err := m.CloudCredentialRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x42
-	}
-	if len(m.StorkVersion) > 0 {
-		i -= len(m.StorkVersion)
-		copy(dAtA[i:], m.StorkVersion)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.StorkVersion)))
-		i--
-		dAtA[i] = 0x3a
-	}
-	if m.DeleteRestores {
-		i--
-		if m.DeleteRestores {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
-		}
-		i--
-		dAtA[i] = 0x30
+		i += n3
 	}
 	if m.DeleteBackups {
-		i--
+		dAtA[i] = 0x28
+		i++
 		if m.DeleteBackups {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x28
+		i++
 	}
-	if m.Status != nil {
-		{
-			size, err := m.Status.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+	if m.DeleteRestores {
+		dAtA[i] = 0x30
+		i++
+		if m.DeleteRestores {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x22
+		i++
 	}
-	if len(m.CloudCredential) > 0 {
-		i -= len(m.CloudCredential)
-		copy(dAtA[i:], m.CloudCredential)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.CloudCredential)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.StorkVersion) > 0 {
+		dAtA[i] = 0x3a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.StorkVersion)))
+		i += copy(dAtA[i:], m.StorkVersion)
 	}
-	if len(m.Kubeconfig) > 0 {
-		i -= len(m.Kubeconfig)
-		copy(dAtA[i:], m.Kubeconfig)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Kubeconfig)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if m.PxConfig != nil {
-		{
-			size, err := m.PxConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+	if m.CloudCredentialRef != nil {
+		dAtA[i] = 0x42
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CloudCredentialRef.Size()))
+		n4, err4 := m.CloudCredentialRef.MarshalTo(dAtA[i:])
+		if err4 != nil {
+			return 0, err4
 		}
-		i--
-		dAtA[i] = 0xa
+		i += n4
 	}
-	return len(dAtA) - i, nil
+	if m.AddBackupShare != nil {
+		dAtA[i] = 0x4a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.AddBackupShare.Size()))
+		n5, err5 := m.AddBackupShare.MarshalTo(dAtA[i:])
+		if err5 != nil {
+			return 0, err5
+		}
+		i += n5
+	}
+	if m.DelBackupShare != nil {
+		dAtA[i] = 0x52
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.DelBackupShare.Size()))
+		n6, err6 := m.DelBackupShare.MarshalTo(dAtA[i:])
+		if err6 != nil {
+			return 0, err6
+		}
+		i += n6
+	}
+	if m.BackupShareStatusInfo != nil {
+		dAtA[i] = 0x5a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupShareStatusInfo.Size()))
+		n7, err7 := m.BackupShareStatusInfo.MarshalTo(dAtA[i:])
+		if err7 != nil {
+			return 0, err7
+		}
+		i += n7
+	}
+	if len(m.OwnerGroupList) > 0 {
+		for _, s := range m.OwnerGroupList {
+			dAtA[i] = 0x62
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
+			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
+		}
+	}
+	if m.PlatformCredentialRef != nil {
+		dAtA[i] = 0x6a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.PlatformCredentialRef.Size()))
+		n8, err8 := m.PlatformCredentialRef.MarshalTo(dAtA[i:])
+		if err8 != nil {
+			return 0, err8
+		}
+		i += n8
+	}
+	if len(m.TeleportClusterId) > 0 {
+		dAtA[i] = 0x72
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.TeleportClusterId)))
+		i += copy(dAtA[i:], m.TeleportClusterId)
+	}
+	if len(m.TenantId) > 0 {
+		dAtA[i] = 0x7a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.TenantId)))
+		i += copy(dAtA[i:], m.TenantId)
+	}
+	if len(m.ServiceToken) > 0 {
+		dAtA[i] = 0x82
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.ServiceToken)))
+		i += copy(dAtA[i:], m.ServiceToken)
+	}
+	if m.Provider != 0 {
+		dAtA[i] = 0x88
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Provider))
+	}
+	return i, nil
 }
 
 func (m *ClusterInfo_StatusInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -25385,34 +25961,28 @@ func (m *ClusterInfo_StatusInfo) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ClusterInfo_StatusInfo) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ClusterInfo_StatusInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Reason) > 0 {
-		i -= len(m.Reason)
-		copy(dAtA[i:], m.Reason)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Reason)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.Status != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Status))
-		i--
 		dAtA[i] = 0x8
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Status))
 	}
-	return len(dAtA) - i, nil
+	if len(m.Reason) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Reason)))
+		i += copy(dAtA[i:], m.Reason)
+	}
+	return i, nil
 }
 
 func (m *ClusterInfo_BackupShareStatusInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -25420,34 +25990,28 @@ func (m *ClusterInfo_BackupShareStatusInfo) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ClusterInfo_BackupShareStatusInfo) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ClusterInfo_BackupShareStatusInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Reason) > 0 {
-		i -= len(m.Reason)
-		copy(dAtA[i:], m.Reason)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Reason)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.Status != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Status))
-		i--
 		dAtA[i] = 0x8
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Status))
 	}
-	return len(dAtA) - i, nil
+	if len(m.Reason) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Reason)))
+		i += copy(dAtA[i:], m.Reason)
+	}
+	return i, nil
 }
 
 func (m *ClusterObject) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -25455,46 +26019,37 @@ func (m *ClusterObject) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ClusterObject) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ClusterObject) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.ClusterInfo != nil {
-		{
-			size, err := m.ClusterInfo.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.Metadata != nil {
-		{
-			size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Metadata.Size()))
+		n9, err9 := m.Metadata.MarshalTo(dAtA[i:])
+		if err9 != nil {
+			return 0, err9
+		}
+		i += n9
 	}
-	return len(dAtA) - i, nil
+	if m.ClusterInfo != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.ClusterInfo.Size()))
+		n10, err10 := m.ClusterInfo.MarshalTo(dAtA[i:])
+		if err10 != nil {
+			return 0, err10
+		}
+		i += n10
+	}
+	return i, nil
 }
 
 func (m *PXConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -25502,29 +26057,23 @@ func (m *PXConfig) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *PXConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *PXConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.AccessToken) > 0 {
-		i -= len(m.AccessToken)
-		copy(dAtA[i:], m.AccessToken)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.AccessToken)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.AccessToken)))
+		i += copy(dAtA[i:], m.AccessToken)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *AWSConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -25532,36 +26081,29 @@ func (m *AWSConfig) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *AWSConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *AWSConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.SecretKey) > 0 {
-		i -= len(m.SecretKey)
-		copy(dAtA[i:], m.SecretKey)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.SecretKey)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if len(m.AccessKey) > 0 {
-		i -= len(m.AccessKey)
-		copy(dAtA[i:], m.AccessKey)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.AccessKey)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.AccessKey)))
+		i += copy(dAtA[i:], m.AccessKey)
 	}
-	return len(dAtA) - i, nil
+	if len(m.SecretKey) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.SecretKey)))
+		i += copy(dAtA[i:], m.SecretKey)
+	}
+	return i, nil
 }
 
 func (m *IBMConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -25569,29 +26111,23 @@ func (m *IBMConfig) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *IBMConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *IBMConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.ApiKey) > 0 {
-		i -= len(m.ApiKey)
-		copy(dAtA[i:], m.ApiKey)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.ApiKey)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.ApiKey)))
+		i += copy(dAtA[i:], m.ApiKey)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RancherConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -25599,36 +26135,29 @@ func (m *RancherConfig) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RancherConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RancherConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Token) > 0 {
-		i -= len(m.Token)
-		copy(dAtA[i:], m.Token)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Token)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if len(m.Endpoint) > 0 {
-		i -= len(m.Endpoint)
-		copy(dAtA[i:], m.Endpoint)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Endpoint)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Endpoint)))
+		i += copy(dAtA[i:], m.Endpoint)
 	}
-	return len(dAtA) - i, nil
+	if len(m.Token) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Token)))
+		i += copy(dAtA[i:], m.Token)
+	}
+	return i, nil
 }
 
 func (m *S3Config) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -25636,63 +26165,55 @@ func (m *S3Config) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *S3Config) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *S3Config) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.StorageClass) > 0 {
-		i -= len(m.StorageClass)
-		copy(dAtA[i:], m.StorageClass)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.StorageClass)))
-		i--
-		dAtA[i] = 0x2a
+	if len(m.Endpoint) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Endpoint)))
+		i += copy(dAtA[i:], m.Endpoint)
 	}
-	if m.DisablePathStyle {
-		i--
-		if m.DisablePathStyle {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
-		}
-		i--
-		dAtA[i] = 0x20
+	if len(m.Region) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Region)))
+		i += copy(dAtA[i:], m.Region)
 	}
 	if m.DisableSsl {
-		i--
+		dAtA[i] = 0x18
+		i++
 		if m.DisableSsl {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x18
+		i++
 	}
-	if len(m.Region) > 0 {
-		i -= len(m.Region)
-		copy(dAtA[i:], m.Region)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Region)))
-		i--
-		dAtA[i] = 0x12
+	if m.DisablePathStyle {
+		dAtA[i] = 0x20
+		i++
+		if m.DisablePathStyle {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i++
 	}
-	if len(m.Endpoint) > 0 {
-		i -= len(m.Endpoint)
-		copy(dAtA[i:], m.Endpoint)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Endpoint)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.StorageClass) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.StorageClass)))
+		i += copy(dAtA[i:], m.StorageClass)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *AzureConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -25700,64 +26221,53 @@ func (m *AzureConfig) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *AzureConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *AzureConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.SubscriptionId) > 0 {
-		i -= len(m.SubscriptionId)
-		copy(dAtA[i:], m.SubscriptionId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.SubscriptionId)))
-		i--
-		dAtA[i] = 0x32
-	}
-	if len(m.TenantId) > 0 {
-		i -= len(m.TenantId)
-		copy(dAtA[i:], m.TenantId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.TenantId)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.ClientId) > 0 {
-		i -= len(m.ClientId)
-		copy(dAtA[i:], m.ClientId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.ClientId)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.ClientSecret) > 0 {
-		i -= len(m.ClientSecret)
-		copy(dAtA[i:], m.ClientSecret)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.ClientSecret)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.AccountName) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.AccountName)))
+		i += copy(dAtA[i:], m.AccountName)
 	}
 	if len(m.AccountKey) > 0 {
-		i -= len(m.AccountKey)
-		copy(dAtA[i:], m.AccountKey)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.AccountKey)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.AccountKey)))
+		i += copy(dAtA[i:], m.AccountKey)
 	}
-	if len(m.AccountName) > 0 {
-		i -= len(m.AccountName)
-		copy(dAtA[i:], m.AccountName)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.AccountName)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.ClientSecret) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.ClientSecret)))
+		i += copy(dAtA[i:], m.ClientSecret)
 	}
-	return len(dAtA) - i, nil
+	if len(m.ClientId) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.ClientId)))
+		i += copy(dAtA[i:], m.ClientId)
+	}
+	if len(m.TenantId) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.TenantId)))
+		i += copy(dAtA[i:], m.TenantId)
+	}
+	if len(m.SubscriptionId) > 0 {
+		dAtA[i] = 0x32
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.SubscriptionId)))
+		i += copy(dAtA[i:], m.SubscriptionId)
+	}
+	return i, nil
 }
 
 func (m *GoogleConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -25765,36 +26275,29 @@ func (m *GoogleConfig) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *GoogleConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *GoogleConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.JsonKey) > 0 {
-		i -= len(m.JsonKey)
-		copy(dAtA[i:], m.JsonKey)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.JsonKey)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if len(m.ProjectId) > 0 {
-		i -= len(m.ProjectId)
-		copy(dAtA[i:], m.ProjectId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.ProjectId)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.ProjectId)))
+		i += copy(dAtA[i:], m.ProjectId)
 	}
-	return len(dAtA) - i, nil
+	if len(m.JsonKey) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.JsonKey)))
+		i += copy(dAtA[i:], m.JsonKey)
+	}
+	return i, nil
 }
 
 func (m *CloudCredentialInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -25802,151 +26305,109 @@ func (m *CloudCredentialInfo) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *CloudCredentialInfo) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CloudCredentialInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Config != nil {
-		{
-			size := m.Config.Size()
-			i -= size
-			if _, err := m.Config.MarshalTo(dAtA[i:]); err != nil {
-				return 0, err
-			}
-		}
-	}
 	if m.Type != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Type))
-		i--
 		dAtA[i] = 0x8
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Type))
 	}
-	return len(dAtA) - i, nil
+	if m.Config != nil {
+		nn11, err11 := m.Config.MarshalTo(dAtA[i:])
+		if err11 != nil {
+			return 0, err11
+		}
+		i += nn11
+	}
+	return i, nil
 }
 
 func (m *CloudCredentialInfo_AwsConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CloudCredentialInfo_AwsConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.AwsConfig != nil {
-		{
-			size, err := m.AwsConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6
-		i--
 		dAtA[i] = 0xa2
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.AwsConfig.Size()))
+		n12, err12 := m.AwsConfig.MarshalTo(dAtA[i:])
+		if err12 != nil {
+			return 0, err12
+		}
+		i += n12
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *CloudCredentialInfo_AzureConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CloudCredentialInfo_AzureConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.AzureConfig != nil {
-		{
-			size, err := m.AzureConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6
-		i--
 		dAtA[i] = 0xaa
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.AzureConfig.Size()))
+		n13, err13 := m.AzureConfig.MarshalTo(dAtA[i:])
+		if err13 != nil {
+			return 0, err13
+		}
+		i += n13
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *CloudCredentialInfo_GoogleConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CloudCredentialInfo_GoogleConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.GoogleConfig != nil {
-		{
-			size, err := m.GoogleConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6
-		i--
 		dAtA[i] = 0xb2
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.GoogleConfig.Size()))
+		n14, err14 := m.GoogleConfig.MarshalTo(dAtA[i:])
+		if err14 != nil {
+			return 0, err14
+		}
+		i += n14
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *CloudCredentialInfo_IbmConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CloudCredentialInfo_IbmConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.IbmConfig != nil {
-		{
-			size, err := m.IbmConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6
-		i--
 		dAtA[i] = 0xba
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.IbmConfig.Size()))
+		n15, err15 := m.IbmConfig.MarshalTo(dAtA[i:])
+		if err15 != nil {
+			return 0, err15
+		}
+		i += n15
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *CloudCredentialInfo_RancherConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CloudCredentialInfo_RancherConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.RancherConfig != nil {
-		{
-			size, err := m.RancherConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6
-		i--
 		dAtA[i] = 0xc2
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.RancherConfig.Size()))
+		n16, err16 := m.RancherConfig.MarshalTo(dAtA[i:])
+		if err16 != nil {
+			return 0, err16
+		}
+		i += n16
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *CloudCredentialObject) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -25954,46 +26415,37 @@ func (m *CloudCredentialObject) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *CloudCredentialObject) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CloudCredentialObject) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.CloudCredentialInfo != nil {
-		{
-			size, err := m.CloudCredentialInfo.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.Metadata != nil {
-		{
-			size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Metadata.Size()))
+		n17, err17 := m.Metadata.MarshalTo(dAtA[i:])
+		if err17 != nil {
+			return 0, err17
+		}
+		i += n17
 	}
-	return len(dAtA) - i, nil
+	if m.CloudCredentialInfo != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CloudCredentialInfo.Size()))
+		n18, err18 := m.CloudCredentialInfo.MarshalTo(dAtA[i:])
+		if err18 != nil {
+			return 0, err18
+		}
+		i += n18
+	}
+	return i, nil
 }
 
 func (m *SchedulePolicyInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -26001,99 +26453,92 @@ func (m *SchedulePolicyInfo) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *SchedulePolicyInfo) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *SchedulePolicyInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.AutoDelete {
-		i--
-		if m.AutoDelete {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
+	if m.Interval != nil {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Interval.Size()))
+		n19, err19 := m.Interval.MarshalTo(dAtA[i:])
+		if err19 != nil {
+			return 0, err19
 		}
-		i--
-		dAtA[i] = 0x38
+		i += n19
+	}
+	if m.Daily != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Daily.Size()))
+		n20, err20 := m.Daily.MarshalTo(dAtA[i:])
+		if err20 != nil {
+			return 0, err20
+		}
+		i += n20
+	}
+	if m.Weekly != nil {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Weekly.Size()))
+		n21, err21 := m.Weekly.MarshalTo(dAtA[i:])
+		if err21 != nil {
+			return 0, err21
+		}
+		i += n21
+	}
+	if m.Monthly != nil {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Monthly.Size()))
+		n22, err22 := m.Monthly.MarshalTo(dAtA[i:])
+		if err22 != nil {
+			return 0, err22
+		}
+		i += n22
+	}
+	if len(m.BackupSchedule) > 0 {
+		for _, s := range m.BackupSchedule {
+			dAtA[i] = 0x2a
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
+			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
+		}
 	}
 	if m.ForObjectLock {
-		i--
+		dAtA[i] = 0x30
+		i++
 		if m.ForObjectLock {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x30
+		i++
 	}
-	if len(m.BackupSchedule) > 0 {
-		for iNdEx := len(m.BackupSchedule) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.BackupSchedule[iNdEx])
-			copy(dAtA[i:], m.BackupSchedule[iNdEx])
-			i = encodeVarintApi(dAtA, i, uint64(len(m.BackupSchedule[iNdEx])))
-			i--
-			dAtA[i] = 0x2a
+	if m.AutoDelete {
+		dAtA[i] = 0x38
+		i++
+		if m.AutoDelete {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
 		}
+		i++
 	}
-	if m.Monthly != nil {
-		{
-			size, err := m.Monthly.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x22
-	}
-	if m.Weekly != nil {
-		{
-			size, err := m.Weekly.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1a
-	}
-	if m.Daily != nil {
-		{
-			size, err := m.Daily.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
-	if m.Interval != nil {
-		{
-			size, err := m.Interval.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *SchedulePolicyInfo_IncrementalCount) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -26101,27 +26546,22 @@ func (m *SchedulePolicyInfo_IncrementalCount) Marshal() (dAtA []byte, err error)
 }
 
 func (m *SchedulePolicyInfo_IncrementalCount) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *SchedulePolicyInfo_IncrementalCount) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.Count != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Count))
-		i--
 		dAtA[i] = 0x8
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Count))
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *SchedulePolicyInfo_IntervalPolicy) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -26129,44 +26569,37 @@ func (m *SchedulePolicyInfo_IntervalPolicy) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *SchedulePolicyInfo_IntervalPolicy) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *SchedulePolicyInfo_IntervalPolicy) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.IncrementalCount != nil {
-		{
-			size, err := m.IncrementalCount.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1a
+	if m.Minutes != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Minutes))
 	}
 	if m.Retain != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Retain))
-		i--
 		dAtA[i] = 0x10
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Retain))
 	}
-	if m.Minutes != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Minutes))
-		i--
-		dAtA[i] = 0x8
+	if m.IncrementalCount != nil {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.IncrementalCount.Size()))
+		n23, err23 := m.IncrementalCount.MarshalTo(dAtA[i:])
+		if err23 != nil {
+			return 0, err23
+		}
+		i += n23
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *SchedulePolicyInfo_DailyPolicy) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -26174,46 +26607,38 @@ func (m *SchedulePolicyInfo_DailyPolicy) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *SchedulePolicyInfo_DailyPolicy) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *SchedulePolicyInfo_DailyPolicy) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.IncrementalCount != nil {
-		{
-			size, err := m.IncrementalCount.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1a
+	if len(m.Time) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Time)))
+		i += copy(dAtA[i:], m.Time)
 	}
 	if m.Retain != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Retain))
-		i--
 		dAtA[i] = 0x10
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Retain))
 	}
-	if len(m.Time) > 0 {
-		i -= len(m.Time)
-		copy(dAtA[i:], m.Time)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Time)))
-		i--
-		dAtA[i] = 0xa
+	if m.IncrementalCount != nil {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.IncrementalCount.Size()))
+		n24, err24 := m.IncrementalCount.MarshalTo(dAtA[i:])
+		if err24 != nil {
+			return 0, err24
+		}
+		i += n24
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *SchedulePolicyInfo_WeeklyPolicy) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -26221,53 +26646,44 @@ func (m *SchedulePolicyInfo_WeeklyPolicy) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *SchedulePolicyInfo_WeeklyPolicy) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *SchedulePolicyInfo_WeeklyPolicy) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.IncrementalCount != nil {
-		{
-			size, err := m.IncrementalCount.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x22
-	}
-	if m.Retain != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Retain))
-		i--
-		dAtA[i] = 0x18
+	if len(m.Day) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Day)))
+		i += copy(dAtA[i:], m.Day)
 	}
 	if len(m.Time) > 0 {
-		i -= len(m.Time)
-		copy(dAtA[i:], m.Time)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Time)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Time)))
+		i += copy(dAtA[i:], m.Time)
 	}
-	if len(m.Day) > 0 {
-		i -= len(m.Day)
-		copy(dAtA[i:], m.Day)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Day)))
-		i--
-		dAtA[i] = 0xa
+	if m.Retain != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Retain))
 	}
-	return len(dAtA) - i, nil
+	if m.IncrementalCount != nil {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.IncrementalCount.Size()))
+		n25, err25 := m.IncrementalCount.MarshalTo(dAtA[i:])
+		if err25 != nil {
+			return 0, err25
+		}
+		i += n25
+	}
+	return i, nil
 }
 
 func (m *SchedulePolicyInfo_MonthlyPolicy) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -26275,51 +26691,43 @@ func (m *SchedulePolicyInfo_MonthlyPolicy) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *SchedulePolicyInfo_MonthlyPolicy) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *SchedulePolicyInfo_MonthlyPolicy) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.IncrementalCount != nil {
-		{
-			size, err := m.IncrementalCount.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x22
-	}
-	if m.Retain != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Retain))
-		i--
-		dAtA[i] = 0x18
+	if m.Date != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Date))
 	}
 	if len(m.Time) > 0 {
-		i -= len(m.Time)
-		copy(dAtA[i:], m.Time)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Time)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Time)))
+		i += copy(dAtA[i:], m.Time)
 	}
-	if m.Date != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Date))
-		i--
-		dAtA[i] = 0x8
+	if m.Retain != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Retain))
 	}
-	return len(dAtA) - i, nil
+	if m.IncrementalCount != nil {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.IncrementalCount.Size()))
+		n26, err26 := m.IncrementalCount.MarshalTo(dAtA[i:])
+		if err26 != nil {
+			return 0, err26
+		}
+		i += n26
+	}
+	return i, nil
 }
 
 func (m *SchedulePolicyObject) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -26327,46 +26735,37 @@ func (m *SchedulePolicyObject) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *SchedulePolicyObject) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *SchedulePolicyObject) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.SchedulePolicyInfo != nil {
-		{
-			size, err := m.SchedulePolicyInfo.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.Metadata != nil {
-		{
-			size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Metadata.Size()))
+		n27, err27 := m.Metadata.MarshalTo(dAtA[i:])
+		if err27 != nil {
+			return 0, err27
+		}
+		i += n27
 	}
-	return len(dAtA) - i, nil
+	if m.SchedulePolicyInfo != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.SchedulePolicyInfo.Size()))
+		n28, err28 := m.SchedulePolicyInfo.MarshalTo(dAtA[i:])
+		if err28 != nil {
+			return 0, err28
+		}
+		i += n28
+	}
+	return i, nil
 }
 
 func (m *BackupScheduleInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -26374,289 +26773,271 @@ func (m *BackupScheduleInfo) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupScheduleInfo) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupScheduleInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.TargetNamespace) > 0 {
-		i -= len(m.TargetNamespace)
-		copy(dAtA[i:], m.TargetNamespace)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.TargetNamespace)))
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xc2
-	}
-	if len(m.NsLabelSelectors) > 0 {
-		i -= len(m.NsLabelSelectors)
-		copy(dAtA[i:], m.NsLabelSelectors)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.NsLabelSelectors)))
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xba
-	}
-	if m.BackupType != nil {
-		{
-			size, err := m.BackupType.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xb2
-	}
-	if m.PostExecRuleRef != nil {
-		{
-			size, err := m.PostExecRuleRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xaa
-	}
-	if m.PreExecRuleRef != nil {
-		{
-			size, err := m.PreExecRuleRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xa2
-	}
-	if m.BackupLocationRef != nil {
-		{
-			size, err := m.BackupLocationRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0x9a
-	}
-	if m.SchedulePolicyRef != nil {
-		{
-			size, err := m.SchedulePolicyRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0x92
-	}
-	if len(m.ResourceTypes) > 0 {
-		for iNdEx := len(m.ResourceTypes) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.ResourceTypes[iNdEx])
-			copy(dAtA[i:], m.ResourceTypes[iNdEx])
-			i = encodeVarintApi(dAtA, i, uint64(len(m.ResourceTypes[iNdEx])))
-			i--
-			dAtA[i] = 0x1
-			i--
-			dAtA[i] = 0x8a
-		}
-	}
-	if len(m.CsiSnapshotClassName) > 0 {
-		i -= len(m.CsiSnapshotClassName)
-		copy(dAtA[i:], m.CsiSnapshotClassName)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.CsiSnapshotClassName)))
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0x82
-	}
-	if len(m.StorkVersion) > 0 {
-		i -= len(m.StorkVersion)
-		copy(dAtA[i:], m.StorkVersion)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.StorkVersion)))
-		i--
-		dAtA[i] = 0x7a
-	}
-	if len(m.IncludeResources) > 0 {
-		for iNdEx := len(m.IncludeResources) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.IncludeResources[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x72
-		}
-	}
-	if m.SuspendedBy != nil {
-		{
-			size, err := m.SuspendedBy.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6a
-	}
-	if m.Status != nil {
-		{
-			size, err := m.Status.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x62
-	}
-	if m.DeleteBackups {
-		i--
-		if m.DeleteBackups {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
-		}
-		i--
-		dAtA[i] = 0x58
-	}
-	if len(m.PostExecRule) > 0 {
-		i -= len(m.PostExecRule)
-		copy(dAtA[i:], m.PostExecRule)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.PostExecRule)))
-		i--
-		dAtA[i] = 0x52
-	}
-	if len(m.PreExecRule) > 0 {
-		i -= len(m.PreExecRule)
-		copy(dAtA[i:], m.PreExecRule)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.PreExecRule)))
-		i--
-		dAtA[i] = 0x4a
-	}
-	if len(m.LabelSelectors) > 0 {
-		for k := range m.LabelSelectors {
-			v := m.LabelSelectors[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x42
-		}
-	}
-	if len(m.Namespaces) > 0 {
-		for iNdEx := len(m.Namespaces) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.Namespaces[iNdEx])
-			copy(dAtA[i:], m.Namespaces[iNdEx])
-			i = encodeVarintApi(dAtA, i, uint64(len(m.Namespaces[iNdEx])))
-			i--
-			dAtA[i] = 0x3a
-		}
-	}
-	if len(m.Cluster) > 0 {
-		i -= len(m.Cluster)
-		copy(dAtA[i:], m.Cluster)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
-		i--
-		dAtA[i] = 0x32
-	}
-	if len(m.BackupLocation) > 0 {
-		i -= len(m.BackupLocation)
-		copy(dAtA[i:], m.BackupLocation)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupLocation)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.BackupStatus) > 0 {
-		for k := range m.BackupStatus {
-			v := m.BackupStatus[k]
-			baseI := i
-			if v != nil {
-				{
-					size, err := v.MarshalToSizedBuffer(dAtA[:i])
-					if err != nil {
-						return 0, err
-					}
-					i -= size
-					i = encodeVarintApi(dAtA, i, uint64(size))
-				}
-				i--
-				dAtA[i] = 0x12
-			}
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x22
-		}
-	}
-	if m.ReclaimPolicy != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.ReclaimPolicy))
-		i--
-		dAtA[i] = 0x18
+	if len(m.SchedulePolicy) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.SchedulePolicy)))
+		i += copy(dAtA[i:], m.SchedulePolicy)
 	}
 	if m.Suspend {
-		i--
+		dAtA[i] = 0x10
+		i++
 		if m.Suspend {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x10
+		i++
 	}
-	if len(m.SchedulePolicy) > 0 {
-		i -= len(m.SchedulePolicy)
-		copy(dAtA[i:], m.SchedulePolicy)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.SchedulePolicy)))
-		i--
-		dAtA[i] = 0xa
+	if m.ReclaimPolicy != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.ReclaimPolicy))
 	}
-	return len(dAtA) - i, nil
+	if len(m.BackupStatus) > 0 {
+		for k, _ := range m.BackupStatus {
+			dAtA[i] = 0x22
+			i++
+			v := m.BackupStatus[k]
+			msgSize := 0
+			if v != nil {
+				msgSize = v.Size()
+				msgSize += 1 + sovApi(uint64(msgSize))
+			}
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + msgSize
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			if v != nil {
+				dAtA[i] = 0x12
+				i++
+				i = encodeVarintApi(dAtA, i, uint64(v.Size()))
+				n29, err29 := v.MarshalTo(dAtA[i:])
+				if err29 != nil {
+					return 0, err29
+				}
+				i += n29
+			}
+		}
+	}
+	if len(m.BackupLocation) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupLocation)))
+		i += copy(dAtA[i:], m.BackupLocation)
+	}
+	if len(m.Cluster) > 0 {
+		dAtA[i] = 0x32
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
+		i += copy(dAtA[i:], m.Cluster)
+	}
+	if len(m.Namespaces) > 0 {
+		for _, s := range m.Namespaces {
+			dAtA[i] = 0x3a
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
+			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
+		}
+	}
+	if len(m.LabelSelectors) > 0 {
+		for k, _ := range m.LabelSelectors {
+			dAtA[i] = 0x42
+			i++
+			v := m.LabelSelectors[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if len(m.PreExecRule) > 0 {
+		dAtA[i] = 0x4a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.PreExecRule)))
+		i += copy(dAtA[i:], m.PreExecRule)
+	}
+	if len(m.PostExecRule) > 0 {
+		dAtA[i] = 0x52
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.PostExecRule)))
+		i += copy(dAtA[i:], m.PostExecRule)
+	}
+	if m.DeleteBackups {
+		dAtA[i] = 0x58
+		i++
+		if m.DeleteBackups {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i++
+	}
+	if m.Status != nil {
+		dAtA[i] = 0x62
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Status.Size()))
+		n30, err30 := m.Status.MarshalTo(dAtA[i:])
+		if err30 != nil {
+			return 0, err30
+		}
+		i += n30
+	}
+	if m.SuspendedBy != nil {
+		dAtA[i] = 0x6a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.SuspendedBy.Size()))
+		n31, err31 := m.SuspendedBy.MarshalTo(dAtA[i:])
+		if err31 != nil {
+			return 0, err31
+		}
+		i += n31
+	}
+	if len(m.IncludeResources) > 0 {
+		for _, msg := range m.IncludeResources {
+			dAtA[i] = 0x72
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	if len(m.StorkVersion) > 0 {
+		dAtA[i] = 0x7a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.StorkVersion)))
+		i += copy(dAtA[i:], m.StorkVersion)
+	}
+	if len(m.CsiSnapshotClassName) > 0 {
+		dAtA[i] = 0x82
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.CsiSnapshotClassName)))
+		i += copy(dAtA[i:], m.CsiSnapshotClassName)
+	}
+	if len(m.ResourceTypes) > 0 {
+		for _, s := range m.ResourceTypes {
+			dAtA[i] = 0x8a
+			i++
+			dAtA[i] = 0x1
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
+			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
+		}
+	}
+	if m.SchedulePolicyRef != nil {
+		dAtA[i] = 0x92
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.SchedulePolicyRef.Size()))
+		n32, err32 := m.SchedulePolicyRef.MarshalTo(dAtA[i:])
+		if err32 != nil {
+			return 0, err32
+		}
+		i += n32
+	}
+	if m.BackupLocationRef != nil {
+		dAtA[i] = 0x9a
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupLocationRef.Size()))
+		n33, err33 := m.BackupLocationRef.MarshalTo(dAtA[i:])
+		if err33 != nil {
+			return 0, err33
+		}
+		i += n33
+	}
+	if m.PreExecRuleRef != nil {
+		dAtA[i] = 0xa2
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.PreExecRuleRef.Size()))
+		n34, err34 := m.PreExecRuleRef.MarshalTo(dAtA[i:])
+		if err34 != nil {
+			return 0, err34
+		}
+		i += n34
+	}
+	if m.PostExecRuleRef != nil {
+		dAtA[i] = 0xaa
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.PostExecRuleRef.Size()))
+		n35, err35 := m.PostExecRuleRef.MarshalTo(dAtA[i:])
+		if err35 != nil {
+			return 0, err35
+		}
+		i += n35
+	}
+	if m.BackupType != nil {
+		dAtA[i] = 0xb2
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupType.Size()))
+		n36, err36 := m.BackupType.MarshalTo(dAtA[i:])
+		if err36 != nil {
+			return 0, err36
+		}
+		i += n36
+	}
+	if len(m.NsLabelSelectors) > 0 {
+		dAtA[i] = 0xba
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.NsLabelSelectors)))
+		i += copy(dAtA[i:], m.NsLabelSelectors)
+	}
+	if len(m.TargetNamespace) > 0 {
+		dAtA[i] = 0xc2
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.TargetNamespace)))
+		i += copy(dAtA[i:], m.TargetNamespace)
+	}
+	return i, nil
 }
 
 func (m *BackupScheduleInfo_BackupType) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -26664,27 +27045,22 @@ func (m *BackupScheduleInfo_BackupType) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupScheduleInfo_BackupType) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupScheduleInfo_BackupType) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.Type != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Type))
-		i--
 		dAtA[i] = 0x8
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Type))
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupScheduleInfo_SuspendedBy) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -26692,27 +27068,22 @@ func (m *BackupScheduleInfo_SuspendedBy) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupScheduleInfo_SuspendedBy) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupScheduleInfo_SuspendedBy) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.Source != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Source))
-		i--
 		dAtA[i] = 0x8
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Source))
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupScheduleInfo_StatusInfoList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -26720,36 +27091,29 @@ func (m *BackupScheduleInfo_StatusInfoList) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupScheduleInfo_StatusInfoList) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupScheduleInfo_StatusInfoList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.Status) > 0 {
-		for iNdEx := len(m.Status) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Status[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.Status {
 			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupScheduleInfo_StatusInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -26757,65 +27121,54 @@ func (m *BackupScheduleInfo_StatusInfo) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupScheduleInfo_StatusInfo) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupScheduleInfo_StatusInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Reason) > 0 {
-		i -= len(m.Reason)
-		copy(dAtA[i:], m.Reason)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Reason)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if m.Status != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Status))
-		i--
-		dAtA[i] = 0x20
-	}
-	if m.FinishTime != nil {
-		{
-			size, err := m.FinishTime.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1a
+	if len(m.BackupName) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupName)))
+		i += copy(dAtA[i:], m.BackupName)
 	}
 	if m.CreateTime != nil {
-		{
-			size, err := m.CreateTime.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateTime.Size()))
+		n37, err37 := m.CreateTime.MarshalTo(dAtA[i:])
+		if err37 != nil {
+			return 0, err37
+		}
+		i += n37
 	}
-	if len(m.BackupName) > 0 {
-		i -= len(m.BackupName)
-		copy(dAtA[i:], m.BackupName)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupName)))
-		i--
-		dAtA[i] = 0xa
+	if m.FinishTime != nil {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.FinishTime.Size()))
+		n38, err38 := m.FinishTime.MarshalTo(dAtA[i:])
+		if err38 != nil {
+			return 0, err38
+		}
+		i += n38
 	}
-	return len(dAtA) - i, nil
+	if m.Status != 0 {
+		dAtA[i] = 0x20
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Status))
+	}
+	if len(m.Reason) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Reason)))
+		i += copy(dAtA[i:], m.Reason)
+	}
+	return i, nil
 }
 
 func (m *BackupScheduleObject) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -26823,46 +27176,37 @@ func (m *BackupScheduleObject) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupScheduleObject) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupScheduleObject) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.BackupScheduleInfo != nil {
-		{
-			size, err := m.BackupScheduleInfo.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.Metadata != nil {
-		{
-			size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Metadata.Size()))
+		n39, err39 := m.Metadata.MarshalTo(dAtA[i:])
+		if err39 != nil {
+			return 0, err39
+		}
+		i += n39
 	}
-	return len(dAtA) - i, nil
+	if m.BackupScheduleInfo != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupScheduleInfo.Size()))
+		n40, err40 := m.BackupScheduleInfo.MarshalTo(dAtA[i:])
+		if err40 != nil {
+			return 0, err40
+		}
+		i += n40
+	}
+	return i, nil
 }
 
 func (m *NFSConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -26870,43 +27214,35 @@ func (m *NFSConfig) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *NFSConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *NFSConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.MountOption) > 0 {
-		i -= len(m.MountOption)
-		copy(dAtA[i:], m.MountOption)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.MountOption)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.ServerAddr) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.ServerAddr)))
+		i += copy(dAtA[i:], m.ServerAddr)
 	}
 	if len(m.SubPath) > 0 {
-		i -= len(m.SubPath)
-		copy(dAtA[i:], m.SubPath)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.SubPath)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.SubPath)))
+		i += copy(dAtA[i:], m.SubPath)
 	}
-	if len(m.ServerAddr) > 0 {
-		i -= len(m.ServerAddr)
-		copy(dAtA[i:], m.ServerAddr)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.ServerAddr)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.MountOption) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.MountOption)))
+		i += copy(dAtA[i:], m.MountOption)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupLocationInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -26914,157 +27250,129 @@ func (m *BackupLocationInfo) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupLocationInfo) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupLocationInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Config != nil {
-		{
-			size := m.Config.Size()
-			i -= size
-			if _, err := m.Config.MarshalTo(dAtA[i:]); err != nil {
-				return 0, err
-			}
-		}
+	if m.Type != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Type))
 	}
-	if m.ObjectLockEnabled {
-		i--
-		if m.ObjectLockEnabled {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
-		}
-		i--
-		dAtA[i] = 0x48
+	if len(m.Path) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Path)))
+		i += copy(dAtA[i:], m.Path)
 	}
-	if m.CloudCredentialRef != nil {
-		{
-			size, err := m.CloudCredentialRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x42
+	if len(m.EncryptionKey) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.EncryptionKey)))
+		i += copy(dAtA[i:], m.EncryptionKey)
 	}
-	if m.ValidateCloudCredential {
-		i--
-		if m.ValidateCloudCredential {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
+	if len(m.CloudCredential) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.CloudCredential)))
+		i += copy(dAtA[i:], m.CloudCredential)
+	}
+	if m.Status != nil {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Status.Size()))
+		n41, err41 := m.Status.MarshalTo(dAtA[i:])
+		if err41 != nil {
+			return 0, err41
 		}
-		i--
-		dAtA[i] = 0x38
+		i += n41
 	}
 	if m.DeleteBackups {
-		i--
+		dAtA[i] = 0x30
+		i++
 		if m.DeleteBackups {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x30
+		i++
 	}
-	if m.Status != nil {
-		{
-			size, err := m.Status.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+	if m.ValidateCloudCredential {
+		dAtA[i] = 0x38
+		i++
+		if m.ValidateCloudCredential {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x2a
+		i++
 	}
-	if len(m.CloudCredential) > 0 {
-		i -= len(m.CloudCredential)
-		copy(dAtA[i:], m.CloudCredential)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.CloudCredential)))
-		i--
-		dAtA[i] = 0x22
+	if m.CloudCredentialRef != nil {
+		dAtA[i] = 0x42
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CloudCredentialRef.Size()))
+		n42, err42 := m.CloudCredentialRef.MarshalTo(dAtA[i:])
+		if err42 != nil {
+			return 0, err42
+		}
+		i += n42
 	}
-	if len(m.EncryptionKey) > 0 {
-		i -= len(m.EncryptionKey)
-		copy(dAtA[i:], m.EncryptionKey)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.EncryptionKey)))
-		i--
-		dAtA[i] = 0x1a
+	if m.ObjectLockEnabled {
+		dAtA[i] = 0x48
+		i++
+		if m.ObjectLockEnabled {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i++
 	}
-	if len(m.Path) > 0 {
-		i -= len(m.Path)
-		copy(dAtA[i:], m.Path)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Path)))
-		i--
-		dAtA[i] = 0x12
+	if m.Config != nil {
+		nn43, err43 := m.Config.MarshalTo(dAtA[i:])
+		if err43 != nil {
+			return 0, err43
+		}
+		i += nn43
 	}
-	if m.Type != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Type))
-		i--
-		dAtA[i] = 0x8
-	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupLocationInfo_S3Config) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupLocationInfo_S3Config) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.S3Config != nil {
-		{
-			size, err := m.S3Config.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6
-		i--
 		dAtA[i] = 0xa2
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.S3Config.Size()))
+		n44, err44 := m.S3Config.MarshalTo(dAtA[i:])
+		if err44 != nil {
+			return 0, err44
+		}
+		i += n44
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *BackupLocationInfo_NfsConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupLocationInfo_NfsConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.NfsConfig != nil {
-		{
-			size, err := m.NfsConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6
-		i--
 		dAtA[i] = 0xaa
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.NfsConfig.Size()))
+		n45, err45 := m.NfsConfig.MarshalTo(dAtA[i:])
+		if err45 != nil {
+			return 0, err45
+		}
+		i += n45
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *BackupLocationInfo_StatusInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -27072,34 +27380,28 @@ func (m *BackupLocationInfo_StatusInfo) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupLocationInfo_StatusInfo) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupLocationInfo_StatusInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Reason) > 0 {
-		i -= len(m.Reason)
-		copy(dAtA[i:], m.Reason)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Reason)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.Status != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Status))
-		i--
 		dAtA[i] = 0x8
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Status))
 	}
-	return len(dAtA) - i, nil
+	if len(m.Reason) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Reason)))
+		i += copy(dAtA[i:], m.Reason)
+	}
+	return i, nil
 }
 
 func (m *BackupLocationObject) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -27107,46 +27409,37 @@ func (m *BackupLocationObject) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupLocationObject) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupLocationObject) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.BackupLocationInfo != nil {
-		{
-			size, err := m.BackupLocationInfo.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.Metadata != nil {
-		{
-			size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Metadata.Size()))
+		n46, err46 := m.Metadata.MarshalTo(dAtA[i:])
+		if err46 != nil {
+			return 0, err46
+		}
+		i += n46
 	}
-	return len(dAtA) - i, nil
+	if m.BackupLocationInfo != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupLocationInfo.Size()))
+		n47, err47 := m.BackupLocationInfo.MarshalTo(dAtA[i:])
+		if err47 != nil {
+			return 0, err47
+		}
+		i += n47
+	}
+	return i, nil
 }
 
 func (m *ResourceInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -27154,57 +27447,47 @@ func (m *ResourceInfo) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ResourceInfo) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ResourceInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Version) > 0 {
-		i -= len(m.Version)
-		copy(dAtA[i:], m.Version)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Version)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.Kind) > 0 {
-		i -= len(m.Kind)
-		copy(dAtA[i:], m.Kind)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Kind)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.Group) > 0 {
-		i -= len(m.Group)
-		copy(dAtA[i:], m.Group)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Group)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.Name) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
 	if len(m.Namespace) > 0 {
-		i -= len(m.Namespace)
-		copy(dAtA[i:], m.Namespace)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Namespace)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Namespace)))
+		i += copy(dAtA[i:], m.Namespace)
 	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Group) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Group)))
+		i += copy(dAtA[i:], m.Group)
 	}
-	return len(dAtA) - i, nil
+	if len(m.Kind) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Kind)))
+		i += copy(dAtA[i:], m.Kind)
+	}
+	if len(m.Version) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Version)))
+		i += copy(dAtA[i:], m.Version)
+	}
+	return i, nil
 }
 
 func (m *BackupInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -27212,385 +27495,352 @@ func (m *BackupInfo) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupInfo) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
+	if len(m.BackupLocation) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupLocation)))
+		i += copy(dAtA[i:], m.BackupLocation)
+	}
+	if len(m.Cluster) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
+		i += copy(dAtA[i:], m.Cluster)
+	}
+	if len(m.Namespaces) > 0 {
+		for _, s := range m.Namespaces {
+			dAtA[i] = 0x1a
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
+			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
+		}
+	}
+	if len(m.LabelSelectors) > 0 {
+		for k, _ := range m.LabelSelectors {
+			dAtA[i] = 0x22
+			i++
+			v := m.LabelSelectors[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if m.Status != nil {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Status.Size()))
+		n48, err48 := m.Status.MarshalTo(dAtA[i:])
+		if err48 != nil {
+			return 0, err48
+		}
+		i += n48
+	}
+	if len(m.Resources) > 0 {
+		for _, msg := range m.Resources {
+			dAtA[i] = 0x32
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	if len(m.Volumes) > 0 {
+		for _, msg := range m.Volumes {
+			dAtA[i] = 0x3a
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	if len(m.BackupPath) > 0 {
+		dAtA[i] = 0x42
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupPath)))
+		i += copy(dAtA[i:], m.BackupPath)
+	}
+	if m.Stage != 0 {
+		dAtA[i] = 0x48
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Stage))
+	}
+	if len(m.PreExecRule) > 0 {
+		dAtA[i] = 0x52
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.PreExecRule)))
+		i += copy(dAtA[i:], m.PreExecRule)
+	}
+	if len(m.PostExecRule) > 0 {
+		dAtA[i] = 0x5a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.PostExecRule)))
+		i += copy(dAtA[i:], m.PostExecRule)
+	}
+	if m.BackupSchedule != nil {
+		dAtA[i] = 0x62
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupSchedule.Size()))
+		n49, err49 := m.BackupSchedule.MarshalTo(dAtA[i:])
+		if err49 != nil {
+			return 0, err49
+		}
+		i += n49
+	}
+	if len(m.CrName) > 0 {
+		dAtA[i] = 0x6a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.CrName)))
+		i += copy(dAtA[i:], m.CrName)
+	}
+	if m.TotalSize != 0 {
+		dAtA[i] = 0x70
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.TotalSize))
+	}
+	if len(m.CloudCredential) > 0 {
+		dAtA[i] = 0x7a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.CloudCredential)))
+		i += copy(dAtA[i:], m.CloudCredential)
+	}
+	if len(m.IncludeResources) > 0 {
+		for _, msg := range m.IncludeResources {
+			dAtA[i] = 0x82
+			i++
+			dAtA[i] = 0x1
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	if m.ResourceCount != 0 {
+		dAtA[i] = 0x88
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.ResourceCount))
+	}
+	if len(m.StorkVersion) > 0 {
+		dAtA[i] = 0x92
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.StorkVersion)))
+		i += copy(dAtA[i:], m.StorkVersion)
+	}
+	if len(m.CsiSnapshotClassName) > 0 {
+		dAtA[i] = 0x9a
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.CsiSnapshotClassName)))
+		i += copy(dAtA[i:], m.CsiSnapshotClassName)
+	}
+	if len(m.ResourceTypes) > 0 {
+		for _, s := range m.ResourceTypes {
+			dAtA[i] = 0xa2
+			i++
+			dAtA[i] = 0x1
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
+			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
+		}
+	}
+	if m.BackupLocationRef != nil {
+		dAtA[i] = 0xaa
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupLocationRef.Size()))
+		n50, err50 := m.BackupLocationRef.MarshalTo(dAtA[i:])
+		if err50 != nil {
+			return 0, err50
+		}
+		i += n50
+	}
+	if m.PreExecRuleRef != nil {
+		dAtA[i] = 0xb2
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.PreExecRuleRef.Size()))
+		n51, err51 := m.PreExecRuleRef.MarshalTo(dAtA[i:])
+		if err51 != nil {
+			return 0, err51
+		}
+		i += n51
+	}
+	if m.PostExecRuleRef != nil {
+		dAtA[i] = 0xba
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.PostExecRuleRef.Size()))
+		n52, err52 := m.PostExecRuleRef.MarshalTo(dAtA[i:])
+		if err52 != nil {
+			return 0, err52
+		}
+		i += n52
+	}
+	if m.CloudCredentialRef != nil {
+		dAtA[i] = 0xc2
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CloudCredentialRef.Size()))
+		n53, err53 := m.CloudCredentialRef.MarshalTo(dAtA[i:])
+		if err53 != nil {
+			return 0, err53
+		}
+		i += n53
+	}
+	if m.BackupType != nil {
+		dAtA[i] = 0xca
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupType.Size()))
+		n54, err54 := m.BackupType.MarshalTo(dAtA[i:])
+		if err54 != nil {
+			return 0, err54
+		}
+		i += n54
+	}
+	if len(m.CrUid) > 0 {
+		dAtA[i] = 0xd2
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.CrUid)))
+		i += copy(dAtA[i:], m.CrUid)
+	}
+	if m.RetentionPeriod != 0 {
+		dAtA[i] = 0xd8
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.RetentionPeriod))
+	}
+	if m.BackupShare != nil {
+		dAtA[i] = 0xe2
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupShare.Size()))
+		n55, err55 := m.BackupShare.MarshalTo(dAtA[i:])
+		if err55 != nil {
+			return 0, err55
+		}
+		i += n55
+	}
+	if m.UserBackupshareAccess != 0 {
+		dAtA[i] = 0xe8
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.UserBackupshareAccess))
+	}
+	if m.ClusterRef != nil {
+		dAtA[i] = 0xf2
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.ClusterRef.Size()))
+		n56, err56 := m.ClusterRef.MarshalTo(dAtA[i:])
+		if err56 != nil {
+			return 0, err56
+		}
+		i += n56
+	}
+	if len(m.NsLabelSelectors) > 0 {
+		dAtA[i] = 0xfa
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.NsLabelSelectors)))
+		i += copy(dAtA[i:], m.NsLabelSelectors)
+	}
+	if len(m.RancherProjects) > 0 {
+		for k, _ := range m.RancherProjects {
+			dAtA[i] = 0x82
+			i++
+			dAtA[i] = 0x2
+			i++
+			v := m.RancherProjects[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if len(m.TargetNamespace) > 0 {
+		dAtA[i] = 0x8a
+		i++
+		dAtA[i] = 0x2
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.TargetNamespace)))
+		i += copy(dAtA[i:], m.TargetNamespace)
+	}
 	if m.LargeResourceEnabled {
-		i--
+		dAtA[i] = 0x90
+		i++
+		dAtA[i] = 0x2
+		i++
 		if m.LargeResourceEnabled {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x2
-		i--
-		dAtA[i] = 0x90
+		i++
 	}
-	if len(m.TargetNamespace) > 0 {
-		i -= len(m.TargetNamespace)
-		copy(dAtA[i:], m.TargetNamespace)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.TargetNamespace)))
-		i--
-		dAtA[i] = 0x2
-		i--
-		dAtA[i] = 0x8a
-	}
-	if len(m.RancherProjects) > 0 {
-		for k := range m.RancherProjects {
-			v := m.RancherProjects[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x2
-			i--
-			dAtA[i] = 0x82
-		}
-	}
-	if len(m.NsLabelSelectors) > 0 {
-		i -= len(m.NsLabelSelectors)
-		copy(dAtA[i:], m.NsLabelSelectors)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.NsLabelSelectors)))
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xfa
-	}
-	if m.ClusterRef != nil {
-		{
-			size, err := m.ClusterRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xf2
-	}
-	if m.UserBackupshareAccess != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.UserBackupshareAccess))
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xe8
-	}
-	if m.BackupShare != nil {
-		{
-			size, err := m.BackupShare.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xe2
-	}
-	if m.RetentionPeriod != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.RetentionPeriod))
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xd8
-	}
-	if len(m.CrUid) > 0 {
-		i -= len(m.CrUid)
-		copy(dAtA[i:], m.CrUid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.CrUid)))
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xd2
-	}
-	if m.BackupType != nil {
-		{
-			size, err := m.BackupType.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xca
-	}
-	if m.CloudCredentialRef != nil {
-		{
-			size, err := m.CloudCredentialRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xc2
-	}
-	if m.PostExecRuleRef != nil {
-		{
-			size, err := m.PostExecRuleRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xba
-	}
-	if m.PreExecRuleRef != nil {
-		{
-			size, err := m.PreExecRuleRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xb2
-	}
-	if m.BackupLocationRef != nil {
-		{
-			size, err := m.BackupLocationRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xaa
-	}
-	if len(m.ResourceTypes) > 0 {
-		for iNdEx := len(m.ResourceTypes) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.ResourceTypes[iNdEx])
-			copy(dAtA[i:], m.ResourceTypes[iNdEx])
-			i = encodeVarintApi(dAtA, i, uint64(len(m.ResourceTypes[iNdEx])))
-			i--
-			dAtA[i] = 0x1
-			i--
-			dAtA[i] = 0xa2
-		}
-	}
-	if len(m.CsiSnapshotClassName) > 0 {
-		i -= len(m.CsiSnapshotClassName)
-		copy(dAtA[i:], m.CsiSnapshotClassName)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.CsiSnapshotClassName)))
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0x9a
-	}
-	if len(m.StorkVersion) > 0 {
-		i -= len(m.StorkVersion)
-		copy(dAtA[i:], m.StorkVersion)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.StorkVersion)))
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0x92
-	}
-	if m.ResourceCount != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.ResourceCount))
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0x88
-	}
-	if len(m.IncludeResources) > 0 {
-		for iNdEx := len(m.IncludeResources) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.IncludeResources[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x1
-			i--
-			dAtA[i] = 0x82
-		}
-	}
-	if len(m.CloudCredential) > 0 {
-		i -= len(m.CloudCredential)
-		copy(dAtA[i:], m.CloudCredential)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.CloudCredential)))
-		i--
-		dAtA[i] = 0x7a
-	}
-	if m.TotalSize != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.TotalSize))
-		i--
-		dAtA[i] = 0x70
-	}
-	if len(m.CrName) > 0 {
-		i -= len(m.CrName)
-		copy(dAtA[i:], m.CrName)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.CrName)))
-		i--
-		dAtA[i] = 0x6a
-	}
-	if m.BackupSchedule != nil {
-		{
-			size, err := m.BackupSchedule.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x62
-	}
-	if len(m.PostExecRule) > 0 {
-		i -= len(m.PostExecRule)
-		copy(dAtA[i:], m.PostExecRule)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.PostExecRule)))
-		i--
-		dAtA[i] = 0x5a
-	}
-	if len(m.PreExecRule) > 0 {
-		i -= len(m.PreExecRule)
-		copy(dAtA[i:], m.PreExecRule)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.PreExecRule)))
-		i--
-		dAtA[i] = 0x52
-	}
-	if m.Stage != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Stage))
-		i--
-		dAtA[i] = 0x48
-	}
-	if len(m.BackupPath) > 0 {
-		i -= len(m.BackupPath)
-		copy(dAtA[i:], m.BackupPath)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupPath)))
-		i--
-		dAtA[i] = 0x42
-	}
-	if len(m.Volumes) > 0 {
-		for iNdEx := len(m.Volumes) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Volumes[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x3a
-		}
-	}
-	if len(m.Resources) > 0 {
-		for iNdEx := len(m.Resources) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Resources[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x32
-		}
-	}
-	if m.Status != nil {
-		{
-			size, err := m.Status.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.LabelSelectors) > 0 {
-		for k := range m.LabelSelectors {
-			v := m.LabelSelectors[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x22
-		}
-	}
-	if len(m.Namespaces) > 0 {
-		for iNdEx := len(m.Namespaces) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.Namespaces[iNdEx])
-			copy(dAtA[i:], m.Namespaces[iNdEx])
-			i = encodeVarintApi(dAtA, i, uint64(len(m.Namespaces[iNdEx])))
-			i--
-			dAtA[i] = 0x1a
-		}
-	}
-	if len(m.Cluster) > 0 {
-		i -= len(m.Cluster)
-		copy(dAtA[i:], m.Cluster)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.BackupLocation) > 0 {
-		i -= len(m.BackupLocation)
-		copy(dAtA[i:], m.BackupLocation)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupLocation)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupInfo_BackupType) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -27598,27 +27848,22 @@ func (m *BackupInfo_BackupType) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupInfo_BackupType) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupInfo_BackupType) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.Type != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Type))
-		i--
 		dAtA[i] = 0x8
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Type))
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupInfo_BackupSchedule) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -27626,36 +27871,29 @@ func (m *BackupInfo_BackupSchedule) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupInfo_BackupSchedule) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupInfo_BackupSchedule) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
 	}
-	return len(dAtA) - i, nil
+	if len(m.Name) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
+	}
+	return i, nil
 }
 
 func (m *BackupInfo_Volume) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -27663,135 +27901,123 @@ func (m *BackupInfo_Volume) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupInfo_Volume) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupInfo_Volume) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Volumesnapshot) > 0 {
-		i -= len(m.Volumesnapshot)
-		copy(dAtA[i:], m.Volumesnapshot)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Volumesnapshot)))
-		i--
-		dAtA[i] = 0x72
-	}
-	if len(m.Provisioner) > 0 {
-		i -= len(m.Provisioner)
-		copy(dAtA[i:], m.Provisioner)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Provisioner)))
-		i--
-		dAtA[i] = 0x6a
-	}
-	if len(m.PvcId) > 0 {
-		i -= len(m.PvcId)
-		copy(dAtA[i:], m.PvcId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.PvcId)))
-		i--
-		dAtA[i] = 0x62
-	}
-	if len(m.StorageClass) > 0 {
-		i -= len(m.StorageClass)
-		copy(dAtA[i:], m.StorageClass)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.StorageClass)))
-		i--
-		dAtA[i] = 0x5a
-	}
-	if m.ActualSize != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.ActualSize))
-		i--
-		dAtA[i] = 0x50
-	}
-	if m.TotalSize != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.TotalSize))
-		i--
-		dAtA[i] = 0x48
-	}
-	if len(m.Options) > 0 {
-		for k := range m.Options {
-			v := m.Options[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x42
-		}
-	}
-	if len(m.Zones) > 0 {
-		for iNdEx := len(m.Zones) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.Zones[iNdEx])
-			copy(dAtA[i:], m.Zones[iNdEx])
-			i = encodeVarintApi(dAtA, i, uint64(len(m.Zones[iNdEx])))
-			i--
-			dAtA[i] = 0x3a
-		}
-	}
-	if len(m.DriverName) > 0 {
-		i -= len(m.DriverName)
-		copy(dAtA[i:], m.DriverName)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.DriverName)))
-		i--
-		dAtA[i] = 0x32
-	}
-	if m.Status != nil {
-		{
-			size, err := m.Status.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.BackupId) > 0 {
-		i -= len(m.BackupId)
-		copy(dAtA[i:], m.BackupId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupId)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.Pvc) > 0 {
-		i -= len(m.Pvc)
-		copy(dAtA[i:], m.Pvc)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Pvc)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.Name) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
 	if len(m.Namespace) > 0 {
-		i -= len(m.Namespace)
-		copy(dAtA[i:], m.Namespace)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Namespace)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Namespace)))
+		i += copy(dAtA[i:], m.Namespace)
 	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Pvc) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Pvc)))
+		i += copy(dAtA[i:], m.Pvc)
 	}
-	return len(dAtA) - i, nil
+	if len(m.BackupId) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupId)))
+		i += copy(dAtA[i:], m.BackupId)
+	}
+	if m.Status != nil {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Status.Size()))
+		n57, err57 := m.Status.MarshalTo(dAtA[i:])
+		if err57 != nil {
+			return 0, err57
+		}
+		i += n57
+	}
+	if len(m.DriverName) > 0 {
+		dAtA[i] = 0x32
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.DriverName)))
+		i += copy(dAtA[i:], m.DriverName)
+	}
+	if len(m.Zones) > 0 {
+		for _, s := range m.Zones {
+			dAtA[i] = 0x3a
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
+			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
+		}
+	}
+	if len(m.Options) > 0 {
+		for k, _ := range m.Options {
+			dAtA[i] = 0x42
+			i++
+			v := m.Options[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if m.TotalSize != 0 {
+		dAtA[i] = 0x48
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.TotalSize))
+	}
+	if m.ActualSize != 0 {
+		dAtA[i] = 0x50
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.ActualSize))
+	}
+	if len(m.StorageClass) > 0 {
+		dAtA[i] = 0x5a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.StorageClass)))
+		i += copy(dAtA[i:], m.StorageClass)
+	}
+	if len(m.PvcId) > 0 {
+		dAtA[i] = 0x62
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.PvcId)))
+		i += copy(dAtA[i:], m.PvcId)
+	}
+	if len(m.Provisioner) > 0 {
+		dAtA[i] = 0x6a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Provisioner)))
+		i += copy(dAtA[i:], m.Provisioner)
+	}
+	if len(m.Volumesnapshot) > 0 {
+		dAtA[i] = 0x72
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Volumesnapshot)))
+		i += copy(dAtA[i:], m.Volumesnapshot)
+	}
+	return i, nil
 }
 
 func (m *BackupInfo_StatusInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -27799,34 +28025,28 @@ func (m *BackupInfo_StatusInfo) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupInfo_StatusInfo) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupInfo_StatusInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Reason) > 0 {
-		i -= len(m.Reason)
-		copy(dAtA[i:], m.Reason)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Reason)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.Status != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Status))
-		i--
 		dAtA[i] = 0x8
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Status))
 	}
-	return len(dAtA) - i, nil
+	if len(m.Reason) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Reason)))
+		i += copy(dAtA[i:], m.Reason)
+	}
+	return i, nil
 }
 
 func (m *BackupObject) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -27834,46 +28054,37 @@ func (m *BackupObject) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupObject) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupObject) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.BackupInfo != nil {
-		{
-			size, err := m.BackupInfo.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.Metadata != nil {
-		{
-			size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Metadata.Size()))
+		n58, err58 := m.Metadata.MarshalTo(dAtA[i:])
+		if err58 != nil {
+			return 0, err58
+		}
+		i += n58
 	}
-	return len(dAtA) - i, nil
+	if m.BackupInfo != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupInfo.Size()))
+		n59, err59 := m.BackupInfo.MarshalTo(dAtA[i:])
+		if err59 != nil {
+			return 0, err59
+		}
+		i += n59
+	}
+	return i, nil
 }
 
 func (m *RulesInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -27881,36 +28092,29 @@ func (m *RulesInfo) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RulesInfo) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RulesInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.Rules) > 0 {
-		for iNdEx := len(m.Rules) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Rules[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.Rules {
 			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RulesInfo_RuleItem) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -27918,62 +28122,52 @@ func (m *RulesInfo_RuleItem) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RulesInfo_RuleItem) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RulesInfo_RuleItem) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Container) > 0 {
-		i -= len(m.Container)
-		copy(dAtA[i:], m.Container)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Container)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.PodSelector) > 0 {
+		for k, _ := range m.PodSelector {
+			dAtA[i] = 0xa
+			i++
+			v := m.PodSelector[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
 	}
 	if len(m.Actions) > 0 {
-		for iNdEx := len(m.Actions) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Actions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
+		for _, msg := range m.Actions {
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
 			}
-			i--
-			dAtA[i] = 0x12
+			i += n
 		}
 	}
-	if len(m.PodSelector) > 0 {
-		for k := range m.PodSelector {
-			v := m.PodSelector[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0xa
-		}
+	if len(m.Container) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Container)))
+		i += copy(dAtA[i:], m.Container)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RulesInfo_Action) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -27981,49 +28175,43 @@ func (m *RulesInfo_Action) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RulesInfo_Action) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RulesInfo_Action) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Value) > 0 {
-		i -= len(m.Value)
-		copy(dAtA[i:], m.Value)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Value)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if m.RunInSinglePod {
-		i--
-		if m.RunInSinglePod {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
-		}
-		i--
-		dAtA[i] = 0x10
-	}
 	if m.Background {
-		i--
+		dAtA[i] = 0x8
+		i++
 		if m.Background {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x8
+		i++
 	}
-	return len(dAtA) - i, nil
+	if m.RunInSinglePod {
+		dAtA[i] = 0x10
+		i++
+		if m.RunInSinglePod {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i++
+	}
+	if len(m.Value) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Value)))
+		i += copy(dAtA[i:], m.Value)
+	}
+	return i, nil
 }
 
 func (m *RuleObject) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -28031,46 +28219,37 @@ func (m *RuleObject) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RuleObject) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RuleObject) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.RulesInfo != nil {
-		{
-			size, err := m.RulesInfo.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.Metadata != nil {
-		{
-			size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Metadata.Size()))
+		n60, err60 := m.Metadata.MarshalTo(dAtA[i:])
+		if err60 != nil {
+			return 0, err60
+		}
+		i += n60
 	}
-	return len(dAtA) - i, nil
+	if m.RulesInfo != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.RulesInfo.Size()))
+		n61, err61 := m.RulesInfo.MarshalTo(dAtA[i:])
+		if err61 != nil {
+			return 0, err61
+		}
+		i += n61
+	}
+	return i, nil
 }
 
 func (m *ReplacePolicy) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -28078,22 +28257,17 @@ func (m *ReplacePolicy) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ReplacePolicy) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ReplacePolicy) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RestoreInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -28101,288 +28275,261 @@ func (m *RestoreInfo) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RestoreInfo) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RestoreInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.RestoreStatus != nil {
-		{
-			size, err := m.RestoreStatus.MarshalToSizedBuffer(dAtA[:i])
+	if len(m.Backup) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Backup)))
+		i += copy(dAtA[i:], m.Backup)
+	}
+	if len(m.BackupLocation) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupLocation)))
+		i += copy(dAtA[i:], m.BackupLocation)
+	}
+	if len(m.LabelSelectors) > 0 {
+		for k, _ := range m.LabelSelectors {
+			dAtA[i] = 0x1a
+			i++
+			v := m.LabelSelectors[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if len(m.NamespaceMapping) > 0 {
+		for k, _ := range m.NamespaceMapping {
+			dAtA[i] = 0x22
+			i++
+			v := m.NamespaceMapping[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if m.ReplacePolicy != 0 {
+		dAtA[i] = 0x28
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.ReplacePolicy))
+	}
+	if m.Status != nil {
+		dAtA[i] = 0x32
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Status.Size()))
+		n62, err62 := m.Status.MarshalTo(dAtA[i:])
+		if err62 != nil {
+			return 0, err62
+		}
+		i += n62
+	}
+	if len(m.Resources) > 0 {
+		for _, msg := range m.Resources {
+			dAtA[i] = 0x3a
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
 			if err != nil {
 				return 0, err
 			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+			i += n
 		}
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xb2
 	}
-	if m.RestoredResourceCount != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.RestoredResourceCount))
-		i--
+	if len(m.Volumes) > 0 {
+		for _, msg := range m.Volumes {
+			dAtA[i] = 0x42
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	if len(m.Cluster) > 0 {
+		dAtA[i] = 0x4a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
+		i += copy(dAtA[i:], m.Cluster)
+	}
+	if len(m.IncludeOptionalResourceTypes) > 0 {
+		for _, s := range m.IncludeOptionalResourceTypes {
+			dAtA[i] = 0x52
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
+			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
+		}
+	}
+	if m.TotalSize != 0 {
+		dAtA[i] = 0x58
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.TotalSize))
+	}
+	if len(m.IncludeResources) > 0 {
+		for _, msg := range m.IncludeResources {
+			dAtA[i] = 0x62
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	if m.ResourceCount != 0 {
+		dAtA[i] = 0x68
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.ResourceCount))
+	}
+	if len(m.StorkVersion) > 0 {
+		dAtA[i] = 0x72
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.StorkVersion)))
+		i += copy(dAtA[i:], m.StorkVersion)
+	}
+	if m.BackupLocationRef != nil {
+		dAtA[i] = 0x7a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupLocationRef.Size()))
+		n63, err63 := m.BackupLocationRef.MarshalTo(dAtA[i:])
+		if err63 != nil {
+			return 0, err63
+		}
+		i += n63
+	}
+	if len(m.StorageClassMapping) > 0 {
+		for k, _ := range m.StorageClassMapping {
+			dAtA[i] = 0x82
+			i++
+			dAtA[i] = 0x1
+			i++
+			v := m.StorageClassMapping[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if m.BackupRef != nil {
+		dAtA[i] = 0x8a
+		i++
 		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xa8
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupRef.Size()))
+		n64, err64 := m.BackupRef.MarshalTo(dAtA[i:])
+		if err64 != nil {
+			return 0, err64
+		}
+		i += n64
+	}
+	if len(m.RancherProjectMapping) > 0 {
+		for k, _ := range m.RancherProjectMapping {
+			dAtA[i] = 0x92
+			i++
+			dAtA[i] = 0x1
+			i++
+			v := m.RancherProjectMapping[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if len(m.RancherProjectNameMapping) > 0 {
+		for k, _ := range m.RancherProjectNameMapping {
+			dAtA[i] = 0x9a
+			i++
+			dAtA[i] = 0x1
+			i++
+			v := m.RancherProjectNameMapping[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
 	}
 	if m.LargeResourceEnabled {
-		i--
+		dAtA[i] = 0xa0
+		i++
+		dAtA[i] = 0x1
+		i++
 		if m.LargeResourceEnabled {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
+		i++
+	}
+	if m.RestoredResourceCount != 0 {
+		dAtA[i] = 0xa8
+		i++
 		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0xa0
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.RestoredResourceCount))
 	}
-	if len(m.RancherProjectNameMapping) > 0 {
-		for k := range m.RancherProjectNameMapping {
-			v := m.RancherProjectNameMapping[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x1
-			i--
-			dAtA[i] = 0x9a
-		}
-	}
-	if len(m.RancherProjectMapping) > 0 {
-		for k := range m.RancherProjectMapping {
-			v := m.RancherProjectMapping[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x1
-			i--
-			dAtA[i] = 0x92
-		}
-	}
-	if m.BackupRef != nil {
-		{
-			size, err := m.BackupRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
+	if m.RestoreStatus != nil {
+		dAtA[i] = 0xb2
+		i++
 		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0x8a
-	}
-	if len(m.StorageClassMapping) > 0 {
-		for k := range m.StorageClassMapping {
-			v := m.StorageClassMapping[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x1
-			i--
-			dAtA[i] = 0x82
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.RestoreStatus.Size()))
+		n65, err65 := m.RestoreStatus.MarshalTo(dAtA[i:])
+		if err65 != nil {
+			return 0, err65
 		}
+		i += n65
 	}
-	if m.BackupLocationRef != nil {
-		{
-			size, err := m.BackupLocationRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x7a
-	}
-	if len(m.StorkVersion) > 0 {
-		i -= len(m.StorkVersion)
-		copy(dAtA[i:], m.StorkVersion)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.StorkVersion)))
-		i--
-		dAtA[i] = 0x72
-	}
-	if m.ResourceCount != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.ResourceCount))
-		i--
-		dAtA[i] = 0x68
-	}
-	if len(m.IncludeResources) > 0 {
-		for iNdEx := len(m.IncludeResources) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.IncludeResources[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x62
-		}
-	}
-	if m.TotalSize != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.TotalSize))
-		i--
-		dAtA[i] = 0x58
-	}
-	if len(m.IncludeOptionalResourceTypes) > 0 {
-		for iNdEx := len(m.IncludeOptionalResourceTypes) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.IncludeOptionalResourceTypes[iNdEx])
-			copy(dAtA[i:], m.IncludeOptionalResourceTypes[iNdEx])
-			i = encodeVarintApi(dAtA, i, uint64(len(m.IncludeOptionalResourceTypes[iNdEx])))
-			i--
-			dAtA[i] = 0x52
-		}
-	}
-	if len(m.Cluster) > 0 {
-		i -= len(m.Cluster)
-		copy(dAtA[i:], m.Cluster)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
-		i--
-		dAtA[i] = 0x4a
-	}
-	if len(m.Volumes) > 0 {
-		for iNdEx := len(m.Volumes) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Volumes[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x42
-		}
-	}
-	if len(m.Resources) > 0 {
-		for iNdEx := len(m.Resources) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Resources[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x3a
-		}
-	}
-	if m.Status != nil {
-		{
-			size, err := m.Status.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x32
-	}
-	if m.ReplacePolicy != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.ReplacePolicy))
-		i--
-		dAtA[i] = 0x28
-	}
-	if len(m.NamespaceMapping) > 0 {
-		for k := range m.NamespaceMapping {
-			v := m.NamespaceMapping[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x22
-		}
-	}
-	if len(m.LabelSelectors) > 0 {
-		for k := range m.LabelSelectors {
-			v := m.LabelSelectors[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x1a
-		}
-	}
-	if len(m.BackupLocation) > 0 {
-		i -= len(m.BackupLocation)
-		copy(dAtA[i:], m.BackupLocation)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupLocation)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Backup) > 0 {
-		i -= len(m.Backup)
-		copy(dAtA[i:], m.Backup)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Backup)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RestoreInfo_RestoreResourceState) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -28390,27 +28537,22 @@ func (m *RestoreInfo_RestoreResourceState) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RestoreInfo_RestoreResourceState) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RestoreInfo_RestoreResourceState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.RestoreStatus != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.RestoreStatus))
-		i--
 		dAtA[i] = 0x8
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.RestoreStatus))
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RestoreInfo_RestoredResource) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -28418,69 +28560,57 @@ func (m *RestoreInfo_RestoredResource) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RestoreInfo_RestoredResource) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RestoreInfo_RestoredResource) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Status != nil {
-		{
-			size, err := m.Status.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x32
-	}
-	if len(m.Version) > 0 {
-		i -= len(m.Version)
-		copy(dAtA[i:], m.Version)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Version)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.Kind) > 0 {
-		i -= len(m.Kind)
-		copy(dAtA[i:], m.Kind)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Kind)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.Group) > 0 {
-		i -= len(m.Group)
-		copy(dAtA[i:], m.Group)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Group)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.Name) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
 	if len(m.Namespace) > 0 {
-		i -= len(m.Namespace)
-		copy(dAtA[i:], m.Namespace)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Namespace)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Namespace)))
+		i += copy(dAtA[i:], m.Namespace)
 	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Group) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Group)))
+		i += copy(dAtA[i:], m.Group)
 	}
-	return len(dAtA) - i, nil
+	if len(m.Kind) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Kind)))
+		i += copy(dAtA[i:], m.Kind)
+	}
+	if len(m.Version) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Version)))
+		i += copy(dAtA[i:], m.Version)
+	}
+	if m.Status != nil {
+		dAtA[i] = 0x32
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Status.Size()))
+		n66, err66 := m.Status.MarshalTo(dAtA[i:])
+		if err66 != nil {
+			return 0, err66
+		}
+		i += n66
+	}
+	return i, nil
 }
 
 func (m *RestoreInfo_Volume) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -28488,102 +28618,94 @@ func (m *RestoreInfo_Volume) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RestoreInfo_Volume) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RestoreInfo_Volume) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.TotalSize != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.TotalSize))
-		i--
-		dAtA[i] = 0x48
-	}
-	if len(m.Options) > 0 {
-		for k := range m.Options {
-			v := m.Options[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x42
-		}
-	}
-	if len(m.Zones) > 0 {
-		for iNdEx := len(m.Zones) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.Zones[iNdEx])
-			copy(dAtA[i:], m.Zones[iNdEx])
-			i = encodeVarintApi(dAtA, i, uint64(len(m.Zones[iNdEx])))
-			i--
-			dAtA[i] = 0x3a
-		}
-	}
-	if len(m.DriverName) > 0 {
-		i -= len(m.DriverName)
-		copy(dAtA[i:], m.DriverName)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.DriverName)))
-		i--
-		dAtA[i] = 0x32
-	}
-	if m.Status != nil {
-		{
-			size, err := m.Status.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.RestoreVolume) > 0 {
-		i -= len(m.RestoreVolume)
-		copy(dAtA[i:], m.RestoreVolume)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.RestoreVolume)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.SourceVolume) > 0 {
-		i -= len(m.SourceVolume)
-		copy(dAtA[i:], m.SourceVolume)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.SourceVolume)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.Pvc) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Pvc)))
+		i += copy(dAtA[i:], m.Pvc)
 	}
 	if len(m.SourceNamespace) > 0 {
-		i -= len(m.SourceNamespace)
-		copy(dAtA[i:], m.SourceNamespace)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.SourceNamespace)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.SourceNamespace)))
+		i += copy(dAtA[i:], m.SourceNamespace)
 	}
-	if len(m.Pvc) > 0 {
-		i -= len(m.Pvc)
-		copy(dAtA[i:], m.Pvc)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Pvc)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.SourceVolume) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.SourceVolume)))
+		i += copy(dAtA[i:], m.SourceVolume)
 	}
-	return len(dAtA) - i, nil
+	if len(m.RestoreVolume) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.RestoreVolume)))
+		i += copy(dAtA[i:], m.RestoreVolume)
+	}
+	if m.Status != nil {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Status.Size()))
+		n67, err67 := m.Status.MarshalTo(dAtA[i:])
+		if err67 != nil {
+			return 0, err67
+		}
+		i += n67
+	}
+	if len(m.DriverName) > 0 {
+		dAtA[i] = 0x32
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.DriverName)))
+		i += copy(dAtA[i:], m.DriverName)
+	}
+	if len(m.Zones) > 0 {
+		for _, s := range m.Zones {
+			dAtA[i] = 0x3a
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
+			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
+		}
+	}
+	if len(m.Options) > 0 {
+		for k, _ := range m.Options {
+			dAtA[i] = 0x42
+			i++
+			v := m.Options[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if m.TotalSize != 0 {
+		dAtA[i] = 0x48
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.TotalSize))
+	}
+	return i, nil
 }
 
 func (m *RestoreInfo_StatusInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -28591,34 +28713,28 @@ func (m *RestoreInfo_StatusInfo) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RestoreInfo_StatusInfo) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RestoreInfo_StatusInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Reason) > 0 {
-		i -= len(m.Reason)
-		copy(dAtA[i:], m.Reason)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Reason)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.Status != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Status))
-		i--
 		dAtA[i] = 0x8
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Status))
 	}
-	return len(dAtA) - i, nil
+	if len(m.Reason) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Reason)))
+		i += copy(dAtA[i:], m.Reason)
+	}
+	return i, nil
 }
 
 func (m *RestoreObject) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -28626,46 +28742,37 @@ func (m *RestoreObject) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RestoreObject) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RestoreObject) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.RestoreInfo != nil {
-		{
-			size, err := m.RestoreInfo.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.Metadata != nil {
-		{
-			size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Metadata.Size()))
+		n68, err68 := m.Metadata.MarshalTo(dAtA[i:])
+		if err68 != nil {
+			return 0, err68
+		}
+		i += n68
 	}
-	return len(dAtA) - i, nil
+	if m.RestoreInfo != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.RestoreInfo.Size()))
+		n69, err69 := m.RestoreInfo.MarshalTo(dAtA[i:])
+		if err69 != nil {
+			return 0, err69
+		}
+		i += n69
+	}
+	return i, nil
 }
 
 func (m *HealthStatusRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -28673,22 +28780,17 @@ func (m *HealthStatusRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *HealthStatusRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *HealthStatusRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *HealthStatusResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -28696,22 +28798,17 @@ func (m *HealthStatusResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *HealthStatusResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *HealthStatusResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *TimeRange) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -28719,46 +28816,37 @@ func (m *TimeRange) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *TimeRange) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *TimeRange) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.EndTime != nil {
-		{
-			size, err := m.EndTime.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.StartTime != nil {
-		{
-			size, err := m.StartTime.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.StartTime.Size()))
+		n70, err70 := m.StartTime.MarshalTo(dAtA[i:])
+		if err70 != nil {
+			return 0, err70
+		}
+		i += n70
 	}
-	return len(dAtA) - i, nil
+	if m.EndTime != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.EndTime.Size()))
+		n71, err71 := m.EndTime.MarshalTo(dAtA[i:])
+		if err71 != nil {
+			return 0, err71
+		}
+		i += n71
+	}
+	return i, nil
 }
 
 func (m *EnumerateOptions) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -28766,94 +28854,82 @@ func (m *EnumerateOptions) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *EnumerateOptions) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *EnumerateOptions) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.ClusterUidFilter) > 0 {
-		i -= len(m.ClusterUidFilter)
-		copy(dAtA[i:], m.ClusterUidFilter)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.ClusterUidFilter)))
-		i--
-		dAtA[i] = 0x42
+	if len(m.Labels) > 0 {
+		for k, _ := range m.Labels {
+			dAtA[i] = 0xa
+			i++
+			v := m.Labels[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if m.MaxObjects != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.MaxObjects))
+	}
+	if m.TimeRange != nil {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.TimeRange.Size()))
+		n72, err72 := m.TimeRange.MarshalTo(dAtA[i:])
+		if err72 != nil {
+			return 0, err72
+		}
+		i += n72
+	}
+	if len(m.NameFilter) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.NameFilter)))
+		i += copy(dAtA[i:], m.NameFilter)
+	}
+	if len(m.ClusterNameFilter) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.ClusterNameFilter)))
+		i += copy(dAtA[i:], m.ClusterNameFilter)
+	}
+	if m.ObjectIndex != 0 {
+		dAtA[i] = 0x30
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.ObjectIndex))
 	}
 	if m.IncludeDetailedResources {
-		i--
+		dAtA[i] = 0x38
+		i++
 		if m.IncludeDetailedResources {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x38
+		i++
 	}
-	if m.ObjectIndex != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.ObjectIndex))
-		i--
-		dAtA[i] = 0x30
+	if len(m.ClusterUidFilter) > 0 {
+		dAtA[i] = 0x42
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.ClusterUidFilter)))
+		i += copy(dAtA[i:], m.ClusterUidFilter)
 	}
-	if len(m.ClusterNameFilter) > 0 {
-		i -= len(m.ClusterNameFilter)
-		copy(dAtA[i:], m.ClusterNameFilter)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.ClusterNameFilter)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.NameFilter) > 0 {
-		i -= len(m.NameFilter)
-		copy(dAtA[i:], m.NameFilter)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.NameFilter)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if m.TimeRange != nil {
-		{
-			size, err := m.TimeRange.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1a
-	}
-	if m.MaxObjects != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.MaxObjects))
-		i--
-		dAtA[i] = 0x10
-	}
-	if len(m.Labels) > 0 {
-		for k := range m.Labels {
-			v := m.Labels[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0xa
-		}
-	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *SchedulePolicyCreateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -28861,46 +28937,37 @@ func (m *SchedulePolicyCreateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *SchedulePolicyCreateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *SchedulePolicyCreateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.SchedulePolicy != nil {
-		{
-			size, err := m.SchedulePolicy.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n73, err73 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err73 != nil {
+			return 0, err73
+		}
+		i += n73
 	}
-	return len(dAtA) - i, nil
+	if m.SchedulePolicy != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.SchedulePolicy.Size()))
+		n74, err74 := m.SchedulePolicy.MarshalTo(dAtA[i:])
+		if err74 != nil {
+			return 0, err74
+		}
+		i += n74
+	}
+	return i, nil
 }
 
 func (m *SchedulePolicyCreateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -28908,22 +28975,17 @@ func (m *SchedulePolicyCreateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *SchedulePolicyCreateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *SchedulePolicyCreateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *SchedulePolicyUpdateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -28931,46 +28993,37 @@ func (m *SchedulePolicyUpdateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *SchedulePolicyUpdateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *SchedulePolicyUpdateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.SchedulePolicy != nil {
-		{
-			size, err := m.SchedulePolicy.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n75, err75 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err75 != nil {
+			return 0, err75
+		}
+		i += n75
 	}
-	return len(dAtA) - i, nil
+	if m.SchedulePolicy != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.SchedulePolicy.Size()))
+		n76, err76 := m.SchedulePolicy.MarshalTo(dAtA[i:])
+		if err76 != nil {
+			return 0, err76
+		}
+		i += n76
+	}
+	return i, nil
 }
 
 func (m *SchedulePolicyUpdateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -28978,22 +29031,17 @@ func (m *SchedulePolicyUpdateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *SchedulePolicyUpdateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *SchedulePolicyUpdateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *SchedulePolicyEnumerateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -29001,48 +29049,40 @@ func (m *SchedulePolicyEnumerateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *SchedulePolicyEnumerateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *SchedulePolicyEnumerateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
+	}
 	if len(m.Labels) > 0 {
-		for k := range m.Labels {
+		for k, _ := range m.Labels {
+			dAtA[i] = 0x12
+			i++
 			v := m.Labels[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
 			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
 			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
 		}
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *SchedulePolicyEnumerateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -29050,36 +29090,29 @@ func (m *SchedulePolicyEnumerateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *SchedulePolicyEnumerateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *SchedulePolicyEnumerateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.SchedulePolicies) > 0 {
-		for iNdEx := len(m.SchedulePolicies) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.SchedulePolicies[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.SchedulePolicies {
 			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *SchedulePolicyInspectRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -29087,43 +29120,35 @@ func (m *SchedulePolicyInspectRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *SchedulePolicyInspectRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *SchedulePolicyInspectRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *SchedulePolicyInspectResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -29131,34 +29156,27 @@ func (m *SchedulePolicyInspectResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *SchedulePolicyInspectResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *SchedulePolicyInspectResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.SchedulePolicy != nil {
-		{
-			size, err := m.SchedulePolicy.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.SchedulePolicy.Size()))
+		n77, err77 := m.SchedulePolicy.MarshalTo(dAtA[i:])
+		if err77 != nil {
+			return 0, err77
+		}
+		i += n77
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *SchedulePolicyDeleteRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -29166,43 +29184,35 @@ func (m *SchedulePolicyDeleteRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *SchedulePolicyDeleteRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *SchedulePolicyDeleteRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *SchedulePolicyDeleteResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -29210,22 +29220,17 @@ func (m *SchedulePolicyDeleteResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *SchedulePolicyDeleteResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *SchedulePolicyDeleteResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *SchedulePolicyOwnershipUpdateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -29233,55 +29238,45 @@ func (m *SchedulePolicyOwnershipUpdateRequest) Marshal() (dAtA []byte, err error
 }
 
 func (m *SchedulePolicyOwnershipUpdateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *SchedulePolicyOwnershipUpdateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if m.Ownership != nil {
-		{
-			size, err := m.Ownership.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1a
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
+	if m.Ownership != nil {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Ownership.Size()))
+		n78, err78 := m.Ownership.MarshalTo(dAtA[i:])
+		if err78 != nil {
+			return 0, err78
+		}
+		i += n78
 	}
-	return len(dAtA) - i, nil
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
+	}
+	return i, nil
 }
 
 func (m *SchedulePolicyOwnershipUpdateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -29289,22 +29284,17 @@ func (m *SchedulePolicyOwnershipUpdateResponse) Marshal() (dAtA []byte, err erro
 }
 
 func (m *SchedulePolicyOwnershipUpdateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *SchedulePolicyOwnershipUpdateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupScheduleCreateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -29312,198 +29302,184 @@ func (m *BackupScheduleCreateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupScheduleCreateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupScheduleCreateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.NsLabelSelectors) > 0 {
-		i -= len(m.NsLabelSelectors)
-		copy(dAtA[i:], m.NsLabelSelectors)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.NsLabelSelectors)))
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0x92
+	if m.CreateMetadata != nil {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n79, err79 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err79 != nil {
+			return 0, err79
+		}
+		i += n79
 	}
-	if m.BackupType != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.BackupType))
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0x88
+	if len(m.SchedulePolicy) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.SchedulePolicy)))
+		i += copy(dAtA[i:], m.SchedulePolicy)
 	}
-	if m.PostExecRuleRef != nil {
-		{
-			size, err := m.PostExecRuleRef.MarshalToSizedBuffer(dAtA[:i])
+	if m.ReclaimPolicy != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.ReclaimPolicy))
+	}
+	if len(m.BackupLocation) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupLocation)))
+		i += copy(dAtA[i:], m.BackupLocation)
+	}
+	if len(m.Cluster) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
+		i += copy(dAtA[i:], m.Cluster)
+	}
+	if len(m.Namespaces) > 0 {
+		for _, s := range m.Namespaces {
+			dAtA[i] = 0x32
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
+			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
+		}
+	}
+	if len(m.LabelSelectors) > 0 {
+		for k, _ := range m.LabelSelectors {
+			dAtA[i] = 0x3a
+			i++
+			v := m.LabelSelectors[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if len(m.PreExecRule) > 0 {
+		dAtA[i] = 0x42
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.PreExecRule)))
+		i += copy(dAtA[i:], m.PreExecRule)
+	}
+	if len(m.PostExecRule) > 0 {
+		dAtA[i] = 0x4a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.PostExecRule)))
+		i += copy(dAtA[i:], m.PostExecRule)
+	}
+	if len(m.IncludeResources) > 0 {
+		for _, msg := range m.IncludeResources {
+			dAtA[i] = 0x52
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
 			if err != nil {
 				return 0, err
 			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0x82
-	}
-	if m.PreExecRuleRef != nil {
-		{
-			size, err := m.PreExecRuleRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x7a
-	}
-	if m.BackupLocationRef != nil {
-		{
-			size, err := m.BackupLocationRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x72
-	}
-	if m.SchedulePolicyRef != nil {
-		{
-			size, err := m.SchedulePolicyRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6a
-	}
-	if len(m.ResourceTypes) > 0 {
-		for iNdEx := len(m.ResourceTypes) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.ResourceTypes[iNdEx])
-			copy(dAtA[i:], m.ResourceTypes[iNdEx])
-			i = encodeVarintApi(dAtA, i, uint64(len(m.ResourceTypes[iNdEx])))
-			i--
-			dAtA[i] = 0x62
+			i += n
 		}
 	}
 	if len(m.CsiSnapshotClassName) > 0 {
-		i -= len(m.CsiSnapshotClassName)
-		copy(dAtA[i:], m.CsiSnapshotClassName)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.CsiSnapshotClassName)))
-		i--
 		dAtA[i] = 0x5a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.CsiSnapshotClassName)))
+		i += copy(dAtA[i:], m.CsiSnapshotClassName)
 	}
-	if len(m.IncludeResources) > 0 {
-		for iNdEx := len(m.IncludeResources) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.IncludeResources[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
+	if len(m.ResourceTypes) > 0 {
+		for _, s := range m.ResourceTypes {
+			dAtA[i] = 0x62
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
 			}
-			i--
-			dAtA[i] = 0x52
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
 		}
 	}
-	if len(m.PostExecRule) > 0 {
-		i -= len(m.PostExecRule)
-		copy(dAtA[i:], m.PostExecRule)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.PostExecRule)))
-		i--
-		dAtA[i] = 0x4a
-	}
-	if len(m.PreExecRule) > 0 {
-		i -= len(m.PreExecRule)
-		copy(dAtA[i:], m.PreExecRule)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.PreExecRule)))
-		i--
-		dAtA[i] = 0x42
-	}
-	if len(m.LabelSelectors) > 0 {
-		for k := range m.LabelSelectors {
-			v := m.LabelSelectors[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x3a
+	if m.SchedulePolicyRef != nil {
+		dAtA[i] = 0x6a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.SchedulePolicyRef.Size()))
+		n80, err80 := m.SchedulePolicyRef.MarshalTo(dAtA[i:])
+		if err80 != nil {
+			return 0, err80
 		}
+		i += n80
 	}
-	if len(m.Namespaces) > 0 {
-		for iNdEx := len(m.Namespaces) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.Namespaces[iNdEx])
-			copy(dAtA[i:], m.Namespaces[iNdEx])
-			i = encodeVarintApi(dAtA, i, uint64(len(m.Namespaces[iNdEx])))
-			i--
-			dAtA[i] = 0x32
+	if m.BackupLocationRef != nil {
+		dAtA[i] = 0x72
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupLocationRef.Size()))
+		n81, err81 := m.BackupLocationRef.MarshalTo(dAtA[i:])
+		if err81 != nil {
+			return 0, err81
 		}
+		i += n81
 	}
-	if len(m.Cluster) > 0 {
-		i -= len(m.Cluster)
-		copy(dAtA[i:], m.Cluster)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.BackupLocation) > 0 {
-		i -= len(m.BackupLocation)
-		copy(dAtA[i:], m.BackupLocation)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupLocation)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if m.ReclaimPolicy != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.ReclaimPolicy))
-		i--
-		dAtA[i] = 0x18
-	}
-	if len(m.SchedulePolicy) > 0 {
-		i -= len(m.SchedulePolicy)
-		copy(dAtA[i:], m.SchedulePolicy)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.SchedulePolicy)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+	if m.PreExecRuleRef != nil {
+		dAtA[i] = 0x7a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.PreExecRuleRef.Size()))
+		n82, err82 := m.PreExecRuleRef.MarshalTo(dAtA[i:])
+		if err82 != nil {
+			return 0, err82
 		}
-		i--
-		dAtA[i] = 0xa
+		i += n82
 	}
-	return len(dAtA) - i, nil
+	if m.PostExecRuleRef != nil {
+		dAtA[i] = 0x82
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.PostExecRuleRef.Size()))
+		n83, err83 := m.PostExecRuleRef.MarshalTo(dAtA[i:])
+		if err83 != nil {
+			return 0, err83
+		}
+		i += n83
+	}
+	if m.BackupType != 0 {
+		dAtA[i] = 0x88
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupType))
+	}
+	if len(m.NsLabelSelectors) > 0 {
+		dAtA[i] = 0x92
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.NsLabelSelectors)))
+		i += copy(dAtA[i:], m.NsLabelSelectors)
+	}
+	return i, nil
 }
 
 func (m *BackupScheduleCreateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -29511,22 +29487,17 @@ func (m *BackupScheduleCreateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupScheduleCreateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupScheduleCreateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupScheduleUpdateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -29534,183 +29505,164 @@ func (m *BackupScheduleUpdateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupScheduleUpdateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupScheduleUpdateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.PostExecRuleRef != nil {
-		{
-			size, err := m.PostExecRuleRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+	if m.CreateMetadata != nil {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n84, err84 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err84 != nil {
+			return 0, err84
 		}
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0x82
+		i += n84
 	}
-	if m.PreExecRuleRef != nil {
-		{
-			size, err := m.PreExecRuleRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
+	if len(m.SchedulePolicy) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.SchedulePolicy)))
+		i += copy(dAtA[i:], m.SchedulePolicy)
+	}
+	if m.ReclaimPolicy != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.ReclaimPolicy))
+	}
+	if len(m.BackupLocation) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupLocation)))
+		i += copy(dAtA[i:], m.BackupLocation)
+	}
+	if len(m.Cluster) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
+		i += copy(dAtA[i:], m.Cluster)
+	}
+	if len(m.Namespaces) > 0 {
+		for _, s := range m.Namespaces {
+			dAtA[i] = 0x32
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
 			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
 		}
-		i--
-		dAtA[i] = 0x7a
 	}
-	if m.BackupLocationRef != nil {
-		{
-			size, err := m.BackupLocationRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+	if len(m.LabelSelectors) > 0 {
+		for k, _ := range m.LabelSelectors {
+			dAtA[i] = 0x3a
+			i++
+			v := m.LabelSelectors[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
 		}
-		i--
-		dAtA[i] = 0x72
 	}
-	if m.SchedulePolicyRef != nil {
-		{
-			size, err := m.SchedulePolicyRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6a
+	if len(m.PreExecRule) > 0 {
+		dAtA[i] = 0x42
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.PreExecRule)))
+		i += copy(dAtA[i:], m.PreExecRule)
 	}
-	if len(m.CsiSnapshotClassName) > 0 {
-		i -= len(m.CsiSnapshotClassName)
-		copy(dAtA[i:], m.CsiSnapshotClassName)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.CsiSnapshotClassName)))
-		i--
-		dAtA[i] = 0x62
-	}
-	if len(m.IncludeResources) > 0 {
-		for iNdEx := len(m.IncludeResources) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.IncludeResources[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x5a
-		}
+	if len(m.PostExecRule) > 0 {
+		dAtA[i] = 0x4a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.PostExecRule)))
+		i += copy(dAtA[i:], m.PostExecRule)
 	}
 	if m.Suspend {
-		i--
+		dAtA[i] = 0x50
+		i++
 		if m.Suspend {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x50
+		i++
 	}
-	if len(m.PostExecRule) > 0 {
-		i -= len(m.PostExecRule)
-		copy(dAtA[i:], m.PostExecRule)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.PostExecRule)))
-		i--
-		dAtA[i] = 0x4a
-	}
-	if len(m.PreExecRule) > 0 {
-		i -= len(m.PreExecRule)
-		copy(dAtA[i:], m.PreExecRule)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.PreExecRule)))
-		i--
-		dAtA[i] = 0x42
-	}
-	if len(m.LabelSelectors) > 0 {
-		for k := range m.LabelSelectors {
-			v := m.LabelSelectors[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x3a
-		}
-	}
-	if len(m.Namespaces) > 0 {
-		for iNdEx := len(m.Namespaces) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.Namespaces[iNdEx])
-			copy(dAtA[i:], m.Namespaces[iNdEx])
-			i = encodeVarintApi(dAtA, i, uint64(len(m.Namespaces[iNdEx])))
-			i--
-			dAtA[i] = 0x32
-		}
-	}
-	if len(m.Cluster) > 0 {
-		i -= len(m.Cluster)
-		copy(dAtA[i:], m.Cluster)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.BackupLocation) > 0 {
-		i -= len(m.BackupLocation)
-		copy(dAtA[i:], m.BackupLocation)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupLocation)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if m.ReclaimPolicy != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.ReclaimPolicy))
-		i--
-		dAtA[i] = 0x18
-	}
-	if len(m.SchedulePolicy) > 0 {
-		i -= len(m.SchedulePolicy)
-		copy(dAtA[i:], m.SchedulePolicy)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.SchedulePolicy)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
+	if len(m.IncludeResources) > 0 {
+		for _, msg := range m.IncludeResources {
+			dAtA[i] = 0x5a
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
 			if err != nil {
 				return 0, err
 			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+			i += n
 		}
-		i--
-		dAtA[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	if len(m.CsiSnapshotClassName) > 0 {
+		dAtA[i] = 0x62
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.CsiSnapshotClassName)))
+		i += copy(dAtA[i:], m.CsiSnapshotClassName)
+	}
+	if m.SchedulePolicyRef != nil {
+		dAtA[i] = 0x6a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.SchedulePolicyRef.Size()))
+		n85, err85 := m.SchedulePolicyRef.MarshalTo(dAtA[i:])
+		if err85 != nil {
+			return 0, err85
+		}
+		i += n85
+	}
+	if m.BackupLocationRef != nil {
+		dAtA[i] = 0x72
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupLocationRef.Size()))
+		n86, err86 := m.BackupLocationRef.MarshalTo(dAtA[i:])
+		if err86 != nil {
+			return 0, err86
+		}
+		i += n86
+	}
+	if m.PreExecRuleRef != nil {
+		dAtA[i] = 0x7a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.PreExecRuleRef.Size()))
+		n87, err87 := m.PreExecRuleRef.MarshalTo(dAtA[i:])
+		if err87 != nil {
+			return 0, err87
+		}
+		i += n87
+	}
+	if m.PostExecRuleRef != nil {
+		dAtA[i] = 0x82
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.PostExecRuleRef.Size()))
+		n88, err88 := m.PostExecRuleRef.MarshalTo(dAtA[i:])
+		if err88 != nil {
+			return 0, err88
+		}
+		i += n88
+	}
+	return i, nil
 }
 
 func (m *BackupScheduleUpdateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -29718,22 +29670,17 @@ func (m *BackupScheduleUpdateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupScheduleUpdateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupScheduleUpdateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupScheduleEnumerateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -29741,79 +29688,66 @@ func (m *BackupScheduleEnumerateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupScheduleEnumerateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupScheduleEnumerateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.EnumerateOptions != nil {
-		{
-			size, err := m.EnumerateOptions.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x2a
-	}
-	if m.BackupLocationRef != nil {
-		{
-			size, err := m.BackupLocationRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.BackupLocation) > 0 {
-		i -= len(m.BackupLocation)
-		copy(dAtA[i:], m.BackupLocation)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupLocation)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
 	if len(m.Labels) > 0 {
-		for k := range m.Labels {
+		for k, _ := range m.Labels {
+			dAtA[i] = 0x12
+			i++
 			v := m.Labels[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
 			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
 			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
 		}
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.BackupLocation) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupLocation)))
+		i += copy(dAtA[i:], m.BackupLocation)
 	}
-	return len(dAtA) - i, nil
+	if m.BackupLocationRef != nil {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupLocationRef.Size()))
+		n89, err89 := m.BackupLocationRef.MarshalTo(dAtA[i:])
+		if err89 != nil {
+			return 0, err89
+		}
+		i += n89
+	}
+	if m.EnumerateOptions != nil {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.EnumerateOptions.Size()))
+		n90, err90 := m.EnumerateOptions.MarshalTo(dAtA[i:])
+		if err90 != nil {
+			return 0, err90
+		}
+		i += n90
+	}
+	return i, nil
 }
 
 func (m *BackupScheduleEnumerateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -29821,41 +29755,34 @@ func (m *BackupScheduleEnumerateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupScheduleEnumerateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupScheduleEnumerateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.TotalCount != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.TotalCount))
-		i--
-		dAtA[i] = 0x10
-	}
 	if len(m.BackupSchedules) > 0 {
-		for iNdEx := len(m.BackupSchedules) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.BackupSchedules[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.BackupSchedules {
 			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	return len(dAtA) - i, nil
+	if m.TotalCount != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.TotalCount))
+	}
+	return i, nil
 }
 
 func (m *BackupScheduleInspectRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -29863,43 +29790,35 @@ func (m *BackupScheduleInspectRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupScheduleInspectRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupScheduleInspectRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupScheduleInspectResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -29907,34 +29826,27 @@ func (m *BackupScheduleInspectResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupScheduleInspectResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupScheduleInspectResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.BackupSchedule != nil {
-		{
-			size, err := m.BackupSchedule.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupSchedule.Size()))
+		n91, err91 := m.BackupSchedule.MarshalTo(dAtA[i:])
+		if err91 != nil {
+			return 0, err91
+		}
+		i += n91
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupScheduleDeleteRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -29942,53 +29854,45 @@ func (m *BackupScheduleDeleteRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupScheduleDeleteRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupScheduleDeleteRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x22
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
+	}
+	if len(m.Name) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
 	if m.DeleteBackups {
-		i--
+		dAtA[i] = 0x18
+		i++
 		if m.DeleteBackups {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x18
+		i++
 	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0x12
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupScheduleDeleteResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -29996,22 +29900,17 @@ func (m *BackupScheduleDeleteResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupScheduleDeleteResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupScheduleDeleteResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ClusterBackupShareUpdateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30019,67 +29918,55 @@ func (m *ClusterBackupShareUpdateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ClusterBackupShareUpdateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ClusterBackupShareUpdateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if m.DelBackupShare != nil {
-		{
-			size, err := m.DelBackupShare.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x22
-	}
-	if m.AddBackupShare != nil {
-		{
-			size, err := m.AddBackupShare.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1a
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
+	if m.AddBackupShare != nil {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.AddBackupShare.Size()))
+		n92, err92 := m.AddBackupShare.MarshalTo(dAtA[i:])
+		if err92 != nil {
+			return 0, err92
+		}
+		i += n92
 	}
-	return len(dAtA) - i, nil
+	if m.DelBackupShare != nil {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.DelBackupShare.Size()))
+		n93, err93 := m.DelBackupShare.MarshalTo(dAtA[i:])
+		if err93 != nil {
+			return 0, err93
+		}
+		i += n93
+	}
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
+	}
+	return i, nil
 }
 
 func (m *ClusterBackupShareUpdateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30087,22 +29974,17 @@ func (m *ClusterBackupShareUpdateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ClusterBackupShareUpdateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ClusterBackupShareUpdateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ClusterCreateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30110,110 +29992,92 @@ func (m *ClusterCreateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ClusterCreateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ClusterCreateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Provider != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Provider))
-		i--
-		dAtA[i] = 0x50
-	}
-	if len(m.ServiceToken) > 0 {
-		i -= len(m.ServiceToken)
-		copy(dAtA[i:], m.ServiceToken)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.ServiceToken)))
-		i--
-		dAtA[i] = 0x4a
-	}
-	if len(m.TenantId) > 0 {
-		i -= len(m.TenantId)
-		copy(dAtA[i:], m.TenantId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.TenantId)))
-		i--
-		dAtA[i] = 0x42
-	}
-	if len(m.TeleportClusterId) > 0 {
-		i -= len(m.TeleportClusterId)
-		copy(dAtA[i:], m.TeleportClusterId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.TeleportClusterId)))
-		i--
-		dAtA[i] = 0x3a
-	}
-	if m.PlatformCredentialRef != nil {
-		{
-			size, err := m.PlatformCredentialRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+	if m.CreateMetadata != nil {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n94, err94 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err94 != nil {
+			return 0, err94
 		}
-		i--
-		dAtA[i] = 0x32
-	}
-	if m.CloudCredentialRef != nil {
-		{
-			size, err := m.CloudCredentialRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.CloudCredential) > 0 {
-		i -= len(m.CloudCredential)
-		copy(dAtA[i:], m.CloudCredential)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.CloudCredential)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.Kubeconfig) > 0 {
-		i -= len(m.Kubeconfig)
-		copy(dAtA[i:], m.Kubeconfig)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Kubeconfig)))
-		i--
-		dAtA[i] = 0x1a
+		i += n94
 	}
 	if m.PxConfig != nil {
-		{
-			size, err := m.PxConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0x12
-	}
-	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.PxConfig.Size()))
+		n95, err95 := m.PxConfig.MarshalTo(dAtA[i:])
+		if err95 != nil {
+			return 0, err95
 		}
-		i--
-		dAtA[i] = 0xa
+		i += n95
 	}
-	return len(dAtA) - i, nil
+	if len(m.Kubeconfig) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Kubeconfig)))
+		i += copy(dAtA[i:], m.Kubeconfig)
+	}
+	if len(m.CloudCredential) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.CloudCredential)))
+		i += copy(dAtA[i:], m.CloudCredential)
+	}
+	if m.CloudCredentialRef != nil {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CloudCredentialRef.Size()))
+		n96, err96 := m.CloudCredentialRef.MarshalTo(dAtA[i:])
+		if err96 != nil {
+			return 0, err96
+		}
+		i += n96
+	}
+	if m.PlatformCredentialRef != nil {
+		dAtA[i] = 0x32
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.PlatformCredentialRef.Size()))
+		n97, err97 := m.PlatformCredentialRef.MarshalTo(dAtA[i:])
+		if err97 != nil {
+			return 0, err97
+		}
+		i += n97
+	}
+	if len(m.TeleportClusterId) > 0 {
+		dAtA[i] = 0x3a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.TeleportClusterId)))
+		i += copy(dAtA[i:], m.TeleportClusterId)
+	}
+	if len(m.TenantId) > 0 {
+		dAtA[i] = 0x42
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.TenantId)))
+		i += copy(dAtA[i:], m.TenantId)
+	}
+	if len(m.ServiceToken) > 0 {
+		dAtA[i] = 0x4a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.ServiceToken)))
+		i += copy(dAtA[i:], m.ServiceToken)
+	}
+	if m.Provider != 0 {
+		dAtA[i] = 0x50
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Provider))
+	}
+	return i, nil
 }
 
 func (m *ClusterCreateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30221,22 +30085,17 @@ func (m *ClusterCreateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ClusterCreateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ClusterCreateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ClusterUpdateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30244,84 +30103,69 @@ func (m *ClusterUpdateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ClusterUpdateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ClusterUpdateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.PlatformCredentialRef != nil {
-		{
-			size, err := m.PlatformCredentialRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+	if m.CreateMetadata != nil {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n98, err98 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err98 != nil {
+			return 0, err98
 		}
-		i--
-		dAtA[i] = 0x32
-	}
-	if m.CloudCredentialRef != nil {
-		{
-			size, err := m.CloudCredentialRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.CloudCredential) > 0 {
-		i -= len(m.CloudCredential)
-		copy(dAtA[i:], m.CloudCredential)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.CloudCredential)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.Kubeconfig) > 0 {
-		i -= len(m.Kubeconfig)
-		copy(dAtA[i:], m.Kubeconfig)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Kubeconfig)))
-		i--
-		dAtA[i] = 0x1a
+		i += n98
 	}
 	if m.PxConfig != nil {
-		{
-			size, err := m.PxConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0x12
-	}
-	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.PxConfig.Size()))
+		n99, err99 := m.PxConfig.MarshalTo(dAtA[i:])
+		if err99 != nil {
+			return 0, err99
 		}
-		i--
-		dAtA[i] = 0xa
+		i += n99
 	}
-	return len(dAtA) - i, nil
+	if len(m.Kubeconfig) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Kubeconfig)))
+		i += copy(dAtA[i:], m.Kubeconfig)
+	}
+	if len(m.CloudCredential) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.CloudCredential)))
+		i += copy(dAtA[i:], m.CloudCredential)
+	}
+	if m.CloudCredentialRef != nil {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CloudCredentialRef.Size()))
+		n100, err100 := m.CloudCredentialRef.MarshalTo(dAtA[i:])
+		if err100 != nil {
+			return 0, err100
+		}
+		i += n100
+	}
+	if m.PlatformCredentialRef != nil {
+		dAtA[i] = 0x32
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.PlatformCredentialRef.Size()))
+		n101, err101 := m.PlatformCredentialRef.MarshalTo(dAtA[i:])
+		if err101 != nil {
+			return 0, err101
+		}
+		i += n101
+	}
+	return i, nil
 }
 
 func (m *ClusterUpdateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30329,22 +30173,17 @@ func (m *ClusterUpdateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ClusterUpdateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ClusterUpdateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ClusterEnumerateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30352,87 +30191,76 @@ func (m *ClusterEnumerateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ClusterEnumerateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ClusterEnumerateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.OnlyBackupShare {
-		i--
-		if m.OnlyBackupShare {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
-		}
-		i--
-		dAtA[i] = 0x30
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
-	if m.CloudCredentialRef != nil {
-		{
-			size, err := m.CloudCredentialRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+	if len(m.Labels) > 0 {
+		for k, _ := range m.Labels {
+			dAtA[i] = 0x12
+			i++
+			v := m.Labels[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
 		}
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.CloudCredential) > 0 {
-		i -= len(m.CloudCredential)
-		copy(dAtA[i:], m.CloudCredential)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.CloudCredential)))
-		i--
-		dAtA[i] = 0x22
 	}
 	if m.IncludeSecrets {
-		i--
+		dAtA[i] = 0x18
+		i++
 		if m.IncludeSecrets {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x18
+		i++
 	}
-	if len(m.Labels) > 0 {
-		for k := range m.Labels {
-			v := m.Labels[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x12
+	if len(m.CloudCredential) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.CloudCredential)))
+		i += copy(dAtA[i:], m.CloudCredential)
+	}
+	if m.CloudCredentialRef != nil {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CloudCredentialRef.Size()))
+		n102, err102 := m.CloudCredentialRef.MarshalTo(dAtA[i:])
+		if err102 != nil {
+			return 0, err102
 		}
+		i += n102
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
+	if m.OnlyBackupShare {
+		dAtA[i] = 0x30
+		i++
+		if m.OnlyBackupShare {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i++
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ClusterEnumerateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30440,36 +30268,29 @@ func (m *ClusterEnumerateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ClusterEnumerateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ClusterEnumerateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.Clusters) > 0 {
-		for iNdEx := len(m.Clusters) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Clusters[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.Clusters {
 			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ClusterInspectRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30477,53 +30298,45 @@ func (m *ClusterInspectRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ClusterInspectRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ClusterInspectRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x22
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
+	}
+	if len(m.Name) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
 	if m.IncludeSecrets {
-		i--
+		dAtA[i] = 0x18
+		i++
 		if m.IncludeSecrets {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x18
+		i++
 	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0x12
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ClusterInspectResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30531,34 +30344,27 @@ func (m *ClusterInspectResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ClusterInspectResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ClusterInspectResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.Cluster != nil {
-		{
-			size, err := m.Cluster.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Cluster.Size()))
+		n103, err103 := m.Cluster.MarshalTo(dAtA[i:])
+		if err103 != nil {
+			return 0, err103
+		}
+		i += n103
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ClusterDeleteRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30566,56 +30372,49 @@ func (m *ClusterDeleteRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ClusterDeleteRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ClusterDeleteRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.DeleteRestores {
-		i--
-		if m.DeleteRestores {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
-		}
-		i--
-		dAtA[i] = 0x20
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
+	}
+	if len(m.Name) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
 	if m.DeleteBackups {
-		i--
+		dAtA[i] = 0x18
+		i++
 		if m.DeleteBackups {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x18
+		i++
 	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0x12
+	if m.DeleteRestores {
+		dAtA[i] = 0x20
+		i++
+		if m.DeleteRestores {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i++
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ClusterDeleteResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30623,22 +30422,17 @@ func (m *ClusterDeleteResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ClusterDeleteResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ClusterDeleteResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *CloudCredentialCreateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30646,46 +30440,37 @@ func (m *CloudCredentialCreateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *CloudCredentialCreateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CloudCredentialCreateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.CloudCredential != nil {
-		{
-			size, err := m.CloudCredential.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n104, err104 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err104 != nil {
+			return 0, err104
+		}
+		i += n104
 	}
-	return len(dAtA) - i, nil
+	if m.CloudCredential != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CloudCredential.Size()))
+		n105, err105 := m.CloudCredential.MarshalTo(dAtA[i:])
+		if err105 != nil {
+			return 0, err105
+		}
+		i += n105
+	}
+	return i, nil
 }
 
 func (m *CloudCredentialCreateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30693,34 +30478,27 @@ func (m *CloudCredentialCreateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *CloudCredentialCreateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CloudCredentialCreateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.CloudCredential != nil {
-		{
-			size, err := m.CloudCredential.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CloudCredential.Size()))
+		n106, err106 := m.CloudCredential.MarshalTo(dAtA[i:])
+		if err106 != nil {
+			return 0, err106
+		}
+		i += n106
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *CloudCredentialUpdateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30728,46 +30506,37 @@ func (m *CloudCredentialUpdateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *CloudCredentialUpdateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CloudCredentialUpdateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.CloudCredential != nil {
-		{
-			size, err := m.CloudCredential.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n107, err107 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err107 != nil {
+			return 0, err107
+		}
+		i += n107
 	}
-	return len(dAtA) - i, nil
+	if m.CloudCredential != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CloudCredential.Size()))
+		n108, err108 := m.CloudCredential.MarshalTo(dAtA[i:])
+		if err108 != nil {
+			return 0, err108
+		}
+		i += n108
+	}
+	return i, nil
 }
 
 func (m *CloudCredentialUpdateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30775,22 +30544,17 @@ func (m *CloudCredentialUpdateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *CloudCredentialUpdateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CloudCredentialUpdateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *CloudCredentialEnumerateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30798,39 +30562,33 @@ func (m *CloudCredentialEnumerateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *CloudCredentialEnumerateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CloudCredentialEnumerateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
+	}
 	if m.IncludeSecrets {
-		i--
+		dAtA[i] = 0x10
+		i++
 		if m.IncludeSecrets {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x10
+		i++
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *CloudCredentialEnumerateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30838,36 +30596,29 @@ func (m *CloudCredentialEnumerateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *CloudCredentialEnumerateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CloudCredentialEnumerateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.CloudCredentials) > 0 {
-		for iNdEx := len(m.CloudCredentials) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.CloudCredentials[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.CloudCredentials {
 			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *CloudCredentialInspectRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30875,53 +30626,45 @@ func (m *CloudCredentialInspectRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *CloudCredentialInspectRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CloudCredentialInspectRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x22
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
+	}
+	if len(m.Name) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
 	if m.IncludeSecrets {
-		i--
+		dAtA[i] = 0x18
+		i++
 		if m.IncludeSecrets {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x18
+		i++
 	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0x12
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *CloudCredentialInspectResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30929,34 +30672,27 @@ func (m *CloudCredentialInspectResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *CloudCredentialInspectResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CloudCredentialInspectResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.CloudCredential != nil {
-		{
-			size, err := m.CloudCredential.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CloudCredential.Size()))
+		n109, err109 := m.CloudCredential.MarshalTo(dAtA[i:])
+		if err109 != nil {
+			return 0, err109
+		}
+		i += n109
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *CloudCredentialDeleteRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -30964,43 +30700,35 @@ func (m *CloudCredentialDeleteRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *CloudCredentialDeleteRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CloudCredentialDeleteRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *CloudCredentialDeleteResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31008,22 +30736,17 @@ func (m *CloudCredentialDeleteResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *CloudCredentialDeleteResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CloudCredentialDeleteResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *CloudCredentialOwnershipUpdateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31031,55 +30754,45 @@ func (m *CloudCredentialOwnershipUpdateRequest) Marshal() (dAtA []byte, err erro
 }
 
 func (m *CloudCredentialOwnershipUpdateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CloudCredentialOwnershipUpdateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if m.Ownership != nil {
-		{
-			size, err := m.Ownership.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1a
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
+	if m.Ownership != nil {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Ownership.Size()))
+		n110, err110 := m.Ownership.MarshalTo(dAtA[i:])
+		if err110 != nil {
+			return 0, err110
+		}
+		i += n110
 	}
-	return len(dAtA) - i, nil
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
+	}
+	return i, nil
 }
 
 func (m *CloudCredentialOwnershipUpdateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31087,22 +30800,17 @@ func (m *CloudCredentialOwnershipUpdateResponse) Marshal() (dAtA []byte, err err
 }
 
 func (m *CloudCredentialOwnershipUpdateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CloudCredentialOwnershipUpdateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupLocationCreateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31110,46 +30818,37 @@ func (m *BackupLocationCreateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupLocationCreateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupLocationCreateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.BackupLocation != nil {
-		{
-			size, err := m.BackupLocation.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n111, err111 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err111 != nil {
+			return 0, err111
+		}
+		i += n111
 	}
-	return len(dAtA) - i, nil
+	if m.BackupLocation != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupLocation.Size()))
+		n112, err112 := m.BackupLocation.MarshalTo(dAtA[i:])
+		if err112 != nil {
+			return 0, err112
+		}
+		i += n112
+	}
+	return i, nil
 }
 
 func (m *BackupLocationCreateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31157,22 +30856,17 @@ func (m *BackupLocationCreateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupLocationCreateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupLocationCreateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupLocationUpdateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31180,46 +30874,37 @@ func (m *BackupLocationUpdateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupLocationUpdateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupLocationUpdateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.BackupLocation != nil {
-		{
-			size, err := m.BackupLocation.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n113, err113 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err113 != nil {
+			return 0, err113
+		}
+		i += n113
 	}
-	return len(dAtA) - i, nil
+	if m.BackupLocation != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupLocation.Size()))
+		n114, err114 := m.BackupLocation.MarshalTo(dAtA[i:])
+		if err114 != nil {
+			return 0, err114
+		}
+		i += n114
+	}
+	return i, nil
 }
 
 func (m *BackupLocationUpdateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31227,22 +30912,17 @@ func (m *BackupLocationUpdateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupLocationUpdateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupLocationUpdateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupLocationEnumerateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31250,87 +30930,76 @@ func (m *BackupLocationEnumerateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupLocationEnumerateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupLocationEnumerateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.IncludeValidationState {
-		i--
-		if m.IncludeValidationState {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
+	}
+	if len(m.Labels) > 0 {
+		for k, _ := range m.Labels {
+			dAtA[i] = 0x12
+			i++
+			v := m.Labels[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
 		}
-		i--
-		dAtA[i] = 0x30
+	}
+	if len(m.CloudCredential) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.CloudCredential)))
+		i += copy(dAtA[i:], m.CloudCredential)
+	}
+	if m.CloudCredentialRef != nil {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CloudCredentialRef.Size()))
+		n115, err115 := m.CloudCredentialRef.MarshalTo(dAtA[i:])
+		if err115 != nil {
+			return 0, err115
+		}
+		i += n115
 	}
 	if m.IncludeSecrets {
-		i--
+		dAtA[i] = 0x28
+		i++
 		if m.IncludeSecrets {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x28
+		i++
 	}
-	if m.CloudCredentialRef != nil {
-		{
-			size, err := m.CloudCredentialRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+	if m.IncludeValidationState {
+		dAtA[i] = 0x30
+		i++
+		if m.IncludeValidationState {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x22
+		i++
 	}
-	if len(m.CloudCredential) > 0 {
-		i -= len(m.CloudCredential)
-		copy(dAtA[i:], m.CloudCredential)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.CloudCredential)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.Labels) > 0 {
-		for k := range m.Labels {
-			v := m.Labels[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x12
-		}
-	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupLocationEnumerateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31338,36 +31007,29 @@ func (m *BackupLocationEnumerateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupLocationEnumerateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupLocationEnumerateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.BackupLocations) > 0 {
-		for iNdEx := len(m.BackupLocations) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.BackupLocations[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.BackupLocations {
 			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupLocationInspectRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31375,53 +31037,45 @@ func (m *BackupLocationInspectRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupLocationInspectRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupLocationInspectRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
+	}
+	if len(m.Name) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
+	}
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
+	}
 	if m.IncludeSecrets {
-		i--
+		dAtA[i] = 0x20
+		i++
 		if m.IncludeSecrets {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x20
+		i++
 	}
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupLocationInspectResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31429,34 +31083,27 @@ func (m *BackupLocationInspectResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupLocationInspectResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupLocationInspectResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.BackupLocation != nil {
-		{
-			size, err := m.BackupLocation.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupLocation.Size()))
+		n116, err116 := m.BackupLocation.MarshalTo(dAtA[i:])
+		if err116 != nil {
+			return 0, err116
+		}
+		i += n116
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupLocationDeleteRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31464,53 +31111,45 @@ func (m *BackupLocationDeleteRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupLocationDeleteRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupLocationDeleteRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x22
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
+	}
+	if len(m.Name) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
 	if m.DeleteBackups {
-		i--
+		dAtA[i] = 0x18
+		i++
 		if m.DeleteBackups {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x18
+		i++
 	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0x12
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupLocationDeleteResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31518,22 +31157,17 @@ func (m *BackupLocationDeleteResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupLocationDeleteResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupLocationDeleteResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupLocationValidateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31541,43 +31175,35 @@ func (m *BackupLocationValidateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupLocationValidateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupLocationValidateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupLocationValidateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31585,22 +31211,17 @@ func (m *BackupLocationValidateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupLocationValidateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupLocationValidateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupLocationOwnershipUpdateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31608,55 +31229,45 @@ func (m *BackupLocationOwnershipUpdateRequest) Marshal() (dAtA []byte, err error
 }
 
 func (m *BackupLocationOwnershipUpdateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupLocationOwnershipUpdateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if m.Ownership != nil {
-		{
-			size, err := m.Ownership.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1a
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
+	if m.Ownership != nil {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Ownership.Size()))
+		n117, err117 := m.Ownership.MarshalTo(dAtA[i:])
+		if err117 != nil {
+			return 0, err117
+		}
+		i += n117
 	}
-	return len(dAtA) - i, nil
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
+	}
+	return i, nil
 }
 
 func (m *BackupLocationOwnershipUpdateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31664,22 +31275,17 @@ func (m *BackupLocationOwnershipUpdateResponse) Marshal() (dAtA []byte, err erro
 }
 
 func (m *BackupLocationOwnershipUpdateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupLocationOwnershipUpdateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *MetricsInspectRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31687,29 +31293,23 @@ func (m *MetricsInspectRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *MetricsInspectRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MetricsInspectRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *MetricsInspectResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31717,36 +31317,29 @@ func (m *MetricsInspectResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *MetricsInspectResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MetricsInspectResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.Stats) > 0 {
-		for iNdEx := len(m.Stats) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Stats[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.Stats {
 			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *MetricsInspectResponse_Stats) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31754,44 +31347,38 @@ func (m *MetricsInspectResponse_Stats) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *MetricsInspectResponse_Stats) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MetricsInspectResponse_Stats) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.NumSchedules != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.NumSchedules))
-		i--
-		dAtA[i] = 0x20
-	}
-	if m.TotalBackupSize != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.TotalBackupSize))
-		i--
-		dAtA[i] = 0x18
+	if len(m.Cluster) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
+		i += copy(dAtA[i:], m.Cluster)
 	}
 	if m.NumNamespaces != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.NumNamespaces))
-		i--
 		dAtA[i] = 0x10
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.NumNamespaces))
 	}
-	if len(m.Cluster) > 0 {
-		i -= len(m.Cluster)
-		copy(dAtA[i:], m.Cluster)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
-		i--
-		dAtA[i] = 0xa
+	if m.TotalBackupSize != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.TotalBackupSize))
 	}
-	return len(dAtA) - i, nil
+	if m.NumSchedules != 0 {
+		dAtA[i] = 0x20
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.NumSchedules))
+	}
+	return i, nil
 }
 
 func (m *BackupCreateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31799,182 +31386,169 @@ func (m *BackupCreateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupCreateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupCreateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.NsLabelSelectors) > 0 {
-		i -= len(m.NsLabelSelectors)
-		copy(dAtA[i:], m.NsLabelSelectors)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.NsLabelSelectors)))
-		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0x82
+	if m.CreateMetadata != nil {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n118, err118 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err118 != nil {
+			return 0, err118
+		}
+		i += n118
 	}
-	if m.ClusterRef != nil {
-		{
-			size, err := m.ClusterRef.MarshalToSizedBuffer(dAtA[:i])
+	if len(m.BackupLocation) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupLocation)))
+		i += copy(dAtA[i:], m.BackupLocation)
+	}
+	if len(m.Cluster) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
+		i += copy(dAtA[i:], m.Cluster)
+	}
+	if len(m.Namespaces) > 0 {
+		for _, s := range m.Namespaces {
+			dAtA[i] = 0x22
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
+			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
+		}
+	}
+	if len(m.LabelSelectors) > 0 {
+		for k, _ := range m.LabelSelectors {
+			dAtA[i] = 0x2a
+			i++
+			v := m.LabelSelectors[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if len(m.PreExecRule) > 0 {
+		dAtA[i] = 0x32
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.PreExecRule)))
+		i += copy(dAtA[i:], m.PreExecRule)
+	}
+	if len(m.PostExecRule) > 0 {
+		dAtA[i] = 0x3a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.PostExecRule)))
+		i += copy(dAtA[i:], m.PostExecRule)
+	}
+	if len(m.IncludeResources) > 0 {
+		for _, msg := range m.IncludeResources {
+			dAtA[i] = 0x42
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
 			if err != nil {
 				return 0, err
 			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x7a
-	}
-	if m.BackupType != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.BackupType))
-		i--
-		dAtA[i] = 0x70
-	}
-	if m.PostExecRuleRef != nil {
-		{
-			size, err := m.PostExecRuleRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6a
-	}
-	if m.PreExecRuleRef != nil {
-		{
-			size, err := m.PreExecRuleRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x62
-	}
-	if m.BackupLocationRef != nil {
-		{
-			size, err := m.BackupLocationRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x5a
-	}
-	if len(m.ResourceTypes) > 0 {
-		for iNdEx := len(m.ResourceTypes) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.ResourceTypes[iNdEx])
-			copy(dAtA[i:], m.ResourceTypes[iNdEx])
-			i = encodeVarintApi(dAtA, i, uint64(len(m.ResourceTypes[iNdEx])))
-			i--
-			dAtA[i] = 0x52
+			i += n
 		}
 	}
 	if len(m.CsiSnapshotClassName) > 0 {
-		i -= len(m.CsiSnapshotClassName)
-		copy(dAtA[i:], m.CsiSnapshotClassName)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.CsiSnapshotClassName)))
-		i--
 		dAtA[i] = 0x4a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.CsiSnapshotClassName)))
+		i += copy(dAtA[i:], m.CsiSnapshotClassName)
 	}
-	if len(m.IncludeResources) > 0 {
-		for iNdEx := len(m.IncludeResources) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.IncludeResources[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
+	if len(m.ResourceTypes) > 0 {
+		for _, s := range m.ResourceTypes {
+			dAtA[i] = 0x52
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
 			}
-			i--
-			dAtA[i] = 0x42
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
 		}
 	}
-	if len(m.PostExecRule) > 0 {
-		i -= len(m.PostExecRule)
-		copy(dAtA[i:], m.PostExecRule)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.PostExecRule)))
-		i--
-		dAtA[i] = 0x3a
-	}
-	if len(m.PreExecRule) > 0 {
-		i -= len(m.PreExecRule)
-		copy(dAtA[i:], m.PreExecRule)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.PreExecRule)))
-		i--
-		dAtA[i] = 0x32
-	}
-	if len(m.LabelSelectors) > 0 {
-		for k := range m.LabelSelectors {
-			v := m.LabelSelectors[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x2a
+	if m.BackupLocationRef != nil {
+		dAtA[i] = 0x5a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupLocationRef.Size()))
+		n119, err119 := m.BackupLocationRef.MarshalTo(dAtA[i:])
+		if err119 != nil {
+			return 0, err119
 		}
+		i += n119
 	}
-	if len(m.Namespaces) > 0 {
-		for iNdEx := len(m.Namespaces) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.Namespaces[iNdEx])
-			copy(dAtA[i:], m.Namespaces[iNdEx])
-			i = encodeVarintApi(dAtA, i, uint64(len(m.Namespaces[iNdEx])))
-			i--
-			dAtA[i] = 0x22
+	if m.PreExecRuleRef != nil {
+		dAtA[i] = 0x62
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.PreExecRuleRef.Size()))
+		n120, err120 := m.PreExecRuleRef.MarshalTo(dAtA[i:])
+		if err120 != nil {
+			return 0, err120
 		}
+		i += n120
 	}
-	if len(m.Cluster) > 0 {
-		i -= len(m.Cluster)
-		copy(dAtA[i:], m.Cluster)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.BackupLocation) > 0 {
-		i -= len(m.BackupLocation)
-		copy(dAtA[i:], m.BackupLocation)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.BackupLocation)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+	if m.PostExecRuleRef != nil {
+		dAtA[i] = 0x6a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.PostExecRuleRef.Size()))
+		n121, err121 := m.PostExecRuleRef.MarshalTo(dAtA[i:])
+		if err121 != nil {
+			return 0, err121
 		}
-		i--
-		dAtA[i] = 0xa
+		i += n121
 	}
-	return len(dAtA) - i, nil
+	if m.BackupType != 0 {
+		dAtA[i] = 0x70
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupType))
+	}
+	if m.ClusterRef != nil {
+		dAtA[i] = 0x7a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.ClusterRef.Size()))
+		n122, err122 := m.ClusterRef.MarshalTo(dAtA[i:])
+		if err122 != nil {
+			return 0, err122
+		}
+		i += n122
+	}
+	if len(m.NsLabelSelectors) > 0 {
+		dAtA[i] = 0x82
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.NsLabelSelectors)))
+		i += copy(dAtA[i:], m.NsLabelSelectors)
+	}
+	return i, nil
 }
 
 func (m *BackupCreateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -31982,22 +31556,17 @@ func (m *BackupCreateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupCreateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupCreateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupUpdateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32005,53 +31574,43 @@ func (m *BackupUpdateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupUpdateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupUpdateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.CloudCredentialRef != nil {
-		{
-			size, err := m.CloudCredentialRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+	if m.CreateMetadata != nil {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n123, err123 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err123 != nil {
+			return 0, err123
 		}
-		i--
-		dAtA[i] = 0x1a
+		i += n123
 	}
 	if len(m.CloudCredential) > 0 {
-		i -= len(m.CloudCredential)
-		copy(dAtA[i:], m.CloudCredential)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.CloudCredential)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.CloudCredential)))
+		i += copy(dAtA[i:], m.CloudCredential)
 	}
-	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+	if m.CloudCredentialRef != nil {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CloudCredentialRef.Size()))
+		n124, err124 := m.CloudCredentialRef.MarshalTo(dAtA[i:])
+		if err124 != nil {
+			return 0, err124
 		}
-		i--
-		dAtA[i] = 0xa
+		i += n124
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupUpdateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32059,22 +31618,17 @@ func (m *BackupUpdateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupUpdateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupUpdateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupEnumerateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32082,41 +31636,33 @@ func (m *BackupEnumerateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupEnumerateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupEnumerateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.EnumerateOptions != nil {
-		{
-			size, err := m.EnumerateOptions.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
-	return len(dAtA) - i, nil
+	if m.EnumerateOptions != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.EnumerateOptions.Size()))
+		n125, err125 := m.EnumerateOptions.MarshalTo(dAtA[i:])
+		if err125 != nil {
+			return 0, err125
+		}
+		i += n125
+	}
+	return i, nil
 }
 
 func (m *BackupEnumerateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32124,51 +31670,44 @@ func (m *BackupEnumerateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupEnumerateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupEnumerateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
+	if len(m.Backups) > 0 {
+		for _, msg := range m.Backups {
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	if m.TotalCount != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.TotalCount))
+	}
 	if m.Complete {
-		i--
+		dAtA[i] = 0x18
+		i++
 		if m.Complete {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x18
+		i++
 	}
-	if m.TotalCount != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.TotalCount))
-		i--
-		dAtA[i] = 0x10
-	}
-	if len(m.Backups) > 0 {
-		for iNdEx := len(m.Backups) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Backups[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0xa
-		}
-	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupInspectRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32176,43 +31715,35 @@ func (m *BackupInspectRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupInspectRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupInspectRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x22
+	if len(m.Name) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
 	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupInspectResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32220,34 +31751,27 @@ func (m *BackupInspectResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupInspectResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupInspectResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.Backup != nil {
-		{
-			size, err := m.Backup.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Backup.Size()))
+		n126, err126 := m.Backup.MarshalTo(dAtA[i:])
+		if err126 != nil {
+			return 0, err126
+		}
+		i += n126
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupDeleteRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32255,50 +31779,41 @@ func (m *BackupDeleteRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupDeleteRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupDeleteRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.Cluster) > 0 {
-		i -= len(m.Cluster)
-		copy(dAtA[i:], m.Cluster)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.Name) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
 	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Cluster) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
+		i += copy(dAtA[i:], m.Cluster)
 	}
-	return len(dAtA) - i, nil
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
+	}
+	return i, nil
 }
 
 func (m *BackupDeleteResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32306,22 +31821,17 @@ func (m *BackupDeleteResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupDeleteResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupDeleteResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *BackupShareUpdateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32329,55 +31839,45 @@ func (m *BackupShareUpdateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupShareUpdateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupShareUpdateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if m.Backupshare != nil {
-		{
-			size, err := m.Backupshare.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1a
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
+	if m.Backupshare != nil {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Backupshare.Size()))
+		n127, err127 := m.Backupshare.MarshalTo(dAtA[i:])
+		if err127 != nil {
+			return 0, err127
+		}
+		i += n127
 	}
-	return len(dAtA) - i, nil
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
+	}
+	return i, nil
 }
 
 func (m *BackupShareUpdateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32385,22 +31885,17 @@ func (m *BackupShareUpdateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *BackupShareUpdateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *BackupShareUpdateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RestoreCreateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32408,164 +31903,149 @@ func (m *RestoreCreateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RestoreCreateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RestoreCreateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.RancherProjectNameMapping) > 0 {
-		for k := range m.RancherProjectNameMapping {
-			v := m.RancherProjectNameMapping[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
+	if m.CreateMetadata != nil {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n128, err128 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err128 != nil {
+			return 0, err128
+		}
+		i += n128
+	}
+	if len(m.Backup) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Backup)))
+		i += copy(dAtA[i:], m.Backup)
+	}
+	if len(m.Cluster) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
+		i += copy(dAtA[i:], m.Cluster)
+	}
+	if len(m.NamespaceMapping) > 0 {
+		for k, _ := range m.NamespaceMapping {
+			dAtA[i] = 0x22
+			i++
+			v := m.NamespaceMapping[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
 			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x5a
-		}
-	}
-	if len(m.RancherProjectMapping) > 0 {
-		for k := range m.RancherProjectMapping {
-			v := m.RancherProjectMapping[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
+			i++
 			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x52
-		}
-	}
-	if m.BackupRef != nil {
-		{
-			size, err := m.BackupRef.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x4a
-	}
-	if len(m.StorageClassMapping) > 0 {
-		for k := range m.StorageClassMapping {
-			v := m.StorageClassMapping[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
+			i += copy(dAtA[i:], k)
 			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x42
-		}
-	}
-	if len(m.IncludeResources) > 0 {
-		for iNdEx := len(m.IncludeResources) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.IncludeResources[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x3a
-		}
-	}
-	if len(m.IncludeOptionalResourceTypes) > 0 {
-		for iNdEx := len(m.IncludeOptionalResourceTypes) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.IncludeOptionalResourceTypes[iNdEx])
-			copy(dAtA[i:], m.IncludeOptionalResourceTypes[iNdEx])
-			i = encodeVarintApi(dAtA, i, uint64(len(m.IncludeOptionalResourceTypes[iNdEx])))
-			i--
-			dAtA[i] = 0x32
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
 		}
 	}
 	if m.ReplacePolicy != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.ReplacePolicy))
-		i--
 		dAtA[i] = 0x28
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.ReplacePolicy))
 	}
-	if len(m.NamespaceMapping) > 0 {
-		for k := range m.NamespaceMapping {
-			v := m.NamespaceMapping[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x22
+	if len(m.IncludeOptionalResourceTypes) > 0 {
+		for _, s := range m.IncludeOptionalResourceTypes {
+			dAtA[i] = 0x32
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
+			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
 		}
 	}
-	if len(m.Cluster) > 0 {
-		i -= len(m.Cluster)
-		copy(dAtA[i:], m.Cluster)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.Backup) > 0 {
-		i -= len(m.Backup)
-		copy(dAtA[i:], m.Backup)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Backup)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
+	if len(m.IncludeResources) > 0 {
+		for _, msg := range m.IncludeResources {
+			dAtA[i] = 0x3a
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
 			if err != nil {
 				return 0, err
 			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+			i += n
 		}
-		i--
-		dAtA[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	if len(m.StorageClassMapping) > 0 {
+		for k, _ := range m.StorageClassMapping {
+			dAtA[i] = 0x42
+			i++
+			v := m.StorageClassMapping[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if m.BackupRef != nil {
+		dAtA[i] = 0x4a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.BackupRef.Size()))
+		n129, err129 := m.BackupRef.MarshalTo(dAtA[i:])
+		if err129 != nil {
+			return 0, err129
+		}
+		i += n129
+	}
+	if len(m.RancherProjectMapping) > 0 {
+		for k, _ := range m.RancherProjectMapping {
+			dAtA[i] = 0x52
+			i++
+			v := m.RancherProjectMapping[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if len(m.RancherProjectNameMapping) > 0 {
+		for k, _ := range m.RancherProjectNameMapping {
+			dAtA[i] = 0x5a
+			i++
+			v := m.RancherProjectNameMapping[k]
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + 1 + len(v) + sovApi(uint64(len(v)))
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	return i, nil
 }
 
 func (m *RestoreCreateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32573,22 +32053,17 @@ func (m *RestoreCreateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RestoreCreateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RestoreCreateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RestoreUpdateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32596,34 +32071,27 @@ func (m *RestoreUpdateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RestoreUpdateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RestoreUpdateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n130, err130 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err130 != nil {
+			return 0, err130
+		}
+		i += n130
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RestoreUpdateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32631,22 +32099,17 @@ func (m *RestoreUpdateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RestoreUpdateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RestoreUpdateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RestoreEnumerateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32654,41 +32117,33 @@ func (m *RestoreEnumerateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RestoreEnumerateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RestoreEnumerateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.EnumerateOptions != nil {
-		{
-			size, err := m.EnumerateOptions.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
-	return len(dAtA) - i, nil
+	if m.EnumerateOptions != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.EnumerateOptions.Size()))
+		n131, err131 := m.EnumerateOptions.MarshalTo(dAtA[i:])
+		if err131 != nil {
+			return 0, err131
+		}
+		i += n131
+	}
+	return i, nil
 }
 
 func (m *RestoreEnumerateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32696,51 +32151,44 @@ func (m *RestoreEnumerateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RestoreEnumerateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RestoreEnumerateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
+	if len(m.Restores) > 0 {
+		for _, msg := range m.Restores {
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	if m.TotalCount != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.TotalCount))
+	}
 	if m.Complete {
-		i--
+		dAtA[i] = 0x18
+		i++
 		if m.Complete {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x18
+		i++
 	}
-	if m.TotalCount != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.TotalCount))
-		i--
-		dAtA[i] = 0x10
-	}
-	if len(m.Restores) > 0 {
-		for iNdEx := len(m.Restores) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Restores[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0xa
-		}
-	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RestoreInspectRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32748,36 +32196,29 @@ func (m *RestoreInspectRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RestoreInspectRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RestoreInspectRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
-	return len(dAtA) - i, nil
+	if len(m.Name) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
+	}
+	return i, nil
 }
 
 func (m *RestoreInspectResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32785,34 +32226,27 @@ func (m *RestoreInspectResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RestoreInspectResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RestoreInspectResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.Restore != nil {
-		{
-			size, err := m.Restore.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Restore.Size()))
+		n132, err132 := m.Restore.MarshalTo(dAtA[i:])
+		if err132 != nil {
+			return 0, err132
+		}
+		i += n132
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RestoreDeleteRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32820,36 +32254,29 @@ func (m *RestoreDeleteRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RestoreDeleteRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RestoreDeleteRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
-	return len(dAtA) - i, nil
+	if len(m.Name) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
+	}
+	return i, nil
 }
 
 func (m *RestoreDeleteResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32857,22 +32284,17 @@ func (m *RestoreDeleteResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RestoreDeleteResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RestoreDeleteResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *OrganizationCreateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32880,34 +32302,27 @@ func (m *OrganizationCreateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *OrganizationCreateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *OrganizationCreateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n133, err133 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err133 != nil {
+			return 0, err133
+		}
+		i += n133
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *OrganizationCreateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32915,22 +32330,17 @@ func (m *OrganizationCreateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *OrganizationCreateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *OrganizationCreateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *OrganizationEnumerateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32938,22 +32348,17 @@ func (m *OrganizationEnumerateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *OrganizationEnumerateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *OrganizationEnumerateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *OrganizationEnumerateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32961,36 +32366,29 @@ func (m *OrganizationEnumerateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *OrganizationEnumerateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *OrganizationEnumerateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.Organizations) > 0 {
-		for iNdEx := len(m.Organizations) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Organizations[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.Organizations {
 			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *OrganizationInspectRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -32998,29 +32396,23 @@ func (m *OrganizationInspectRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *OrganizationInspectRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *OrganizationInspectRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *OrganizationInspectResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33028,34 +32420,27 @@ func (m *OrganizationInspectResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *OrganizationInspectResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *OrganizationInspectResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.Organization != nil {
-		{
-			size, err := m.Organization.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Organization.Size()))
+		n134, err134 := m.Organization.MarshalTo(dAtA[i:])
+		if err134 != nil {
+			return 0, err134
+		}
+		i += n134
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *OrganizationDeleteRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33063,29 +32448,23 @@ func (m *OrganizationDeleteRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *OrganizationDeleteRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *OrganizationDeleteRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *OrganizationDeleteResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33093,22 +32472,17 @@ func (m *OrganizationDeleteResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *OrganizationDeleteResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *OrganizationDeleteResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RuleCreateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33116,46 +32490,37 @@ func (m *RuleCreateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RuleCreateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RuleCreateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.RulesInfo != nil {
-		{
-			size, err := m.RulesInfo.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n135, err135 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err135 != nil {
+			return 0, err135
+		}
+		i += n135
 	}
-	return len(dAtA) - i, nil
+	if m.RulesInfo != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.RulesInfo.Size()))
+		n136, err136 := m.RulesInfo.MarshalTo(dAtA[i:])
+		if err136 != nil {
+			return 0, err136
+		}
+		i += n136
+	}
+	return i, nil
 }
 
 func (m *RuleCreateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33163,22 +32528,17 @@ func (m *RuleCreateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RuleCreateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RuleCreateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RuleUpdateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33186,46 +32546,37 @@ func (m *RuleUpdateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RuleUpdateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RuleUpdateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.RulesInfo != nil {
-		{
-			size, err := m.RulesInfo.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n137, err137 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err137 != nil {
+			return 0, err137
+		}
+		i += n137
 	}
-	return len(dAtA) - i, nil
+	if m.RulesInfo != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.RulesInfo.Size()))
+		n138, err138 := m.RulesInfo.MarshalTo(dAtA[i:])
+		if err138 != nil {
+			return 0, err138
+		}
+		i += n138
+	}
+	return i, nil
 }
 
 func (m *RuleUpdateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33233,22 +32584,17 @@ func (m *RuleUpdateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RuleUpdateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RuleUpdateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RuleEnumerateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33256,29 +32602,23 @@ func (m *RuleEnumerateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RuleEnumerateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RuleEnumerateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RuleEnumerateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33286,36 +32626,29 @@ func (m *RuleEnumerateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RuleEnumerateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RuleEnumerateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.Rules) > 0 {
-		for iNdEx := len(m.Rules) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Rules[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.Rules {
 			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RuleInspectRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33323,43 +32656,35 @@ func (m *RuleInspectRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RuleInspectRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RuleInspectRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RuleInspectResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33367,34 +32692,27 @@ func (m *RuleInspectResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RuleInspectResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RuleInspectResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.Rule != nil {
-		{
-			size, err := m.Rule.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Rule.Size()))
+		n139, err139 := m.Rule.MarshalTo(dAtA[i:])
+		if err139 != nil {
+			return 0, err139
+		}
+		i += n139
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RuleDeleteRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33402,43 +32720,35 @@ func (m *RuleDeleteRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RuleDeleteRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RuleDeleteRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RuleDeleteResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33446,22 +32756,17 @@ func (m *RuleDeleteResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RuleDeleteResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RuleDeleteResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RuleOwnershipUpdateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33469,55 +32774,45 @@ func (m *RuleOwnershipUpdateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RuleOwnershipUpdateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RuleOwnershipUpdateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if m.Ownership != nil {
-		{
-			size, err := m.Ownership.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1a
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
+	if m.Ownership != nil {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Ownership.Size()))
+		n140, err140 := m.Ownership.MarshalTo(dAtA[i:])
+		if err140 != nil {
+			return 0, err140
+		}
+		i += n140
 	}
-	return len(dAtA) - i, nil
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
+	}
+	return i, nil
 }
 
 func (m *RuleOwnershipUpdateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33525,22 +32820,17 @@ func (m *RuleOwnershipUpdateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RuleOwnershipUpdateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RuleOwnershipUpdateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *VersionInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33548,64 +32838,53 @@ func (m *VersionInfo) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *VersionInfo) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *VersionInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.BuildDate) > 0 {
-		i -= len(m.BuildDate)
-		copy(dAtA[i:], m.BuildDate)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.BuildDate)))
-		i--
-		dAtA[i] = 0x32
-	}
-	if len(m.GitCommit) > 0 {
-		i -= len(m.GitCommit)
-		copy(dAtA[i:], m.GitCommit)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.GitCommit)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.Changes) > 0 {
-		i -= len(m.Changes)
-		copy(dAtA[i:], m.Changes)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Changes)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.Patch) > 0 {
-		i -= len(m.Patch)
-		copy(dAtA[i:], m.Patch)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Patch)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.Major) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Major)))
+		i += copy(dAtA[i:], m.Major)
 	}
 	if len(m.Minor) > 0 {
-		i -= len(m.Minor)
-		copy(dAtA[i:], m.Minor)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Minor)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Minor)))
+		i += copy(dAtA[i:], m.Minor)
 	}
-	if len(m.Major) > 0 {
-		i -= len(m.Major)
-		copy(dAtA[i:], m.Major)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Major)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Patch) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Patch)))
+		i += copy(dAtA[i:], m.Patch)
 	}
-	return len(dAtA) - i, nil
+	if len(m.Changes) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Changes)))
+		i += copy(dAtA[i:], m.Changes)
+	}
+	if len(m.GitCommit) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.GitCommit)))
+		i += copy(dAtA[i:], m.GitCommit)
+	}
+	if len(m.BuildDate) > 0 {
+		dAtA[i] = 0x32
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.BuildDate)))
+		i += copy(dAtA[i:], m.BuildDate)
+	}
+	return i, nil
 }
 
 func (m *VersionGetRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33613,22 +32892,17 @@ func (m *VersionGetRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *VersionGetRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *VersionGetRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *VersionGetResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33636,34 +32910,27 @@ func (m *VersionGetResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *VersionGetResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *VersionGetResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.Version != nil {
-		{
-			size, err := m.Version.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Version.Size()))
+		n141, err141 := m.Version.MarshalTo(dAtA[i:])
+		if err141 != nil {
+			return 0, err141
+		}
+		i += n141
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *LicenseActivateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33671,101 +32938,68 @@ func (m *LicenseActivateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *LicenseActivateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *LicenseActivateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Activation != nil {
-		{
-			size := m.Activation.Size()
-			i -= size
-			if _, err := m.Activation.MarshalTo(dAtA[i:]); err != nil {
-				return 0, err
-			}
-		}
-	}
 	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n142, err142 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err142 != nil {
+			return 0, err142
+		}
+		i += n142
 	}
-	return len(dAtA) - i, nil
+	if m.Activation != nil {
+		nn143, err143 := m.Activation.MarshalTo(dAtA[i:])
+		if err143 != nil {
+			return 0, err143
+		}
+		i += nn143
+	}
+	return i, nil
 }
 
 func (m *LicenseActivateRequest_ActivationId) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *LicenseActivateRequest_ActivationId) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	i -= len(m.ActivationId)
-	copy(dAtA[i:], m.ActivationId)
-	i = encodeVarintApi(dAtA, i, uint64(len(m.ActivationId)))
-	i--
+	i := 0
 	dAtA[i] = 0x12
-	return len(dAtA) - i, nil
+	i++
+	i = encodeVarintApi(dAtA, i, uint64(len(m.ActivationId)))
+	i += copy(dAtA[i:], m.ActivationId)
+	return i, nil
 }
 func (m *LicenseActivateRequest_LicenseData) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *LicenseActivateRequest_LicenseData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.LicenseData != nil {
-		i -= len(m.LicenseData)
-		copy(dAtA[i:], m.LicenseData)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.LicenseData)))
-		i--
 		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.LicenseData)))
+		i += copy(dAtA[i:], m.LicenseData)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *LicenseActivateRequest_UsageBasedId) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *LicenseActivateRequest_UsageBasedId) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	i -= len(m.UsageBasedId)
-	copy(dAtA[i:], m.UsageBasedId)
-	i = encodeVarintApi(dAtA, i, uint64(len(m.UsageBasedId)))
-	i--
+	i := 0
 	dAtA[i] = 0x22
-	return len(dAtA) - i, nil
+	i++
+	i = encodeVarintApi(dAtA, i, uint64(len(m.UsageBasedId)))
+	i += copy(dAtA[i:], m.UsageBasedId)
+	return i, nil
 }
 func (m *LicenseActivateRequest_UsagedBasedAirgappedId) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *LicenseActivateRequest_UsagedBasedAirgappedId) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	i -= len(m.UsagedBasedAirgappedId)
-	copy(dAtA[i:], m.UsagedBasedAirgappedId)
-	i = encodeVarintApi(dAtA, i, uint64(len(m.UsagedBasedAirgappedId)))
-	i--
+	i := 0
 	dAtA[i] = 0x2a
-	return len(dAtA) - i, nil
+	i++
+	i = encodeVarintApi(dAtA, i, uint64(len(m.UsagedBasedAirgappedId)))
+	i += copy(dAtA[i:], m.UsagedBasedAirgappedId)
+	return i, nil
 }
 func (m *LicenseActivateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33773,22 +33007,17 @@ func (m *LicenseActivateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *LicenseActivateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *LicenseActivateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *LicenseUpdateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33796,41 +33025,33 @@ func (m *LicenseUpdateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *LicenseUpdateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *LicenseUpdateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.UsageBasedId) > 0 {
-		i -= len(m.UsageBasedId)
-		copy(dAtA[i:], m.UsageBasedId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.UsageBasedId)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n144, err144 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err144 != nil {
+			return 0, err144
+		}
+		i += n144
 	}
-	return len(dAtA) - i, nil
+	if len(m.UsageBasedId) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.UsageBasedId)))
+		i += copy(dAtA[i:], m.UsageBasedId)
+	}
+	return i, nil
 }
 
 func (m *LicenseUpdateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33838,22 +33059,17 @@ func (m *LicenseUpdateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *LicenseUpdateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *LicenseUpdateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *LicenseInspectRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33861,29 +33077,23 @@ func (m *LicenseInspectRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *LicenseInspectRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *LicenseInspectRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *LicenseInspectResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33891,34 +33101,27 @@ func (m *LicenseInspectResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *LicenseInspectResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *LicenseInspectResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.LicenseRespInfo != nil {
-		{
-			size, err := m.LicenseRespInfo.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.LicenseRespInfo.Size()))
+		n145, err145 := m.LicenseRespInfo.MarshalTo(dAtA[i:])
+		if err145 != nil {
+			return 0, err145
+		}
+		i += n145
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *LicenseResponseInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33926,48 +33129,39 @@ func (m *LicenseResponseInfo) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *LicenseResponseInfo) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *LicenseResponseInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Status != nil {
-		{
-			size, err := m.Status.MarshalToSizedBuffer(dAtA[:i])
+	if len(m.FeatureInfo) > 0 {
+		for _, msg := range m.FeatureInfo {
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
 			if err != nil {
 				return 0, err
 			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+			i += n
 		}
-		i--
+	}
+	if m.Status != nil {
 		dAtA[i] = 0x12
-	}
-	if len(m.FeatureInfo) > 0 {
-		for iNdEx := len(m.FeatureInfo) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.FeatureInfo[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Status.Size()))
+		n146, err146 := m.Status.MarshalTo(dAtA[i:])
+		if err146 != nil {
+			return 0, err146
 		}
+		i += n146
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *LicenseResponseInfo_FeatureInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -33975,48 +33169,40 @@ func (m *LicenseResponseInfo_FeatureInfo) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *LicenseResponseInfo_FeatureInfo) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *LicenseResponseInfo_FeatureInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.EntitlementInfo) > 0 {
-		for iNdEx := len(m.EntitlementInfo) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.EntitlementInfo[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x1a
-		}
+	if len(m.Name) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
 	if m.Consumed != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Consumed))
-		i--
 		dAtA[i] = 0x10
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Consumed))
 	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.EntitlementInfo) > 0 {
+		for _, msg := range m.EntitlementInfo {
+			dAtA[i] = 0x1a
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *LicenseResponseInfo_EntitlementInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34024,56 +33210,47 @@ func (m *LicenseResponseInfo_EntitlementInfo) Marshal() (dAtA []byte, err error)
 }
 
 func (m *LicenseResponseInfo_EntitlementInfo) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *LicenseResponseInfo_EntitlementInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Type != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Type))
-		i--
-		dAtA[i] = 0x28
-	}
-	if m.Starts != nil {
-		{
-			size, err := m.Starts.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x22
+	if m.Count != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Count))
 	}
 	if m.Expires != nil {
-		{
-			size, err := m.Expires.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Expires.Size()))
+		n147, err147 := m.Expires.MarshalTo(dAtA[i:])
+		if err147 != nil {
+			return 0, err147
+		}
+		i += n147
 	}
-	if m.Count != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Count))
-		i--
-		dAtA[i] = 0x8
+	if m.Starts != nil {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Starts.Size()))
+		n148, err148 := m.Starts.MarshalTo(dAtA[i:])
+		if err148 != nil {
+			return 0, err148
+		}
+		i += n148
 	}
-	return len(dAtA) - i, nil
+	if m.Type != 0 {
+		dAtA[i] = 0x28
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Type))
+	}
+	return i, nil
 }
 
 func (m *LicenseResponseInfo_Status) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34081,36 +33258,29 @@ func (m *LicenseResponseInfo_Status) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *LicenseResponseInfo_Status) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *LicenseResponseInfo_Status) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Reason) > 0 {
-		i -= len(m.Reason)
-		copy(dAtA[i:], m.Reason)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Reason)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if len(m.Status) > 0 {
-		i -= len(m.Status)
-		copy(dAtA[i:], m.Status)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Status)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Status)))
+		i += copy(dAtA[i:], m.Status)
 	}
-	return len(dAtA) - i, nil
+	if len(m.Reason) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Reason)))
+		i += copy(dAtA[i:], m.Reason)
+	}
+	return i, nil
 }
 
 func (m *LicenseUsageAirgappedObject) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34118,44 +33288,37 @@ func (m *LicenseUsageAirgappedObject) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *LicenseUsageAirgappedObject) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *LicenseUsageAirgappedObject) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.ReportTime != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.ReportTime))
-		i--
-		dAtA[i] = 0x18
+	if m.Metadata != nil {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Metadata.Size()))
+		n149, err149 := m.Metadata.MarshalTo(dAtA[i:])
+		if err149 != nil {
+			return 0, err149
+		}
+		i += n149
 	}
 	if m.NodeCount != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.NodeCount))
-		i--
 		dAtA[i] = 0x10
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.NodeCount))
 	}
-	if m.Metadata != nil {
-		{
-			size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0xa
+	if m.ReportTime != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.ReportTime))
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *LicenseUsageAirgappedRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34163,39 +33326,33 @@ func (m *LicenseUsageAirgappedRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *LicenseUsageAirgappedRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *LicenseUsageAirgappedRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.MaxObjects != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.MaxObjects))
-		i--
-		dAtA[i] = 0x18
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
 	if m.ObjectIndex != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.ObjectIndex))
-		i--
 		dAtA[i] = 0x10
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.ObjectIndex))
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
+	if m.MaxObjects != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.MaxObjects))
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *LicenseUsageAirgappedResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34203,51 +33360,44 @@ func (m *LicenseUsageAirgappedResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *LicenseUsageAirgappedResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *LicenseUsageAirgappedResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.TotalCount != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.TotalCount))
-		i--
-		dAtA[i] = 0x18
+	if len(m.LicenseUsageAirgapped) > 0 {
+		for _, msg := range m.LicenseUsageAirgapped {
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
 	}
 	if m.Complete {
-		i--
+		dAtA[i] = 0x10
+		i++
 		if m.Complete {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x10
+		i++
 	}
-	if len(m.LicenseUsageAirgapped) > 0 {
-		for iNdEx := len(m.LicenseUsageAirgapped) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.LicenseUsageAirgapped[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0xa
-		}
+	if m.TotalCount != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.TotalCount))
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ManagedClusterEnumerateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34255,139 +33405,108 @@ func (m *ManagedClusterEnumerateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ManagedClusterEnumerateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterEnumerateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Config != nil {
-		{
-			size := m.Config.Size()
-			i -= size
-			if _, err := m.Config.MarshalTo(dAtA[i:]); err != nil {
-				return 0, err
-			}
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
+	}
+	if m.CloudCredential != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CloudCredential.Size()))
+		n150, err150 := m.CloudCredential.MarshalTo(dAtA[i:])
+		if err150 != nil {
+			return 0, err150
 		}
-	}
-	if m.Provider != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Provider))
-		i--
-		dAtA[i] = 0x28
-	}
-	if m.MaxResults != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.MaxResults))
-		i--
-		dAtA[i] = 0x20
+		i += n150
 	}
 	if m.IncludeSecrets {
-		i--
+		dAtA[i] = 0x18
+		i++
 		if m.IncludeSecrets {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x18
+		i++
 	}
-	if m.CloudCredential != nil {
-		{
-			size, err := m.CloudCredential.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+	if m.MaxResults != 0 {
+		dAtA[i] = 0x20
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.MaxResults))
+	}
+	if m.Provider != 0 {
+		dAtA[i] = 0x28
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Provider))
+	}
+	if m.Config != nil {
+		nn151, err151 := m.Config.MarshalTo(dAtA[i:])
+		if err151 != nil {
+			return 0, err151
 		}
-		i--
-		dAtA[i] = 0x12
+		i += nn151
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ManagedClusterEnumerateRequest_AwsConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterEnumerateRequest_AwsConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.AwsConfig != nil {
-		{
-			size, err := m.AwsConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6
-		i--
 		dAtA[i] = 0xa2
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.AwsConfig.Size()))
+		n152, err152 := m.AwsConfig.MarshalTo(dAtA[i:])
+		if err152 != nil {
+			return 0, err152
+		}
+		i += n152
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *ManagedClusterEnumerateRequest_GoogleConfig_) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterEnumerateRequest_GoogleConfig_) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.GoogleConfig != nil {
-		{
-			size, err := m.GoogleConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6
-		i--
 		dAtA[i] = 0xaa
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.GoogleConfig.Size()))
+		n153, err153 := m.GoogleConfig.MarshalTo(dAtA[i:])
+		if err153 != nil {
+			return 0, err153
+		}
+		i += n153
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *ManagedClusterEnumerateRequest_AzureConfig_) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterEnumerateRequest_AzureConfig_) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.AzureConfig != nil {
-		{
-			size, err := m.AzureConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6
-		i--
 		dAtA[i] = 0xb2
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.AzureConfig.Size()))
+		n154, err154 := m.AzureConfig.MarshalTo(dAtA[i:])
+		if err154 != nil {
+			return 0, err154
+		}
+		i += n154
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *ManagedClusterEnumerateRequest_AWSConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34395,36 +33514,29 @@ func (m *ManagedClusterEnumerateRequest_AWSConfig) Marshal() (dAtA []byte, err e
 }
 
 func (m *ManagedClusterEnumerateRequest_AWSConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterEnumerateRequest_AWSConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.NextToken) > 0 {
-		i -= len(m.NextToken)
-		copy(dAtA[i:], m.NextToken)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.NextToken)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if len(m.Region) > 0 {
-		i -= len(m.Region)
-		copy(dAtA[i:], m.Region)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Region)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Region)))
+		i += copy(dAtA[i:], m.Region)
 	}
-	return len(dAtA) - i, nil
+	if len(m.NextToken) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.NextToken)))
+		i += copy(dAtA[i:], m.NextToken)
+	}
+	return i, nil
 }
 
 func (m *ManagedClusterEnumerateRequest_GoogleConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34432,22 +33544,17 @@ func (m *ManagedClusterEnumerateRequest_GoogleConfig) Marshal() (dAtA []byte, er
 }
 
 func (m *ManagedClusterEnumerateRequest_GoogleConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterEnumerateRequest_GoogleConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ManagedClusterEnumerateRequest_AzureConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34455,22 +33562,17 @@ func (m *ManagedClusterEnumerateRequest_AzureConfig) Marshal() (dAtA []byte, err
 }
 
 func (m *ManagedClusterEnumerateRequest_AzureConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterEnumerateRequest_AzureConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ManagedClusterObject) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34478,67 +33580,56 @@ func (m *ManagedClusterObject) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ManagedClusterObject) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterObject) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Status != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Status))
-		i--
-		dAtA[i] = 0x30
-	}
-	if len(m.K8SVersion) > 0 {
-		i -= len(m.K8SVersion)
-		copy(dAtA[i:], m.K8SVersion)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.K8SVersion)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.Kubeconfig) > 0 {
-		i -= len(m.Kubeconfig)
-		copy(dAtA[i:], m.Kubeconfig)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Kubeconfig)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if m.CloudCredential != nil {
-		{
-			size, err := m.CloudCredential.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1a
+	if len(m.Name) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
 	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
 	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0xa
+	if m.CloudCredential != nil {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CloudCredential.Size()))
+		n155, err155 := m.CloudCredential.MarshalTo(dAtA[i:])
+		if err155 != nil {
+			return 0, err155
+		}
+		i += n155
 	}
-	return len(dAtA) - i, nil
+	if len(m.Kubeconfig) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Kubeconfig)))
+		i += copy(dAtA[i:], m.Kubeconfig)
+	}
+	if len(m.K8SVersion) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.K8SVersion)))
+		i += copy(dAtA[i:], m.K8SVersion)
+	}
+	if m.Status != 0 {
+		dAtA[i] = 0x30
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Status))
+	}
+	return i, nil
 }
 
 func (m *ManagedClusterEnumerateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34546,119 +33637,89 @@ func (m *ManagedClusterEnumerateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ManagedClusterEnumerateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterEnumerateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Config != nil {
-		{
-			size := m.Config.Size()
-			i -= size
-			if _, err := m.Config.MarshalTo(dAtA[i:]); err != nil {
+	if len(m.Cluster) > 0 {
+		for _, msg := range m.Cluster {
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
 				return 0, err
 			}
+			i += n
 		}
 	}
 	if m.Provider != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Provider))
-		i--
 		dAtA[i] = 0x10
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Provider))
 	}
-	if len(m.Cluster) > 0 {
-		for iNdEx := len(m.Cluster) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Cluster[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0xa
+	if m.Config != nil {
+		nn156, err156 := m.Config.MarshalTo(dAtA[i:])
+		if err156 != nil {
+			return 0, err156
 		}
+		i += nn156
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ManagedClusterEnumerateResponse_AwsConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterEnumerateResponse_AwsConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.AwsConfig != nil {
-		{
-			size, err := m.AwsConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6
-		i--
 		dAtA[i] = 0xa2
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.AwsConfig.Size()))
+		n157, err157 := m.AwsConfig.MarshalTo(dAtA[i:])
+		if err157 != nil {
+			return 0, err157
+		}
+		i += n157
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *ManagedClusterEnumerateResponse_GoogleConfig_) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterEnumerateResponse_GoogleConfig_) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.GoogleConfig != nil {
-		{
-			size, err := m.GoogleConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6
-		i--
 		dAtA[i] = 0xaa
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.GoogleConfig.Size()))
+		n158, err158 := m.GoogleConfig.MarshalTo(dAtA[i:])
+		if err158 != nil {
+			return 0, err158
+		}
+		i += n158
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *ManagedClusterEnumerateResponse_AzureConfig_) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterEnumerateResponse_AzureConfig_) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.AzureConfig != nil {
-		{
-			size, err := m.AzureConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6
-		i--
 		dAtA[i] = 0xb2
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.AzureConfig.Size()))
+		n159, err159 := m.AzureConfig.MarshalTo(dAtA[i:])
+		if err159 != nil {
+			return 0, err159
+		}
+		i += n159
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *ManagedClusterEnumerateResponse_AWSConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34666,29 +33727,23 @@ func (m *ManagedClusterEnumerateResponse_AWSConfig) Marshal() (dAtA []byte, err 
 }
 
 func (m *ManagedClusterEnumerateResponse_AWSConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterEnumerateResponse_AWSConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.NextToken) > 0 {
-		i -= len(m.NextToken)
-		copy(dAtA[i:], m.NextToken)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.NextToken)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.NextToken)))
+		i += copy(dAtA[i:], m.NextToken)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ManagedClusterEnumerateResponse_GoogleConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34696,22 +33751,17 @@ func (m *ManagedClusterEnumerateResponse_GoogleConfig) Marshal() (dAtA []byte, e
 }
 
 func (m *ManagedClusterEnumerateResponse_GoogleConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterEnumerateResponse_GoogleConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ManagedClusterEnumerateResponse_AzureConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34719,22 +33769,17 @@ func (m *ManagedClusterEnumerateResponse_AzureConfig) Marshal() (dAtA []byte, er
 }
 
 func (m *ManagedClusterEnumerateResponse_AzureConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterEnumerateResponse_AzureConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ManagedClusterInspectRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34742,141 +33787,109 @@ func (m *ManagedClusterInspectRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ManagedClusterInspectRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterInspectRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Config != nil {
-		{
-			size := m.Config.Size()
-			i -= size
-			if _, err := m.Config.MarshalTo(dAtA[i:]); err != nil {
-				return 0, err
-			}
-		}
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
-	if m.Provider != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Provider))
-		i--
-		dAtA[i] = 0x28
+	if len(m.Name) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
+	}
+	if m.CloudCredential != nil {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CloudCredential.Size()))
+		n160, err160 := m.CloudCredential.MarshalTo(dAtA[i:])
+		if err160 != nil {
+			return 0, err160
+		}
+		i += n160
 	}
 	if m.IncludeSecrets {
-		i--
+		dAtA[i] = 0x20
+		i++
 		if m.IncludeSecrets {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x20
+		i++
 	}
-	if m.CloudCredential != nil {
-		{
-			size, err := m.CloudCredential.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+	if m.Provider != 0 {
+		dAtA[i] = 0x28
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Provider))
+	}
+	if m.Config != nil {
+		nn161, err161 := m.Config.MarshalTo(dAtA[i:])
+		if err161 != nil {
+			return 0, err161
 		}
-		i--
-		dAtA[i] = 0x1a
+		i += nn161
 	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ManagedClusterInspectRequest_AwsConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterInspectRequest_AwsConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.AwsConfig != nil {
-		{
-			size, err := m.AwsConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6
-		i--
 		dAtA[i] = 0xa2
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.AwsConfig.Size()))
+		n162, err162 := m.AwsConfig.MarshalTo(dAtA[i:])
+		if err162 != nil {
+			return 0, err162
+		}
+		i += n162
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *ManagedClusterInspectRequest_GoogleConfig_) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterInspectRequest_GoogleConfig_) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.GoogleConfig != nil {
-		{
-			size, err := m.GoogleConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6
-		i--
 		dAtA[i] = 0xaa
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.GoogleConfig.Size()))
+		n163, err163 := m.GoogleConfig.MarshalTo(dAtA[i:])
+		if err163 != nil {
+			return 0, err163
+		}
+		i += n163
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *ManagedClusterInspectRequest_AzureConfig_) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterInspectRequest_AzureConfig_) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.AzureConfig != nil {
-		{
-			size, err := m.AzureConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6
-		i--
 		dAtA[i] = 0xb2
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.AzureConfig.Size()))
+		n164, err164 := m.AzureConfig.MarshalTo(dAtA[i:])
+		if err164 != nil {
+			return 0, err164
+		}
+		i += n164
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *ManagedClusterInspectRequest_AWSConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34884,29 +33897,23 @@ func (m *ManagedClusterInspectRequest_AWSConfig) Marshal() (dAtA []byte, err err
 }
 
 func (m *ManagedClusterInspectRequest_AWSConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterInspectRequest_AWSConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.Region) > 0 {
-		i -= len(m.Region)
-		copy(dAtA[i:], m.Region)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Region)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Region)))
+		i += copy(dAtA[i:], m.Region)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ManagedClusterInspectRequest_GoogleConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34914,22 +33921,17 @@ func (m *ManagedClusterInspectRequest_GoogleConfig) Marshal() (dAtA []byte, err 
 }
 
 func (m *ManagedClusterInspectRequest_GoogleConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterInspectRequest_GoogleConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ManagedClusterInspectRequest_AzureConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34937,22 +33939,17 @@ func (m *ManagedClusterInspectRequest_AzureConfig) Marshal() (dAtA []byte, err e
 }
 
 func (m *ManagedClusterInspectRequest_AzureConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterInspectRequest_AzureConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ManagedClusterInspectResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34960,34 +33957,27 @@ func (m *ManagedClusterInspectResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ManagedClusterInspectResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterInspectResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.Cluster != nil {
-		{
-			size, err := m.Cluster.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Cluster.Size()))
+		n165, err165 := m.Cluster.MarshalTo(dAtA[i:])
+		if err165 != nil {
+			return 0, err165
+		}
+		i += n165
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ManagedClusterBulkAddRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -34995,133 +33985,108 @@ func (m *ManagedClusterBulkAddRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ManagedClusterBulkAddRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterBulkAddRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Config != nil {
-		{
-			size := m.Config.Size()
-			i -= size
-			if _, err := m.Config.MarshalTo(dAtA[i:]); err != nil {
-				return 0, err
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
+	}
+	if m.CloudCredential != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CloudCredential.Size()))
+		n166, err166 := m.CloudCredential.MarshalTo(dAtA[i:])
+		if err166 != nil {
+			return 0, err166
+		}
+		i += n166
+	}
+	if len(m.ClusterName) > 0 {
+		for _, s := range m.ClusterName {
+			dAtA[i] = 0x1a
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
 			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
 		}
 	}
 	if m.Provider != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Provider))
-		i--
 		dAtA[i] = 0x20
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Provider))
 	}
-	if len(m.ClusterName) > 0 {
-		for iNdEx := len(m.ClusterName) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.ClusterName[iNdEx])
-			copy(dAtA[i:], m.ClusterName[iNdEx])
-			i = encodeVarintApi(dAtA, i, uint64(len(m.ClusterName[iNdEx])))
-			i--
-			dAtA[i] = 0x1a
+	if m.Config != nil {
+		nn167, err167 := m.Config.MarshalTo(dAtA[i:])
+		if err167 != nil {
+			return 0, err167
 		}
+		i += nn167
 	}
-	if m.CloudCredential != nil {
-		{
-			size, err := m.CloudCredential.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ManagedClusterBulkAddRequest_AwsConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterBulkAddRequest_AwsConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.AwsConfig != nil {
-		{
-			size, err := m.AwsConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6
-		i--
 		dAtA[i] = 0xa2
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.AwsConfig.Size()))
+		n168, err168 := m.AwsConfig.MarshalTo(dAtA[i:])
+		if err168 != nil {
+			return 0, err168
+		}
+		i += n168
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *ManagedClusterBulkAddRequest_GoogleConfig_) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterBulkAddRequest_GoogleConfig_) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.GoogleConfig != nil {
-		{
-			size, err := m.GoogleConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6
-		i--
 		dAtA[i] = 0xaa
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.GoogleConfig.Size()))
+		n169, err169 := m.GoogleConfig.MarshalTo(dAtA[i:])
+		if err169 != nil {
+			return 0, err169
+		}
+		i += n169
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *ManagedClusterBulkAddRequest_AzureConfig_) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterBulkAddRequest_AzureConfig_) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	i := 0
 	if m.AzureConfig != nil {
-		{
-			size, err := m.AzureConfig.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6
-		i--
 		dAtA[i] = 0xb2
+		i++
+		dAtA[i] = 0x6
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.AzureConfig.Size()))
+		n170, err170 := m.AzureConfig.MarshalTo(dAtA[i:])
+		if err170 != nil {
+			return 0, err170
+		}
+		i += n170
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 func (m *ManagedClusterBulkAddRequest_AWSConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35129,29 +34094,23 @@ func (m *ManagedClusterBulkAddRequest_AWSConfig) Marshal() (dAtA []byte, err err
 }
 
 func (m *ManagedClusterBulkAddRequest_AWSConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterBulkAddRequest_AWSConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.Region) > 0 {
-		i -= len(m.Region)
-		copy(dAtA[i:], m.Region)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Region)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Region)))
+		i += copy(dAtA[i:], m.Region)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ManagedClusterBulkAddRequest_GoogleConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35159,22 +34118,17 @@ func (m *ManagedClusterBulkAddRequest_GoogleConfig) Marshal() (dAtA []byte, err 
 }
 
 func (m *ManagedClusterBulkAddRequest_GoogleConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterBulkAddRequest_GoogleConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ManagedClusterBulkAddRequest_AzureConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35182,22 +34136,17 @@ func (m *ManagedClusterBulkAddRequest_AzureConfig) Marshal() (dAtA []byte, err e
 }
 
 func (m *ManagedClusterBulkAddRequest_AzureConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterBulkAddRequest_AzureConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ManagedClusterBulkAddResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35205,22 +34154,17 @@ func (m *ManagedClusterBulkAddResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ManagedClusterBulkAddResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ManagedClusterBulkAddResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ActivityEnumerateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35228,60 +34172,51 @@ func (m *ActivityEnumerateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ActivityEnumerateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ActivityEnumerateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Kind) > 0 {
-		i -= len(m.Kind)
-		copy(dAtA[i:], m.Kind)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Kind)))
-		i--
-		dAtA[i] = 0x32
-	}
-	if len(m.Cluster) > 0 {
-		i -= len(m.Cluster)
-		copy(dAtA[i:], m.Cluster)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.TimeZone) > 0 {
-		i -= len(m.TimeZone)
-		copy(dAtA[i:], m.TimeZone)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.TimeZone)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if m.Interval != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Interval))
-		i--
-		dAtA[i] = 0x18
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
 	if m.Days != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Days))
-		i--
 		dAtA[i] = 0x10
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Days))
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
+	if m.Interval != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Interval))
 	}
-	return len(dAtA) - i, nil
+	if len(m.TimeZone) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.TimeZone)))
+		i += copy(dAtA[i:], m.TimeZone)
+	}
+	if len(m.Cluster) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
+		i += copy(dAtA[i:], m.Cluster)
+	}
+	if len(m.Kind) > 0 {
+		dAtA[i] = 0x32
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Kind)))
+		i += copy(dAtA[i:], m.Kind)
+	}
+	return i, nil
 }
 
 func (m *ActivityEnumerateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35289,36 +34224,29 @@ func (m *ActivityEnumerateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ActivityEnumerateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ActivityEnumerateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.ActivityData) > 0 {
-		for iNdEx := len(m.ActivityData) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.ActivityData[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.ActivityData {
 			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ActivityEnumerateResponse_Data) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35326,72 +34254,63 @@ func (m *ActivityEnumerateResponse_Data) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ActivityEnumerateResponse_Data) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ActivityEnumerateResponse_Data) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Total != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Total))
-		i--
-		dAtA[i] = 0x38
-	}
-	if m.CompletionTime != 0 {
-		i -= 8
-		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.CompletionTime))))
-		i--
-		dAtA[i] = 0x31
-	}
-	if m.InProgress != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.InProgress))
-		i--
-		dAtA[i] = 0x28
-	}
-	if m.Failed != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Failed))
-		i--
-		dAtA[i] = 0x20
-	}
-	if m.Successful != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Successful))
-		i--
-		dAtA[i] = 0x18
+	if m.StartTime != nil {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.StartTime.Size()))
+		n171, err171 := m.StartTime.MarshalTo(dAtA[i:])
+		if err171 != nil {
+			return 0, err171
+		}
+		i += n171
 	}
 	if m.EndTime != nil {
-		{
-			size, err := m.EndTime.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0x12
-	}
-	if m.StartTime != nil {
-		{
-			size, err := m.StartTime.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.EndTime.Size()))
+		n172, err172 := m.EndTime.MarshalTo(dAtA[i:])
+		if err172 != nil {
+			return 0, err172
 		}
-		i--
-		dAtA[i] = 0xa
+		i += n172
 	}
-	return len(dAtA) - i, nil
+	if m.Successful != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Successful))
+	}
+	if m.Failed != 0 {
+		dAtA[i] = 0x20
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Failed))
+	}
+	if m.InProgress != 0 {
+		dAtA[i] = 0x28
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.InProgress))
+	}
+	if m.CompletionTime != 0 {
+		dAtA[i] = 0x31
+		i++
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.CompletionTime))))
+		i += 8
+	}
+	if m.Total != 0 {
+		dAtA[i] = 0x38
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Total))
+	}
+	return i, nil
 }
 
 func (m *RoleObject) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35399,55 +34318,45 @@ func (m *RoleObject) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RoleObject) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RoleObject) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.RoleId) > 0 {
-		i -= len(m.RoleId)
-		copy(dAtA[i:], m.RoleId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.RoleId)))
-		i--
-		dAtA[i] = 0x1a
+	if m.Metadata != nil {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Metadata.Size()))
+		n173, err173 := m.Metadata.MarshalTo(dAtA[i:])
+		if err173 != nil {
+			return 0, err173
+		}
+		i += n173
 	}
 	if len(m.Rules) > 0 {
-		for iNdEx := len(m.Rules) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Rules[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.Rules {
 			dAtA[i] = 0x12
-		}
-	}
-	if m.Metadata != nil {
-		{
-			size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
 			if err != nil {
 				return 0, err
 			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+			i += n
 		}
-		i--
-		dAtA[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	if len(m.RoleId) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.RoleId)))
+		i += copy(dAtA[i:], m.RoleId)
+	}
+	return i, nil
 }
 
 func (m *RoleConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35455,40 +34364,47 @@ func (m *RoleConfig) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RoleConfig) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RoleConfig) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Apis) > 0 {
-		for iNdEx := len(m.Apis) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.Apis[iNdEx])
-			copy(dAtA[i:], m.Apis[iNdEx])
-			i = encodeVarintApi(dAtA, i, uint64(len(m.Apis[iNdEx])))
-			i--
-			dAtA[i] = 0x12
-		}
-	}
 	if len(m.Services) > 0 {
-		for iNdEx := len(m.Services) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.Services[iNdEx])
-			copy(dAtA[i:], m.Services[iNdEx])
-			i = encodeVarintApi(dAtA, i, uint64(len(m.Services[iNdEx])))
-			i--
+		for _, s := range m.Services {
 			dAtA[i] = 0xa
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
+			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
 		}
 	}
-	return len(dAtA) - i, nil
+	if len(m.Apis) > 0 {
+		for _, s := range m.Apis {
+			dAtA[i] = 0x12
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
+			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
+		}
+	}
+	return i, nil
 }
 
 func (m *RoleCreateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35496,55 +34412,45 @@ func (m *RoleCreateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RoleCreateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RoleCreateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.RoleId) > 0 {
-		i -= len(m.RoleId)
-		copy(dAtA[i:], m.RoleId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.RoleId)))
-		i--
-		dAtA[i] = 0x1a
+	if m.CreateMetadata != nil {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n174, err174 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err174 != nil {
+			return 0, err174
+		}
+		i += n174
 	}
 	if len(m.Rules) > 0 {
-		for iNdEx := len(m.Rules) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Rules[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.Rules {
 			dAtA[i] = 0x12
-		}
-	}
-	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
 			if err != nil {
 				return 0, err
 			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+			i += n
 		}
-		i--
-		dAtA[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	if len(m.RoleId) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.RoleId)))
+		i += copy(dAtA[i:], m.RoleId)
+	}
+	return i, nil
 }
 
 func (m *RoleCreateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35552,22 +34458,17 @@ func (m *RoleCreateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RoleCreateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RoleCreateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RoleUpdateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35575,55 +34476,45 @@ func (m *RoleUpdateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RoleUpdateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RoleUpdateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.RoleId) > 0 {
-		i -= len(m.RoleId)
-		copy(dAtA[i:], m.RoleId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.RoleId)))
-		i--
-		dAtA[i] = 0x1a
+	if m.CreateMetadata != nil {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.CreateMetadata.Size()))
+		n175, err175 := m.CreateMetadata.MarshalTo(dAtA[i:])
+		if err175 != nil {
+			return 0, err175
+		}
+		i += n175
 	}
 	if len(m.Rules) > 0 {
-		for iNdEx := len(m.Rules) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Rules[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.Rules {
 			dAtA[i] = 0x12
-		}
-	}
-	if m.CreateMetadata != nil {
-		{
-			size, err := m.CreateMetadata.MarshalToSizedBuffer(dAtA[:i])
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
 			if err != nil {
 				return 0, err
 			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+			i += n
 		}
-		i--
-		dAtA[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	if len(m.RoleId) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.RoleId)))
+		i += copy(dAtA[i:], m.RoleId)
+	}
+	return i, nil
 }
 
 func (m *RoleUpdateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35631,22 +34522,17 @@ func (m *RoleUpdateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RoleUpdateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RoleUpdateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RoleEnumerateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35654,41 +34540,33 @@ func (m *RoleEnumerateRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RoleEnumerateRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RoleEnumerateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.EnumerateOptions != nil {
-		{
-			size, err := m.EnumerateOptions.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x12
-	}
 	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
-	return len(dAtA) - i, nil
+	if m.EnumerateOptions != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.EnumerateOptions.Size()))
+		n176, err176 := m.EnumerateOptions.MarshalTo(dAtA[i:])
+		if err176 != nil {
+			return 0, err176
+		}
+		i += n176
+	}
+	return i, nil
 }
 
 func (m *RoleEnumerateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35696,36 +34574,29 @@ func (m *RoleEnumerateResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RoleEnumerateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RoleEnumerateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.Roles) > 0 {
-		for iNdEx := len(m.Roles) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Roles[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.Roles {
 			dAtA[i] = 0xa
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RoleInspectRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35733,43 +34604,35 @@ func (m *RoleInspectRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RoleInspectRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RoleInspectRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RoleInspectResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35777,34 +34640,27 @@ func (m *RoleInspectResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RoleInspectResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RoleInspectResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.Role != nil {
-		{
-			size, err := m.Role.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Role.Size()))
+		n177, err177 := m.Role.MarshalTo(dAtA[i:])
+		if err177 != nil {
+			return 0, err177
+		}
+		i += n177
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RoleDeleteRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35812,43 +34668,35 @@ func (m *RoleDeleteRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RoleDeleteRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RoleDeleteRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Uid) > 0 {
-		i -= len(m.Uid)
-		copy(dAtA[i:], m.Uid)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.OrgId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Uid) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Uid)))
+		i += copy(dAtA[i:], m.Uid)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RoleDeleteResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35856,22 +34704,17 @@ func (m *RoleDeleteResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RoleDeleteResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RoleDeleteResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RolePermissionRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35879,29 +34722,23 @@ func (m *RolePermissionRequest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RolePermissionRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RolePermissionRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.OrgId) > 0 {
-		i -= len(m.OrgId)
-		copy(dAtA[i:], m.OrgId)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.OrgId)))
+		i += copy(dAtA[i:], m.OrgId)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *RolePermissionResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35909,48 +34746,45 @@ func (m *RolePermissionResponse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *RolePermissionResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RolePermissionResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.Rules) > 0 {
-		for k := range m.Rules {
+		for k, _ := range m.Rules {
+			dAtA[i] = 0xa
+			i++
 			v := m.Rules[k]
-			baseI := i
+			msgSize := 0
 			if v != nil {
-				{
-					size, err := v.MarshalToSizedBuffer(dAtA[:i])
-					if err != nil {
-						return 0, err
-					}
-					i -= size
-					i = encodeVarintApi(dAtA, i, uint64(size))
-				}
-				i--
-				dAtA[i] = 0x12
+				msgSize = v.Size()
+				msgSize += 1 + sovApi(uint64(msgSize))
 			}
-			i -= len(k)
-			copy(dAtA[i:], k)
+			mapSize := 1 + len(k) + sovApi(uint64(len(k))) + msgSize
+			i = encodeVarintApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
 			i = encodeVarintApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0xa
+			i += copy(dAtA[i:], k)
+			if v != nil {
+				dAtA[i] = 0x12
+				i++
+				i = encodeVarintApi(dAtA, i, uint64(v.Size()))
+				n178, err178 := v.MarshalTo(dAtA[i:])
+				if err178 != nil {
+					return 0, err178
+				}
+				i += n178
+			}
 		}
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *Permission) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35958,32 +34792,27 @@ func (m *Permission) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Permission) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Permission) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if m.FullAccess {
-		i--
+		dAtA[i] = 0x8
+		i++
 		if m.FullAccess {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i--
-		dAtA[i] = 0x8
+		i++
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ActivityDataObject) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -35991,73 +34820,62 @@ func (m *ActivityDataObject) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ActivityDataObject) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ActivityDataObject) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Cluster) > 0 {
-		i -= len(m.Cluster)
-		copy(dAtA[i:], m.Cluster)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
-		i--
-		dAtA[i] = 0x32
-	}
-	if len(m.Opcycle) > 0 {
-		for iNdEx := len(m.Opcycle) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Opcycle[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintApi(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x2a
+	if m.Metadata != nil {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Metadata.Size()))
+		n179, err179 := m.Metadata.MarshalTo(dAtA[i:])
+		if err179 != nil {
+			return 0, err179
 		}
-	}
-	if m.CompletionTime != 0 {
-		i -= 8
-		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.CompletionTime))))
-		i--
-		dAtA[i] = 0x21
-	}
-	if m.Status != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Status))
-		i--
-		dAtA[i] = 0x18
+		i += n179
 	}
 	if len(m.Kind) > 0 {
-		i -= len(m.Kind)
-		copy(dAtA[i:], m.Kind)
-		i = encodeVarintApi(dAtA, i, uint64(len(m.Kind)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Kind)))
+		i += copy(dAtA[i:], m.Kind)
 	}
-	if m.Metadata != nil {
-		{
-			size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+	if m.Status != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Status))
+	}
+	if m.CompletionTime != 0 {
+		dAtA[i] = 0x21
+		i++
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.CompletionTime))))
+		i += 8
+	}
+	if len(m.Opcycle) > 0 {
+		for _, msg := range m.Opcycle {
+			dAtA[i] = 0x2a
+			i++
+			i = encodeVarintApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
 			if err != nil {
 				return 0, err
 			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+			i += n
 		}
-		i--
-		dAtA[i] = 0xa
 	}
-	return len(dAtA) - i, nil
+	if len(m.Cluster) > 0 {
+		dAtA[i] = 0x32
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Cluster)))
+		i += copy(dAtA[i:], m.Cluster)
+	}
+	return i, nil
 }
 
 func (m *ActivityDataObject_Opcycle) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -36065,61 +34883,50 @@ func (m *ActivityDataObject_Opcycle) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ActivityDataObject_Opcycle) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ActivityDataObject_Opcycle) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if m.Status != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.Status))
-		i--
-		dAtA[i] = 0x18
+	if m.StartTime != nil {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.StartTime.Size()))
+		n180, err180 := m.StartTime.MarshalTo(dAtA[i:])
+		if err180 != nil {
+			return 0, err180
+		}
+		i += n180
 	}
 	if m.LastUpdatedTime != nil {
-		{
-			size, err := m.LastUpdatedTime.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0x12
-	}
-	if m.StartTime != nil {
-		{
-			size, err := m.StartTime.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintApi(dAtA, i, uint64(size))
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.LastUpdatedTime.Size()))
+		n181, err181 := m.LastUpdatedTime.MarshalTo(dAtA[i:])
+		if err181 != nil {
+			return 0, err181
 		}
-		i--
-		dAtA[i] = 0xa
+		i += n181
 	}
-	return len(dAtA) - i, nil
+	if m.Status != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintApi(dAtA, i, uint64(m.Status))
+	}
+	return i, nil
 }
 
 func encodeVarintApi(dAtA []byte, offset int, v uint64) int {
-	offset -= sovApi(v)
-	base := offset
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		offset++
 	}
 	dAtA[offset] = uint8(v)
-	return base
+	return offset + 1
 }
 func NewPopulatedOrganizationObject(r randyApi, easy bool) *OrganizationObject {
 	this := &OrganizationObject{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Metadata = NewPopulatedMetadata(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -36129,27 +34936,27 @@ func NewPopulatedOrganizationObject(r randyApi, easy bool) *OrganizationObject {
 
 func NewPopulatedClusterInfo(r randyApi, easy bool) *ClusterInfo {
 	this := &ClusterInfo{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.PxConfig = NewPopulatedPXConfig(r, easy)
 	}
 	this.Kubeconfig = string(randStringApi(r))
 	this.CloudCredential = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Status = NewPopulatedClusterInfo_StatusInfo(r, easy)
 	}
 	this.DeleteBackups = bool(bool(r.Intn(2) == 0))
 	this.DeleteRestores = bool(bool(r.Intn(2) == 0))
 	this.StorkVersion = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CloudCredentialRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.AddBackupShare = NewPopulatedBackupShare(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.DelBackupShare = NewPopulatedBackupShare(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupShareStatusInfo = NewPopulatedClusterInfo_BackupShareStatusInfo(r, easy)
 	}
 	v1 := r.Intn(10)
@@ -36157,7 +34964,7 @@ func NewPopulatedClusterInfo(r randyApi, easy bool) *ClusterInfo {
 	for i := 0; i < v1; i++ {
 		this.OwnerGroupList[i] = string(randStringApi(r))
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.PlatformCredentialRef = NewPopulatedObjectRef(r, easy)
 	}
 	this.TeleportClusterId = string(randStringApi(r))
@@ -36189,10 +34996,10 @@ func NewPopulatedClusterInfo_BackupShareStatusInfo(r randyApi, easy bool) *Clust
 
 func NewPopulatedClusterObject(r randyApi, easy bool) *ClusterObject {
 	this := &ClusterObject{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Metadata = NewPopulatedMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.ClusterInfo = NewPopulatedClusterInfo(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -36316,10 +35123,10 @@ func NewPopulatedCloudCredentialInfo_RancherConfig(r randyApi, easy bool) *Cloud
 }
 func NewPopulatedCloudCredentialObject(r randyApi, easy bool) *CloudCredentialObject {
 	this := &CloudCredentialObject{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Metadata = NewPopulatedMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CloudCredentialInfo = NewPopulatedCloudCredentialInfo(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -36329,16 +35136,16 @@ func NewPopulatedCloudCredentialObject(r randyApi, easy bool) *CloudCredentialOb
 
 func NewPopulatedSchedulePolicyInfo(r randyApi, easy bool) *SchedulePolicyInfo {
 	this := &SchedulePolicyInfo{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Interval = NewPopulatedSchedulePolicyInfo_IntervalPolicy(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Daily = NewPopulatedSchedulePolicyInfo_DailyPolicy(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Weekly = NewPopulatedSchedulePolicyInfo_WeeklyPolicy(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Monthly = NewPopulatedSchedulePolicyInfo_MonthlyPolicy(r, easy)
 	}
 	v2 := r.Intn(10)
@@ -36371,7 +35178,7 @@ func NewPopulatedSchedulePolicyInfo_IntervalPolicy(r randyApi, easy bool) *Sched
 	if r.Intn(2) == 0 {
 		this.Retain *= -1
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.IncrementalCount = NewPopulatedSchedulePolicyInfo_IncrementalCount(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -36386,7 +35193,7 @@ func NewPopulatedSchedulePolicyInfo_DailyPolicy(r randyApi, easy bool) *Schedule
 	if r.Intn(2) == 0 {
 		this.Retain *= -1
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.IncrementalCount = NewPopulatedSchedulePolicyInfo_IncrementalCount(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -36402,7 +35209,7 @@ func NewPopulatedSchedulePolicyInfo_WeeklyPolicy(r randyApi, easy bool) *Schedul
 	if r.Intn(2) == 0 {
 		this.Retain *= -1
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.IncrementalCount = NewPopulatedSchedulePolicyInfo_IncrementalCount(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -36421,7 +35228,7 @@ func NewPopulatedSchedulePolicyInfo_MonthlyPolicy(r randyApi, easy bool) *Schedu
 	if r.Intn(2) == 0 {
 		this.Retain *= -1
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.IncrementalCount = NewPopulatedSchedulePolicyInfo_IncrementalCount(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -36431,10 +35238,10 @@ func NewPopulatedSchedulePolicyInfo_MonthlyPolicy(r randyApi, easy bool) *Schedu
 
 func NewPopulatedSchedulePolicyObject(r randyApi, easy bool) *SchedulePolicyObject {
 	this := &SchedulePolicyObject{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Metadata = NewPopulatedMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.SchedulePolicyInfo = NewPopulatedSchedulePolicyInfo(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -36447,7 +35254,7 @@ func NewPopulatedBackupScheduleInfo(r randyApi, easy bool) *BackupScheduleInfo {
 	this.SchedulePolicy = string(randStringApi(r))
 	this.Suspend = bool(bool(r.Intn(2) == 0))
 	this.ReclaimPolicy = BackupScheduleInfo_ReclaimPolicyType([]int32{0, 1, 2}[r.Intn(3)])
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v3 := r.Intn(10)
 		this.BackupStatus = make(map[string]*BackupScheduleInfo_StatusInfoList)
 		for i := 0; i < v3; i++ {
@@ -36461,7 +35268,7 @@ func NewPopulatedBackupScheduleInfo(r randyApi, easy bool) *BackupScheduleInfo {
 	for i := 0; i < v4; i++ {
 		this.Namespaces[i] = string(randStringApi(r))
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v5 := r.Intn(10)
 		this.LabelSelectors = make(map[string]string)
 		for i := 0; i < v5; i++ {
@@ -36471,13 +35278,13 @@ func NewPopulatedBackupScheduleInfo(r randyApi, easy bool) *BackupScheduleInfo {
 	this.PreExecRule = string(randStringApi(r))
 	this.PostExecRule = string(randStringApi(r))
 	this.DeleteBackups = bool(bool(r.Intn(2) == 0))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Status = NewPopulatedBackupScheduleInfo_StatusInfo(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.SuspendedBy = NewPopulatedBackupScheduleInfo_SuspendedBy(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v6 := r.Intn(5)
 		this.IncludeResources = make([]*ResourceInfo, v6)
 		for i := 0; i < v6; i++ {
@@ -36491,19 +35298,19 @@ func NewPopulatedBackupScheduleInfo(r randyApi, easy bool) *BackupScheduleInfo {
 	for i := 0; i < v7; i++ {
 		this.ResourceTypes[i] = string(randStringApi(r))
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.SchedulePolicyRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupLocationRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.PreExecRuleRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.PostExecRuleRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupType = NewPopulatedBackupScheduleInfo_BackupType(r, easy)
 	}
 	this.NsLabelSelectors = string(randStringApi(r))
@@ -36531,7 +35338,7 @@ func NewPopulatedBackupScheduleInfo_SuspendedBy(r randyApi, easy bool) *BackupSc
 
 func NewPopulatedBackupScheduleInfo_StatusInfoList(r randyApi, easy bool) *BackupScheduleInfo_StatusInfoList {
 	this := &BackupScheduleInfo_StatusInfoList{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v8 := r.Intn(5)
 		this.Status = make([]*BackupScheduleInfo_StatusInfo, v8)
 		for i := 0; i < v8; i++ {
@@ -36546,10 +35353,10 @@ func NewPopulatedBackupScheduleInfo_StatusInfoList(r randyApi, easy bool) *Backu
 func NewPopulatedBackupScheduleInfo_StatusInfo(r randyApi, easy bool) *BackupScheduleInfo_StatusInfo {
 	this := &BackupScheduleInfo_StatusInfo{}
 	this.BackupName = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateTime = types.NewPopulatedTimestamp(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.FinishTime = types.NewPopulatedTimestamp(r, easy)
 	}
 	this.Status = BackupScheduleInfo_StatusInfo_Status([]int32{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}[r.Intn(10)])
@@ -36561,10 +35368,10 @@ func NewPopulatedBackupScheduleInfo_StatusInfo(r randyApi, easy bool) *BackupSch
 
 func NewPopulatedBackupScheduleObject(r randyApi, easy bool) *BackupScheduleObject {
 	this := &BackupScheduleObject{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Metadata = NewPopulatedMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupScheduleInfo = NewPopulatedBackupScheduleInfo(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -36588,12 +35395,12 @@ func NewPopulatedBackupLocationInfo(r randyApi, easy bool) *BackupLocationInfo {
 	this.Path = string(randStringApi(r))
 	this.EncryptionKey = string(randStringApi(r))
 	this.CloudCredential = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Status = NewPopulatedBackupLocationInfo_StatusInfo(r, easy)
 	}
 	this.DeleteBackups = bool(bool(r.Intn(2) == 0))
 	this.ValidateCloudCredential = bool(bool(r.Intn(2) == 0))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CloudCredentialRef = NewPopulatedObjectRef(r, easy)
 	}
 	this.ObjectLockEnabled = bool(bool(r.Intn(2) == 0))
@@ -36630,10 +35437,10 @@ func NewPopulatedBackupLocationInfo_StatusInfo(r randyApi, easy bool) *BackupLoc
 
 func NewPopulatedBackupLocationObject(r randyApi, easy bool) *BackupLocationObject {
 	this := &BackupLocationObject{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Metadata = NewPopulatedMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupLocationInfo = NewPopulatedBackupLocationInfo(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -36662,24 +35469,24 @@ func NewPopulatedBackupInfo(r randyApi, easy bool) *BackupInfo {
 	for i := 0; i < v9; i++ {
 		this.Namespaces[i] = string(randStringApi(r))
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v10 := r.Intn(10)
 		this.LabelSelectors = make(map[string]string)
 		for i := 0; i < v10; i++ {
 			this.LabelSelectors[randStringApi(r)] = randStringApi(r)
 		}
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Status = NewPopulatedBackupInfo_StatusInfo(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v11 := r.Intn(5)
 		this.Resources = make([]*ResourceInfo, v11)
 		for i := 0; i < v11; i++ {
 			this.Resources[i] = NewPopulatedResourceInfo(r, easy)
 		}
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v12 := r.Intn(5)
 		this.Volumes = make([]*BackupInfo_Volume, v12)
 		for i := 0; i < v12; i++ {
@@ -36690,13 +35497,13 @@ func NewPopulatedBackupInfo(r randyApi, easy bool) *BackupInfo {
 	this.Stage = BackupInfo_Stage([]int32{0, 1, 2, 3, 4, 5, 6}[r.Intn(7)])
 	this.PreExecRule = string(randStringApi(r))
 	this.PostExecRule = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupSchedule = NewPopulatedBackupInfo_BackupSchedule(r, easy)
 	}
 	this.CrName = string(randStringApi(r))
 	this.TotalSize = uint64(uint64(r.Uint32()))
 	this.CloudCredential = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v13 := r.Intn(5)
 		this.IncludeResources = make([]*ResourceInfo, v13)
 		for i := 0; i < v13; i++ {
@@ -36711,19 +35518,19 @@ func NewPopulatedBackupInfo(r randyApi, easy bool) *BackupInfo {
 	for i := 0; i < v14; i++ {
 		this.ResourceTypes[i] = string(randStringApi(r))
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupLocationRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.PreExecRuleRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.PostExecRuleRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CloudCredentialRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupType = NewPopulatedBackupInfo_BackupType(r, easy)
 	}
 	this.CrUid = string(randStringApi(r))
@@ -36731,15 +35538,15 @@ func NewPopulatedBackupInfo(r randyApi, easy bool) *BackupInfo {
 	if r.Intn(2) == 0 {
 		this.RetentionPeriod *= -1
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupShare = NewPopulatedBackupShare(r, easy)
 	}
 	this.UserBackupshareAccess = BackupShare_AccessType([]int32{0, 1, 2, 3}[r.Intn(4)])
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.ClusterRef = NewPopulatedObjectRef(r, easy)
 	}
 	this.NsLabelSelectors = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v15 := r.Intn(10)
 		this.RancherProjects = make(map[string]string)
 		for i := 0; i < v15; i++ {
@@ -36776,7 +35583,7 @@ func NewPopulatedBackupInfo_Volume(r randyApi, easy bool) *BackupInfo_Volume {
 	this.Namespace = string(randStringApi(r))
 	this.Pvc = string(randStringApi(r))
 	this.BackupId = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Status = NewPopulatedBackupInfo_StatusInfo(r, easy)
 	}
 	this.DriverName = string(randStringApi(r))
@@ -36785,7 +35592,7 @@ func NewPopulatedBackupInfo_Volume(r randyApi, easy bool) *BackupInfo_Volume {
 	for i := 0; i < v16; i++ {
 		this.Zones[i] = string(randStringApi(r))
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v17 := r.Intn(10)
 		this.Options = make(map[string]string)
 		for i := 0; i < v17; i++ {
@@ -36814,10 +35621,10 @@ func NewPopulatedBackupInfo_StatusInfo(r randyApi, easy bool) *BackupInfo_Status
 
 func NewPopulatedBackupObject(r randyApi, easy bool) *BackupObject {
 	this := &BackupObject{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Metadata = NewPopulatedMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupInfo = NewPopulatedBackupInfo(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -36827,7 +35634,7 @@ func NewPopulatedBackupObject(r randyApi, easy bool) *BackupObject {
 
 func NewPopulatedRulesInfo(r randyApi, easy bool) *RulesInfo {
 	this := &RulesInfo{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v18 := r.Intn(5)
 		this.Rules = make([]*RulesInfo_RuleItem, v18)
 		for i := 0; i < v18; i++ {
@@ -36841,14 +35648,14 @@ func NewPopulatedRulesInfo(r randyApi, easy bool) *RulesInfo {
 
 func NewPopulatedRulesInfo_RuleItem(r randyApi, easy bool) *RulesInfo_RuleItem {
 	this := &RulesInfo_RuleItem{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v19 := r.Intn(10)
 		this.PodSelector = make(map[string]string)
 		for i := 0; i < v19; i++ {
 			this.PodSelector[randStringApi(r)] = randStringApi(r)
 		}
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v20 := r.Intn(5)
 		this.Actions = make([]*RulesInfo_Action, v20)
 		for i := 0; i < v20; i++ {
@@ -36873,10 +35680,10 @@ func NewPopulatedRulesInfo_Action(r randyApi, easy bool) *RulesInfo_Action {
 
 func NewPopulatedRuleObject(r randyApi, easy bool) *RuleObject {
 	this := &RuleObject{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Metadata = NewPopulatedMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.RulesInfo = NewPopulatedRulesInfo(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -36895,14 +35702,14 @@ func NewPopulatedRestoreInfo(r randyApi, easy bool) *RestoreInfo {
 	this := &RestoreInfo{}
 	this.Backup = string(randStringApi(r))
 	this.BackupLocation = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v21 := r.Intn(10)
 		this.LabelSelectors = make(map[string]string)
 		for i := 0; i < v21; i++ {
 			this.LabelSelectors[randStringApi(r)] = randStringApi(r)
 		}
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v22 := r.Intn(10)
 		this.NamespaceMapping = make(map[string]string)
 		for i := 0; i < v22; i++ {
@@ -36910,17 +35717,17 @@ func NewPopulatedRestoreInfo(r randyApi, easy bool) *RestoreInfo {
 		}
 	}
 	this.ReplacePolicy = ReplacePolicy_Type([]int32{0, 1, 2}[r.Intn(3)])
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Status = NewPopulatedRestoreInfo_StatusInfo(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v23 := r.Intn(5)
 		this.Resources = make([]*RestoreInfo_RestoredResource, v23)
 		for i := 0; i < v23; i++ {
 			this.Resources[i] = NewPopulatedRestoreInfo_RestoredResource(r, easy)
 		}
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v24 := r.Intn(5)
 		this.Volumes = make([]*RestoreInfo_Volume, v24)
 		for i := 0; i < v24; i++ {
@@ -36934,7 +35741,7 @@ func NewPopulatedRestoreInfo(r randyApi, easy bool) *RestoreInfo {
 		this.IncludeOptionalResourceTypes[i] = string(randStringApi(r))
 	}
 	this.TotalSize = uint64(uint64(r.Uint32()))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v26 := r.Intn(5)
 		this.IncludeResources = make([]*ResourceInfo, v26)
 		for i := 0; i < v26; i++ {
@@ -36943,27 +35750,27 @@ func NewPopulatedRestoreInfo(r randyApi, easy bool) *RestoreInfo {
 	}
 	this.ResourceCount = uint64(uint64(r.Uint32()))
 	this.StorkVersion = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupLocationRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v27 := r.Intn(10)
 		this.StorageClassMapping = make(map[string]string)
 		for i := 0; i < v27; i++ {
 			this.StorageClassMapping[randStringApi(r)] = randStringApi(r)
 		}
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v28 := r.Intn(10)
 		this.RancherProjectMapping = make(map[string]string)
 		for i := 0; i < v28; i++ {
 			this.RancherProjectMapping[randStringApi(r)] = randStringApi(r)
 		}
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v29 := r.Intn(10)
 		this.RancherProjectNameMapping = make(map[string]string)
 		for i := 0; i < v29; i++ {
@@ -36972,7 +35779,7 @@ func NewPopulatedRestoreInfo(r randyApi, easy bool) *RestoreInfo {
 	}
 	this.LargeResourceEnabled = bool(bool(r.Intn(2) == 0))
 	this.RestoredResourceCount = uint64(uint64(r.Uint32()))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.RestoreStatus = NewPopulatedRestoreInfo_RestoreResourceState(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -36995,7 +35802,7 @@ func NewPopulatedRestoreInfo_RestoredResource(r randyApi, easy bool) *RestoreInf
 	this.Group = string(randStringApi(r))
 	this.Kind = string(randStringApi(r))
 	this.Version = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Status = NewPopulatedRestoreInfo_StatusInfo(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37009,7 +35816,7 @@ func NewPopulatedRestoreInfo_Volume(r randyApi, easy bool) *RestoreInfo_Volume {
 	this.SourceNamespace = string(randStringApi(r))
 	this.SourceVolume = string(randStringApi(r))
 	this.RestoreVolume = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Status = NewPopulatedRestoreInfo_StatusInfo(r, easy)
 	}
 	this.DriverName = string(randStringApi(r))
@@ -37018,7 +35825,7 @@ func NewPopulatedRestoreInfo_Volume(r randyApi, easy bool) *RestoreInfo_Volume {
 	for i := 0; i < v30; i++ {
 		this.Zones[i] = string(randStringApi(r))
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v31 := r.Intn(10)
 		this.Options = make(map[string]string)
 		for i := 0; i < v31; i++ {
@@ -37042,10 +35849,10 @@ func NewPopulatedRestoreInfo_StatusInfo(r randyApi, easy bool) *RestoreInfo_Stat
 
 func NewPopulatedRestoreObject(r randyApi, easy bool) *RestoreObject {
 	this := &RestoreObject{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Metadata = NewPopulatedMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.RestoreInfo = NewPopulatedRestoreInfo(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37069,10 +35876,10 @@ func NewPopulatedHealthStatusResponse(r randyApi, easy bool) *HealthStatusRespon
 
 func NewPopulatedTimeRange(r randyApi, easy bool) *TimeRange {
 	this := &TimeRange{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.StartTime = types.NewPopulatedTimestamp(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.EndTime = types.NewPopulatedTimestamp(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37082,7 +35889,7 @@ func NewPopulatedTimeRange(r randyApi, easy bool) *TimeRange {
 
 func NewPopulatedEnumerateOptions(r randyApi, easy bool) *EnumerateOptions {
 	this := &EnumerateOptions{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v32 := r.Intn(10)
 		this.Labels = make(map[string]string)
 		for i := 0; i < v32; i++ {
@@ -37090,7 +35897,7 @@ func NewPopulatedEnumerateOptions(r randyApi, easy bool) *EnumerateOptions {
 		}
 	}
 	this.MaxObjects = uint64(uint64(r.Uint32()))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.TimeRange = NewPopulatedTimeRange(r, easy)
 	}
 	this.NameFilter = string(randStringApi(r))
@@ -37105,10 +35912,10 @@ func NewPopulatedEnumerateOptions(r randyApi, easy bool) *EnumerateOptions {
 
 func NewPopulatedSchedulePolicyCreateRequest(r randyApi, easy bool) *SchedulePolicyCreateRequest {
 	this := &SchedulePolicyCreateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.SchedulePolicy = NewPopulatedSchedulePolicyInfo(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37125,10 +35932,10 @@ func NewPopulatedSchedulePolicyCreateResponse(r randyApi, easy bool) *SchedulePo
 
 func NewPopulatedSchedulePolicyUpdateRequest(r randyApi, easy bool) *SchedulePolicyUpdateRequest {
 	this := &SchedulePolicyUpdateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.SchedulePolicy = NewPopulatedSchedulePolicyInfo(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37146,7 +35953,7 @@ func NewPopulatedSchedulePolicyUpdateResponse(r randyApi, easy bool) *SchedulePo
 func NewPopulatedSchedulePolicyEnumerateRequest(r randyApi, easy bool) *SchedulePolicyEnumerateRequest {
 	this := &SchedulePolicyEnumerateRequest{}
 	this.OrgId = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v33 := r.Intn(10)
 		this.Labels = make(map[string]string)
 		for i := 0; i < v33; i++ {
@@ -37160,7 +35967,7 @@ func NewPopulatedSchedulePolicyEnumerateRequest(r randyApi, easy bool) *Schedule
 
 func NewPopulatedSchedulePolicyEnumerateResponse(r randyApi, easy bool) *SchedulePolicyEnumerateResponse {
 	this := &SchedulePolicyEnumerateResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v34 := r.Intn(5)
 		this.SchedulePolicies = make([]*SchedulePolicyObject, v34)
 		for i := 0; i < v34; i++ {
@@ -37184,7 +35991,7 @@ func NewPopulatedSchedulePolicyInspectRequest(r randyApi, easy bool) *SchedulePo
 
 func NewPopulatedSchedulePolicyInspectResponse(r randyApi, easy bool) *SchedulePolicyInspectResponse {
 	this := &SchedulePolicyInspectResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.SchedulePolicy = NewPopulatedSchedulePolicyObject(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37213,7 +36020,7 @@ func NewPopulatedSchedulePolicyOwnershipUpdateRequest(r randyApi, easy bool) *Sc
 	this := &SchedulePolicyOwnershipUpdateRequest{}
 	this.OrgId = string(randStringApi(r))
 	this.Name = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Ownership = NewPopulatedOwnership(r, easy)
 	}
 	this.Uid = string(randStringApi(r))
@@ -37231,7 +36038,7 @@ func NewPopulatedSchedulePolicyOwnershipUpdateResponse(r randyApi, easy bool) *S
 
 func NewPopulatedBackupScheduleCreateRequest(r randyApi, easy bool) *BackupScheduleCreateRequest {
 	this := &BackupScheduleCreateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
 	this.SchedulePolicy = string(randStringApi(r))
@@ -37243,7 +36050,7 @@ func NewPopulatedBackupScheduleCreateRequest(r randyApi, easy bool) *BackupSched
 	for i := 0; i < v35; i++ {
 		this.Namespaces[i] = string(randStringApi(r))
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v36 := r.Intn(10)
 		this.LabelSelectors = make(map[string]string)
 		for i := 0; i < v36; i++ {
@@ -37252,7 +36059,7 @@ func NewPopulatedBackupScheduleCreateRequest(r randyApi, easy bool) *BackupSched
 	}
 	this.PreExecRule = string(randStringApi(r))
 	this.PostExecRule = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v37 := r.Intn(5)
 		this.IncludeResources = make([]*ResourceInfo, v37)
 		for i := 0; i < v37; i++ {
@@ -37265,16 +36072,16 @@ func NewPopulatedBackupScheduleCreateRequest(r randyApi, easy bool) *BackupSched
 	for i := 0; i < v38; i++ {
 		this.ResourceTypes[i] = string(randStringApi(r))
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.SchedulePolicyRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupLocationRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.PreExecRuleRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.PostExecRuleRef = NewPopulatedObjectRef(r, easy)
 	}
 	this.BackupType = BackupScheduleCreateRequest_BackupType([]int32{0, 1, 2}[r.Intn(3)])
@@ -37293,7 +36100,7 @@ func NewPopulatedBackupScheduleCreateResponse(r randyApi, easy bool) *BackupSche
 
 func NewPopulatedBackupScheduleUpdateRequest(r randyApi, easy bool) *BackupScheduleUpdateRequest {
 	this := &BackupScheduleUpdateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
 	this.SchedulePolicy = string(randStringApi(r))
@@ -37305,7 +36112,7 @@ func NewPopulatedBackupScheduleUpdateRequest(r randyApi, easy bool) *BackupSched
 	for i := 0; i < v39; i++ {
 		this.Namespaces[i] = string(randStringApi(r))
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v40 := r.Intn(10)
 		this.LabelSelectors = make(map[string]string)
 		for i := 0; i < v40; i++ {
@@ -37315,7 +36122,7 @@ func NewPopulatedBackupScheduleUpdateRequest(r randyApi, easy bool) *BackupSched
 	this.PreExecRule = string(randStringApi(r))
 	this.PostExecRule = string(randStringApi(r))
 	this.Suspend = bool(bool(r.Intn(2) == 0))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v41 := r.Intn(5)
 		this.IncludeResources = make([]*ResourceInfo, v41)
 		for i := 0; i < v41; i++ {
@@ -37323,16 +36130,16 @@ func NewPopulatedBackupScheduleUpdateRequest(r randyApi, easy bool) *BackupSched
 		}
 	}
 	this.CsiSnapshotClassName = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.SchedulePolicyRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupLocationRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.PreExecRuleRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.PostExecRuleRef = NewPopulatedObjectRef(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37350,7 +36157,7 @@ func NewPopulatedBackupScheduleUpdateResponse(r randyApi, easy bool) *BackupSche
 func NewPopulatedBackupScheduleEnumerateRequest(r randyApi, easy bool) *BackupScheduleEnumerateRequest {
 	this := &BackupScheduleEnumerateRequest{}
 	this.OrgId = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v42 := r.Intn(10)
 		this.Labels = make(map[string]string)
 		for i := 0; i < v42; i++ {
@@ -37358,10 +36165,10 @@ func NewPopulatedBackupScheduleEnumerateRequest(r randyApi, easy bool) *BackupSc
 		}
 	}
 	this.BackupLocation = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupLocationRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.EnumerateOptions = NewPopulatedEnumerateOptions(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37371,7 +36178,7 @@ func NewPopulatedBackupScheduleEnumerateRequest(r randyApi, easy bool) *BackupSc
 
 func NewPopulatedBackupScheduleEnumerateResponse(r randyApi, easy bool) *BackupScheduleEnumerateResponse {
 	this := &BackupScheduleEnumerateResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v43 := r.Intn(5)
 		this.BackupSchedules = make([]*BackupScheduleObject, v43)
 		for i := 0; i < v43; i++ {
@@ -37396,7 +36203,7 @@ func NewPopulatedBackupScheduleInspectRequest(r randyApi, easy bool) *BackupSche
 
 func NewPopulatedBackupScheduleInspectResponse(r randyApi, easy bool) *BackupScheduleInspectResponse {
 	this := &BackupScheduleInspectResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupSchedule = NewPopulatedBackupScheduleObject(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37426,10 +36233,10 @@ func NewPopulatedClusterBackupShareUpdateRequest(r randyApi, easy bool) *Cluster
 	this := &ClusterBackupShareUpdateRequest{}
 	this.OrgId = string(randStringApi(r))
 	this.Name = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.AddBackupShare = NewPopulatedBackupShare(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.DelBackupShare = NewPopulatedBackupShare(r, easy)
 	}
 	this.Uid = string(randStringApi(r))
@@ -37447,18 +36254,18 @@ func NewPopulatedClusterBackupShareUpdateResponse(r randyApi, easy bool) *Cluste
 
 func NewPopulatedClusterCreateRequest(r randyApi, easy bool) *ClusterCreateRequest {
 	this := &ClusterCreateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.PxConfig = NewPopulatedPXConfig(r, easy)
 	}
 	this.Kubeconfig = string(randStringApi(r))
 	this.CloudCredential = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CloudCredentialRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.PlatformCredentialRef = NewPopulatedObjectRef(r, easy)
 	}
 	this.TeleportClusterId = string(randStringApi(r))
@@ -37479,18 +36286,18 @@ func NewPopulatedClusterCreateResponse(r randyApi, easy bool) *ClusterCreateResp
 
 func NewPopulatedClusterUpdateRequest(r randyApi, easy bool) *ClusterUpdateRequest {
 	this := &ClusterUpdateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.PxConfig = NewPopulatedPXConfig(r, easy)
 	}
 	this.Kubeconfig = string(randStringApi(r))
 	this.CloudCredential = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CloudCredentialRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.PlatformCredentialRef = NewPopulatedObjectRef(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37508,7 +36315,7 @@ func NewPopulatedClusterUpdateResponse(r randyApi, easy bool) *ClusterUpdateResp
 func NewPopulatedClusterEnumerateRequest(r randyApi, easy bool) *ClusterEnumerateRequest {
 	this := &ClusterEnumerateRequest{}
 	this.OrgId = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v44 := r.Intn(10)
 		this.Labels = make(map[string]string)
 		for i := 0; i < v44; i++ {
@@ -37517,7 +36324,7 @@ func NewPopulatedClusterEnumerateRequest(r randyApi, easy bool) *ClusterEnumerat
 	}
 	this.IncludeSecrets = bool(bool(r.Intn(2) == 0))
 	this.CloudCredential = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CloudCredentialRef = NewPopulatedObjectRef(r, easy)
 	}
 	this.OnlyBackupShare = bool(bool(r.Intn(2) == 0))
@@ -37528,7 +36335,7 @@ func NewPopulatedClusterEnumerateRequest(r randyApi, easy bool) *ClusterEnumerat
 
 func NewPopulatedClusterEnumerateResponse(r randyApi, easy bool) *ClusterEnumerateResponse {
 	this := &ClusterEnumerateResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v45 := r.Intn(5)
 		this.Clusters = make([]*ClusterObject, v45)
 		for i := 0; i < v45; i++ {
@@ -37553,7 +36360,7 @@ func NewPopulatedClusterInspectRequest(r randyApi, easy bool) *ClusterInspectReq
 
 func NewPopulatedClusterInspectResponse(r randyApi, easy bool) *ClusterInspectResponse {
 	this := &ClusterInspectResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Cluster = NewPopulatedClusterObject(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37581,10 +36388,10 @@ func NewPopulatedClusterDeleteResponse(r randyApi, easy bool) *ClusterDeleteResp
 
 func NewPopulatedCloudCredentialCreateRequest(r randyApi, easy bool) *CloudCredentialCreateRequest {
 	this := &CloudCredentialCreateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CloudCredential = NewPopulatedCloudCredentialInfo(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37594,7 +36401,7 @@ func NewPopulatedCloudCredentialCreateRequest(r randyApi, easy bool) *CloudCrede
 
 func NewPopulatedCloudCredentialCreateResponse(r randyApi, easy bool) *CloudCredentialCreateResponse {
 	this := &CloudCredentialCreateResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CloudCredential = NewPopulatedCloudCredentialObject(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37604,10 +36411,10 @@ func NewPopulatedCloudCredentialCreateResponse(r randyApi, easy bool) *CloudCred
 
 func NewPopulatedCloudCredentialUpdateRequest(r randyApi, easy bool) *CloudCredentialUpdateRequest {
 	this := &CloudCredentialUpdateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CloudCredential = NewPopulatedCloudCredentialInfo(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37633,7 +36440,7 @@ func NewPopulatedCloudCredentialEnumerateRequest(r randyApi, easy bool) *CloudCr
 
 func NewPopulatedCloudCredentialEnumerateResponse(r randyApi, easy bool) *CloudCredentialEnumerateResponse {
 	this := &CloudCredentialEnumerateResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v46 := r.Intn(5)
 		this.CloudCredentials = make([]*CloudCredentialObject, v46)
 		for i := 0; i < v46; i++ {
@@ -37658,7 +36465,7 @@ func NewPopulatedCloudCredentialInspectRequest(r randyApi, easy bool) *CloudCred
 
 func NewPopulatedCloudCredentialInspectResponse(r randyApi, easy bool) *CloudCredentialInspectResponse {
 	this := &CloudCredentialInspectResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CloudCredential = NewPopulatedCloudCredentialObject(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37687,7 +36494,7 @@ func NewPopulatedCloudCredentialOwnershipUpdateRequest(r randyApi, easy bool) *C
 	this := &CloudCredentialOwnershipUpdateRequest{}
 	this.OrgId = string(randStringApi(r))
 	this.Name = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Ownership = NewPopulatedOwnership(r, easy)
 	}
 	this.Uid = string(randStringApi(r))
@@ -37705,10 +36512,10 @@ func NewPopulatedCloudCredentialOwnershipUpdateResponse(r randyApi, easy bool) *
 
 func NewPopulatedBackupLocationCreateRequest(r randyApi, easy bool) *BackupLocationCreateRequest {
 	this := &BackupLocationCreateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupLocation = NewPopulatedBackupLocationInfo(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37725,10 +36532,10 @@ func NewPopulatedBackupLocationCreateResponse(r randyApi, easy bool) *BackupLoca
 
 func NewPopulatedBackupLocationUpdateRequest(r randyApi, easy bool) *BackupLocationUpdateRequest {
 	this := &BackupLocationUpdateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupLocation = NewPopulatedBackupLocationInfo(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37746,7 +36553,7 @@ func NewPopulatedBackupLocationUpdateResponse(r randyApi, easy bool) *BackupLoca
 func NewPopulatedBackupLocationEnumerateRequest(r randyApi, easy bool) *BackupLocationEnumerateRequest {
 	this := &BackupLocationEnumerateRequest{}
 	this.OrgId = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v47 := r.Intn(10)
 		this.Labels = make(map[string]string)
 		for i := 0; i < v47; i++ {
@@ -37754,7 +36561,7 @@ func NewPopulatedBackupLocationEnumerateRequest(r randyApi, easy bool) *BackupLo
 		}
 	}
 	this.CloudCredential = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CloudCredentialRef = NewPopulatedObjectRef(r, easy)
 	}
 	this.IncludeSecrets = bool(bool(r.Intn(2) == 0))
@@ -37766,7 +36573,7 @@ func NewPopulatedBackupLocationEnumerateRequest(r randyApi, easy bool) *BackupLo
 
 func NewPopulatedBackupLocationEnumerateResponse(r randyApi, easy bool) *BackupLocationEnumerateResponse {
 	this := &BackupLocationEnumerateResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v48 := r.Intn(5)
 		this.BackupLocations = make([]*BackupLocationObject, v48)
 		for i := 0; i < v48; i++ {
@@ -37791,7 +36598,7 @@ func NewPopulatedBackupLocationInspectRequest(r randyApi, easy bool) *BackupLoca
 
 func NewPopulatedBackupLocationInspectResponse(r randyApi, easy bool) *BackupLocationInspectResponse {
 	this := &BackupLocationInspectResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupLocation = NewPopulatedBackupLocationObject(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37838,7 +36645,7 @@ func NewPopulatedBackupLocationOwnershipUpdateRequest(r randyApi, easy bool) *Ba
 	this := &BackupLocationOwnershipUpdateRequest{}
 	this.OrgId = string(randStringApi(r))
 	this.Name = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Ownership = NewPopulatedOwnership(r, easy)
 	}
 	this.Uid = string(randStringApi(r))
@@ -37864,7 +36671,7 @@ func NewPopulatedMetricsInspectRequest(r randyApi, easy bool) *MetricsInspectReq
 
 func NewPopulatedMetricsInspectResponse(r randyApi, easy bool) *MetricsInspectResponse {
 	this := &MetricsInspectResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v49 := r.Intn(5)
 		this.Stats = make([]*MetricsInspectResponse_Stats, v49)
 		for i := 0; i < v49; i++ {
@@ -37889,7 +36696,7 @@ func NewPopulatedMetricsInspectResponse_Stats(r randyApi, easy bool) *MetricsIns
 
 func NewPopulatedBackupCreateRequest(r randyApi, easy bool) *BackupCreateRequest {
 	this := &BackupCreateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
 	this.BackupLocation = string(randStringApi(r))
@@ -37899,7 +36706,7 @@ func NewPopulatedBackupCreateRequest(r randyApi, easy bool) *BackupCreateRequest
 	for i := 0; i < v50; i++ {
 		this.Namespaces[i] = string(randStringApi(r))
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v51 := r.Intn(10)
 		this.LabelSelectors = make(map[string]string)
 		for i := 0; i < v51; i++ {
@@ -37908,7 +36715,7 @@ func NewPopulatedBackupCreateRequest(r randyApi, easy bool) *BackupCreateRequest
 	}
 	this.PreExecRule = string(randStringApi(r))
 	this.PostExecRule = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v52 := r.Intn(5)
 		this.IncludeResources = make([]*ResourceInfo, v52)
 		for i := 0; i < v52; i++ {
@@ -37921,17 +36728,17 @@ func NewPopulatedBackupCreateRequest(r randyApi, easy bool) *BackupCreateRequest
 	for i := 0; i < v53; i++ {
 		this.ResourceTypes[i] = string(randStringApi(r))
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupLocationRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.PreExecRuleRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.PostExecRuleRef = NewPopulatedObjectRef(r, easy)
 	}
 	this.BackupType = BackupCreateRequest_BackupType([]int32{0, 1, 2}[r.Intn(3)])
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.ClusterRef = NewPopulatedObjectRef(r, easy)
 	}
 	this.NsLabelSelectors = string(randStringApi(r))
@@ -37949,11 +36756,11 @@ func NewPopulatedBackupCreateResponse(r randyApi, easy bool) *BackupCreateRespon
 
 func NewPopulatedBackupUpdateRequest(r randyApi, easy bool) *BackupUpdateRequest {
 	this := &BackupUpdateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
 	this.CloudCredential = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CloudCredentialRef = NewPopulatedObjectRef(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37971,7 +36778,7 @@ func NewPopulatedBackupUpdateResponse(r randyApi, easy bool) *BackupUpdateRespon
 func NewPopulatedBackupEnumerateRequest(r randyApi, easy bool) *BackupEnumerateRequest {
 	this := &BackupEnumerateRequest{}
 	this.OrgId = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.EnumerateOptions = NewPopulatedEnumerateOptions(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -37981,7 +36788,7 @@ func NewPopulatedBackupEnumerateRequest(r randyApi, easy bool) *BackupEnumerateR
 
 func NewPopulatedBackupEnumerateResponse(r randyApi, easy bool) *BackupEnumerateResponse {
 	this := &BackupEnumerateResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v54 := r.Intn(5)
 		this.Backups = make([]*BackupObject, v54)
 		for i := 0; i < v54; i++ {
@@ -38007,7 +36814,7 @@ func NewPopulatedBackupInspectRequest(r randyApi, easy bool) *BackupInspectReque
 
 func NewPopulatedBackupInspectResponse(r randyApi, easy bool) *BackupInspectResponse {
 	this := &BackupInspectResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Backup = NewPopulatedBackupObject(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -38037,7 +36844,7 @@ func NewPopulatedBackupShareUpdateRequest(r randyApi, easy bool) *BackupShareUpd
 	this := &BackupShareUpdateRequest{}
 	this.OrgId = string(randStringApi(r))
 	this.Name = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Backupshare = NewPopulatedBackupShare(r, easy)
 	}
 	this.Uid = string(randStringApi(r))
@@ -38055,12 +36862,12 @@ func NewPopulatedBackupShareUpdateResponse(r randyApi, easy bool) *BackupShareUp
 
 func NewPopulatedRestoreCreateRequest(r randyApi, easy bool) *RestoreCreateRequest {
 	this := &RestoreCreateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
 	this.Backup = string(randStringApi(r))
 	this.Cluster = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v55 := r.Intn(10)
 		this.NamespaceMapping = make(map[string]string)
 		for i := 0; i < v55; i++ {
@@ -38073,31 +36880,31 @@ func NewPopulatedRestoreCreateRequest(r randyApi, easy bool) *RestoreCreateReque
 	for i := 0; i < v56; i++ {
 		this.IncludeOptionalResourceTypes[i] = string(randStringApi(r))
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v57 := r.Intn(5)
 		this.IncludeResources = make([]*ResourceInfo, v57)
 		for i := 0; i < v57; i++ {
 			this.IncludeResources[i] = NewPopulatedResourceInfo(r, easy)
 		}
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v58 := r.Intn(10)
 		this.StorageClassMapping = make(map[string]string)
 		for i := 0; i < v58; i++ {
 			this.StorageClassMapping[randStringApi(r)] = randStringApi(r)
 		}
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.BackupRef = NewPopulatedObjectRef(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v59 := r.Intn(10)
 		this.RancherProjectMapping = make(map[string]string)
 		for i := 0; i < v59; i++ {
 			this.RancherProjectMapping[randStringApi(r)] = randStringApi(r)
 		}
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v60 := r.Intn(10)
 		this.RancherProjectNameMapping = make(map[string]string)
 		for i := 0; i < v60; i++ {
@@ -38118,7 +36925,7 @@ func NewPopulatedRestoreCreateResponse(r randyApi, easy bool) *RestoreCreateResp
 
 func NewPopulatedRestoreUpdateRequest(r randyApi, easy bool) *RestoreUpdateRequest {
 	this := &RestoreUpdateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -38136,7 +36943,7 @@ func NewPopulatedRestoreUpdateResponse(r randyApi, easy bool) *RestoreUpdateResp
 func NewPopulatedRestoreEnumerateRequest(r randyApi, easy bool) *RestoreEnumerateRequest {
 	this := &RestoreEnumerateRequest{}
 	this.OrgId = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.EnumerateOptions = NewPopulatedEnumerateOptions(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -38146,7 +36953,7 @@ func NewPopulatedRestoreEnumerateRequest(r randyApi, easy bool) *RestoreEnumerat
 
 func NewPopulatedRestoreEnumerateResponse(r randyApi, easy bool) *RestoreEnumerateResponse {
 	this := &RestoreEnumerateResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v61 := r.Intn(5)
 		this.Restores = make([]*RestoreObject, v61)
 		for i := 0; i < v61; i++ {
@@ -38171,7 +36978,7 @@ func NewPopulatedRestoreInspectRequest(r randyApi, easy bool) *RestoreInspectReq
 
 func NewPopulatedRestoreInspectResponse(r randyApi, easy bool) *RestoreInspectResponse {
 	this := &RestoreInspectResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Restore = NewPopulatedRestoreObject(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -38197,7 +37004,7 @@ func NewPopulatedRestoreDeleteResponse(r randyApi, easy bool) *RestoreDeleteResp
 
 func NewPopulatedOrganizationCreateRequest(r randyApi, easy bool) *OrganizationCreateRequest {
 	this := &OrganizationCreateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -38221,7 +37028,7 @@ func NewPopulatedOrganizationEnumerateRequest(r randyApi, easy bool) *Organizati
 
 func NewPopulatedOrganizationEnumerateResponse(r randyApi, easy bool) *OrganizationEnumerateResponse {
 	this := &OrganizationEnumerateResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v62 := r.Intn(5)
 		this.Organizations = make([]*OrganizationObject, v62)
 		for i := 0; i < v62; i++ {
@@ -38243,7 +37050,7 @@ func NewPopulatedOrganizationInspectRequest(r randyApi, easy bool) *Organization
 
 func NewPopulatedOrganizationInspectResponse(r randyApi, easy bool) *OrganizationInspectResponse {
 	this := &OrganizationInspectResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Organization = NewPopulatedOrganizationObject(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -38268,10 +37075,10 @@ func NewPopulatedOrganizationDeleteResponse(r randyApi, easy bool) *Organization
 
 func NewPopulatedRuleCreateRequest(r randyApi, easy bool) *RuleCreateRequest {
 	this := &RuleCreateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.RulesInfo = NewPopulatedRulesInfo(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -38288,10 +37095,10 @@ func NewPopulatedRuleCreateResponse(r randyApi, easy bool) *RuleCreateResponse {
 
 func NewPopulatedRuleUpdateRequest(r randyApi, easy bool) *RuleUpdateRequest {
 	this := &RuleUpdateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.RulesInfo = NewPopulatedRulesInfo(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -38316,7 +37123,7 @@ func NewPopulatedRuleEnumerateRequest(r randyApi, easy bool) *RuleEnumerateReque
 
 func NewPopulatedRuleEnumerateResponse(r randyApi, easy bool) *RuleEnumerateResponse {
 	this := &RuleEnumerateResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v63 := r.Intn(5)
 		this.Rules = make([]*RuleObject, v63)
 		for i := 0; i < v63; i++ {
@@ -38340,7 +37147,7 @@ func NewPopulatedRuleInspectRequest(r randyApi, easy bool) *RuleInspectRequest {
 
 func NewPopulatedRuleInspectResponse(r randyApi, easy bool) *RuleInspectResponse {
 	this := &RuleInspectResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Rule = NewPopulatedRuleObject(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -38369,7 +37176,7 @@ func NewPopulatedRuleOwnershipUpdateRequest(r randyApi, easy bool) *RuleOwnershi
 	this := &RuleOwnershipUpdateRequest{}
 	this.OrgId = string(randStringApi(r))
 	this.Name = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Ownership = NewPopulatedOwnership(r, easy)
 	}
 	this.Uid = string(randStringApi(r))
@@ -38407,7 +37214,7 @@ func NewPopulatedVersionGetRequest(r randyApi, easy bool) *VersionGetRequest {
 
 func NewPopulatedVersionGetResponse(r randyApi, easy bool) *VersionGetResponse {
 	this := &VersionGetResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Version = NewPopulatedVersionInfo(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -38417,7 +37224,7 @@ func NewPopulatedVersionGetResponse(r randyApi, easy bool) *VersionGetResponse {
 
 func NewPopulatedLicenseActivateRequest(r randyApi, easy bool) *LicenseActivateRequest {
 	this := &LicenseActivateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
 	oneofNumber_Activation := []int32{2, 3, 4, 5}[r.Intn(4)]
@@ -38469,7 +37276,7 @@ func NewPopulatedLicenseActivateResponse(r randyApi, easy bool) *LicenseActivate
 
 func NewPopulatedLicenseUpdateRequest(r randyApi, easy bool) *LicenseUpdateRequest {
 	this := &LicenseUpdateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
 	this.UsageBasedId = string(randStringApi(r))
@@ -38495,7 +37302,7 @@ func NewPopulatedLicenseInspectRequest(r randyApi, easy bool) *LicenseInspectReq
 
 func NewPopulatedLicenseInspectResponse(r randyApi, easy bool) *LicenseInspectResponse {
 	this := &LicenseInspectResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.LicenseRespInfo = NewPopulatedLicenseResponseInfo(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -38505,14 +37312,14 @@ func NewPopulatedLicenseInspectResponse(r randyApi, easy bool) *LicenseInspectRe
 
 func NewPopulatedLicenseResponseInfo(r randyApi, easy bool) *LicenseResponseInfo {
 	this := &LicenseResponseInfo{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v65 := r.Intn(5)
 		this.FeatureInfo = make([]*LicenseResponseInfo_FeatureInfo, v65)
 		for i := 0; i < v65; i++ {
 			this.FeatureInfo[i] = NewPopulatedLicenseResponseInfo_FeatureInfo(r, easy)
 		}
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Status = NewPopulatedLicenseResponseInfo_Status(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -38527,7 +37334,7 @@ func NewPopulatedLicenseResponseInfo_FeatureInfo(r randyApi, easy bool) *License
 	if r.Intn(2) == 0 {
 		this.Consumed *= -1
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v66 := r.Intn(5)
 		this.EntitlementInfo = make([]*LicenseResponseInfo_EntitlementInfo, v66)
 		for i := 0; i < v66; i++ {
@@ -38545,10 +37352,10 @@ func NewPopulatedLicenseResponseInfo_EntitlementInfo(r randyApi, easy bool) *Lic
 	if r.Intn(2) == 0 {
 		this.Count *= -1
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Expires = types.NewPopulatedTimestamp(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Starts = types.NewPopulatedTimestamp(r, easy)
 	}
 	this.Type = LicenseType([]int32{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}[r.Intn(11)])
@@ -38568,7 +37375,7 @@ func NewPopulatedLicenseResponseInfo_Status(r randyApi, easy bool) *LicenseRespo
 
 func NewPopulatedLicenseUsageAirgappedObject(r randyApi, easy bool) *LicenseUsageAirgappedObject {
 	this := &LicenseUsageAirgappedObject{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Metadata = NewPopulatedMetadata(r, easy)
 	}
 	this.NodeCount = int64(r.Int63())
@@ -38596,7 +37403,7 @@ func NewPopulatedLicenseUsageAirgappedRequest(r randyApi, easy bool) *LicenseUsa
 
 func NewPopulatedLicenseUsageAirgappedResponse(r randyApi, easy bool) *LicenseUsageAirgappedResponse {
 	this := &LicenseUsageAirgappedResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v67 := r.Intn(5)
 		this.LicenseUsageAirgapped = make([]*LicenseUsageAirgappedObject, v67)
 		for i := 0; i < v67; i++ {
@@ -38613,7 +37420,7 @@ func NewPopulatedLicenseUsageAirgappedResponse(r randyApi, easy bool) *LicenseUs
 func NewPopulatedManagedClusterEnumerateRequest(r randyApi, easy bool) *ManagedClusterEnumerateRequest {
 	this := &ManagedClusterEnumerateRequest{}
 	this.OrgId = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CloudCredential = NewPopulatedObjectRef(r, easy)
 	}
 	this.IncludeSecrets = bool(bool(r.Intn(2) == 0))
@@ -38678,7 +37485,7 @@ func NewPopulatedManagedClusterObject(r randyApi, easy bool) *ManagedClusterObje
 	this := &ManagedClusterObject{}
 	this.Name = string(randStringApi(r))
 	this.Uid = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CloudCredential = NewPopulatedObjectRef(r, easy)
 	}
 	this.Kubeconfig = string(randStringApi(r))
@@ -38691,7 +37498,7 @@ func NewPopulatedManagedClusterObject(r randyApi, easy bool) *ManagedClusterObje
 
 func NewPopulatedManagedClusterEnumerateResponse(r randyApi, easy bool) *ManagedClusterEnumerateResponse {
 	this := &ManagedClusterEnumerateResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v68 := r.Intn(5)
 		this.Cluster = make([]*ManagedClusterObject, v68)
 		for i := 0; i < v68; i++ {
@@ -38754,7 +37561,7 @@ func NewPopulatedManagedClusterInspectRequest(r randyApi, easy bool) *ManagedClu
 	this := &ManagedClusterInspectRequest{}
 	this.OrgId = string(randStringApi(r))
 	this.Name = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CloudCredential = NewPopulatedObjectRef(r, easy)
 	}
 	this.IncludeSecrets = bool(bool(r.Intn(2) == 0))
@@ -38812,7 +37619,7 @@ func NewPopulatedManagedClusterInspectRequest_AzureConfig(r randyApi, easy bool)
 
 func NewPopulatedManagedClusterInspectResponse(r randyApi, easy bool) *ManagedClusterInspectResponse {
 	this := &ManagedClusterInspectResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Cluster = NewPopulatedManagedClusterObject(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -38823,7 +37630,7 @@ func NewPopulatedManagedClusterInspectResponse(r randyApi, easy bool) *ManagedCl
 func NewPopulatedManagedClusterBulkAddRequest(r randyApi, easy bool) *ManagedClusterBulkAddRequest {
 	this := &ManagedClusterBulkAddRequest{}
 	this.OrgId = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CloudCredential = NewPopulatedObjectRef(r, easy)
 	}
 	v69 := r.Intn(10)
@@ -38908,7 +37715,7 @@ func NewPopulatedActivityEnumerateRequest(r randyApi, easy bool) *ActivityEnumer
 
 func NewPopulatedActivityEnumerateResponse(r randyApi, easy bool) *ActivityEnumerateResponse {
 	this := &ActivityEnumerateResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v70 := r.Intn(5)
 		this.ActivityData = make([]*ActivityEnumerateResponse_Data, v70)
 		for i := 0; i < v70; i++ {
@@ -38922,10 +37729,10 @@ func NewPopulatedActivityEnumerateResponse(r randyApi, easy bool) *ActivityEnume
 
 func NewPopulatedActivityEnumerateResponse_Data(r randyApi, easy bool) *ActivityEnumerateResponse_Data {
 	this := &ActivityEnumerateResponse_Data{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.StartTime = types.NewPopulatedTimestamp(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.EndTime = types.NewPopulatedTimestamp(r, easy)
 	}
 	this.Successful = uint64(uint64(r.Uint32()))
@@ -38943,10 +37750,10 @@ func NewPopulatedActivityEnumerateResponse_Data(r randyApi, easy bool) *Activity
 
 func NewPopulatedRoleObject(r randyApi, easy bool) *RoleObject {
 	this := &RoleObject{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Metadata = NewPopulatedMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v71 := r.Intn(5)
 		this.Rules = make([]*RoleConfig, v71)
 		for i := 0; i < v71; i++ {
@@ -38978,10 +37785,10 @@ func NewPopulatedRoleConfig(r randyApi, easy bool) *RoleConfig {
 
 func NewPopulatedRoleCreateRequest(r randyApi, easy bool) *RoleCreateRequest {
 	this := &RoleCreateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v74 := r.Intn(5)
 		this.Rules = make([]*RoleConfig, v74)
 		for i := 0; i < v74; i++ {
@@ -39003,10 +37810,10 @@ func NewPopulatedRoleCreateResponse(r randyApi, easy bool) *RoleCreateResponse {
 
 func NewPopulatedRoleUpdateRequest(r randyApi, easy bool) *RoleUpdateRequest {
 	this := &RoleUpdateRequest{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.CreateMetadata = NewPopulatedCreateMetadata(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v75 := r.Intn(5)
 		this.Rules = make([]*RoleConfig, v75)
 		for i := 0; i < v75; i++ {
@@ -39029,7 +37836,7 @@ func NewPopulatedRoleUpdateResponse(r randyApi, easy bool) *RoleUpdateResponse {
 func NewPopulatedRoleEnumerateRequest(r randyApi, easy bool) *RoleEnumerateRequest {
 	this := &RoleEnumerateRequest{}
 	this.OrgId = string(randStringApi(r))
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.EnumerateOptions = NewPopulatedEnumerateOptions(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -39039,7 +37846,7 @@ func NewPopulatedRoleEnumerateRequest(r randyApi, easy bool) *RoleEnumerateReque
 
 func NewPopulatedRoleEnumerateResponse(r randyApi, easy bool) *RoleEnumerateResponse {
 	this := &RoleEnumerateResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v76 := r.Intn(5)
 		this.Roles = make([]*RoleObject, v76)
 		for i := 0; i < v76; i++ {
@@ -39063,7 +37870,7 @@ func NewPopulatedRoleInspectRequest(r randyApi, easy bool) *RoleInspectRequest {
 
 func NewPopulatedRoleInspectResponse(r randyApi, easy bool) *RoleInspectResponse {
 	this := &RoleInspectResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Role = NewPopulatedRoleObject(r, easy)
 	}
 	if !easy && r.Intn(10) != 0 {
@@ -39098,7 +37905,7 @@ func NewPopulatedRolePermissionRequest(r randyApi, easy bool) *RolePermissionReq
 
 func NewPopulatedRolePermissionResponse(r randyApi, easy bool) *RolePermissionResponse {
 	this := &RolePermissionResponse{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v77 := r.Intn(10)
 		this.Rules = make(map[string]*Permission)
 		for i := 0; i < v77; i++ {
@@ -39120,7 +37927,7 @@ func NewPopulatedPermission(r randyApi, easy bool) *Permission {
 
 func NewPopulatedActivityDataObject(r randyApi, easy bool) *ActivityDataObject {
 	this := &ActivityDataObject{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.Metadata = NewPopulatedMetadata(r, easy)
 	}
 	this.Kind = string(randStringApi(r))
@@ -39129,7 +37936,7 @@ func NewPopulatedActivityDataObject(r randyApi, easy bool) *ActivityDataObject {
 	if r.Intn(2) == 0 {
 		this.CompletionTime *= -1
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		v78 := r.Intn(5)
 		this.Opcycle = make([]*ActivityDataObject_Opcycle, v78)
 		for i := 0; i < v78; i++ {
@@ -39144,10 +37951,10 @@ func NewPopulatedActivityDataObject(r randyApi, easy bool) *ActivityDataObject {
 
 func NewPopulatedActivityDataObject_Opcycle(r randyApi, easy bool) *ActivityDataObject_Opcycle {
 	this := &ActivityDataObject_Opcycle{}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.StartTime = types.NewPopulatedTimestamp(r, easy)
 	}
-	if r.Intn(5) != 0 {
+	if r.Intn(10) != 0 {
 		this.LastUpdatedTime = types.NewPopulatedTimestamp(r, easy)
 	}
 	this.Status = ActivityDataObject_Status([]int32{0, 1, 2, 3, 4, 5}[r.Intn(6)])
@@ -43961,7 +42768,10 @@ func (m *OrganizationObject) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -44546,7 +43356,10 @@ func (m *ClusterInfo) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -44647,7 +43460,10 @@ func (m *ClusterInfo_StatusInfo) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -44748,7 +43564,10 @@ func (m *ClusterInfo_BackupShareStatusInfo) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -44870,7 +43689,10 @@ func (m *ClusterObject) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -44952,7 +43774,10 @@ func (m *PXConfig) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -45066,7 +43891,10 @@ func (m *AWSConfig) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -45148,7 +43976,10 @@ func (m *IBMConfig) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -45262,7 +44093,10 @@ func (m *RancherConfig) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -45448,7 +44282,10 @@ func (m *S3Config) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -45690,7 +44527,10 @@ func (m *AzureConfig) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -45804,7 +44644,10 @@ func (m *GoogleConfig) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -46048,7 +44891,10 @@ func (m *CloudCredentialInfo) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -46170,7 +45016,10 @@ func (m *CloudCredentialObject) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -46436,7 +45285,10 @@ func (m *SchedulePolicyInfo) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -46505,7 +45357,10 @@ func (m *SchedulePolicyInfo_IncrementalCount) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -46629,7 +45484,10 @@ func (m *SchedulePolicyInfo_IntervalPolicy) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -46766,7 +45624,10 @@ func (m *SchedulePolicyInfo_DailyPolicy) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -46935,7 +45796,10 @@ func (m *SchedulePolicyInfo_WeeklyPolicy) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -47091,7 +45955,10 @@ func (m *SchedulePolicyInfo_MonthlyPolicy) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -47213,7 +46080,10 @@ func (m *SchedulePolicyObject) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -47446,7 +46316,7 @@ func (m *BackupScheduleInfo) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -47669,7 +46539,7 @@ func (m *BackupScheduleInfo) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -48216,7 +47086,10 @@ func (m *BackupScheduleInfo) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -48285,7 +47158,10 @@ func (m *BackupScheduleInfo_BackupType) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -48354,7 +47230,10 @@ func (m *BackupScheduleInfo_SuspendedBy) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -48438,7 +47317,10 @@ func (m *BackupScheduleInfo_StatusInfoList) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -48643,7 +47525,10 @@ func (m *BackupScheduleInfo_StatusInfo) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -48765,7 +47650,10 @@ func (m *BackupScheduleObject) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -48911,7 +47799,10 @@ func (m *NFSConfig) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -49278,7 +48169,10 @@ func (m *BackupLocationInfo) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -49379,7 +48273,10 @@ func (m *BackupLocationInfo_StatusInfo) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -49501,7 +48398,10 @@ func (m *BackupLocationObject) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -49711,7 +48611,10 @@ func (m *ResourceInfo) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -49967,7 +48870,7 @@ func (m *BackupInfo) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -50935,7 +49838,7 @@ func (m *BackupInfo) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -51004,7 +49907,10 @@ func (m *BackupInfo) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -51073,7 +49979,10 @@ func (m *BackupInfo_BackupType) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -51187,7 +50096,10 @@ func (m *BackupInfo_BackupSchedule) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -51575,7 +50487,7 @@ func (m *BackupInfo_Volume) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -51758,7 +50670,10 @@ func (m *BackupInfo_Volume) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -51859,7 +50774,10 @@ func (m *BackupInfo_StatusInfo) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -51981,7 +50899,10 @@ func (m *BackupObject) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -52065,7 +50986,10 @@ func (m *RulesInfo) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -52225,7 +51149,7 @@ func (m *RulesInfo_RuleItem) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -52308,7 +51232,10 @@ func (m *RulesInfo_RuleItem) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -52430,7 +51357,10 @@ func (m *RulesInfo_Action) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -52552,7 +51482,10 @@ func (m *RuleObject) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -52602,7 +51535,10 @@ func (m *ReplacePolicy) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -52826,7 +51762,7 @@ func (m *RestoreInfo) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -52953,7 +51889,7 @@ func (m *RestoreInfo) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -53407,7 +52343,7 @@ func (m *RestoreInfo) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -53570,7 +52506,7 @@ func (m *RestoreInfo) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -53697,7 +52633,7 @@ func (m *RestoreInfo) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -53789,7 +52725,10 @@ func (m *RestoreInfo) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -53858,7 +52797,10 @@ func (m *RestoreInfo_RestoreResourceState) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -54104,7 +53046,10 @@ func (m *RestoreInfo_RestoredResource) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -54492,7 +53437,7 @@ func (m *RestoreInfo_Volume) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -54528,7 +53473,10 @@ func (m *RestoreInfo_Volume) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -54629,7 +53577,10 @@ func (m *RestoreInfo_StatusInfo) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -54751,7 +53702,10 @@ func (m *RestoreObject) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -54801,7 +53755,10 @@ func (m *HealthStatusRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -54851,7 +53808,10 @@ func (m *HealthStatusResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -54973,7 +53933,10 @@ func (m *TimeRange) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -55133,7 +54096,7 @@ func (m *EnumerateOptions) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -55340,7 +54303,10 @@ func (m *EnumerateOptions) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -55462,7 +54428,10 @@ func (m *SchedulePolicyCreateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -55512,7 +54481,10 @@ func (m *SchedulePolicyCreateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -55634,7 +54606,10 @@ func (m *SchedulePolicyUpdateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -55684,7 +54659,10 @@ func (m *SchedulePolicyUpdateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -55876,7 +54854,7 @@ func (m *SchedulePolicyEnumerateRequest) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -55893,7 +54871,10 @@ func (m *SchedulePolicyEnumerateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -55977,7 +54958,10 @@ func (m *SchedulePolicyEnumerateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -56123,7 +55107,10 @@ func (m *SchedulePolicyInspectRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -56209,7 +55196,10 @@ func (m *SchedulePolicyInspectResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -56355,7 +55345,10 @@ func (m *SchedulePolicyDeleteRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -56405,7 +55398,10 @@ func (m *SchedulePolicyDeleteResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -56587,7 +55583,10 @@ func (m *SchedulePolicyOwnershipUpdateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -56637,7 +55636,10 @@ func (m *SchedulePolicyOwnershipUpdateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -56980,7 +55982,7 @@ func (m *BackupScheduleCreateRequest) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -57354,7 +56356,10 @@ func (m *BackupScheduleCreateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -57404,7 +56409,10 @@ func (m *BackupScheduleCreateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -57747,7 +56755,7 @@ func (m *BackupScheduleUpdateRequest) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -58058,7 +57066,10 @@ func (m *BackupScheduleUpdateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -58108,7 +57119,10 @@ func (m *BackupScheduleUpdateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -58300,7 +57314,7 @@ func (m *BackupScheduleEnumerateRequest) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -58421,7 +57435,10 @@ func (m *BackupScheduleEnumerateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -58524,7 +57541,10 @@ func (m *BackupScheduleEnumerateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -58670,7 +57690,10 @@ func (m *BackupScheduleInspectRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -58756,7 +57779,10 @@ func (m *BackupScheduleInspectResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -58922,7 +57948,10 @@ func (m *BackupScheduleDeleteRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -58972,7 +58001,10 @@ func (m *BackupScheduleDeleteResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -59190,7 +58222,10 @@ func (m *ClusterBackupShareUpdateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -59240,7 +58275,10 @@ func (m *ClusterBackupShareUpdateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -59613,7 +58651,10 @@ func (m *ClusterCreateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -59663,7 +58704,10 @@ func (m *ClusterCreateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -59921,7 +58965,10 @@ func (m *ClusterUpdateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -59971,7 +59018,10 @@ func (m *ClusterUpdateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -60163,7 +59213,7 @@ func (m *ClusterEnumerateRequest) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -60288,7 +59338,10 @@ func (m *ClusterEnumerateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -60372,7 +59425,10 @@ func (m *ClusterEnumerateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -60538,7 +59594,10 @@ func (m *ClusterInspectRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -60624,7 +59683,10 @@ func (m *ClusterInspectResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -60778,7 +59840,10 @@ func (m *ClusterDeleteRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -60828,7 +59893,10 @@ func (m *ClusterDeleteResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -60950,7 +60018,10 @@ func (m *CloudCredentialCreateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -61036,7 +60107,10 @@ func (m *CloudCredentialCreateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -61158,7 +60232,10 @@ func (m *CloudCredentialUpdateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -61208,7 +60285,10 @@ func (m *CloudCredentialUpdateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -61310,7 +60390,10 @@ func (m *CloudCredentialEnumerateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -61394,7 +60477,10 @@ func (m *CloudCredentialEnumerateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -61560,7 +60646,10 @@ func (m *CloudCredentialInspectRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -61646,7 +60735,10 @@ func (m *CloudCredentialInspectResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -61792,7 +60884,10 @@ func (m *CloudCredentialDeleteRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -61842,7 +60937,10 @@ func (m *CloudCredentialDeleteResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -62024,7 +61122,10 @@ func (m *CloudCredentialOwnershipUpdateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -62074,7 +61175,10 @@ func (m *CloudCredentialOwnershipUpdateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -62196,7 +61300,10 @@ func (m *BackupLocationCreateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -62246,7 +61353,10 @@ func (m *BackupLocationCreateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -62368,7 +61478,10 @@ func (m *BackupLocationUpdateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -62418,7 +61531,10 @@ func (m *BackupLocationUpdateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -62610,7 +61726,7 @@ func (m *BackupLocationEnumerateRequest) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -62735,7 +61851,10 @@ func (m *BackupLocationEnumerateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -62819,7 +61938,10 @@ func (m *BackupLocationEnumerateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -62985,7 +62107,10 @@ func (m *BackupLocationInspectRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -63071,7 +62196,10 @@ func (m *BackupLocationInspectResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -63237,7 +62365,10 @@ func (m *BackupLocationDeleteRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -63287,7 +62418,10 @@ func (m *BackupLocationDeleteResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -63433,7 +62567,10 @@ func (m *BackupLocationValidateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -63483,7 +62620,10 @@ func (m *BackupLocationValidateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -63665,7 +62805,10 @@ func (m *BackupLocationOwnershipUpdateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -63715,7 +62858,10 @@ func (m *BackupLocationOwnershipUpdateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -63797,7 +62943,10 @@ func (m *MetricsInspectRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -63881,7 +63030,10 @@ func (m *MetricsInspectResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -64020,7 +63172,10 @@ func (m *MetricsInspectResponse_Stats) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -64312,7 +63467,7 @@ func (m *BackupCreateRequest) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -64686,7 +63841,10 @@ func (m *BackupCreateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -64736,7 +63894,10 @@ func (m *BackupCreateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -64890,7 +64051,10 @@ func (m *BackupUpdateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -64940,7 +64104,10 @@ func (m *BackupUpdateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -65058,7 +64225,10 @@ func (m *BackupEnumerateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -65181,7 +64351,10 @@ func (m *BackupEnumerateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -65327,7 +64500,10 @@ func (m *BackupInspectRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -65413,7 +64589,10 @@ func (m *BackupInspectResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -65591,7 +64770,10 @@ func (m *BackupDeleteRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -65641,7 +64823,10 @@ func (m *BackupDeleteResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -65823,7 +65008,10 @@ func (m *BackupShareUpdateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -65873,7 +65061,10 @@ func (m *BackupShareUpdateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -66133,7 +65324,7 @@ func (m *RestoreCreateRequest) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -66345,7 +65536,7 @@ func (m *RestoreCreateRequest) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -66508,7 +65699,7 @@ func (m *RestoreCreateRequest) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -66635,7 +65826,7 @@ func (m *RestoreCreateRequest) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -66652,7 +65843,10 @@ func (m *RestoreCreateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -66702,7 +65896,10 @@ func (m *RestoreCreateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -66788,7 +65985,10 @@ func (m *RestoreUpdateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -66838,7 +66038,10 @@ func (m *RestoreUpdateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -66956,7 +66159,10 @@ func (m *RestoreEnumerateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -67079,7 +66285,10 @@ func (m *RestoreEnumerateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -67193,7 +66402,10 @@ func (m *RestoreInspectRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -67279,7 +66491,10 @@ func (m *RestoreInspectResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -67393,7 +66608,10 @@ func (m *RestoreDeleteRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -67443,7 +66661,10 @@ func (m *RestoreDeleteResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -67529,7 +66750,10 @@ func (m *OrganizationCreateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -67579,7 +66803,10 @@ func (m *OrganizationCreateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -67629,7 +66856,10 @@ func (m *OrganizationEnumerateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -67713,7 +66943,10 @@ func (m *OrganizationEnumerateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -67795,7 +67028,10 @@ func (m *OrganizationInspectRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -67881,7 +67117,10 @@ func (m *OrganizationInspectResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -67963,7 +67202,10 @@ func (m *OrganizationDeleteRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -68013,7 +67255,10 @@ func (m *OrganizationDeleteResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -68135,7 +67380,10 @@ func (m *RuleCreateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -68185,7 +67433,10 @@ func (m *RuleCreateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -68307,7 +67558,10 @@ func (m *RuleUpdateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -68357,7 +67611,10 @@ func (m *RuleUpdateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -68439,7 +67696,10 @@ func (m *RuleEnumerateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -68523,7 +67783,10 @@ func (m *RuleEnumerateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -68669,7 +67932,10 @@ func (m *RuleInspectRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -68755,7 +68021,10 @@ func (m *RuleInspectResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -68901,7 +68170,10 @@ func (m *RuleDeleteRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -68951,7 +68223,10 @@ func (m *RuleDeleteResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -69133,7 +68408,10 @@ func (m *RuleOwnershipUpdateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -69183,7 +68461,10 @@ func (m *RuleOwnershipUpdateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -69425,7 +68706,10 @@ func (m *VersionInfo) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -69475,7 +68759,10 @@ func (m *VersionGetRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -69561,7 +68848,10 @@ func (m *VersionGetResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -69776,7 +69066,10 @@ func (m *LicenseActivateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -69826,7 +69119,10 @@ func (m *LicenseActivateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -69944,7 +69240,10 @@ func (m *LicenseUpdateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -69994,7 +69293,10 @@ func (m *LicenseUpdateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -70076,7 +69378,10 @@ func (m *LicenseInspectRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -70162,7 +69467,10 @@ func (m *LicenseInspectResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -70282,7 +69590,10 @@ func (m *LicenseResponseInfo) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -70417,7 +69728,10 @@ func (m *LicenseResponseInfo_FeatureInfo) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -70577,7 +69891,10 @@ func (m *LicenseResponseInfo_EntitlementInfo) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -70691,7 +70008,10 @@ func (m *LicenseResponseInfo_Status) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -70815,7 +70135,10 @@ func (m *LicenseUsageAirgappedObject) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -70935,7 +70258,10 @@ func (m *LicenseUsageAirgappedRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -71058,7 +70384,10 @@ func (m *LicenseUsageAirgappedResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -71339,7 +70668,10 @@ func (m *ManagedClusterEnumerateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -71453,7 +70785,10 @@ func (m *ManagedClusterEnumerateRequest_AWSConfig) Unmarshal(dAtA []byte) error 
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -71503,7 +70838,10 @@ func (m *ManagedClusterEnumerateRequest_GoogleConfig) Unmarshal(dAtA []byte) err
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -71553,7 +70891,10 @@ func (m *ManagedClusterEnumerateRequest_AzureConfig) Unmarshal(dAtA []byte) erro
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -71786,7 +71127,10 @@ func (m *ManagedClusterObject) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -71994,7 +71338,10 @@ func (m *ManagedClusterEnumerateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -72076,7 +71423,10 @@ func (m *ManagedClusterEnumerateResponse_AWSConfig) Unmarshal(dAtA []byte) error
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -72126,7 +71476,10 @@ func (m *ManagedClusterEnumerateResponse_GoogleConfig) Unmarshal(dAtA []byte) er
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -72176,7 +71529,10 @@ func (m *ManagedClusterEnumerateResponse_AzureConfig) Unmarshal(dAtA []byte) err
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -72470,7 +71826,10 @@ func (m *ManagedClusterInspectRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -72552,7 +71911,10 @@ func (m *ManagedClusterInspectRequest_AWSConfig) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -72602,7 +71964,10 @@ func (m *ManagedClusterInspectRequest_GoogleConfig) Unmarshal(dAtA []byte) error
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -72652,7 +72017,10 @@ func (m *ManagedClusterInspectRequest_AzureConfig) Unmarshal(dAtA []byte) error 
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -72738,7 +72106,10 @@ func (m *ManagedClusterInspectResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -73012,7 +72383,10 @@ func (m *ManagedClusterBulkAddRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -73094,7 +72468,10 @@ func (m *ManagedClusterBulkAddRequest_AWSConfig) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -73144,7 +72521,10 @@ func (m *ManagedClusterBulkAddRequest_GoogleConfig) Unmarshal(dAtA []byte) error
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -73194,7 +72574,10 @@ func (m *ManagedClusterBulkAddRequest_AzureConfig) Unmarshal(dAtA []byte) error 
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -73244,7 +72627,10 @@ func (m *ManagedClusterBulkAddResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -73460,7 +72846,10 @@ func (m *ActivityEnumerateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -73544,7 +72933,10 @@ func (m *ActivityEnumerateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -73753,7 +73145,10 @@ func (m *ActivityEnumerateResponse_Data) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -73905,7 +73300,10 @@ func (m *RoleObject) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -74019,7 +73417,10 @@ func (m *RoleConfig) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -74171,7 +73572,10 @@ func (m *RoleCreateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -74221,7 +73625,10 @@ func (m *RoleCreateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -74373,7 +73780,10 @@ func (m *RoleUpdateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -74423,7 +73833,10 @@ func (m *RoleUpdateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -74541,7 +73954,10 @@ func (m *RoleEnumerateRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -74625,7 +74041,10 @@ func (m *RoleEnumerateResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -74771,7 +74190,10 @@ func (m *RoleInspectRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -74857,7 +74279,10 @@ func (m *RoleInspectResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -75003,7 +74428,10 @@ func (m *RoleDeleteRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -75053,7 +74481,10 @@ func (m *RoleDeleteResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -75135,7 +74566,10 @@ func (m *RolePermissionRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -75297,7 +74731,7 @@ func (m *RolePermissionResponse) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
+					if skippy < 0 {
 						return ErrInvalidLengthApi
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -75314,7 +74748,10 @@ func (m *RolePermissionResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -75384,7 +74821,10 @@ func (m *Permission) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -75598,7 +75038,10 @@ func (m *ActivityDataObject) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -75739,7 +75182,10 @@ func (m *ActivityDataObject_Opcycle) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
+			if skippy < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthApi
 			}
 			if (iNdEx + skippy) > l {
@@ -75757,7 +75203,6 @@ func (m *ActivityDataObject_Opcycle) Unmarshal(dAtA []byte) error {
 func skipApi(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
-	depth := 0
 	for iNdEx < l {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
@@ -75789,8 +75234,10 @@ func skipApi(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
+			return iNdEx, nil
 		case 1:
 			iNdEx += 8
+			return iNdEx, nil
 		case 2:
 			var length int
 			for shift := uint(0); ; shift += 7 {
@@ -75811,30 +75258,55 @@ func skipApi(dAtA []byte) (n int, err error) {
 				return 0, ErrInvalidLengthApi
 			}
 			iNdEx += length
-		case 3:
-			depth++
-		case 4:
-			if depth == 0 {
-				return 0, ErrUnexpectedEndOfGroupApi
+			if iNdEx < 0 {
+				return 0, ErrInvalidLengthApi
 			}
-			depth--
+			return iNdEx, nil
+		case 3:
+			for {
+				var innerWire uint64
+				var start int = iNdEx
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return 0, ErrIntOverflowApi
+					}
+					if iNdEx >= l {
+						return 0, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					innerWire |= (uint64(b) & 0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				innerWireType := int(innerWire & 0x7)
+				if innerWireType == 4 {
+					break
+				}
+				next, err := skipApi(dAtA[start:])
+				if err != nil {
+					return 0, err
+				}
+				iNdEx = start + next
+				if iNdEx < 0 {
+					return 0, ErrInvalidLengthApi
+				}
+			}
+			return iNdEx, nil
+		case 4:
+			return iNdEx, nil
 		case 5:
 			iNdEx += 4
+			return iNdEx, nil
 		default:
 			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
 		}
-		if iNdEx < 0 {
-			return 0, ErrInvalidLengthApi
-		}
-		if depth == 0 {
-			return iNdEx, nil
-		}
 	}
-	return 0, io.ErrUnexpectedEOF
+	panic("unreachable")
 }
 
 var (
-	ErrInvalidLengthApi        = fmt.Errorf("proto: negative length found during unmarshaling")
-	ErrIntOverflowApi          = fmt.Errorf("proto: integer overflow")
-	ErrUnexpectedEndOfGroupApi = fmt.Errorf("proto: unexpected end of group")
+	ErrInvalidLengthApi = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowApi   = fmt.Errorf("proto: integer overflow")
 )
