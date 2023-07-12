@@ -17,6 +17,14 @@ jobs:
         uses: actions/checkout@v3
         with:
           path: ${{ github.workspace }}/go/src/github.com/${{ github.repository }}
+      - uses: actions/setup-go@v3
+        with:
+          go-version-file: 'go.mod'
+          cache: true
+      - name: Sync vendor directory
+        run: |
+          go mod vendor
+        shell: bash
       - name: Download Snyk CLI
         run: |
           curl https://static.snyk.io/cli/latest/snyk-linux -o ${{ github.workspace }}/snyk && chmod +x ${{ github.workspace }}/snyk
