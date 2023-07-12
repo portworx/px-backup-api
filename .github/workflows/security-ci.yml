@@ -32,6 +32,7 @@ jobs:
           echo "GOPATH=${{ github.workspace }}/go/" >> $GITHUB_ENV
       - name: Sync vendor directory
         run: |
+          cd ${{ github.workspace }}/go/src/github.com/${{ github.repository }}
           go mod vendor
         shell: bash
       - name: Download Snyk CLI
