@@ -19,7 +19,7 @@ jobs:
           path: ${{ github.workspace }}/go/src/github.com/${{ github.repository }}
       - uses: actions/setup-go@v3
         with:
-          go-version-file: 'go.mod'
+          go-version-file: '${{ github.workspace }}/go/src/github.com/${{ github.repository }}/go.mod'
           cache: true
       - name: Sync vendor directory
         run: |
