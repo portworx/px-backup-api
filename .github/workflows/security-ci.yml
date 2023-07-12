@@ -19,8 +19,17 @@ jobs:
           path: ${{ github.workspace }}/go/src/github.com/${{ github.repository }}
       - uses: actions/setup-go@v3
         with:
-          go-version-file: '${{ github.workspace }}/go/src/github.com/${{ github.repository }}/go.mod'
-          cache: true
+          go-version-file: 'go/src/github.com/${{ github.repository }}/go.mod'
+        env:
+          CGO_ENABLED: 0
+      - name: Enable Go Modules
+        shell: bash
+        run: |
+          go env -w GO111MODULE=on
+      - name: Set GOPATH
+        shell: bash
+        run: |
+          echo "GOPATH=${{ github.workspace }}/go/" >> $GITHUB_ENV
       - name: Sync vendor directory
         run: |
           go mod vendor
