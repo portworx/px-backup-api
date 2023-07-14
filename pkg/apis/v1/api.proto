@@ -735,6 +735,9 @@ message EnumerateOptions {
     // Currently backup enumerate request should pass this along with cluster
     // name.
     string cluster_uid_filter = 8;
+    // Filter to use owner uids on objects. Any object that contains the
+    // filter will be returned
+    repeated string owners = 9;
 }
 
 service SchedulePolicy {
