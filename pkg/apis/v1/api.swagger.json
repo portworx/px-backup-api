@@ -208,7 +208,7 @@
         ]
       }
     },
-    "/v1/backup/{org_id}/{name}": {
+    "/v1/backup/{org_id}/{name}/{uid}": {
       "get": {
         "summary": "Inspect returns detail information about a specified object",
         "operationId": "Backup_Inspect",
@@ -241,8 +241,8 @@
           },
           {
             "name": "uid",
-            "in": "query",
-            "required": false,
+            "in": "path",
+            "required": true,
             "type": "string"
           }
         ],
@@ -281,14 +281,14 @@
             "type": "string"
           },
           {
-            "name": "cluster",
-            "description": "cluster name or uid to perform delete through.",
-            "in": "query",
-            "required": false,
+            "name": "uid",
+            "in": "path",
+            "required": true,
             "type": "string"
           },
           {
-            "name": "uid",
+            "name": "cluster",
+            "description": "cluster name or uid to perform delete through.",
             "in": "query",
             "required": false,
             "type": "string"
@@ -773,7 +773,7 @@
         ]
       }
     },
-    "/v1/backupschedule/{org_id}/{name}": {
+    "/v1/backupschedule/{org_id}/{name}/{uid}": {
       "get": {
         "summary": "Inspect returns detail information about a specified backup schedule",
         "operationId": "BackupSchedule_Inspect",
@@ -806,8 +806,8 @@
           },
           {
             "name": "uid",
-            "in": "query",
-            "required": false,
+            "in": "path",
+            "required": true,
             "type": "string"
           }
         ],
@@ -846,17 +846,17 @@
             "type": "string"
           },
           {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "delete_backups",
             "description": "delete_backups indicates whether the cloud backup files need to\nbe deleted or retained.",
             "in": "query",
             "required": false,
             "type": "boolean"
-          },
-          {
-            "name": "uid",
-            "in": "query",
-            "required": false,
-            "type": "string"
           }
         ],
         "tags": [
@@ -1248,57 +1248,6 @@
         ]
       }
     },
-    "/v1/cluster/{org_id}/{name}": {
-      "delete": {
-        "summary": "Delete removes a cluster",
-        "operationId": "Cluster_Delete",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/ClusterDeleteResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "delete_backups",
-            "description": "delete_backups indicates whether the backup related to cluster need to\nbe deleted or retained.",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "delete_restores",
-            "description": "delete_restores indicates whether the restore related to cluster  need to\nbe deleted or retained.",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          }
-        ],
-        "tags": [
-          "Cluster"
-        ]
-      }
-    },
     "/v1/cluster/{org_id}/{name}/{uid}": {
       "get": {
         "summary": "Inspect returns detail information about a specified cluster",
@@ -1338,6 +1287,62 @@
           },
           {
             "name": "include_secrets",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Cluster"
+        ]
+      },
+      "delete": {
+        "summary": "Delete removes a cluster",
+        "operationId": "Cluster_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ClusterDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "description": "indicate the uid of the particular object",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "delete_backups",
+            "description": "delete_backups indicates whether the backup related to cluster need to\nbe deleted or retained.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "delete_restores",
+            "description": "delete_restores indicates whether the restore related to cluster  need to\nbe deleted or retained.",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -1574,6 +1579,13 @@
               "Google"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "uid",
+            "description": "indicate the uid of the particular object.",
+            "in": "query",
+            "required": false,
+            "type": "string"
           },
           {
             "name": "aws_config.region",
@@ -2000,7 +2012,7 @@
         ]
       }
     },
-    "/v1/restore/{org_id}/{name}": {
+    "/v1/restore/{org_id}/{name}/{uid}": {
       "get": {
         "summary": "Inspect returns detailed information about specified restore object",
         "operationId": "Restore_Inspect",
@@ -2027,6 +2039,13 @@
           },
           {
             "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "description": "indicate the uid of the particular object",
             "in": "path",
             "required": true,
             "type": "string"
@@ -2062,6 +2081,13 @@
           },
           {
             "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "description": "indicate the uid of the particular object",
             "in": "path",
             "required": true,
             "type": "string"
@@ -3335,14 +3361,14 @@
         "cloud_credential_ref": {
           "$ref": "#/definitions/ObjectRef"
         },
+        "object_lock_enabled": {
+          "type": "boolean"
+        },
         "s3_config": {
           "$ref": "#/definitions/S3Config"
         },
         "nfs_config": {
           "$ref": "#/definitions/NFSConfig"
-        },
-        "object_lock_enabled": {
-          "type": "boolean"
         }
       }
     },
@@ -5759,8 +5785,7 @@
             "$ref": "#/definitions/SchedulePolicyObject"
           }
         }
-      },
-      "title": "Define SchedulePolicyEnumerateResponse struct"
+      }
     },
     "SchedulePolicyInfo": {
       "type": "object",
