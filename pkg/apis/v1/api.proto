@@ -84,8 +84,12 @@ message ClusterInfo {
         Status status = 1;
         string reason = 2;
     }
+
     // Message for maintaining status of the backup share.
     message BackupShareStatusInfo {
+        Status status = 1;
+        string reason = 2;
+
         enum Status {
             Invalid = 0;
             // InProgress if backupshare is going on for backups belonging to
@@ -101,12 +105,10 @@ message ClusterInfo {
             // backups.
             PartialSuccess = 4;
         }
-        Status status = 1;
-        string reason = 2;
     }
 
-     // Cloud provider type
-     enum Provider {
+    // Cloud provider type
+    enum Provider {
         Invalid = 0;
         AWS = 1;
         Azure = 2;
@@ -192,6 +194,8 @@ message GoogleConfig {
 }
 
 message CloudCredentialInfo {
+    Type type = 1;
+
     enum Type {
         Invalid = 0;
         AWS = 1;
@@ -201,7 +205,6 @@ message CloudCredentialInfo {
         Rancher = 5;
     }
 
-    Type type = 1;
     oneof config {
         AWSConfig aws_config = 100;
         AzureConfig azure_config = 101;
@@ -218,6 +221,19 @@ message CloudCredentialObject {
 }
 
 message SchedulePolicyInfo {
+    IntervalPolicy interval = 1;
+    DailyPolicy daily = 2;
+    WeeklyPolicy weekly = 3;
+    MonthlyPolicy monthly = 4;
+    // list of backup schedule object that uses this schedule policy.
+    repeated string backup_schedule = 5;
+    // for_object_lock should be set, if this policy is planned to be used with
+    // locked bucket while taking backup.
+    bool for_object_lock = 6;
+    // auto-delete - this option is to indicate, whether the backup
+    // should be deleted after the retention of the backup object is expired
+    bool auto_delete = 7;
+
     message IncrementalCount {
         uint64 count = 1 [ (gogoproto.jsontag) = "count" ];
     }
@@ -275,19 +291,6 @@ message SchedulePolicyInfo {
         // snapshot.
         IncrementalCount incremental_count = 4;
     }
-
-    IntervalPolicy interval = 1;
-    DailyPolicy daily = 2;
-    WeeklyPolicy weekly = 3;
-    MonthlyPolicy monthly = 4;
-    // list of backup schedule object that uses this schedule policy.
-    repeated string backup_schedule = 5;
-    // for_object_lock should be set, if this policy is planned to be used with
-    // locked bucket while taking backup.
-    bool for_object_lock = 6;
-    // auto-delete - this option is to indicate, whether the backup
-    // should be deleted after the retention of the backup object is expired
-    bool auto_delete = 7;
 }
 
 message SchedulePolicyObject {
@@ -330,6 +333,7 @@ message BackupScheduleInfo {
     string ns_label_selectors = 23;
     // Target namespace of CR
     string target_namespace = 24;
+
     message BackupType {
         Type type = 1;
         enum Type {
@@ -348,12 +352,8 @@ message BackupScheduleInfo {
         }
     }
 
-    enum ReclaimPolicyType {
-        Invalid = 0;
-        Delete = 1;
-        Retain = 2;
-    }
     message StatusInfoList { repeated StatusInfo status = 1; }
+
     message StatusInfo {
         // backup name
         string backup_name = 1;
@@ -374,6 +374,12 @@ message BackupScheduleInfo {
             DeletePending = 9;
         }
     }
+
+    enum ReclaimPolicyType {
+        Invalid = 0;
+        Delete = 1;
+        Retain = 2;
+    }
 }
 
 message BackupScheduleObject {
@@ -389,14 +395,6 @@ message NFSConfig {
 }
 
 message BackupLocationInfo {
-    enum Type {
-        Invalid = 0;
-        S3 = 1;
-        Azure = 2;
-        Google = 3;
-        NFS = 4;
-    }
-
     Type type = 1;
     string path = 2;
     string encryption_key = 3 [
@@ -409,12 +407,13 @@ message BackupLocationInfo {
     bool delete_backups = 6;
     bool validate_cloud_credential = 7;
     ObjectRef cloud_credential_ref = 8;
-    oneof config {
-        S3Config s3_config = 100;
-        NFSConfig nfs_config = 101;
-    }
+    bool object_lock_enabled = 9;
+
     // Message for maintaining status of the object.
     message StatusInfo {
+        Status status = 1;
+        string reason = 2;
+
         enum Status {
             Invalid = 0;
             Valid = 1;
@@ -422,11 +421,20 @@ message BackupLocationInfo {
             ValidationInProgress = 3;
             ValidationFailed = 4;
         }
-
-        Status status = 1;
-        string reason = 2;
     }
-    bool object_lock_enabled = 9;
+
+    enum Type {
+        Invalid = 0;
+        S3 = 1;
+        Azure = 2;
+        Google = 3;
+        NFS = 4;
+    }
+
+    oneof config {
+        S3Config s3_config = 100;
+        NFSConfig nfs_config = 101;
+    }
 }
 
 message BackupLocationObject {
@@ -492,23 +500,15 @@ message BackupInfo {
     string target_namespace = 33;
     // this flag signifies if the backup involves large number of resources or not
     bool large_resource_enabled = 34;
+
     message BackupType {
         Type type = 1;
+
         enum Type {
             Invalid = 0;
             Generic = 1;
             Normal = 2;
         }
-    }
-
-    enum Stage {
-        Invalid = 0;
-        Initial = 1;
-        PreExecRule = 2;
-        PostExecRule = 3;
-        Volumes = 4;
-        Applications = 5;
-        Final = 6;
     }
 
     message BackupSchedule {
@@ -537,6 +537,9 @@ message BackupInfo {
 
     // Message for maintaining status of the object.
     message StatusInfo {
+        Status status = 1;
+        string reason = 2;
+
         enum Status {
             Invalid = 0;
             Pending = 1;
@@ -550,9 +553,16 @@ message BackupInfo {
             DeletePending = 9;
             CloudBackupMissing = 10;
         }
+    }
 
-        Status status = 1;
-        string reason = 2;
+    enum Stage {
+        Invalid = 0;
+        Initial = 1;
+        PreExecRule = 2;
+        PostExecRule = 3;
+        Volumes = 4;
+        Applications = 5;
+        Final = 6;
     }
 }
 
@@ -636,6 +646,8 @@ message RestoreInfo {
     RestoreResourceState restore_status = 22;
 
     message RestoreResourceState {
+        ResourceStatus restore_status = 1;
+
         enum ResourceStatus {
             Preparing = 0;
             Deleting = 1;
@@ -643,7 +655,6 @@ message RestoreInfo {
             Applying = 3;
         }
 
-        ResourceStatus restore_status = 1;
     }
 
     message RestoredResource {
@@ -692,6 +703,8 @@ message RestoreObject {
     RestoreInfo restore_info = 2 [ (gogoproto.embed) = true ];
 }
 
+message HealthStatusRequest {}
+message HealthStatusResponse {}
 service Health {
     // Status checks the health of the server
     rpc Status(HealthStatusRequest) returns (HealthStatusResponse) {
@@ -700,9 +713,6 @@ service Health {
         };
     }
 }
-
-message HealthStatusRequest {}
-message HealthStatusResponse {}
 
 message TimeRange {
     google.protobuf.Timestamp start_time = 1;
@@ -798,15 +808,19 @@ message SchedulePolicyCreateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
     SchedulePolicyInfo schedule_policy = 2;
 }
+
 // Define SchedulePolicyCreateResponse struct
 message SchedulePolicyCreateResponse {}
+
 // Define SchedulePolicyUpdateRequest struct
 message SchedulePolicyUpdateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
     SchedulePolicyInfo schedule_policy = 2;
 }
+
 // Define SchedulePolicyUpdateResponse struct
 message SchedulePolicyUpdateResponse {}
+
 // Define SchedulePolicyEnumerateRequest struct
 message SchedulePolicyEnumerateRequest {
     string org_id = 1;
@@ -814,25 +828,30 @@ message SchedulePolicyEnumerateRequest {
     map<string, string> labels = 2;
 }
 // Define SchedulePolicyEnumerateResponse struct
+
 message SchedulePolicyEnumerateResponse {
     repeated SchedulePolicyObject schedule_policies = 1;
 }
+
 // Define SchedulePolicyInspectRequest struct
 message SchedulePolicyInspectRequest {
     string org_id = 1;
     string name = 2;
     string uid = 3;
 }
+
 // Define SchedulePolicyInspectResponse struct
 message SchedulePolicyInspectResponse {
     SchedulePolicyObject schedule_policy = 1;
 }
+
 // Define SchedulePolicyDeleteRequest struct
 message SchedulePolicyDeleteRequest {
     string org_id = 1;
     string name = 2;
     string uid = 3;
 }
+
 // Define SchedulePolicyDeleteResponse struct
 message SchedulePolicyDeleteResponse {}
 
@@ -876,7 +895,7 @@ service BackupSchedule {
     rpc Inspect(BackupScheduleInspectRequest)
         returns (BackupScheduleInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/backupschedule/{org_id}/{name}"
+            get : "/v1/backupschedule/{org_id}/{name}/{uid}"
         };
     }
 
@@ -884,7 +903,7 @@ service BackupSchedule {
     rpc Delete(BackupScheduleDeleteRequest)
         returns (BackupScheduleDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/backupschedule/{org_id}/{name}"
+            delete : "/v1/backupschedule/{org_id}/{name}/{uid}"
         };
     }
 }
@@ -919,6 +938,7 @@ message BackupScheduleCreateRequest {
     // To get type of backup (generic or non-generic)
     BackupType backup_type = 17;
     string ns_label_selectors = 18;
+
     enum BackupType {
         Invalid = 0;
         Generic = 1;
@@ -959,6 +979,7 @@ message BackupScheduleUpdateRequest {
 
 // Define BackupScheduleUpdateResponse struct
 message BackupScheduleUpdateResponse {}
+
 // Define BackupScheduleEnumerateRequest struct
 message BackupScheduleEnumerateRequest {
     string org_id = 1;
@@ -1040,9 +1061,10 @@ service Cluster {
     // Delete removes a cluster
     rpc Delete(ClusterDeleteRequest) returns (ClusterDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/cluster/{org_id}/{name}"
+            delete : "/v1/cluster/{org_id}/{name}/{uid}"
         };
     }
+
     // UpdateBackupShare updates ownership details for backup share at cluster
     // level
     rpc UpdateBackupShare(ClusterBackupShareUpdateRequest)
@@ -1159,6 +1181,8 @@ message ClusterDeleteRequest {
     // delete_restores indicates whether the restore related to cluster  need to
     // be deleted or retained.
     bool delete_restores = 4;
+    // indicate the uid of the particular object
+    string uid = 5;
 }
 
 // Define ClusterInspectResponse struct
@@ -1481,14 +1505,14 @@ service Backup {
     // Inspect returns detail information about a specified object
     rpc Inspect(BackupInspectRequest) returns (BackupInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/backup/{org_id}/{name}"
+            get : "/v1/backup/{org_id}/{name}/{uid}"
         };
     }
 
     // Delete triggers delete of a backup
     rpc Delete(BackupDeleteRequest) returns (BackupDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/backup/{org_id}/{name}"
+            delete : "/v1/backup/{org_id}/{name}/{uid}"
         };
     }
 
@@ -1533,6 +1557,7 @@ message BackupCreateRequest {
     BackupType backup_type = 14;
     ObjectRef cluster_ref = 15;
     string ns_label_selectors = 16;
+
     enum BackupType {
         Invalid = 0;
         Generic = 1;
@@ -1632,14 +1657,14 @@ service Restore {
     // Inspect returns detailed information about specified restore object
     rpc Inspect(RestoreInspectRequest) returns (RestoreInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/restore/{org_id}/{name}"
+            get : "/v1/restore/{org_id}/{name}/{uid}"
         };
     }
 
     // Delete removes a restore object
     rpc Delete(RestoreDeleteRequest) returns (RestoreDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/restore/{org_id}/{name}"
+            delete : "/v1/restore/{org_id}/{name}/{uid}"
         };
     }
 }
@@ -1700,14 +1725,19 @@ message RestoreEnumerateResponse {
 message RestoreInspectRequest {
     string org_id = 1;
     string name = 2;
+    // indicate the uid of the particular object
+    string uid = 3;
 }
 
 // Define RestoreInspectResponse struct
 message RestoreInspectResponse { RestoreObject restore = 1; }
+
 // Define RestoreDeleteRequest struct
 message RestoreDeleteRequest {
     string org_id = 1;
     string name = 2;
+    // indicate the uid of the particular object
+    string uid = 3;
 }
 
 // Define RestoreDeleteResponse struct
@@ -2054,21 +2084,7 @@ message ManagedClusterEnumerateRequest {
     bool include_secrets = 3;
     // Number of entries to be fetched
     int64 max_results = 4;
-
-    // Cloud provider type
-    enum Provider {
-        Invalid = 0;
-        AWS = 1;
-        Azure = 2;
-        Google = 3;
-    }
-
     Provider provider = 5;
-    oneof Config {
-        AWSConfig aws_config = 100;
-        GoogleConfig google_config = 101;
-        AzureConfig azure_config = 102;
-    }
 
     message AWSConfig {
         // Region for scanning clusters
@@ -2079,6 +2095,21 @@ message ManagedClusterEnumerateRequest {
 
     message GoogleConfig {}
     message AzureConfig {}
+
+    // Cloud provider type
+    enum Provider {
+        Invalid = 0;
+        AWS = 1;
+        Azure = 2;
+        Google = 3;
+    }
+
+    oneof Config {
+        AWSConfig aws_config = 100;
+        GoogleConfig google_config = 101;
+        AzureConfig azure_config = 102;
+    }
+
 }
 
 // Define ManagedClusterObject struct
@@ -2104,19 +2135,30 @@ message ManagedClusterObject {
     // added and need to
     // be added.
 
+    Status status = 6;
+
     // Status hold if the cluster is already present in datastore or not
     enum Status {
         Invalid = 0;
         NotAdded = 1;
         Added = 2;
     }
-    Status status = 6;
 }
 
 // Define ClusterEnumerateResponse struct
 message ManagedClusterEnumerateResponse {
     repeated ManagedClusterObject cluster = 1;
     Provider provider = 2;
+
+    message AWSConfig {
+        // For ListClusters() AWS provides pagination and next_token
+        // is pointer for next set of cluster fetch
+        string next_token = 1;
+    }
+
+    message GoogleConfig {}
+    message AzureConfig {}
+
     // Cloud provider type
     enum Provider {
         Invalid = 0;
@@ -2131,14 +2173,6 @@ message ManagedClusterEnumerateResponse {
         AzureConfig azure_config = 102;
     }
 
-    message AWSConfig {
-        // For ListClusters() AWS provides pagination and next_token
-        // is pointer for next set of cluster fetch
-        string next_token = 1;
-    }
-
-    message GoogleConfig {}
-    message AzureConfig {}
 }
 
 // Define ManagedClusterInspectRequest struct
@@ -2151,6 +2185,17 @@ message ManagedClusterInspectRequest {
     // this cloud credential has access to
     ObjectRef cloud_credential = 3;
     bool include_secrets = 4;
+    Provider provider = 5;
+    // indicate the uid of the particular object
+    string uid = 6;
+
+    message AWSConfig {
+        // Region for scanning clusters
+        string region = 1;
+    }
+
+    message GoogleConfig {}
+    message AzureConfig {}
 
     // Cloud provider type
     enum Provider {
@@ -2160,20 +2205,13 @@ message ManagedClusterInspectRequest {
         Google = 3;
     }
 
-    Provider provider = 5;
+
     oneof Config {
         AWSConfig aws_config = 100;
         GoogleConfig google_config = 101;
         AzureConfig azure_config = 102;
     }
 
-    message AWSConfig {
-        // Region for scanning clusters
-        string region = 1;
-    }
-
-    message GoogleConfig {}
-    message AzureConfig {}
 }
 
 // Define ClusterInspectResponse struct
@@ -2185,6 +2223,15 @@ message ManagedClusterBulkAddRequest {
     // Region for scanning cluster
     // cluster name to be added
     repeated string cluster_name = 3;
+    Provider provider = 4;
+
+    message AWSConfig {
+        // Region for scanning clusters
+        string region = 1;
+    }
+    message GoogleConfig {}
+    message AzureConfig {}
+
     // Cloud provider type
     enum Provider {
         Invalid = 0;
@@ -2193,19 +2240,12 @@ message ManagedClusterBulkAddRequest {
         Google = 3;
     }
 
-    Provider provider = 4;
     oneof Config {
         AWSConfig aws_config = 100;
         GoogleConfig google_config = 101;
         AzureConfig azure_config = 102;
     }
 
-    message AWSConfig {
-        // Region for scanning clusters
-        string region = 1;
-    }
-    message GoogleConfig {}
-    message AzureConfig {}
 }
 
 message ManagedClusterBulkAddResponse {}
