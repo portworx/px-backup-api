@@ -333,6 +333,7 @@ message BackupScheduleInfo {
     string ns_label_selectors = 23;
     // Target namespace of CR
     string target_namespace = 24;
+    ObjectRef cluster_ref = 25;
 
     message BackupType {
         Type type = 1;
@@ -644,6 +645,7 @@ message RestoreInfo {
     uint64 restored_resource_count = 21;
     // current activity while doing resource restore
     RestoreResourceState restore_status = 22;
+    ObjectRef cluster_ref = 23;
 
     message RestoreResourceState {
         ResourceStatus restore_status = 1;
@@ -895,7 +897,7 @@ service BackupSchedule {
     rpc Inspect(BackupScheduleInspectRequest)
         returns (BackupScheduleInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/backupschedule/{org_id}/{name}/{uid}"
+            get : "/v1/backupschedule/{org_id}/{name}"
         };
     }
 
@@ -903,7 +905,7 @@ service BackupSchedule {
     rpc Delete(BackupScheduleDeleteRequest)
         returns (BackupScheduleDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/backupschedule/{org_id}/{name}/{uid}"
+            delete : "/v1/backupschedule/{org_id}/{name}"
         };
     }
 }
@@ -938,6 +940,7 @@ message BackupScheduleCreateRequest {
     // To get type of backup (generic or non-generic)
     BackupType backup_type = 17;
     string ns_label_selectors = 18;
+    ObjectRef cluster_ref = 19;
 
     enum BackupType {
         Invalid = 0;
@@ -1061,7 +1064,7 @@ service Cluster {
     // Delete removes a cluster
     rpc Delete(ClusterDeleteRequest) returns (ClusterDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/cluster/{org_id}/{name}/{uid}"
+            delete : "/v1/cluster/{org_id}/{name}"
         };
     }
 
@@ -1505,14 +1508,14 @@ service Backup {
     // Inspect returns detail information about a specified object
     rpc Inspect(BackupInspectRequest) returns (BackupInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/backup/{org_id}/{name}/{uid}"
+            get : "/v1/backup/{org_id}/{name}"
         };
     }
 
     // Delete triggers delete of a backup
     rpc Delete(BackupDeleteRequest) returns (BackupDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/backup/{org_id}/{name}/{uid}"
+            delete : "/v1/backup/{org_id}/{name}"
         };
     }
 
@@ -1657,14 +1660,14 @@ service Restore {
     // Inspect returns detailed information about specified restore object
     rpc Inspect(RestoreInspectRequest) returns (RestoreInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/restore/{org_id}/{name}/{uid}"
+            get : "/v1/restore/{org_id}/{name}"
         };
     }
 
     // Delete removes a restore object
     rpc Delete(RestoreDeleteRequest) returns (RestoreDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/restore/{org_id}/{name}/{uid}"
+            delete : "/v1/restore/{org_id}/{name}"
         };
     }
 }
@@ -1693,6 +1696,8 @@ message RestoreCreateRequest {
     map<string, string> rancher_project_mapping = 10;
     // mapping of source rancher project display names to target rancher project display names
     map<string, string> rancher_project_name_mapping = 11;
+    ObjectRef cluster_ref = 12;
+
 }
 
 // Define RestoreCreateResponse struct
