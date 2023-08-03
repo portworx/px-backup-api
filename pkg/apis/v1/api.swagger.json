@@ -2007,6 +2007,18 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "cluster_ref.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cluster_ref.uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -4945,6 +4957,9 @@
         "num_schedules": {
           "type": "string",
           "format": "uint64"
+        },
+        "cluster_ref": {
+          "$ref": "#/definitions/ObjectRef"
         }
       }
     },
