@@ -1478,6 +1478,7 @@ message MetricsInspectResponse {
         uint64 num_namespaces = 2;
         uint64 total_backup_size = 3;
         uint64 num_schedules = 4;
+        ObjectRef cluster_ref = 5;
     }
 }
 
@@ -2276,6 +2277,7 @@ message ActivityEnumerateRequest {
     string cluster = 5;
     // For which type of Actvity data eg: backup, restore, etc..
     string kind = 6;
+    ObjectRef cluster_ref = 7;
 
     enum Interval {
         Invalid = 0;
@@ -2433,6 +2435,7 @@ message ActivityDataObject {
     // Captures transistion times between different status
     repeated Opcycle opcycle = 5;
     string cluster = 6;
+    ObjectRef cluster_ref = 7;
 
     message Opcycle {
         google.protobuf.Timestamp start_time = 1;
