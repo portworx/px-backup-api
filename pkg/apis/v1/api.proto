@@ -1616,6 +1616,7 @@ message BackupDeleteRequest {
     // cluster name or uid to perform delete through
     string cluster = 3;
     string uid = 4;
+    ObjectRef cluster_ref = 5;
 }
 
 // Response message structure for object delete
