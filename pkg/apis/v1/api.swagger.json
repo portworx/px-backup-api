@@ -11,6 +11,218 @@
     "application/json"
   ],
   "paths": {
+    "/v1/ResourceTransform": {
+      "post": {
+        "summary": "Creates new schedule policy.",
+        "operationId": "ResourceTransform_Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ResourceTransformCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ResourceTransformCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ResourceTransform"
+        ]
+      },
+      "put": {
+        "summary": "Update given schedule policy details",
+        "operationId": "ResourceTransform_Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ResourceTransformUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ResourceTransformUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ResourceTransform"
+        ]
+      }
+    },
+    "/v1/ResourceTransform/updateownership": {
+      "put": {
+        "summary": "UpdateOwnership updates ownership of existing object",
+        "operationId": "ResourceTransform_UpdateOwnership",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ResourceTransformOwnershipUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ResourceTransformOwnershipUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ResourceTransform"
+        ]
+      }
+    },
+    "/v1/ResourceTransform/{org_id}": {
+      "get": {
+        "summary": "Enumerate returns a list of schedule policy",
+        "operationId": "ResourceTransform_Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ResourceTransformEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ResourceTransform"
+        ]
+      }
+    },
+    "/v1/ResourceTransform/{org_id}/{name}/{uid}": {
+      "get": {
+        "summary": "Inspect returns detail information about a specified schedule policy",
+        "operationId": "ResourceTransform_Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ResourceTransformInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ResourceTransform"
+        ]
+      },
+      "delete": {
+        "summary": "Delete removes a schedule policy",
+        "operationId": "ResourceTransform_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ResourceTransformDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ResourceTransform"
+        ]
+      }
+    },
     "/v1/backup": {
       "post": {
         "summary": "Creates a new backup object",
@@ -5163,6 +5375,187 @@
         }
       }
     },
+    "ResourceTransformCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "resource_transform": {
+          "$ref": "#/definitions/ResourceTransformInfo"
+        }
+      },
+      "title": "Define ResourceTransformCreateRequest struct"
+    },
+    "ResourceTransformCreateResponse": {
+      "type": "object",
+      "title": "Define ResourceTransformCreateResponse struct"
+    },
+    "ResourceTransformDeleteResponse": {
+      "type": "object",
+      "title": "Define ResourceTransformDeleteResponse struct"
+    },
+    "ResourceTransformEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "resource_transforms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceTransformObject"
+          }
+        }
+      }
+    },
+    "ResourceTransformInfo": {
+      "type": "object",
+      "properties": {
+        "resource_transform_template": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceTransformTemplate"
+          }
+        }
+      }
+    },
+    "ResourceTransformInspectResponse": {
+      "type": "object",
+      "properties": {
+        "resource_transform": {
+          "$ref": "#/definitions/ResourceTransformObject"
+        }
+      },
+      "title": "Define ResourceTransformInspectResponse struct"
+    },
+    "ResourceTransformObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "resource_transform_info": {
+          "$ref": "#/definitions/ResourceTransformInfo"
+        }
+      }
+    },
+    "ResourceTransformOpsType": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/ResourceTransformOpsTypeType"
+        }
+      }
+    },
+    "ResourceTransformOpsTypeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "add",
+        "modify",
+        "delete",
+        "jsonPatch"
+      ],
+      "default": "Invalid"
+    },
+    "ResourceTransformOwnershipUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "ownership": {
+          "$ref": "#/definitions/Ownership"
+        },
+        "uid": {
+          "type": "string"
+        }
+      }
+    },
+    "ResourceTransformOwnershipUpdateResponse": {
+      "type": "object"
+    },
+    "ResourceTransformRule": {
+      "type": "object",
+      "properties": {
+        "Path": {
+          "type": "string",
+          "title": "Path k8s resource for operation"
+        },
+        "value": {
+          "type": "string",
+          "title": "Value for given k8s path"
+        },
+        "resource_transform_ops_type": {
+          "$ref": "#/definitions/ResourceTransformOpsType",
+          "title": "Type of value specified int/bool/string/slice/keypair"
+        },
+        "resource_transfor_value_type": {
+          "$ref": "#/definitions/ResourceTransformValueType",
+          "title": "Operation to be performed on path\nadd/modify/delete/replace/jsonPatch"
+        }
+      }
+    },
+    "ResourceTransformTemplate": {
+      "type": "object",
+      "properties": {
+        "ResourceType": {
+          "type": "string",
+          "title": "Resource is GroupVersionKind for k8s resources\nshould be in format `group/version/kind\"\nResourceType string `json:\"resource\"`"
+        },
+        "resource_selectors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Selectors label selector to filter out resource for\npatching"
+        },
+        "resource_transform_rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceTransformRule"
+          },
+          "title": "Rules collection of transformation rules to update"
+        }
+      }
+    },
+    "ResourceTransformUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "resource_transform": {
+          "$ref": "#/definitions/ResourceTransformInfo"
+        }
+      },
+      "title": "Define ResourceTransformUpdateRequest struct"
+    },
+    "ResourceTransformUpdateResponse": {
+      "type": "object",
+      "title": "Define ResourceTransformUpdateResponse struct"
+    },
+    "ResourceTransformValueType": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/ResourceTransformValueTypeType"
+        }
+      }
+    },
+    "ResourceTransformValueTypeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "int",
+        "string",
+        "bool",
+        "keyPair",
+        "slice"
+      ],
+      "default": "Invalid"
+    },
     "RestoreCreateRequest": {
       "type": "object",
       "properties": {
@@ -5374,6 +5767,20 @@
         },
         "cluster_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "resource_transform_templates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceTransformTemplate"
+          },
+          "title": "stores all the stand alone resource transformation rules which are not part any predefined resource transformation template yet"
+        },
+        "resource_transformation_ref": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "title": "stores array of predefined resource transformation template fed during restore"
         }
       },
       "title": "Message for restore info"
