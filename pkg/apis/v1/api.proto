@@ -308,6 +308,58 @@ message SchedulePolicyObject {
         [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
     SchedulePolicyInfo schedule_policy_info = 2 [ (gogoproto.embed) = true ];
 }
+message ResourceTransformOpsType {
+    Type type = 1;
+    enum Type {
+        Invalid = 0;
+        add = 1;
+        modify = 2;
+        delete = 3;
+        jsonPatch = 4;
+    }
+}
+message ResourceTransformValueType {
+    Type type = 1;
+    enum Type {
+        Invalid = 0;
+        int = 1;
+        string = 2;
+        bool = 3;
+        keyPair = 4;
+        slice = 5;
+    }
+}
+message ResourceTransformRule {
+    // Path k8s resource for operation
+    string Path = 1;
+    // Value for given k8s path
+    string value = 2;
+    // Type of value specified int/bool/string/slice/keypair
+    ResourceTransformOpsType resource_transform_ops_type = 3;
+    // Operation to be performed on path
+    // add/modify/delete/replace/jsonPatch
+    ResourceTransformValueType resource_transfor_value_type = 4;
+}
+message ResourceTransformTemplate {
+    // Resource is GroupVersionKind for k8s resources
+    // should be in format `group/version/kind"
+    //ResourceType string `json:"resource"`
+    string ResourceType = 1;
+    // Selectors label selector to filter out resource for
+    // patching
+    map<string, string> resource_selectors = 2;
+    // Rules collection of transformation rules to update
+    repeated ResourceTransformRule resource_transform_rules = 3;
+}
+message ResourceTransformInfo {
+    repeated ResourceTransformTemplate resource_transform_template = 1;
+}
+
+message ResourceTransformObject {
+    Metadata metadata = 1
+        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    ResourceTransformInfo resource_transform_info = 2 [ (gogoproto.embed) = true ];
+}
 
 message BackupScheduleInfo {
     // schedule_policy is deprecated, not to be used.
@@ -656,6 +708,10 @@ message RestoreInfo {
     // current activity while doing resource restore
     RestoreResourceState restore_status = 22;
     ObjectRef cluster_ref = 23;
+    // stores all the stand alone resource transformation rules which are not part any predefined resource transformation template yet
+    repeated ResourceTransformTemplate resource_transform_templates = 24;
+    // stores array of predefined resource transformation template fed during restore
+    repeated ObjectRef resource_transformation_ref = 25;
 
     message RestoreResourceState {
         ResourceStatus restore_status = 1;
@@ -875,6 +931,120 @@ message SchedulePolicyOwnershipUpdateRequest {
 }
 
 message SchedulePolicyOwnershipUpdateResponse {}
+
+service ResourceTransform {
+    // Creates new schedule policy.
+    rpc Create(ResourceTransformCreateRequest)
+        returns (ResourceTransformCreateResponse) {
+        option (google.api.http) = {
+            post : "/v1/ResourceTransform"
+            body : "*"
+        };
+    }
+
+    // Update given schedule policy details
+    rpc Update(ResourceTransformUpdateRequest)
+        returns (ResourceTransformUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/ResourceTransform"
+            body : "*"
+        };
+    }
+
+    // Enumerate returns a list of schedule policy
+    rpc Enumerate(ResourceTransformEnumerateRequest)
+        returns (ResourceTransformEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/ResourceTransform/{org_id}"
+        };
+    }
+
+    // Inspect returns detail information about a specified schedule policy
+    rpc Inspect(ResourceTransformInspectRequest)
+        returns (ResourceTransformInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/ResourceTransform/{org_id}/{name}/{uid}"
+        };
+    }
+
+    // Delete removes a schedule policy
+    rpc Delete(ResourceTransformDeleteRequest)
+        returns (ResourceTransformDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/ResourceTransform/{org_id}/{name}/{uid}"
+        };
+    }
+
+    // UpdateOwnership updates ownership of existing object
+    rpc UpdateOwnership(ResourceTransformOwnershipUpdateRequest)
+        returns (ResourceTransformOwnershipUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/ResourceTransform/updateownership"
+            body : "*"
+        };
+    }
+}
+
+// Define ResourceTransformCreateRequest struct
+message ResourceTransformCreateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    ResourceTransformInfo resource_transform = 2;
+}
+
+// Define ResourceTransformCreateResponse struct
+message ResourceTransformCreateResponse {}
+
+// Define ResourceTransformUpdateRequest struct
+message ResourceTransformUpdateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    ResourceTransformInfo resource_transform = 2;
+}
+
+// Define ResourceTransformUpdateResponse struct
+message ResourceTransformUpdateResponse {}
+
+// Define ResourceTransformEnumerateRequest struct
+message ResourceTransformEnumerateRequest {
+    string org_id = 1;
+    // label selectors for the object for filtering
+    map<string, string> labels = 2;
+}
+// Define ResourceTransformEnumerateResponse struct
+
+message ResourceTransformEnumerateResponse {
+    repeated ResourceTransformObject resource_transforms = 1;
+}
+
+// Define ResourceTransformInspectRequest struct
+message ResourceTransformInspectRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+
+// Define ResourceTransformInspectResponse struct
+message ResourceTransformInspectResponse {
+    ResourceTransformObject resource_transform = 1;
+}
+
+// Define ResourceTransformDeleteRequest struct
+message ResourceTransformDeleteRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+
+// Define ResourceTransformDeleteResponse struct
+message ResourceTransformDeleteResponse {}
+
+message ResourceTransformOwnershipUpdateRequest {
+    string org_id = 1;
+    string name = 2;
+    Ownership ownership = 3;
+    string uid = 4;
+}
+
+message ResourceTransformOwnershipUpdateResponse {}
 
 service BackupSchedule {
     // Creates new backup schedule
