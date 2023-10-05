@@ -3417,9 +3417,11 @@
         "Valid",
         "DeletePending",
         "ValidationInProgress",
-        "ValidationFailed"
+        "ValidationFailed",
+        "Disabled"
       ],
-      "default": "Invalid"
+      "default": "Invalid",
+      "description": " - Disabled: If a BL is unusable due to failure, mark it as Disabled."
     },
     "BackupLocationInfoType": {
       "type": "string",
