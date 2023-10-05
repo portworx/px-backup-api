@@ -455,6 +455,8 @@ const (
 	BackupLocationInfo_StatusInfo_DeletePending        BackupLocationInfo_StatusInfo_Status = 2
 	BackupLocationInfo_StatusInfo_ValidationInProgress BackupLocationInfo_StatusInfo_Status = 3
 	BackupLocationInfo_StatusInfo_ValidationFailed     BackupLocationInfo_StatusInfo_Status = 4
+	// If a BL is unusable due to failure, mark it as Disabled.
+	BackupLocationInfo_StatusInfo_Disabled BackupLocationInfo_StatusInfo_Status = 5
 )
 
 var BackupLocationInfo_StatusInfo_Status_name = map[int32]string{
@@ -463,6 +465,7 @@ var BackupLocationInfo_StatusInfo_Status_name = map[int32]string{
 	2: "DeletePending",
 	3: "ValidationInProgress",
 	4: "ValidationFailed",
+	5: "Disabled",
 }
 
 var BackupLocationInfo_StatusInfo_Status_value = map[string]int32{
@@ -471,6 +474,7 @@ var BackupLocationInfo_StatusInfo_Status_value = map[string]int32{
 	"DeletePending":        2,
 	"ValidationInProgress": 3,
 	"ValidationFailed":     4,
+	"Disabled":             5,
 }
 
 func (x BackupLocationInfo_StatusInfo_Status) String() string {
@@ -42935,7 +42939,7 @@ func NewPopulatedBackupLocationInfo_NfsConfig(r randyApi, easy bool) *BackupLoca
 }
 func NewPopulatedBackupLocationInfo_StatusInfo(r randyApi, easy bool) *BackupLocationInfo_StatusInfo {
 	this := &BackupLocationInfo_StatusInfo{}
-	this.Status = BackupLocationInfo_StatusInfo_Status([]int32{0, 1, 2, 3, 4}[r.Intn(5)])
+	this.Status = BackupLocationInfo_StatusInfo_Status([]int32{0, 1, 2, 3, 4, 5}[r.Intn(6)])
 	this.Reason = string(randStringApi(r))
 	if !easy && r.Intn(10) != 0 {
 	}
