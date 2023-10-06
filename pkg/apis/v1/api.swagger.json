@@ -1367,6 +1367,39 @@
         ]
       }
     },
+    "/v1/emailalert": {
+      "post": {
+        "summary": "Creates new cloud credential",
+        "operationId": "EmailAlert_Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/EmailAlertCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/EmailAlertCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "EmailAlert"
+        ]
+      }
+    },
     "/v1/health": {
       "get": {
         "summary": "Status checks the health of the server",
@@ -4441,6 +4474,32 @@
           "title": "uid of the object"
         }
       }
+    },
+    "EmailAlertCreateRequest": {
+      "type": "object",
+      "properties": {
+        "receiver": {
+          "type": "string"
+        },
+        "sender": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "auth_username": {
+          "type": "string"
+        },
+        "auth_identity": {
+          "type": "string"
+        },
+        "auth_password": {
+          "type": "string"
+        }
+      }
+    },
+    "EmailAlertCreateResponse": {
+      "type": "object"
     },
     "EnumerateOptions": {
       "type": "object",
