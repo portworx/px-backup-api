@@ -1318,6 +1318,29 @@ message CloudCredentialOwnershipUpdateRequest {
 
 message CloudCredentialOwnershipUpdateResponse {}
 
+service EmailAlert {
+    // Creates new cloud credential
+    rpc Create(EmailAlertCreateRequest)
+        returns (EmailAlertCreateResponse) {
+        option (google.api.http) = {
+            post : "/v1/emailalert"
+            body : "*"
+        };
+    }
+}
+
+message EmailAlertCreateRequest {
+    string receiver = 1;
+    string sender = 2;
+    string host = 3;
+    string auth_username = 4;
+    string auth_identity = 5;
+    string auth_password = 6;
+}
+
+message EmailAlertCreateResponse {}
+
+
 service BackupLocation {
     // Creates new backup location
     rpc Create(BackupLocationCreateRequest)
