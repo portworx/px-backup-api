@@ -47,7 +47,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"reflect"
 
@@ -105,7 +104,7 @@ func (c *Client) Do(r *Request, respV interface{}, errV interface{}) (*http.Resp
 	defer resp.Body.Close()
 
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		raw, err := ioutil.ReadAll(resp.Body)
+		raw, err := io.ReadAll(resp.Body)
 		if err != nil {
 			return resp, fmt.Errorf("Error reading response: %v", err)
 		}
