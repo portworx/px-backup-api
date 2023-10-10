@@ -14,7 +14,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -164,7 +163,7 @@ func requestDataHash(req *http.Request) (string, error) {
 		}
 		defer requestBody.Close()
 
-		requestData, err = ioutil.ReadAll(io.LimitReader(requestBody, 1<<20))
+		requestData, err = io.ReadAll(io.LimitReader(requestBody, 1<<20))
 		if err != nil {
 			return "", err
 		}
@@ -443,7 +442,7 @@ func (cs *awsCredentialSource) getAWSSessionToken() (string, error) {
 	}
 	defer resp.Body.Close()
 
-	respBody, err := ioutil.ReadAll(io.LimitReader(resp.Body, 1<<20))
+	respBody, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
 	if err != nil {
 		return "", err
 	}
@@ -482,7 +481,7 @@ func (cs *awsCredentialSource) getRegion(headers map[string]string) (string, err
 	}
 	defer resp.Body.Close()
 
-	respBody, err := ioutil.ReadAll(io.LimitReader(resp.Body, 1<<20))
+	respBody, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
 	if err != nil {
 		return "", err
 	}
@@ -549,7 +548,7 @@ func (cs *awsCredentialSource) getMetadataSecurityCredentials(roleName string, h
 	}
 	defer resp.Body.Close()
 
-	respBody, err := ioutil.ReadAll(io.LimitReader(resp.Body, 1<<20))
+	respBody, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
 	if err != nil {
 		return result, err
 	}
@@ -582,7 +581,7 @@ func (cs *awsCredentialSource) getMetadataRoleName(headers map[string]string) (s
 	}
 	defer resp.Body.Close()
 
-	respBody, err := ioutil.ReadAll(io.LimitReader(resp.Body, 1<<20))
+	respBody, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
 	if err != nil {
 		return "", err
 	}
