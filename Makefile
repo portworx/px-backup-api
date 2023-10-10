@@ -17,34 +17,13 @@ GO111MODULE := on
 
 .DEFAULT_GOAL: all
 
-all: proto pretest
+all: docker-build-proto
 
-centos:
-	# Installation is specific for centos based distribution
-	yum install -y centos-release-scl && yum install -y llvm-toolset-7 && yum makecache && yum install -y unzip 
-	curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.14.0/$(PROTOC_ZIP) 
-	unzip -o $(PROTOC_ZIP) -d /usr bin/protoc
-	rm -f $(PROTOC_ZIP)
-	scl enable llvm-toolset-7 "clang-format -i $(PROTOC_FILES)"
-
+docker-build-proto:
+	docker build . -t px-api:1
+	docker run  --rm  -v ${PWD}:/go/src/github.com/lib/px-api  px-api:1 /bin/bash -c "make proto pretest"
 
 proto:
-	apt install clang-format
-	rm -rf ${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/
-	mkdir -p ${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/
-	curl -OL https://github.com/grpc-ecosystem/grpc-gateway/archive/refs/tags/v2.2.0.tar.gz
-	tar -xvf v2.2.0.tar.gz -C ${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/ --strip-components=1
-	rm -f v2.2.0.tar.gz
-
-	rm -rf ${GOPATH}/src/github.com/gogo/protobuf/
-	mkdir -p ${GOPATH}/src/github.com/gogo/protobuf/
-	git clone git@github.com:gogo/protobuf.git ${GOPATH}/src/github.com/gogo/protobuf
-
-	go get -u \
-	        github.com/gogo/protobuf/protoc-gen-gogo \
-	        github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway \
-	        github.com/gogo/protobuf/protoc-gen-gogofaster \
-		github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
 	$(PROTOC) -I/usr/local/include -I. \
 		-I${GOPATH}/src \
 		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/protoc-gen-openapiv2 \
@@ -76,17 +55,16 @@ Mgoogle/api/annotations.proto=github.com/gogo/googleapis/google/api,\
 Mgoogle/protobuf/field_mask.proto=github.com/gogo/protobuf/types:.\
 		--swagger_out=logtostderr=true:. \
 		$(PROTOC_FILES)
-
-pretest: vet staticcheck errcheck 
+pretest: vet staticcheck errcheck
 
 vet:
 	go vet $(PKGS)
 
 staticcheck:
-	GOFLAGS="" go install honnef.co/go/tools/cmd/staticcheck@v0.2.2
+	GOFLAGS="" go install honnef.co/go/tools/cmd/staticcheck@latest
 	staticcheck $(PKGS)
 
 errcheck:
-	go get -u github.com/kisielk/errcheck
+	go install github.com/kisielk/errcheck@latest
 	errcheck -ignoregenerated -verbose -blank $(PKGS)
 

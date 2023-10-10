@@ -2944,6 +2944,7 @@ type BackupLocationInfo struct {
 	CloudCredentialRef      *ObjectRef                     `protobuf:"bytes,8,opt,name=cloud_credential_ref,json=cloudCredentialRef,proto3" json:"cloud_credential_ref,omitempty"`
 	ObjectLockEnabled       bool                           `protobuf:"varint,9,opt,name=object_lock_enabled,json=objectLockEnabled,proto3" json:"object_lock_enabled,omitempty"`
 	// Types that are valid to be assigned to Config:
+	//
 	//	*BackupLocationInfo_S3Config
 	//	*BackupLocationInfo_NfsConfig
 	Config isBackupLocationInfo_Config `protobuf_oneof:"config"`
@@ -8871,7 +8872,7 @@ func (m *BackupUpdateResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_BackupUpdateResponse proto.InternalMessageInfo
 
-//  Request message structure for enumerate object
+// Request message structure for enumerate object
 type BackupEnumerateRequest struct {
 	// Organization id
 	OrgId string `protobuf:"bytes,1,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
@@ -8919,7 +8920,7 @@ func (m *BackupEnumerateRequest) GetOrgId() string {
 	return ""
 }
 
-//  Response message structure for enumerate create
+// Response message structure for enumerate create
 type BackupEnumerateResponse struct {
 	Backups    []*BackupObject `protobuf:"bytes,1,rep,name=backups,proto3" json:"backups,omitempty"`
 	TotalCount uint64          `protobuf:"varint,2,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
@@ -10935,6 +10936,7 @@ func (m *VersionGetResponse) GetVersion() *VersionInfo {
 type LicenseActivateRequest struct {
 	*CreateMetadata `protobuf:"bytes,1,opt,name=metadata,proto3,embedded=metadata" json:"metadata,omitempty"`
 	// Types that are valid to be assigned to Activation:
+	//
 	//	*LicenseActivateRequest_ActivationId
 	//	*LicenseActivateRequest_LicenseData
 	//	*LicenseActivateRequest_UsageBasedId
@@ -11679,6 +11681,7 @@ type ManagedClusterEnumerateRequest struct {
 	MaxResults int64                                   `protobuf:"varint,4,opt,name=max_results,json=maxResults,proto3" json:"max_results,omitempty"`
 	Provider   ManagedClusterEnumerateRequest_Provider `protobuf:"varint,5,opt,name=provider,proto3,enum=ManagedClusterEnumerateRequest_Provider" json:"provider,omitempty"`
 	// Types that are valid to be assigned to Config:
+	//
 	//	*ManagedClusterEnumerateRequest_AwsConfig
 	//	*ManagedClusterEnumerateRequest_GoogleConfig_
 	//	*ManagedClusterEnumerateRequest_AzureConfig_
@@ -12044,6 +12047,7 @@ type ManagedClusterEnumerateResponse struct {
 	Cluster  []*ManagedClusterObject                  `protobuf:"bytes,1,rep,name=cluster,proto3" json:"cluster,omitempty"`
 	Provider ManagedClusterEnumerateResponse_Provider `protobuf:"varint,2,opt,name=provider,proto3,enum=ManagedClusterEnumerateResponse_Provider" json:"provider,omitempty"`
 	// Types that are valid to be assigned to Config:
+	//
 	//	*ManagedClusterEnumerateResponse_AwsConfig
 	//	*ManagedClusterEnumerateResponse_GoogleConfig_
 	//	*ManagedClusterEnumerateResponse_AzureConfig_
@@ -12299,6 +12303,7 @@ type ManagedClusterInspectRequest struct {
 	// indicate the uid of the particular object
 	Uid string `protobuf:"bytes,6,opt,name=uid,proto3" json:"uid,omitempty"`
 	// Types that are valid to be assigned to Config:
+	//
 	//	*ManagedClusterInspectRequest_AwsConfig
 	//	*ManagedClusterInspectRequest_GoogleConfig_
 	//	*ManagedClusterInspectRequest_AzureConfig_
@@ -12616,6 +12621,7 @@ type ManagedClusterBulkAddRequest struct {
 	ClusterName []string                              `protobuf:"bytes,3,rep,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
 	Provider    ManagedClusterBulkAddRequest_Provider `protobuf:"varint,4,opt,name=provider,proto3,enum=ManagedClusterBulkAddRequest_Provider" json:"provider,omitempty"`
 	// Types that are valid to be assigned to Config:
+	//
 	//	*ManagedClusterBulkAddRequest_AwsConfig
 	//	*ManagedClusterBulkAddRequest_GoogleConfig_
 	//	*ManagedClusterBulkAddRequest_AzureConfig_

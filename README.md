@@ -11,7 +11,7 @@ The generated client code is present under
 
 ## Building
 
-After updating the proto definitions, run `make` to regenerate the client libraries and swagger definitions.
+After updating the proto definitions, run `make docker-build-proto` to regenerate the client libraries and swagger definitions.
 
 ## Usage
 
