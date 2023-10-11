@@ -13,7 +13,7 @@ package descriptor
 import (
 	"bytes"
 	"compress/gzip"
-	"io"
+	"io/ioutil"
 	"sync"
 
 	"github.com/golang/protobuf/proto"
@@ -129,7 +129,7 @@ func deriveFileDescriptor(rawDesc []byte) *descriptorpb.FileDescriptorProto {
 	if err != nil {
 		panic(err)
 	}
-	b, err := io.ReadAll(zr)
+	b, err := ioutil.ReadAll(zr)
 	if err != nil {
 		panic(err)
 	}
