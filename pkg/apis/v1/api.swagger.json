@@ -1206,18 +1206,12 @@
     "/v1/emailalert": {
       "post": {
         "summary": "Creates new cloud credential",
-        "operationId": "EmailAlert_Create",
+        "operationId": "Create",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/EmailAlertCreateResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -4103,6 +4097,9 @@
     "EmailAlertCreateRequest": {
       "type": "object",
       "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
         "receiver": {
           "type": "string"
         },
