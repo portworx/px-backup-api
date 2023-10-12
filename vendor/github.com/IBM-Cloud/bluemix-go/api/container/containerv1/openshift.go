@@ -19,7 +19,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -144,7 +144,7 @@ func (r *clusters) FetchOCTokenForKubeConfig(kubecfg []byte, cMeta *ClusterInfo,
 		}
 		defer resp.Body.Close()
 		if resp.StatusCode > 299 {
-			msg, _ := ioutil.ReadAll(resp.Body)
+			msg, _ := io.ReadAll(resp.Body)
 			return nil, fmt.Errorf("Bad status code [%d] returned when fetching Cluster authentication endpoints: %s", resp.StatusCode, msg)
 		}
 		auth.ServerURL = meta.ServerURL
@@ -222,7 +222,7 @@ func (r *clusters) openShiftAuthorizePasscode(authEP *authEndpoints, passcode st
 		defer resp.Body.Close()
 		if resp.StatusCode > 399 {
 			if try >= 3 {
-				msg, _ := ioutil.ReadAll(resp.Body)
+				msg, _ := io.ReadAll(resp.Body)
 				return "", "", fmt.Errorf("Bad status code [%d] returned when openshift login: %s", resp.StatusCode, string(msg))
 			}
 			time.Sleep(200 * time.Millisecond)
@@ -259,7 +259,7 @@ func (r *clusters) getOpenShiftUser(authEP *authEndpoints, token string) (string
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode > 299 {
-		msg, _ := ioutil.ReadAll(resp.Body)
+		msg, _ := io.ReadAll(resp.Body)
 		return "", fmt.Errorf("Bad status code [%d] returned when fetching OpenShift user Details: %s", resp.StatusCode, string(msg))
 	}
 

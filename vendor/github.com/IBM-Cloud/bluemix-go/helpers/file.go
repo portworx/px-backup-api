@@ -3,7 +3,6 @@ package helpers
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -68,7 +67,7 @@ func CopyDir(src string, dest string) (err error) {
 		return fmt.Errorf("Destination %s already exists.", dest)
 	}
 
-	entries, err := ioutil.ReadDir(src)
+	entries, err := os.ReadDir(src)
 	if err != nil {
 		return
 	}
@@ -82,7 +81,7 @@ func CopyDir(src string, dest string) (err error) {
 		srcPath := filepath.Join(src, entry.Name())
 		destPath := filepath.Join(dest, entry.Name())
 
-		if entry.Mode().IsDir() {
+		if entry.IsDir() {
 			err = CopyDir(srcPath, destPath)
 		} else {
 			err = CopyFile(srcPath, destPath)
@@ -101,7 +100,7 @@ func RemoveFilesWithPattern(targetDir, pattern string) error {
 	if err != nil {
 		return err
 	}
-	files, err := ioutil.ReadDir(targetDir)
+	files, err := os.ReadDir(targetDir)
 	if err != nil {
 		return err
 	}

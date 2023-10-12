@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
-	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -427,11 +426,11 @@ func (r *clusters) GetClusterConfig(name, dir string, admin bool, target Cluster
 	}
 	defer helpers.RemoveFilesWithPattern(resultDir, "[^(.yml)|(.pem)]$")
 	var kubedir, kubeyml string
-	files, _ := ioutil.ReadDir(resultDir)
+	files, _ := os.ReadDir(resultDir)
 	for _, f := range files {
 		if f.IsDir() && strings.HasPrefix(f.Name(), "kube") {
 			kubedir = filepath.Join(resultDir, f.Name())
-			files, _ := ioutil.ReadDir(kubedir)
+			files, _ := os.ReadDir(kubedir)
 			for _, f := range files {
 				old := filepath.Join(kubedir, f.Name())
 				new := filepath.Join(kubedir, "../", f.Name())
@@ -462,14 +461,14 @@ func (r *clusters) GetClusterConfig(name, dir string, admin bool, target Cluster
 	if clusterInfo.Type == "openshift" {
 		trace.Logger.Println("Debug: type is openshift trying login to get token")
 		var yamlConfig []byte
-		if yamlConfig, err = ioutil.ReadFile(kubeyml); err != nil {
+		if yamlConfig, err = os.ReadFile(kubeyml); err != nil {
 			return "", err
 		}
 		yamlConfig, err = r.FetchOCTokenForKubeConfig(yamlConfig, &clusterInfo, clusterInfo.IsStagingSatelliteCluster())
 		if err != nil {
 			return "", err
 		}
-		err = ioutil.WriteFile(kubeyml, yamlConfig, 0644) // 0644 is irrelevant here, since file already exists.
+		err = os.WriteFile(kubeyml, yamlConfig, 0644) // 0644 is irrelevant here, since file already exists.
 		if err != nil {
 			return "", err
 		}
@@ -513,13 +512,13 @@ func (r *clusters) GetClusterConfigDetail(name, dir string, admin bool, target C
 	}
 	defer helpers.RemoveFilesWithPattern(resultDir, "[^(.yml)|(.pem)]$")
 	var kubedir, kubeyml string
-	files, _ := ioutil.ReadDir(resultDir)
+	files, _ := os.ReadDir(resultDir)
 	for _, f := range files {
 		if f.IsDir() && strings.HasPrefix(f.Name(), "kube") {
 			kubedir = filepath.Join(resultDir, f.Name())
-			files, _ := ioutil.ReadDir(kubedir)
+			files, _ := os.ReadDir(kubedir)
 			for _, f := range files {
-				fileContent, _ := ioutil.ReadFile(kubedir + "/" + f.Name())
+				fileContent, _ := os.ReadFile(kubedir + "/" + f.Name())
 				if f.Name() == "admin-key.pem" {
 					clusterkey.AdminKey = string(fileContent)
 				}
@@ -547,7 +546,7 @@ func (r *clusters) GetClusterConfigDetail(name, dir string, admin bool, target C
 		return clusterkey, errors.New("Unable to locate kube config in zip archive")
 	}
 
-	kubefile, _ := ioutil.ReadFile(kubeyml)
+	kubefile, _ := os.ReadFile(kubeyml)
 	var yamlConfig ConfigFile
 	err = yaml.Unmarshal(kubefile, &yamlConfig)
 	if err != nil {
@@ -572,18 +571,18 @@ func (r *clusters) GetClusterConfigDetail(name, dir string, admin bool, target C
 	if clusterInfo.Type == "openshift" {
 		trace.Logger.Println("Debug: type is openshift trying login to get token")
 		var yamlConfig []byte
-		if yamlConfig, err = ioutil.ReadFile(kubeyml); err != nil {
+		if yamlConfig, err = os.ReadFile(kubeyml); err != nil {
 			return clusterkey, err
 		}
 		yamlConfig, err = r.FetchOCTokenForKubeConfig(yamlConfig, &clusterInfo, clusterInfo.IsStagingSatelliteCluster())
 		if err != nil {
 			return clusterkey, err
 		}
-		err = ioutil.WriteFile(kubeyml, yamlConfig, 0644) // 0644 is irrelevant here, since file already exists.
+		err = os.WriteFile(kubeyml, yamlConfig, 0644) // 0644 is irrelevant here, since file already exists.
 		if err != nil {
 			return clusterkey, err
 		}
-		openshiftyml, _ := ioutil.ReadFile(kubeyml)
+		openshiftyml, _ := os.ReadFile(kubeyml)
 		var openshiftyaml ConfigFileOpenshift
 		err = yaml.Unmarshal(openshiftyml, &openshiftyaml)
 		if err != nil {
@@ -647,7 +646,7 @@ func (r *clusters) StoreConfig(name, dir string, admin, createCalicoConfig bool,
 		return "", "", err
 	}
 	trace.Logger.Println("Located unzipped directory: ", unzipConfigPath)
-	files, _ := ioutil.ReadDir(unzipConfigPath)
+	files, _ := os.ReadDir(unzipConfigPath)
 	for _, f := range files {
 		old := filepath.Join(unzipConfigPath, f.Name())
 		new := filepath.Join(unzipConfigPath, "../", f.Name())
@@ -661,7 +660,7 @@ func (r *clusters) StoreConfig(name, dir string, admin, createCalicoConfig bool,
 		return "", "", err
 	}
 	// Locate the yaml file and return the new path
-	baseDirFiles, err := ioutil.ReadDir(resultDir)
+	baseDirFiles, err := os.ReadDir(resultDir)
 	if err != nil {
 		return "", "", err
 	}
@@ -695,14 +694,14 @@ func (r *clusters) StoreConfig(name, dir string, admin, createCalicoConfig bool,
 	if clusterInfo.Type == "openshift" {
 		trace.Logger.Println("Cluster Type is openshift trying login to get token")
 		var yamlConfig []byte
-		if yamlConfig, err = ioutil.ReadFile(kubeconfigFileName); err != nil {
+		if yamlConfig, err = os.ReadFile(kubeconfigFileName); err != nil {
 			return "", "", err
 		}
 		yamlConfig, err = r.FetchOCTokenForKubeConfig(yamlConfig, &clusterInfo, clusterInfo.IsStagingSatelliteCluster())
 		if err != nil {
 			return "", "", err
 		}
-		err = ioutil.WriteFile(kubeconfigFileName, yamlConfig, 0644) // check about permissions and truncate
+		err = os.WriteFile(kubeconfigFileName, yamlConfig, 0644) // check about permissions and truncate
 		if err != nil {
 			return "", "", err
 		}
@@ -753,9 +752,9 @@ func (r *clusters) StoreConfigDetail(name, dir string, admin, createCalicoConfig
 		return "", clusterkey, err
 	}
 	trace.Logger.Println("Located unzipped directory: ", unzipConfigPath)
-	files, _ := ioutil.ReadDir(unzipConfigPath)
+	files, _ := os.ReadDir(unzipConfigPath)
 	for _, f := range files {
-		fileContent, _ := ioutil.ReadFile(unzipConfigPath + "/" + f.Name())
+		fileContent, _ := os.ReadFile(unzipConfigPath + "/" + f.Name())
 		if f.Name() == "admin-key.pem" {
 			clusterkey.AdminKey = string(fileContent)
 		}
@@ -777,7 +776,7 @@ func (r *clusters) StoreConfigDetail(name, dir string, admin, createCalicoConfig
 		return "", clusterkey, err
 	}
 	// Locate the yaml file and return the new path
-	baseDirFiles, err := ioutil.ReadDir(resultDir)
+	baseDirFiles, err := os.ReadDir(resultDir)
 	if err != nil {
 		return "", clusterkey, err
 	}
@@ -799,7 +798,7 @@ func (r *clusters) StoreConfigDetail(name, dir string, admin, createCalicoConfig
 	if kubeconfigFileName == "" {
 		return "", clusterkey, errors.New("Unable to locate kube config in zip archive")
 	}
-	kubefile, _ := ioutil.ReadFile(kubeconfigFileName)
+	kubefile, _ := os.ReadFile(kubeconfigFileName)
 	var yamlConfig ConfigFile
 	err = yaml.Unmarshal(kubefile, &yamlConfig)
 	if err != nil {
@@ -824,18 +823,18 @@ func (r *clusters) StoreConfigDetail(name, dir string, admin, createCalicoConfig
 	if clusterInfo.Type == "openshift" {
 		trace.Logger.Println("Cluster Type is openshift trying login to get token")
 		var yamlConfig []byte
-		if yamlConfig, err = ioutil.ReadFile(kubeconfigFileName); err != nil {
+		if yamlConfig, err = os.ReadFile(kubeconfigFileName); err != nil {
 			return "", clusterkey, err
 		}
 		yamlConfig, err = r.FetchOCTokenForKubeConfig(yamlConfig, &clusterInfo, clusterInfo.IsStagingSatelliteCluster())
 		if err != nil {
 			return "", clusterkey, err
 		}
-		err = ioutil.WriteFile(kubeconfigFileName, yamlConfig, 0644) // check about permissions and truncate
+		err = os.WriteFile(kubeconfigFileName, yamlConfig, 0644) // check about permissions and truncate
 		if err != nil {
 			return "", clusterkey, err
 		}
-		openshiftyml, _ := ioutil.ReadFile(kubeconfigFileName)
+		openshiftyml, _ := os.ReadFile(kubeconfigFileName)
 		var openshiftyaml ConfigFileOpenshift
 		err = yaml.Unmarshal(openshiftyml, &openshiftyaml)
 		if err != nil {
@@ -859,7 +858,7 @@ func (r *clusters) StoreConfigDetail(name, dir string, admin, createCalicoConfig
 
 //kubeConfigDir ...
 func kubeConfigDir(baseDir string) (string, error) {
-	baseDirFiles, err := ioutil.ReadDir(baseDir)
+	baseDirFiles, err := os.ReadDir(baseDir)
 	if err != nil {
 		return "", err
 	}
