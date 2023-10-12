@@ -1330,12 +1330,13 @@ service EmailAlert {
 }
 
 message EmailAlertCreateRequest {
-    string receiver = 1;
-    string sender = 2;
-    string host = 3;
-    string auth_username = 4;
-    string auth_identity = 5;
-    string auth_password = 6;
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    string receiver = 2;
+    string sender = 3;
+    string host = 4;
+    string auth_username = 5;
+    string auth_identity = 6;
+    string auth_password = 7;
 }
 
 message EmailAlertCreateResponse {}
