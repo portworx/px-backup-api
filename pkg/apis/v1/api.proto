@@ -1330,7 +1330,8 @@ service Alert {
 }
 
 message AlertEmailCreateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    Metadata metadata = 1
+    [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
     string receiver = 2;
     string sender = 3;
     string host = 4;

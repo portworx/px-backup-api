@@ -2560,7 +2560,7 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata"
+          "$ref": "#/definitions/Metadata"
         },
         "receiver": {
           "type": "string"
