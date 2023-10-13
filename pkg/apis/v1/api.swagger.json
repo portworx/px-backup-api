@@ -18,12 +18,12 @@
     "/v1/alert/email": {
       "post": {
         "summary": "Creates new cloud credential",
-        "operationId": "AlertEmailCreate",
+        "operationId": "EmailAlertCreate",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/AlertEmailCreateResponse"
+              "$ref": "#/definitions/EmailAlertCreateResponse"
             }
           }
         },
@@ -33,7 +33,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/AlertEmailCreateRequest"
+              "$ref": "#/definitions/EmailAlertObject"
             }
           }
         ],
@@ -2556,35 +2556,6 @@
         }
       }
     },
-    "AlertEmailCreateRequest": {
-      "type": "object",
-      "properties": {
-        "metadata": {
-          "$ref": "#/definitions/Metadata"
-        },
-        "receiver": {
-          "type": "string"
-        },
-        "sender": {
-          "type": "string"
-        },
-        "host": {
-          "type": "string"
-        },
-        "auth_username": {
-          "type": "string"
-        },
-        "auth_identity": {
-          "type": "string"
-        },
-        "auth_password": {
-          "type": "string"
-        }
-      }
-    },
-    "AlertEmailCreateResponse": {
-      "type": "object"
-    },
     "AzureConfig": {
       "type": "object",
       "properties": {
@@ -4120,6 +4091,35 @@
         "uid": {
           "type": "string",
           "title": "uid of the object"
+        }
+      }
+    },
+    "EmailAlertCreateResponse": {
+      "type": "object"
+    },
+    "EmailAlertObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "receiver": {
+          "type": "string"
+        },
+        "sender": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "auth_username": {
+          "type": "string"
+        },
+        "auth_identity": {
+          "type": "string"
+        },
+        "auth_password": {
+          "type": "string"
         }
       }
     },
