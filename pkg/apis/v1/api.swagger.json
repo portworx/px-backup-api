@@ -15,6 +15,33 @@
     "application/json"
   ],
   "paths": {
+    "/v1/alert": {
+      "post": {
+        "summary": "Creates new cloud credential",
+        "operationId": "AlertEmailCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/AlertEmailCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AlertEmailCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Alert"
+        ]
+      }
+    },
     "/v1/backup": {
       "post": {
         "summary": "Creates a new backup object",
@@ -1200,33 +1227,6 @@
         ],
         "tags": [
           "Cluster"
-        ]
-      }
-    },
-    "/v1/emailalert": {
-      "post": {
-        "summary": "Creates new cloud credential",
-        "operationId": "AlertEmailCreate",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/AlertEmailCreateResponse"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/AlertEmailCreateRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Alert"
         ]
       }
     },
