@@ -1332,12 +1332,21 @@ service Alert {
 message EmailAlertObject {
     Metadata metadata = 1
     [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
-    string receiver = 2;
-    string sender = 3;
-    string host = 4;
-    string auth_username = 5;
-    string auth_identity = 6;
-    string auth_password = 7;
+    // * Sender email address
+    string from = 2;
+    // * receiver email
+    string receiver = 4;
+    // * Host IP Address
+    string host = 5;
+    // * Host port default value is 25
+    int32 port = 6;
+    // * Encrytion if any (optional) default value is false
+    bool encrytion_ssl = 7;
+    bool encryption_starttls = 8;
+    // * Authentication if any (optional) default values is false
+    bool authentication = 9;
+    string auth_username = 10;
+    string auth_password = 11;
 }
 
 message EmailAlertCreateResponse {}

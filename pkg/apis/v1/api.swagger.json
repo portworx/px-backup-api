@@ -4103,19 +4103,38 @@
         "metadata": {
           "$ref": "#/definitions/Metadata"
         },
-        "receiver": {
-          "type": "string"
+        "from": {
+          "type": "string",
+          "title": "* Sender email address"
         },
-        "sender": {
-          "type": "string"
+        "receiver": {
+          "type": "string",
+          "title": "* receiver email"
         },
         "host": {
-          "type": "string"
+          "type": "string",
+          "title": "* Host IP Address"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32",
+          "title": "* Host port default value is 25"
+        },
+        "encrytion_ssl": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "* Encrytion if any (optional) default value is false"
+        },
+        "encryption_starttls": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "authentication": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "* Authentication if any (optional) default values is false"
         },
         "auth_username": {
-          "type": "string"
-        },
-        "auth_identity": {
           "type": "string"
         },
         "auth_password": {
