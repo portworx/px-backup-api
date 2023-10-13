@@ -15,7 +15,7 @@
     "application/json"
   ],
   "paths": {
-    "/v1/alert": {
+    "/v1/alert/email": {
       "post": {
         "summary": "Creates new cloud credential",
         "operationId": "AlertEmailCreate",

@@ -1323,7 +1323,7 @@ service Alert {
     rpc AlertEmailCreate(AlertEmailCreateRequest)
         returns (AlertEmailCreateResponse) {
         option (google.api.http) = {
-            post : "/v1/alert"
+            post : "/v1/alert/email"
             body : "*"
         };
     }
