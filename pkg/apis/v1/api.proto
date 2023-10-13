@@ -1318,10 +1318,10 @@ message CloudCredentialOwnershipUpdateRequest {
 
 message CloudCredentialOwnershipUpdateResponse {}
 
-service EmailAlert {
+service Alert {
     // Creates new cloud credential
-    rpc Create(EmailAlertCreateRequest)
-        returns (EmailAlertCreateResponse) {
+    rpc AlertEmailCreate(AlertEmailCreateRequest)
+        returns (AlertEmailCreateResponse) {
         option (google.api.http) = {
             post : "/v1/emailalert"
             body : "*"
@@ -1329,7 +1329,7 @@ service EmailAlert {
     }
 }
 
-message EmailAlertCreateRequest {
+message AlertEmailCreateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
     string receiver = 2;
     string sender = 3;
@@ -1339,7 +1339,7 @@ message EmailAlertCreateRequest {
     string auth_password = 7;
 }
 
-message EmailAlertCreateResponse {}
+message AlertEmailCreateResponse {}
 
 
 service BackupLocation {

@@ -5567,15 +5567,15 @@ func TestCloudCredentialOwnershipUpdateResponseMarshalTo(t *testing.T) {
 	}
 }
 
-func TestEmailAlertCreateRequestProto(t *testing.T) {
+func TestAlertEmailCreateRequestProto(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedEmailAlertCreateRequest(popr, false)
+	p := NewPopulatedAlertEmailCreateRequest(popr, false)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &EmailAlertCreateRequest{}
+	msg := &AlertEmailCreateRequest{}
 	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -5598,10 +5598,10 @@ func TestEmailAlertCreateRequestProto(t *testing.T) {
 	}
 }
 
-func TestEmailAlertCreateRequestMarshalTo(t *testing.T) {
+func TestAlertEmailCreateRequestMarshalTo(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedEmailAlertCreateRequest(popr, false)
+	p := NewPopulatedAlertEmailCreateRequest(popr, false)
 	size := p.Size()
 	dAtA := make([]byte, size)
 	for i := range dAtA {
@@ -5611,7 +5611,7 @@ func TestEmailAlertCreateRequestMarshalTo(t *testing.T) {
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &EmailAlertCreateRequest{}
+	msg := &AlertEmailCreateRequest{}
 	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -5623,15 +5623,15 @@ func TestEmailAlertCreateRequestMarshalTo(t *testing.T) {
 	}
 }
 
-func TestEmailAlertCreateResponseProto(t *testing.T) {
+func TestAlertEmailCreateResponseProto(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedEmailAlertCreateResponse(popr, false)
+	p := NewPopulatedAlertEmailCreateResponse(popr, false)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &EmailAlertCreateResponse{}
+	msg := &AlertEmailCreateResponse{}
 	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -5654,10 +5654,10 @@ func TestEmailAlertCreateResponseProto(t *testing.T) {
 	}
 }
 
-func TestEmailAlertCreateResponseMarshalTo(t *testing.T) {
+func TestAlertEmailCreateResponseMarshalTo(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedEmailAlertCreateResponse(popr, false)
+	p := NewPopulatedAlertEmailCreateResponse(popr, false)
 	size := p.Size()
 	dAtA := make([]byte, size)
 	for i := range dAtA {
@@ -5667,7 +5667,7 @@ func TestEmailAlertCreateResponseMarshalTo(t *testing.T) {
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &EmailAlertCreateResponse{}
+	msg := &AlertEmailCreateResponse{}
 	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -13845,16 +13845,16 @@ func TestCloudCredentialOwnershipUpdateResponseJSON(t *testing.T) {
 		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
 	}
 }
-func TestEmailAlertCreateRequestJSON(t *testing.T) {
+func TestAlertEmailCreateRequestJSON(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedEmailAlertCreateRequest(popr, true)
+	p := NewPopulatedAlertEmailCreateRequest(popr, true)
 	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
 	jsondata, err := marshaler.MarshalToString(p)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &EmailAlertCreateRequest{}
+	msg := &AlertEmailCreateRequest{}
 	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
@@ -13863,16 +13863,16 @@ func TestEmailAlertCreateRequestJSON(t *testing.T) {
 		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
 	}
 }
-func TestEmailAlertCreateResponseJSON(t *testing.T) {
+func TestAlertEmailCreateResponseJSON(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedEmailAlertCreateResponse(popr, true)
+	p := NewPopulatedAlertEmailCreateResponse(popr, true)
 	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
 	jsondata, err := marshaler.MarshalToString(p)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &EmailAlertCreateResponse{}
+	msg := &AlertEmailCreateResponse{}
 	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
@@ -18705,12 +18705,12 @@ func TestCloudCredentialOwnershipUpdateResponseProtoCompactText(t *testing.T) {
 	}
 }
 
-func TestEmailAlertCreateRequestProtoText(t *testing.T) {
+func TestAlertEmailCreateRequestProtoText(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedEmailAlertCreateRequest(popr, true)
+	p := NewPopulatedAlertEmailCreateRequest(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
-	msg := &EmailAlertCreateRequest{}
+	msg := &AlertEmailCreateRequest{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -18719,12 +18719,12 @@ func TestEmailAlertCreateRequestProtoText(t *testing.T) {
 	}
 }
 
-func TestEmailAlertCreateRequestProtoCompactText(t *testing.T) {
+func TestAlertEmailCreateRequestProtoCompactText(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedEmailAlertCreateRequest(popr, true)
+	p := NewPopulatedAlertEmailCreateRequest(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
-	msg := &EmailAlertCreateRequest{}
+	msg := &AlertEmailCreateRequest{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -18733,12 +18733,12 @@ func TestEmailAlertCreateRequestProtoCompactText(t *testing.T) {
 	}
 }
 
-func TestEmailAlertCreateResponseProtoText(t *testing.T) {
+func TestAlertEmailCreateResponseProtoText(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedEmailAlertCreateResponse(popr, true)
+	p := NewPopulatedAlertEmailCreateResponse(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
-	msg := &EmailAlertCreateResponse{}
+	msg := &AlertEmailCreateResponse{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -18747,12 +18747,12 @@ func TestEmailAlertCreateResponseProtoText(t *testing.T) {
 	}
 }
 
-func TestEmailAlertCreateResponseProtoCompactText(t *testing.T) {
+func TestAlertEmailCreateResponseProtoCompactText(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedEmailAlertCreateResponse(popr, true)
+	p := NewPopulatedAlertEmailCreateResponse(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
-	msg := &EmailAlertCreateResponse{}
+	msg := &AlertEmailCreateResponse{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -24131,10 +24131,10 @@ func TestCloudCredentialOwnershipUpdateResponseSize(t *testing.T) {
 	}
 }
 
-func TestEmailAlertCreateRequestSize(t *testing.T) {
+func TestAlertEmailCreateRequestSize(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedEmailAlertCreateRequest(popr, true)
+	p := NewPopulatedAlertEmailCreateRequest(popr, true)
 	size2 := github_com_gogo_protobuf_proto.Size(p)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {
@@ -24153,10 +24153,10 @@ func TestEmailAlertCreateRequestSize(t *testing.T) {
 	}
 }
 
-func TestEmailAlertCreateResponseSize(t *testing.T) {
+func TestAlertEmailCreateResponseSize(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedEmailAlertCreateResponse(popr, true)
+	p := NewPopulatedAlertEmailCreateResponse(popr, true)
 	size2 := github_com_gogo_protobuf_proto.Size(p)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {

@@ -1206,12 +1206,12 @@
     "/v1/emailalert": {
       "post": {
         "summary": "Creates new cloud credential",
-        "operationId": "Create",
+        "operationId": "AlertEmailCreate",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/EmailAlertCreateResponse"
+              "$ref": "#/definitions/AlertEmailCreateResponse"
             }
           }
         },
@@ -1221,12 +1221,12 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/EmailAlertCreateRequest"
+              "$ref": "#/definitions/AlertEmailCreateRequest"
             }
           }
         ],
         "tags": [
-          "EmailAlert"
+          "Alert"
         ]
       }
     },
@@ -2555,6 +2555,35 @@
           "title": "Total number of backups in a given time frame (success/failure)"
         }
       }
+    },
+    "AlertEmailCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "receiver": {
+          "type": "string"
+        },
+        "sender": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "auth_username": {
+          "type": "string"
+        },
+        "auth_identity": {
+          "type": "string"
+        },
+        "auth_password": {
+          "type": "string"
+        }
+      }
+    },
+    "AlertEmailCreateResponse": {
+      "type": "object"
     },
     "AzureConfig": {
       "type": "object",
@@ -4093,35 +4122,6 @@
           "title": "uid of the object"
         }
       }
-    },
-    "EmailAlertCreateRequest": {
-      "type": "object",
-      "properties": {
-        "metadata": {
-          "$ref": "#/definitions/CreateMetadata"
-        },
-        "receiver": {
-          "type": "string"
-        },
-        "sender": {
-          "type": "string"
-        },
-        "host": {
-          "type": "string"
-        },
-        "auth_username": {
-          "type": "string"
-        },
-        "auth_identity": {
-          "type": "string"
-        },
-        "auth_password": {
-          "type": "string"
-        }
-      }
-    },
-    "EmailAlertCreateResponse": {
-      "type": "object"
     },
     "EnumerateOptions": {
       "type": "object",
