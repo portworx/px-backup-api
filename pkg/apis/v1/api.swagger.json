@@ -16,6 +16,34 @@
   ],
   "paths": {
     "/v1/alert/email": {
+      "get": {
+        "operationId": "EmailAlertInspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/EmailAlertInspectResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Alert"
+        ]
+      },
       "post": {
         "summary": "Creates new cloud credential",
         "operationId": "EmailAlertCreate",
@@ -4097,12 +4125,9 @@
     "EmailAlertCreateResponse": {
       "type": "object"
     },
-    "EmailAlertObject": {
+    "EmailAlertInfo": {
       "type": "object",
       "properties": {
-        "metadata": {
-          "$ref": "#/definitions/Metadata"
-        },
         "from": {
           "type": "string",
           "title": "* Sender email address"
@@ -4116,8 +4141,7 @@
           "title": "* Host IP Address"
         },
         "port": {
-          "type": "integer",
-          "format": "int32",
+          "type": "string",
           "title": "* Host port default value is 25"
         },
         "encrytion_ssl": {
@@ -4139,6 +4163,25 @@
         },
         "auth_password": {
           "type": "string"
+        }
+      }
+    },
+    "EmailAlertInspectResponse": {
+      "type": "object",
+      "properties": {
+        "email_alert": {
+          "$ref": "#/definitions/EmailAlertObject"
+        }
+      }
+    },
+    "EmailAlertObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "email_alert": {
+          "$ref": "#/definitions/EmailAlertInfo"
         }
       }
     },

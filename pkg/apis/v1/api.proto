@@ -1327,11 +1327,16 @@ service Alert {
             body : "*"
         };
     }
+
+    rpc EmailAlertInspect(EmailAlertInspectRequest)
+        returns (EmailAlertInspectResponse) {
+            option (google.api.http) = {
+                get : "/v1/alert/email"
+            };
+    }
 }
 
-message EmailAlertObject {
-    Metadata metadata = 1
-    [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+message EmailAlertInfo {
     // * Sender email address
     string from = 2;
     // * receiver email
@@ -1339,7 +1344,7 @@ message EmailAlertObject {
     // * Host IP Address
     string host = 5;
     // * Host port default value is 25
-    int32 port = 6;
+    string port = 6;
     // * Encrytion if any (optional) default value is false
     bool encrytion_ssl = 7;
     bool encryption_starttls = 8;
@@ -1349,8 +1354,27 @@ message EmailAlertObject {
     string auth_password = 11;
 }
 
+message EmailAlertObject {
+    Metadata metadata = 1
+    [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    EmailAlertInfo email_alert = 2;
+}
+
+message EmailAlertCreateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    EmailAlertInfo email_alert = 2;
+}
+
 message EmailAlertCreateResponse {}
 
+message EmailAlertInspectRequest {
+    string org_id = 1;
+    string uid  = 2;
+}
+
+message EmailAlertInspectResponse {
+    EmailAlertObject email_alert = 1;
+}
 
 service BackupLocation {
     // Creates new backup location
