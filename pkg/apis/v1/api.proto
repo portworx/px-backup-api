@@ -1357,7 +1357,7 @@ message EmailAlertInfo {
 message EmailAlertObject {
     Metadata metadata = 1
     [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
-    EmailAlertInfo email_alert = 2;
+    EmailAlertInfo email_alert_info = 2;
 }
 
 message EmailAlertCreateRequest {

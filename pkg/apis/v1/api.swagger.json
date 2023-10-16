@@ -4180,7 +4180,7 @@
         "metadata": {
           "$ref": "#/definitions/Metadata"
         },
-        "email_alert": {
+        "email_alert_info": {
           "$ref": "#/definitions/EmailAlertInfo"
         }
       }
