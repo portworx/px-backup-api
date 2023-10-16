@@ -61,7 +61,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/EmailAlertObject"
+              "$ref": "#/definitions/EmailAlertCreateRequest"
             }
           }
         ],
@@ -4119,6 +4119,17 @@
         "uid": {
           "type": "string",
           "title": "uid of the object"
+        }
+      }
+    },
+    "EmailAlertCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "email_alert": {
+          "$ref": "#/definitions/EmailAlertInfo"
         }
       }
     },

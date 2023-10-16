@@ -1320,7 +1320,7 @@ message CloudCredentialOwnershipUpdateResponse {}
 
 service Alert {
     // Creates new cloud credential
-    rpc EmailAlertCreate(EmailAlertObject)
+    rpc EmailAlertCreate(EmailAlertCreateRequest)
         returns (EmailAlertCreateResponse) {
         option (google.api.http) = {
             post : "/v1/alert/email"

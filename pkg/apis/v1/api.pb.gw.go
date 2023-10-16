@@ -764,7 +764,7 @@ func request_CloudCredential_UpdateOwnership_0(ctx context.Context, marshaler ru
 }
 
 func request_Alert_EmailAlertCreate_0(ctx context.Context, marshaler runtime.Marshaler, client AlertClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq EmailAlertObject
+	var protoReq EmailAlertCreateRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
