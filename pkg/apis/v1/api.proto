@@ -1318,9 +1318,9 @@ message CloudCredentialOwnershipUpdateRequest {
 
 message CloudCredentialOwnershipUpdateResponse {}
 
-service Alert {
-    // Creates new cloud credential
-    rpc EmailAlertCreate(EmailAlertCreateRequest)
+service EmailAlert {
+    // * Add the SMTP details, to mongo and alertmanager cr
+    rpc Create(EmailAlertCreateRequest)
         returns (EmailAlertCreateResponse) {
         option (google.api.http) = {
             post : "/v1/alert/email"
@@ -1328,12 +1328,21 @@ service Alert {
         };
     }
 
-    rpc EmailAlertInspect(EmailAlertInspectRequest)
+    // * Fetch the corresponding SMTP details of a org
+    rpc Inspect(EmailAlertInspectRequest)
         returns (EmailAlertInspectResponse) {
             option (google.api.http) = {
                 get : "/v1/alert/email"
             };
     }
+
+    rpc Update(EmailAlertUpdateRequest)
+        returns (EmailAlertUpdateResponse) {
+            option (google.api.http) = {
+                put : "/v1/alert/email"
+                body : "*"
+            };
+        }
 }
 
 message EmailAlertInfo {
@@ -1375,6 +1384,13 @@ message EmailAlertInspectRequest {
 message EmailAlertInspectResponse {
     EmailAlertObject email_alert = 1;
 }
+
+message EmailAlertUpdateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    EmailAlertInfo email_alert = 2;
+}
+
+message EmailAlertUpdateResponse {}
 
 service BackupLocation {
     // Creates new backup location

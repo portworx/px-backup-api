@@ -763,7 +763,7 @@ func request_CloudCredential_UpdateOwnership_0(ctx context.Context, marshaler ru
 
 }
 
-func request_Alert_EmailAlertCreate_0(ctx context.Context, marshaler runtime.Marshaler, client AlertClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_EmailAlert_Create_0(ctx context.Context, marshaler runtime.Marshaler, client EmailAlertClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq EmailAlertCreateRequest
 	var metadata runtime.ServerMetadata
 
@@ -775,24 +775,41 @@ func request_Alert_EmailAlertCreate_0(ctx context.Context, marshaler runtime.Mar
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.EmailAlertCreate(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.Create(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
 var (
-	filter_Alert_EmailAlertInspect_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+	filter_EmailAlert_Inspect_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_Alert_EmailAlertInspect_0(ctx context.Context, marshaler runtime.Marshaler, client AlertClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_EmailAlert_Inspect_0(ctx context.Context, marshaler runtime.Marshaler, client EmailAlertClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq EmailAlertInspectRequest
 	var metadata runtime.ServerMetadata
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Alert_EmailAlertInspect_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_EmailAlert_Inspect_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.EmailAlertInspect(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.Inspect(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func request_EmailAlert_Update_0(ctx context.Context, marshaler runtime.Marshaler, client EmailAlertClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq EmailAlertUpdateRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.Update(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
@@ -2873,9 +2890,9 @@ var (
 	forward_CloudCredential_UpdateOwnership_0 = runtime.ForwardResponseMessage
 )
 
-// RegisterAlertHandlerFromEndpoint is same as RegisterAlertHandler but
+// RegisterEmailAlertHandlerFromEndpoint is same as RegisterEmailAlertHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterAlertHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterEmailAlertHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.Dial(endpoint, opts...)
 	if err != nil {
 		return err
@@ -2895,23 +2912,23 @@ func RegisterAlertHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux
 		}()
 	}()
 
-	return RegisterAlertHandler(ctx, mux, conn)
+	return RegisterEmailAlertHandler(ctx, mux, conn)
 }
 
-// RegisterAlertHandler registers the http handlers for service Alert to "mux".
+// RegisterEmailAlertHandler registers the http handlers for service EmailAlert to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterAlertHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterAlertHandlerClient(ctx, mux, NewAlertClient(conn))
+func RegisterEmailAlertHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterEmailAlertHandlerClient(ctx, mux, NewEmailAlertClient(conn))
 }
 
-// RegisterAlertHandlerClient registers the http handlers for service Alert
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "AlertClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "AlertClient"
+// RegisterEmailAlertHandlerClient registers the http handlers for service EmailAlert
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "EmailAlertClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "EmailAlertClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "AlertClient" to call the correct interceptors.
-func RegisterAlertHandlerClient(ctx context.Context, mux *runtime.ServeMux, client AlertClient) error {
+// "EmailAlertClient" to call the correct interceptors.
+func RegisterEmailAlertHandlerClient(ctx context.Context, mux *runtime.ServeMux, client EmailAlertClient) error {
 
-	mux.Handle("POST", pattern_Alert_EmailAlertCreate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_EmailAlert_Create_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -2920,18 +2937,18 @@ func RegisterAlertHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Alert_EmailAlertCreate_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_EmailAlert_Create_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Alert_EmailAlertCreate_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_EmailAlert_Create_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Alert_EmailAlertInspect_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_EmailAlert_Inspect_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -2940,14 +2957,34 @@ func RegisterAlertHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Alert_EmailAlertInspect_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_EmailAlert_Inspect_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Alert_EmailAlertInspect_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_EmailAlert_Inspect_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PUT", pattern_EmailAlert_Update_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_EmailAlert_Update_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_EmailAlert_Update_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -2955,15 +2992,19 @@ func RegisterAlertHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 }
 
 var (
-	pattern_Alert_EmailAlertCreate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "alert", "email"}, ""))
+	pattern_EmailAlert_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "alert", "email"}, ""))
 
-	pattern_Alert_EmailAlertInspect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "alert", "email"}, ""))
+	pattern_EmailAlert_Inspect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "alert", "email"}, ""))
+
+	pattern_EmailAlert_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "alert", "email"}, ""))
 )
 
 var (
-	forward_Alert_EmailAlertCreate_0 = runtime.ForwardResponseMessage
+	forward_EmailAlert_Create_0 = runtime.ForwardResponseMessage
 
-	forward_Alert_EmailAlertInspect_0 = runtime.ForwardResponseMessage
+	forward_EmailAlert_Inspect_0 = runtime.ForwardResponseMessage
+
+	forward_EmailAlert_Update_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterBackupLocationHandlerFromEndpoint is same as RegisterBackupLocationHandler but

@@ -17,7 +17,8 @@
   "paths": {
     "/v1/alert/email": {
       "get": {
-        "operationId": "EmailAlertInspect",
+        "summary": "* Fetch the corresponding SMTP details of a org",
+        "operationId": "Inspect",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -41,12 +42,12 @@
           }
         ],
         "tags": [
-          "Alert"
+          "EmailAlert"
         ]
       },
       "post": {
-        "summary": "Creates new cloud credential",
-        "operationId": "EmailAlertCreate",
+        "summary": "* Add the SMTP details, to mongo and alertmanager cr",
+        "operationId": "Create",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -66,7 +67,31 @@
           }
         ],
         "tags": [
-          "Alert"
+          "EmailAlert"
+        ]
+      },
+      "put": {
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/EmailAlertUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/EmailAlertUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "EmailAlert"
         ]
       }
     },
@@ -4195,6 +4220,20 @@
           "$ref": "#/definitions/EmailAlertInfo"
         }
       }
+    },
+    "EmailAlertUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "email_alert": {
+          "$ref": "#/definitions/EmailAlertInfo"
+        }
+      }
+    },
+    "EmailAlertUpdateResponse": {
+      "type": "object"
     },
     "EnumerateOptions": {
       "type": "object",
