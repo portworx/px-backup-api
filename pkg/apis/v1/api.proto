@@ -1318,34 +1318,48 @@ message CloudCredentialOwnershipUpdateRequest {
 
 message CloudCredentialOwnershipUpdateResponse {}
 
-service EmailAlert {
-    // * Add the SMTP details, to mongo and alertmanager cr
-    rpc Create(EmailAlertCreateRequest)
-        returns (EmailAlertCreateResponse) {
-        option (google.api.http) = {
-            post : "/v1/alert/email"
+service Reciever {
+    rpc Create(ReceiverCreateRequest) 
+        returns (ReceiverCreateResponse) {
+            option (google.api.http) = {
+                post : "/v1/alert/receiver"
+                body : "*"
+            };
+    }
+
+    rpc Enumerate(ReceiverEnumerateRequest)
+        returns (ReceiverEnumerateResponse) {
+            option (google.api.http) = {
+                get : "/v1/alert/receiver/{org_id}"
+            };
+        }
+
+    rpc Inspect(ReceiverInspectRequest)
+        returns (ReceiverInspectResponse) {
+            option (google.api.http) = {
+            get : "/v1/alert/receiver/{name}/{uid}"
+        };
+    }
+
+    rpc Update(ReceiverUpdateRequest)
+        returns (ReceiverUpdateResponse) {
+         option (google.api.http) = {
+            put : "/v1/alert/receiver"
             body : "*"
         };
     }
 
-    // * Fetch the corresponding SMTP details of a org
-    rpc Inspect(EmailAlertInspectRequest)
-        returns (EmailAlertInspectResponse) {
-            option (google.api.http) = {
-                get : "/v1/alert/email"
-            };
+    rpc Delete(ReceiverDeleteRequest)
+    returns (ReceiverDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/alert/receiver/{org_id}/{name}/{uid}"
+        };
     }
-
-    rpc Update(EmailAlertUpdateRequest)
-        returns (EmailAlertUpdateResponse) {
-            option (google.api.http) = {
-                put : "/v1/alert/email"
-                body : "*"
-            };
-        }
 }
 
-message EmailAlertInfo {
+message EmailConfig {
+    // * Name of Reciver, identified by alert object
+    string name = 1;
     // * Sender email address
     string from = 2;
     // * receiver email
@@ -1354,43 +1368,76 @@ message EmailAlertInfo {
     string host = 5;
     // * Host port default value is 25
     string port = 6;
+    bool send_resolved = 7;
     // * Encrytion if any (optional) default value is false
-    bool encrytion_ssl = 7;
-    bool encryption_starttls = 8;
+    bool encrytion_ssl = 8;
+    bool encryption_starttls = 9;
     // * Authentication if any (optional) default values is false
-    bool authentication = 9;
-    string auth_username = 10;
-    string auth_password = 11;
+    bool authentication = 10;
+    string auth_username = 11;
+    string auth_password = 12;
 }
 
-message EmailAlertObject {
+message ReceiverInfo {
+    Type type = 1;
+
+    enum Type {
+        INVALID  = 0;
+        EMAIL = 1;
+    }
+
+    oneof config {
+        EmailConfig email_config = 100;
+    }
+}
+message ReceiverObject {
     Metadata metadata = 1
     [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
-    EmailAlertInfo email_alert_info = 2;
+    ReceiverInfo receiver_info = 2;
 }
 
-message EmailAlertCreateRequest {
+message ReceiverCreateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
-    EmailAlertInfo email_alert = 2;
+    ReceiverInfo receiver_info = 2;
 }
 
-message EmailAlertCreateResponse {}
+message ReceiverCreateResponse {}
 
-message EmailAlertInspectRequest {
+
+message ReceiverEnumerateRequest {
     string org_id = 1;
-    string uid  = 2;
+    bool include_secrets = 2;
 }
 
-message EmailAlertInspectResponse {
-    EmailAlertObject email_alert = 1;
+message ReceiverEnumerateResponse {
+    repeated ReceiverObject receivers = 1;
 }
 
-message EmailAlertUpdateRequest {
+message ReceiverInspectRequest {
+    string org_id = 1;
+    string name  = 2;
+    bool include_secrets = 3;
+    string uid = 4;
+}
+
+message ReceiverInspectResponse {
+    ReceiverObject receiver = 1;
+}
+
+message ReceiverUpdateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
-    EmailAlertInfo email_alert = 2;
+    ReceiverInfo receiver_info = 2;
 }
 
-message EmailAlertUpdateResponse {}
+message ReceiverUpdateResponse {}
+
+message ReceiverDeleteRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+
+message ReceiverDeleteResponse {}
 
 service BackupLocation {
     // Creates new backup location

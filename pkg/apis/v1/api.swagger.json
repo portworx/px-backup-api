@@ -15,44 +15,14 @@
     "application/json"
   ],
   "paths": {
-    "/v1/alert/email": {
-      "get": {
-        "summary": "* Fetch the corresponding SMTP details of a org",
-        "operationId": "Inspect",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/EmailAlertInspectResponse"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "uid",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "EmailAlert"
-        ]
-      },
+    "/v1/alert/receiver": {
       "post": {
-        "summary": "* Add the SMTP details, to mongo and alertmanager cr",
         "operationId": "Create",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/EmailAlertCreateResponse"
+              "$ref": "#/definitions/ReceiverCreateResponse"
             }
           }
         },
@@ -62,12 +32,12 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/EmailAlertCreateRequest"
+              "$ref": "#/definitions/ReceiverCreateRequest"
             }
           }
         ],
         "tags": [
-          "EmailAlert"
+          "Reciever"
         ]
       },
       "put": {
@@ -76,7 +46,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/EmailAlertUpdateResponse"
+              "$ref": "#/definitions/ReceiverUpdateResponse"
             }
           }
         },
@@ -86,12 +56,122 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/EmailAlertUpdateRequest"
+              "$ref": "#/definitions/ReceiverUpdateRequest"
             }
           }
         ],
         "tags": [
-          "EmailAlert"
+          "Reciever"
+        ]
+      }
+    },
+    "/v1/alert/receiver/{name}/{uid}": {
+      "get": {
+        "operationId": "Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReceiverInspectResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "org_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "include_secrets",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "Reciever"
+        ]
+      }
+    },
+    "/v1/alert/receiver/{org_id}": {
+      "get": {
+        "operationId": "Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReceiverEnumerateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "include_secrets",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "Reciever"
+        ]
+      }
+    },
+    "/v1/alert/receiver/{org_id}/{name}/{uid}": {
+      "delete": {
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReceiverDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Reciever"
         ]
       }
     },
@@ -4147,23 +4227,13 @@
         }
       }
     },
-    "EmailAlertCreateRequest": {
+    "EmailConfig": {
       "type": "object",
       "properties": {
-        "metadata": {
-          "$ref": "#/definitions/CreateMetadata"
+        "name": {
+          "type": "string",
+          "title": "* Name of Reciver, identified by alert object"
         },
-        "email_alert": {
-          "$ref": "#/definitions/EmailAlertInfo"
-        }
-      }
-    },
-    "EmailAlertCreateResponse": {
-      "type": "object"
-    },
-    "EmailAlertInfo": {
-      "type": "object",
-      "properties": {
         "from": {
           "type": "string",
           "title": "* Sender email address"
@@ -4179,6 +4249,10 @@
         "port": {
           "type": "string",
           "title": "* Host port default value is 25"
+        },
+        "send_resolved": {
+          "type": "boolean",
+          "format": "boolean"
         },
         "encrytion_ssl": {
           "type": "boolean",
@@ -4201,39 +4275,6 @@
           "type": "string"
         }
       }
-    },
-    "EmailAlertInspectResponse": {
-      "type": "object",
-      "properties": {
-        "email_alert": {
-          "$ref": "#/definitions/EmailAlertObject"
-        }
-      }
-    },
-    "EmailAlertObject": {
-      "type": "object",
-      "properties": {
-        "metadata": {
-          "$ref": "#/definitions/Metadata"
-        },
-        "email_alert_info": {
-          "$ref": "#/definitions/EmailAlertInfo"
-        }
-      }
-    },
-    "EmailAlertUpdateRequest": {
-      "type": "object",
-      "properties": {
-        "metadata": {
-          "$ref": "#/definitions/CreateMetadata"
-        },
-        "email_alert": {
-          "$ref": "#/definitions/EmailAlertInfo"
-        }
-      }
-    },
-    "EmailAlertUpdateResponse": {
-      "type": "object"
     },
     "EnumerateOptions": {
       "type": "object",
@@ -4929,6 +4970,86 @@
           "type": "string"
         }
       }
+    },
+    "ReceiverCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "receiver_info": {
+          "$ref": "#/definitions/ReceiverInfo"
+        }
+      }
+    },
+    "ReceiverCreateResponse": {
+      "type": "object"
+    },
+    "ReceiverDeleteResponse": {
+      "type": "object"
+    },
+    "ReceiverEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "receivers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ReceiverObject"
+          }
+        }
+      }
+    },
+    "ReceiverInfo": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/ReceiverInfoType"
+        },
+        "email_config": {
+          "$ref": "#/definitions/EmailConfig"
+        }
+      }
+    },
+    "ReceiverInfoType": {
+      "type": "string",
+      "enum": [
+        "INVALID",
+        "EMAIL"
+      ],
+      "default": "INVALID"
+    },
+    "ReceiverInspectResponse": {
+      "type": "object",
+      "properties": {
+        "receiver": {
+          "$ref": "#/definitions/ReceiverObject"
+        }
+      }
+    },
+    "ReceiverObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "receiver_info": {
+          "$ref": "#/definitions/ReceiverInfo"
+        }
+      }
+    },
+    "ReceiverUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "receiver_info": {
+          "$ref": "#/definitions/ReceiverInfo"
+        }
+      }
+    },
+    "ReceiverUpdateResponse": {
+      "type": "object"
     },
     "ReplacePolicyType": {
       "type": "string",
