@@ -15,166 +15,6 @@
     "application/json"
   ],
   "paths": {
-    "/v1/alert/receiver": {
-      "post": {
-        "operationId": "Create",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/ReceiverCreateResponse"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ReceiverCreateRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Reciever"
-        ]
-      },
-      "put": {
-        "operationId": "Update",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/ReceiverUpdateResponse"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ReceiverUpdateRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Reciever"
-        ]
-      }
-    },
-    "/v1/alert/receiver/{name}/{uid}": {
-      "get": {
-        "operationId": "Inspect",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/ReceiverInspectResponse"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "uid",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "org_id",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "include_secrets",
-            "in": "query",
-            "required": false,
-            "type": "boolean",
-            "format": "boolean"
-          }
-        ],
-        "tags": [
-          "Reciever"
-        ]
-      }
-    },
-    "/v1/alert/receiver/{org_id}": {
-      "get": {
-        "operationId": "Enumerate",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/ReceiverEnumerateResponse"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "include_secrets",
-            "in": "query",
-            "required": false,
-            "type": "boolean",
-            "format": "boolean"
-          }
-        ],
-        "tags": [
-          "Reciever"
-        ]
-      }
-    },
-    "/v1/alert/receiver/{org_id}/{name}/{uid}": {
-      "delete": {
-        "operationId": "Delete",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/ReceiverDeleteResponse"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "uid",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Reciever"
-        ]
-      }
-    },
     "/v1/backup": {
       "post": {
         "summary": "Creates a new backup object",
@@ -1714,6 +1554,166 @@
         ],
         "tags": [
           "Organization"
+        ]
+      }
+    },
+    "/v1/receiver": {
+      "post": {
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReceiverCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReceiverCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Reciever"
+        ]
+      },
+      "put": {
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReceiverUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReceiverUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Reciever"
+        ]
+      }
+    },
+    "/v1/receiver/{name}/{uid}": {
+      "get": {
+        "operationId": "Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReceiverInspectResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "org_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "include_secrets",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "Reciever"
+        ]
+      }
+    },
+    "/v1/receiver/{org_id}": {
+      "get": {
+        "operationId": "Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReceiverEnumerateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "include_secrets",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "Reciever"
+        ]
+      }
+    },
+    "/v1/receiver/{org_id}/{name}/{uid}": {
+      "delete": {
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReceiverDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Reciever"
         ]
       }
     },
