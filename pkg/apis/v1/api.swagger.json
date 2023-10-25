@@ -4230,10 +4230,6 @@
     "EmailConfig": {
       "type": "object",
       "properties": {
-        "name": {
-          "type": "string",
-          "title": "* Name of Reciver, identified by alert object"
-        },
         "from": {
           "type": "string",
           "title": "* Sender email address"

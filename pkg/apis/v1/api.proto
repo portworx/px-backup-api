@@ -1358,8 +1358,6 @@ service Reciever {
 }
 
 message EmailConfig {
-    // * Name of Reciver, identified by alert object
-    string name = 1;
     // * Sender email address
     string from = 2;
     // * receiver email
