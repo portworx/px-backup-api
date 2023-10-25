@@ -1318,11 +1318,11 @@ message CloudCredentialOwnershipUpdateRequest {
 
 message CloudCredentialOwnershipUpdateResponse {}
 
-service Reciever {
+service Receiver {
     rpc Create(ReceiverCreateRequest) 
         returns (ReceiverCreateResponse) {
             option (google.api.http) = {
-                post : "/v1/reciever"
+                post : "/v1/receiver"
                 body : "*"
             };
     }
@@ -1330,21 +1330,21 @@ service Reciever {
     rpc Enumerate(ReceiverEnumerateRequest)
         returns (ReceiverEnumerateResponse) {
             option (google.api.http) = {
-                get : "/v1/reciever/{org_id}"
+                get : "/v1/receiver/{org_id}"
             };
         }
 
     rpc Inspect(ReceiverInspectRequest)
         returns (ReceiverInspectResponse) {
             option (google.api.http) = {
-            get : "/v1/reciever/{name}/{uid}"
+            get : "/v1/receiver/{name}/{uid}"
         };
     }
 
     rpc Update(ReceiverUpdateRequest)
         returns (ReceiverUpdateResponse) {
          option (google.api.http) = {
-            put : "/v1/reciever"
+            put : "/v1/receiver"
             body : "*"
         };
     }
@@ -1352,7 +1352,7 @@ service Reciever {
     rpc Delete(ReceiverDeleteRequest)
     returns (ReceiverDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/reciever/{org_id}/{name}/{uid}"
+            delete : "/v1/receiver/{org_id}/{name}/{uid}"
         };
     }
 }

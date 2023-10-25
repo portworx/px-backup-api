@@ -763,7 +763,7 @@ func request_CloudCredential_UpdateOwnership_0(ctx context.Context, marshaler ru
 
 }
 
-func request_Reciever_Create_0(ctx context.Context, marshaler runtime.Marshaler, client RecieverClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Receiver_Create_0(ctx context.Context, marshaler runtime.Marshaler, client ReceiverClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ReceiverCreateRequest
 	var metadata runtime.ServerMetadata
 
@@ -781,10 +781,10 @@ func request_Reciever_Create_0(ctx context.Context, marshaler runtime.Marshaler,
 }
 
 var (
-	filter_Reciever_Enumerate_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+	filter_Receiver_Enumerate_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_Reciever_Enumerate_0(ctx context.Context, marshaler runtime.Marshaler, client RecieverClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Receiver_Enumerate_0(ctx context.Context, marshaler runtime.Marshaler, client ReceiverClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ReceiverEnumerateRequest
 	var metadata runtime.ServerMetadata
 
@@ -806,7 +806,7 @@ func request_Reciever_Enumerate_0(ctx context.Context, marshaler runtime.Marshal
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "org_id", err)
 	}
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Reciever_Enumerate_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Receiver_Enumerate_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -816,10 +816,10 @@ func request_Reciever_Enumerate_0(ctx context.Context, marshaler runtime.Marshal
 }
 
 var (
-	filter_Reciever_Inspect_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0, "uid": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
+	filter_Receiver_Inspect_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0, "uid": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_Reciever_Inspect_0(ctx context.Context, marshaler runtime.Marshaler, client RecieverClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Receiver_Inspect_0(ctx context.Context, marshaler runtime.Marshaler, client ReceiverClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ReceiverInspectRequest
 	var metadata runtime.ServerMetadata
 
@@ -852,7 +852,7 @@ func request_Reciever_Inspect_0(ctx context.Context, marshaler runtime.Marshaler
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Reciever_Inspect_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Receiver_Inspect_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -861,7 +861,7 @@ func request_Reciever_Inspect_0(ctx context.Context, marshaler runtime.Marshaler
 
 }
 
-func request_Reciever_Update_0(ctx context.Context, marshaler runtime.Marshaler, client RecieverClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Receiver_Update_0(ctx context.Context, marshaler runtime.Marshaler, client ReceiverClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ReceiverUpdateRequest
 	var metadata runtime.ServerMetadata
 
@@ -878,7 +878,7 @@ func request_Reciever_Update_0(ctx context.Context, marshaler runtime.Marshaler,
 
 }
 
-func request_Reciever_Delete_0(ctx context.Context, marshaler runtime.Marshaler, client RecieverClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Receiver_Delete_0(ctx context.Context, marshaler runtime.Marshaler, client ReceiverClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ReceiverDeleteRequest
 	var metadata runtime.ServerMetadata
 
@@ -3003,9 +3003,9 @@ var (
 	forward_CloudCredential_UpdateOwnership_0 = runtime.ForwardResponseMessage
 )
 
-// RegisterRecieverHandlerFromEndpoint is same as RegisterRecieverHandler but
+// RegisterReceiverHandlerFromEndpoint is same as RegisterReceiverHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterRecieverHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterReceiverHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.Dial(endpoint, opts...)
 	if err != nil {
 		return err
@@ -3025,23 +3025,23 @@ func RegisterRecieverHandlerFromEndpoint(ctx context.Context, mux *runtime.Serve
 		}()
 	}()
 
-	return RegisterRecieverHandler(ctx, mux, conn)
+	return RegisterReceiverHandler(ctx, mux, conn)
 }
 
-// RegisterRecieverHandler registers the http handlers for service Reciever to "mux".
+// RegisterReceiverHandler registers the http handlers for service Receiver to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterRecieverHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterRecieverHandlerClient(ctx, mux, NewRecieverClient(conn))
+func RegisterReceiverHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterReceiverHandlerClient(ctx, mux, NewReceiverClient(conn))
 }
 
-// RegisterRecieverHandlerClient registers the http handlers for service Reciever
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "RecieverClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "RecieverClient"
+// RegisterReceiverHandlerClient registers the http handlers for service Receiver
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "ReceiverClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "ReceiverClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "RecieverClient" to call the correct interceptors.
-func RegisterRecieverHandlerClient(ctx context.Context, mux *runtime.ServeMux, client RecieverClient) error {
+// "ReceiverClient" to call the correct interceptors.
+func RegisterReceiverHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ReceiverClient) error {
 
-	mux.Handle("POST", pattern_Reciever_Create_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_Receiver_Create_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -3050,18 +3050,18 @@ func RegisterRecieverHandlerClient(ctx context.Context, mux *runtime.ServeMux, c
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Reciever_Create_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Receiver_Create_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Reciever_Create_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Receiver_Create_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Reciever_Enumerate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Receiver_Enumerate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -3070,18 +3070,18 @@ func RegisterRecieverHandlerClient(ctx context.Context, mux *runtime.ServeMux, c
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Reciever_Enumerate_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Receiver_Enumerate_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Reciever_Enumerate_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Receiver_Enumerate_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Reciever_Inspect_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Receiver_Inspect_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -3090,18 +3090,18 @@ func RegisterRecieverHandlerClient(ctx context.Context, mux *runtime.ServeMux, c
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Reciever_Inspect_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Receiver_Inspect_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Reciever_Inspect_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Receiver_Inspect_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("PUT", pattern_Reciever_Update_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("PUT", pattern_Receiver_Update_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -3110,18 +3110,18 @@ func RegisterRecieverHandlerClient(ctx context.Context, mux *runtime.ServeMux, c
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Reciever_Update_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Receiver_Update_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Reciever_Update_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Receiver_Update_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("DELETE", pattern_Reciever_Delete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("DELETE", pattern_Receiver_Delete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -3130,14 +3130,14 @@ func RegisterRecieverHandlerClient(ctx context.Context, mux *runtime.ServeMux, c
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Reciever_Delete_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Receiver_Delete_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Reciever_Delete_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Receiver_Delete_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -3145,27 +3145,27 @@ func RegisterRecieverHandlerClient(ctx context.Context, mux *runtime.ServeMux, c
 }
 
 var (
-	pattern_Reciever_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "reciever"}, ""))
+	pattern_Receiver_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "receiver"}, ""))
 
-	pattern_Reciever_Enumerate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "reciever", "org_id"}, ""))
+	pattern_Receiver_Enumerate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "receiver", "org_id"}, ""))
 
-	pattern_Reciever_Inspect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "reciever", "name", "uid"}, ""))
+	pattern_Receiver_Inspect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "receiver", "name", "uid"}, ""))
 
-	pattern_Reciever_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "reciever"}, ""))
+	pattern_Receiver_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "receiver"}, ""))
 
-	pattern_Reciever_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "reciever", "org_id", "name", "uid"}, ""))
+	pattern_Receiver_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "receiver", "org_id", "name", "uid"}, ""))
 )
 
 var (
-	forward_Reciever_Create_0 = runtime.ForwardResponseMessage
+	forward_Receiver_Create_0 = runtime.ForwardResponseMessage
 
-	forward_Reciever_Enumerate_0 = runtime.ForwardResponseMessage
+	forward_Receiver_Enumerate_0 = runtime.ForwardResponseMessage
 
-	forward_Reciever_Inspect_0 = runtime.ForwardResponseMessage
+	forward_Receiver_Inspect_0 = runtime.ForwardResponseMessage
 
-	forward_Reciever_Update_0 = runtime.ForwardResponseMessage
+	forward_Receiver_Update_0 = runtime.ForwardResponseMessage
 
-	forward_Reciever_Delete_0 = runtime.ForwardResponseMessage
+	forward_Receiver_Delete_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterBackupLocationHandlerFromEndpoint is same as RegisterBackupLocationHandler but

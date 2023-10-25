@@ -1557,7 +1557,7 @@
         ]
       }
     },
-    "/v1/reciever": {
+    "/v1/receiver": {
       "post": {
         "operationId": "Create",
         "responses": {
@@ -1579,7 +1579,7 @@
           }
         ],
         "tags": [
-          "Reciever"
+          "Receiver"
         ]
       },
       "put": {
@@ -1603,11 +1603,11 @@
           }
         ],
         "tags": [
-          "Reciever"
+          "Receiver"
         ]
       }
     },
-    "/v1/reciever/{name}/{uid}": {
+    "/v1/receiver/{name}/{uid}": {
       "get": {
         "operationId": "Inspect",
         "responses": {
@@ -1646,11 +1646,11 @@
           }
         ],
         "tags": [
-          "Reciever"
+          "Receiver"
         ]
       }
     },
-    "/v1/reciever/{org_id}": {
+    "/v1/receiver/{org_id}": {
       "get": {
         "operationId": "Enumerate",
         "responses": {
@@ -1677,11 +1677,11 @@
           }
         ],
         "tags": [
-          "Reciever"
+          "Receiver"
         ]
       }
     },
-    "/v1/reciever/{org_id}/{name}/{uid}": {
+    "/v1/receiver/{org_id}/{name}/{uid}": {
       "delete": {
         "operationId": "Delete",
         "responses": {
@@ -1713,7 +1713,7 @@
           }
         ],
         "tags": [
-          "Reciever"
+          "Receiver"
         ]
       }
     },
