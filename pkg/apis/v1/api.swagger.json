@@ -1557,7 +1557,7 @@
         ]
       }
     },
-    "/v1/receiver": {
+    "/v1/reciever": {
       "post": {
         "operationId": "Create",
         "responses": {
@@ -1607,7 +1607,7 @@
         ]
       }
     },
-    "/v1/receiver/{name}/{uid}": {
+    "/v1/reciever/{name}/{uid}": {
       "get": {
         "operationId": "Inspect",
         "responses": {
@@ -1650,7 +1650,7 @@
         ]
       }
     },
-    "/v1/receiver/{org_id}": {
+    "/v1/reciever/{org_id}": {
       "get": {
         "operationId": "Enumerate",
         "responses": {
@@ -1681,7 +1681,7 @@
         ]
       }
     },
-    "/v1/receiver/{org_id}/{name}/{uid}": {
+    "/v1/reciever/{org_id}/{name}/{uid}": {
       "delete": {
         "operationId": "Delete",
         "responses": {
