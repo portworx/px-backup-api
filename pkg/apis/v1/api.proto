@@ -383,6 +383,8 @@ message BackupScheduleInfo {
             Captured = 7;
             PartialSuccess = 8;
             DeletePending = 9;
+            // If maintenance job has failed, mark backup schedule as disabled.
+            Disabled = 10;
         }
     }
 
