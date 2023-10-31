@@ -5003,6 +5003,9 @@
         },
         "email_config": {
           "$ref": "#/definitions/EmailConfig"
+        },
+        "encryption_key": {
+          "type": "string"
         }
       }
     },

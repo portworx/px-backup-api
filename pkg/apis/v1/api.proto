@@ -1387,6 +1387,11 @@ message ReceiverInfo {
     oneof config {
         EmailConfig email_config = 100;
     }
+
+    string encryption_key = 2 [
+        (gogoproto.jsontag) = "encryptionkey",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
 }
 message ReceiverObject {
     Metadata metadata = 1
