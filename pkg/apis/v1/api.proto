@@ -1378,6 +1378,10 @@ message EmailConfig {
 
 message ReceiverInfo {
     Type type = 1;
+    string encryption_key = 2 [
+        (gogoproto.jsontag) = "encryptionkey",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
 
     enum Type {
         INVALID  = 0;
@@ -1388,10 +1392,6 @@ message ReceiverInfo {
         EmailConfig email_config = 100;
     }
 
-    string encryption_key = 2 [
-        (gogoproto.jsontag) = "encryptionkey",
-        (gogoproto.moretags) = "secure:\"true\""
-    ];
 }
 message ReceiverObject {
     Metadata metadata = 1

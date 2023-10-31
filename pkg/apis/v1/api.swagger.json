@@ -5001,11 +5001,11 @@
         "type": {
           "$ref": "#/definitions/ReceiverInfoType"
         },
-        "email_config": {
-          "$ref": "#/definitions/EmailConfig"
-        },
         "encryption_key": {
           "type": "string"
+        },
+        "email_config": {
+          "$ref": "#/definitions/EmailConfig"
         }
       }
     },
