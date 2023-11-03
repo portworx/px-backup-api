@@ -5001,9 +5001,6 @@
         "type": {
           "$ref": "#/definitions/ReceiverInfoType"
         },
-        "encryption_key": {
-          "type": "string"
-        },
         "email_config": {
           "$ref": "#/definitions/EmailConfig"
         }

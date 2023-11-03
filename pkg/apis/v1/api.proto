@@ -1373,15 +1373,14 @@ message EmailConfig {
     // * Authentication if any (optional) default values is false
     bool authentication = 10;
     string auth_username = 11;
-    string auth_password = 12;
+    string auth_password = 12 [
+        (gogoproto.jsontag) = "encryptionkey",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
 }
 
 message ReceiverInfo {
     Type type = 1;
-    string encryption_key = 2 [
-        (gogoproto.jsontag) = "encryptionkey",
-        (gogoproto.moretags) = "secure:\"true\""
-    ];
 
     enum Type {
         INVALID  = 0;
