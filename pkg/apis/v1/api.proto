@@ -1361,7 +1361,7 @@ message EmailConfig {
     // * Sender email address
     string from = 2;
     // * receiver email
-    string receiver = 4;
+    repeated string receiver = 4;
     // * Host IP Address
     string host = 5;
     // * Host port default value is 25

@@ -4235,7 +4235,10 @@
           "title": "* Sender email address"
         },
         "receiver": {
-          "type": "string",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "title": "* receiver email"
         },
         "host": {
