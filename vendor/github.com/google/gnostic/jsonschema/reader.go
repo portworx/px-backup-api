@@ -18,8 +18,9 @@ package jsonschema
 
 import (
 	"fmt"
+	"io/ioutil"
 	"strconv"
-	"os"
+
 	"gopkg.in/yaml.v3"
 )
 
@@ -44,7 +45,7 @@ func NewBaseSchema() (schema *Schema, err error) {
 // NewSchemaFromFile reads a schema from a file.
 // Currently this assumes that schemas are stored in the source distribution of this project.
 func NewSchemaFromFile(filename string) (schema *Schema, err error) {
-	file, err := os.ReadFile(filename)
+	file, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return nil, err
 	}

@@ -22,7 +22,7 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
-	"os"
+	"io/ioutil"
 	"net/http"
 	"reflect"
 	"sync"
@@ -195,7 +195,7 @@ func dataFromSliceOrFile(data []byte, file string) ([]byte, error) {
 		return data, nil
 	}
 	if len(file) > 0 {
-		fileData, err := os.ReadFile(file)
+		fileData, err := ioutil.ReadFile(file)
 		if err != nil {
 			return []byte{}, err
 		}
