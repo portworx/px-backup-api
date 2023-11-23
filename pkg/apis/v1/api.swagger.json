@@ -1717,6 +1717,32 @@
         ]
       }
     },
+    "/v1/recipient": {
+      "post": {
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RecipientCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RecipientCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Recipient"
+        ]
+      }
+    },
     "/v1/restore": {
       "post": {
         "summary": "Creates new restore object in datastore\nIt will also trigger a restore operation on the target cluster",
@@ -4234,12 +4260,12 @@
           "type": "string",
           "title": "* Sender email address"
         },
-        "receiver": {
+        "recipient_ref": {
           "type": "array",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/ObjectRef"
           },
-          "title": "* receiver email"
+          "title": "* receiver email, User level set of receiver emails list"
         },
         "host": {
           "type": "string",
@@ -4248,10 +4274,6 @@
         "port": {
           "type": "string",
           "title": "* Host port default value is 25"
-        },
-        "send_resolved": {
-          "type": "boolean",
-          "format": "boolean"
         },
         "encrytion_ssl": {
           "type": "boolean",
@@ -4272,6 +4294,10 @@
         },
         "auth_password": {
           "type": "string"
+        },
+        "validated": {
+          "type": "boolean",
+          "format": "boolean"
         }
       }
     },
@@ -5049,6 +5075,49 @@
     },
     "ReceiverUpdateResponse": {
       "type": "object"
+    },
+    "RecipientCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "recipient_info": {
+          "$ref": "#/definitions/RecipientInfo"
+        }
+      }
+    },
+    "RecipientCreateResponse": {
+      "type": "object"
+    },
+    "RecipientInfo": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/RecipientInfoType",
+          "title": "* Type of notification on user level"
+        },
+        "severity": {
+          "$ref": "#/definitions/RecipientInfoSeverity"
+        }
+      }
+    },
+    "RecipientInfoSeverity": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "CRITICAL",
+        "WARNING"
+      ],
+      "default": "UNKNOWN"
+    },
+    "RecipientInfoType": {
+      "type": "string",
+      "enum": [
+        "INVALID",
+        "EMAIL"
+      ],
+      "default": "INVALID"
     },
     "ReplacePolicyType": {
       "type": "string",

@@ -1359,24 +1359,24 @@ service Receiver {
 
 message EmailConfig {
     // * Sender email address
-    string from = 2;
-    // * receiver email
-    repeated string receiver = 4;
+    string from = 1;
+    // * receiver email, User level set of receiver emails list
+    repeated ObjectRef recipient_ref = 2;
     // * Host IP Address
-    string host = 5;
+    string host = 3;
     // * Host port default value is 25
-    string port = 6;
-    bool send_resolved = 7;
+    string port = 4;
     // * Encrytion if any (optional) default value is false
-    bool encrytion_ssl = 8;
-    bool encryption_starttls = 9;
+    bool encrytion_ssl = 6;
+    bool encryption_starttls = 7;
     // * Authentication if any (optional) default values is false
-    bool authentication = 10;
-    string auth_username = 11;
-    string auth_password = 12 [
+    bool authentication = 8;
+    string auth_username = 9;
+    string auth_password = 10 [
         (gogoproto.jsontag) = "encryptionkey",
         (gogoproto.moretags) = "secure:\"true\""
     ];
+    bool validated = 11;
 }
 
 message ReceiverInfo {
@@ -1440,6 +1440,52 @@ message ReceiverDeleteRequest {
 }
 
 message ReceiverDeleteResponse {}
+
+
+service Recipient {
+    rpc Create(RecipientCreateRequest) 
+        returns (RecipientCreateResponse) {
+            option (google.api.http) = {
+                post : "/v1/recipient"
+                body : "*"
+            };
+    }
+}
+
+message RecipientObject {
+    Metadata metadata = 1
+    [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    RecipientInfo recipient_info = 2;
+}
+
+message RecipientInfo {
+    // * Type of notification on user level
+    Type type = 1;
+    enum Type {
+        INVALID = 0;
+        EMAIL = 1;
+    }
+
+    // * Based on type recipient list is added
+    // oneof list {
+    //     repeated string email_list = 100;
+    // }
+
+    Severity severity = 2;
+    enum Severity {
+        UNKNOWN = 0;
+        CRITICAL = 1;
+        WARNING = 2;
+    }
+
+}
+
+message RecipientCreateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    RecipientInfo recipient_info = 2;
+}
+
+message RecipientCreateResponse {}
 
 service BackupLocation {
     // Creates new backup location
