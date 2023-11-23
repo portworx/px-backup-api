@@ -1557,6 +1557,166 @@
         ]
       }
     },
+    "/v1/receiver": {
+      "post": {
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReceiverCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReceiverCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Receiver"
+        ]
+      },
+      "put": {
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReceiverUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReceiverUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Receiver"
+        ]
+      }
+    },
+    "/v1/receiver/{name}/{uid}": {
+      "get": {
+        "operationId": "Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReceiverInspectResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "org_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "include_secrets",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "Receiver"
+        ]
+      }
+    },
+    "/v1/receiver/{org_id}": {
+      "get": {
+        "operationId": "Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReceiverEnumerateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "include_secrets",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "Receiver"
+        ]
+      }
+    },
+    "/v1/receiver/{org_id}/{name}/{uid}": {
+      "delete": {
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReceiverDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Receiver"
+        ]
+      }
+    },
     "/v1/restore": {
       "post": {
         "summary": "Creates new restore object in datastore\nIt will also trigger a restore operation on the target cluster",
@@ -4067,6 +4227,54 @@
         }
       }
     },
+    "EmailConfig": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "type": "string",
+          "title": "* Sender email address"
+        },
+        "receiver": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "* receiver email"
+        },
+        "host": {
+          "type": "string",
+          "title": "* Host IP Address"
+        },
+        "port": {
+          "type": "string",
+          "title": "* Host port default value is 25"
+        },
+        "send_resolved": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "encrytion_ssl": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "* Encrytion if any (optional) default value is false"
+        },
+        "encryption_starttls": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "authentication": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "* Authentication if any (optional) default values is false"
+        },
+        "auth_username": {
+          "type": "string"
+        },
+        "auth_password": {
+          "type": "string"
+        }
+      }
+    },
     "EnumerateOptions": {
       "type": "object",
       "properties": {
@@ -4761,6 +4969,86 @@
           "type": "string"
         }
       }
+    },
+    "ReceiverCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "receiver_info": {
+          "$ref": "#/definitions/ReceiverInfo"
+        }
+      }
+    },
+    "ReceiverCreateResponse": {
+      "type": "object"
+    },
+    "ReceiverDeleteResponse": {
+      "type": "object"
+    },
+    "ReceiverEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "receivers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ReceiverObject"
+          }
+        }
+      }
+    },
+    "ReceiverInfo": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/ReceiverInfoType"
+        },
+        "email_config": {
+          "$ref": "#/definitions/EmailConfig"
+        }
+      }
+    },
+    "ReceiverInfoType": {
+      "type": "string",
+      "enum": [
+        "INVALID",
+        "EMAIL"
+      ],
+      "default": "INVALID"
+    },
+    "ReceiverInspectResponse": {
+      "type": "object",
+      "properties": {
+        "receiver": {
+          "$ref": "#/definitions/ReceiverObject"
+        }
+      }
+    },
+    "ReceiverObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "receiver_info": {
+          "$ref": "#/definitions/ReceiverInfo"
+        }
+      }
+    },
+    "ReceiverUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "receiver_info": {
+          "$ref": "#/definitions/ReceiverInfo"
+        }
+      }
+    },
+    "ReceiverUpdateResponse": {
+      "type": "object"
     },
     "ReplacePolicyType": {
       "type": "string",

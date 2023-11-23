@@ -1318,6 +1318,129 @@ message CloudCredentialOwnershipUpdateRequest {
 
 message CloudCredentialOwnershipUpdateResponse {}
 
+service Receiver {
+    rpc Create(ReceiverCreateRequest) 
+        returns (ReceiverCreateResponse) {
+            option (google.api.http) = {
+                post : "/v1/receiver"
+                body : "*"
+            };
+    }
+
+    rpc Enumerate(ReceiverEnumerateRequest)
+        returns (ReceiverEnumerateResponse) {
+            option (google.api.http) = {
+                get : "/v1/receiver/{org_id}"
+            };
+        }
+
+    rpc Inspect(ReceiverInspectRequest)
+        returns (ReceiverInspectResponse) {
+            option (google.api.http) = {
+            get : "/v1/receiver/{name}/{uid}"
+        };
+    }
+
+    rpc Update(ReceiverUpdateRequest)
+        returns (ReceiverUpdateResponse) {
+         option (google.api.http) = {
+            put : "/v1/receiver"
+            body : "*"
+        };
+    }
+
+    rpc Delete(ReceiverDeleteRequest)
+    returns (ReceiverDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/receiver/{org_id}/{name}/{uid}"
+        };
+    }
+}
+
+message EmailConfig {
+    // * Sender email address
+    string from = 2;
+    // * receiver email
+    repeated string receiver = 4;
+    // * Host IP Address
+    string host = 5;
+    // * Host port default value is 25
+    string port = 6;
+    bool send_resolved = 7;
+    // * Encrytion if any (optional) default value is false
+    bool encrytion_ssl = 8;
+    bool encryption_starttls = 9;
+    // * Authentication if any (optional) default values is false
+    bool authentication = 10;
+    string auth_username = 11;
+    string auth_password = 12 [
+        (gogoproto.jsontag) = "encryptionkey",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
+}
+
+message ReceiverInfo {
+    Type type = 1;
+
+    enum Type {
+        INVALID  = 0;
+        EMAIL = 1;
+    }
+
+    oneof config {
+        EmailConfig email_config = 100;
+    }
+
+}
+message ReceiverObject {
+    Metadata metadata = 1
+    [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    ReceiverInfo receiver_info = 2;
+}
+
+message ReceiverCreateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    ReceiverInfo receiver_info = 2;
+}
+
+message ReceiverCreateResponse {}
+
+
+message ReceiverEnumerateRequest {
+    string org_id = 1;
+    bool include_secrets = 2;
+}
+
+message ReceiverEnumerateResponse {
+    repeated ReceiverObject receivers = 1;
+}
+
+message ReceiverInspectRequest {
+    string org_id = 1;
+    string name  = 2;
+    bool include_secrets = 3;
+    string uid = 4;
+}
+
+message ReceiverInspectResponse {
+    ReceiverObject receiver = 1;
+}
+
+message ReceiverUpdateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    ReceiverInfo receiver_info = 2;
+}
+
+message ReceiverUpdateResponse {}
+
+message ReceiverDeleteRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+
+message ReceiverDeleteResponse {}
+
 service BackupLocation {
     // Creates new backup location
     rpc Create(BackupLocationCreateRequest)
