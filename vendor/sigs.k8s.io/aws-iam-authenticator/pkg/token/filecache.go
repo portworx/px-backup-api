@@ -8,6 +8,7 @@ import (
 	"github.com/gofrs/flock"
 	"gopkg.in/yaml.v2"
 	"io/fs"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -35,11 +36,11 @@ func (osFS) Stat(filename string) (os.FileInfo, error) {
 }
 
 func (osFS) ReadFile(filename string) ([]byte, error) {
-	return os.ReadFile(filename)
+	return ioutil.ReadFile(filename)
 }
 
 func (osFS) WriteFile(filename string, data []byte, perm os.FileMode) error {
-	return os.WriteFile(filename, data, perm)
+	return ioutil.WriteFile(filename, data, perm)
 }
 
 func (osFS) MkdirAll(path string, perm os.FileMode) error {

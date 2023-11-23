@@ -3,6 +3,7 @@ package restjson
 import (
 	"bytes"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"strings"
 
@@ -55,7 +56,7 @@ func (u *UnmarshalTypedError) UnmarshalError(
 			return nil, err
 		}
 
-		body = io.NopCloser(&buf)
+		body = ioutil.NopCloser(&buf)
 		code = jsonErr.Code
 		msg = jsonErr.Message
 	}
