@@ -20,6 +20,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -151,7 +152,7 @@ func FlattenContent(path *string, contents *[]byte, baseDir string) error {
 
 		var err error
 		absPath := ResolvePath(*path, baseDir)
-		*contents, err = os.ReadFile(absPath)
+		*contents, err = ioutil.ReadFile(absPath)
 		if err != nil {
 			return err
 		}
