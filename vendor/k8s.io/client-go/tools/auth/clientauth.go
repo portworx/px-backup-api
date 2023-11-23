@@ -65,7 +65,9 @@ package auth
 // TODO: need a way to rotate Tokens.  Therefore, need a way for client object to be reset when the authcfg is updated.
 import (
 	"encoding/json"
+	"io/ioutil"
 	"os"
+
 	restclient "k8s.io/client-go/rest"
 )
 
@@ -88,7 +90,7 @@ func LoadFromFile(path string) (*Info, error) {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		return nil, err
 	}
-	data, err := os.ReadFile(path)
+	data, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}

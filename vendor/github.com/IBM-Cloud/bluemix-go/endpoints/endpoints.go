@@ -3,7 +3,7 @@ package endpoints
 import (
 	"encoding/json"
 	"fmt"
-	"io"
+	"io/ioutil"
 	"log"
 	"os"
 
@@ -115,7 +115,7 @@ func NewEndpointLocator(region, visibility, file string) EndpointLocator {
 			log.Fatalf("Unable to open endpoints file %s", err)
 		}
 		defer jsonFile.Close()
-		bytes, err := io.ReadAll(jsonFile)
+		bytes, err := ioutil.ReadAll(jsonFile)
 		if err != nil {
 			log.Fatalf("Unable to read endpoints file %s", err)
 		}

@@ -2,6 +2,7 @@ package protocol
 
 import (
 	"io"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -31,7 +32,7 @@ func (h HandlerPayloadUnmarshal) UnmarshalPayload(r io.Reader, v interface{}) er
 		HTTPResponse: &http.Response{
 			StatusCode: 200,
 			Header:     http.Header{},
-			Body:       io.NopCloser(r),
+			Body:       ioutil.NopCloser(r),
 		},
 		Data: v,
 	}
