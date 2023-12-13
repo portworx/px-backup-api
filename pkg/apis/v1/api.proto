@@ -657,6 +657,8 @@ message RestoreInfo {
     RestoreResourceState restore_status = 22;
     ObjectRef cluster_ref = 23;
 
+    string resource_transformation_template = 24;
+
     message RestoreResourceState {
         ResourceStatus restore_status = 1;
 
@@ -1709,6 +1711,7 @@ message RestoreCreateRequest {
     // mapping of source rancher project display names to target rancher project display names
     map<string, string> rancher_project_name_mapping = 11;
     ObjectRef cluster_ref = 12;
+    string resource_transformation_template = 13;
 
 }
 
