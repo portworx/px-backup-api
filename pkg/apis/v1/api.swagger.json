@@ -1559,6 +1559,7 @@
     },
     "/v1/receiver": {
       "post": {
+        "summary": "* Create new alert manager receiver",
         "operationId": "Create",
         "responses": {
           "200": {
@@ -1583,6 +1584,7 @@
         ]
       },
       "put": {
+        "summary": "* Update the details of a alert manager receiver",
         "operationId": "Update",
         "responses": {
           "200": {
@@ -1609,6 +1611,7 @@
     },
     "/v1/receiver/{name}/{uid}": {
       "get": {
+        "summary": "* Returns the details of a specific alert manager receiver",
         "operationId": "Inspect",
         "responses": {
           "200": {
@@ -1643,6 +1646,12 @@
             "required": false,
             "type": "boolean",
             "format": "boolean"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -1652,6 +1661,7 @@
     },
     "/v1/receiver/{org_id}": {
       "get": {
+        "summary": "* Returns a list of alert manager receivers",
         "operationId": "Enumerate",
         "responses": {
           "200": {
@@ -1683,6 +1693,7 @@
     },
     "/v1/receiver/{org_id}/{name}/{uid}": {
       "delete": {
+        "summary": "* Delete a specific alert manager receiver",
         "operationId": "Delete",
         "responses": {
           "200": {
@@ -1714,6 +1725,175 @@
         ],
         "tags": [
           "Receiver"
+        ]
+      }
+    },
+    "/v1/recipient": {
+      "post": {
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RecipientCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RecipientCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Recipient"
+        ]
+      },
+      "put": {
+        "summary": "* Update the details of a recipient",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RecipientUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RecipientUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Recipient"
+        ]
+      }
+    },
+    "/v1/recipient/{name}/{uid}": {
+      "get": {
+        "summary": "* Returns the details of a specific recipient",
+        "operationId": "Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RecipientInspectResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "org_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "include_secrets",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "Recipient"
+        ]
+      }
+    },
+    "/v1/recipient/{org_id}": {
+      "get": {
+        "summary": "* Returns a list of recipients for alerting",
+        "operationId": "Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RecipientEnumerateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "description": "* Type of notification on user level.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "INVALID",
+              "EMAIL"
+            ],
+            "default": "INVALID"
+          }
+        ],
+        "tags": [
+          "Recipient"
+        ]
+      }
+    },
+    "/v1/recipient/{org_id}/{name}/{uid}": {
+      "delete": {
+        "summary": "* Delete a specific recipient",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RecipientDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Recipient"
         ]
       }
     },
@@ -4234,29 +4414,18 @@
           "type": "string",
           "title": "* Sender email address"
         },
-        "receiver": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "* receiver email"
-        },
         "host": {
           "type": "string",
-          "title": "* Host IP Address"
+          "title": "* receiver email, User level set of receiver emails list\nrepeated ObjectRef recipient_ref = 2;\n* Host IP Address"
         },
         "port": {
           "type": "string",
           "title": "* Host port default value is 25"
         },
-        "send_resolved": {
-          "type": "boolean",
-          "format": "boolean"
-        },
         "encrytion_ssl": {
           "type": "boolean",
           "format": "boolean",
-          "title": "* Encrytion if any (optional) default value is false"
+          "title": "* Encryption if any (optional) default value is false"
         },
         "encryption_starttls": {
           "type": "boolean",
@@ -5004,6 +5173,11 @@
         "type": {
           "$ref": "#/definitions/ReceiverInfoType"
         },
+        "valid": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "* True if px-backup validates the receiver setup"
+        },
         "email_config": {
           "$ref": "#/definitions/EmailConfig"
         }
@@ -5048,6 +5222,122 @@
       }
     },
     "ReceiverUpdateResponse": {
+      "type": "object"
+    },
+    "RecipientCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "recipient_info": {
+          "$ref": "#/definitions/RecipientInfo"
+        }
+      }
+    },
+    "RecipientCreateResponse": {
+      "type": "object"
+    },
+    "RecipientDeleteResponse": {
+      "type": "object"
+    },
+    "RecipientEnumerateRequestType": {
+      "type": "string",
+      "enum": [
+        "INVALID",
+        "EMAIL"
+      ],
+      "default": "INVALID"
+    },
+    "RecipientEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "recipients": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RecipientObject"
+          }
+        },
+        "enabled": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "* Enabled will be an in memory value always fetched from Recevier Info"
+        }
+      }
+    },
+    "RecipientInfo": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/RecipientInfoType",
+          "title": "* Type of notification on user level"
+        },
+        "recipient_id": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "* Based on type recipient list is added"
+        },
+        "active": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "* current status set by user"
+        },
+        "severity": {
+          "$ref": "#/definitions/RecipientInfoSeverity",
+          "title": "* Filter level of alert by severity"
+        }
+      }
+    },
+    "RecipientInfoSeverity": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "CRITICAL",
+        "WARNING"
+      ],
+      "default": "UNKNOWN"
+    },
+    "RecipientInfoType": {
+      "type": "string",
+      "enum": [
+        "INVALID",
+        "EMAIL"
+      ],
+      "default": "INVALID"
+    },
+    "RecipientInspectResponse": {
+      "type": "object",
+      "properties": {
+        "recipient": {
+          "$ref": "#/definitions/RecipientObject"
+        }
+      }
+    },
+    "RecipientObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "recipient_info": {
+          "$ref": "#/definitions/RecipientInfo"
+        }
+      }
+    },
+    "RecipientUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "recipient_info": {
+          "$ref": "#/definitions/RecipientInfo"
+        }
+      }
+    },
+    "RecipientUpdateResponse": {
       "type": "object"
     },
     "ReplacePolicyType": {

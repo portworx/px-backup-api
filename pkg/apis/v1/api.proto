@@ -1319,6 +1319,7 @@ message CloudCredentialOwnershipUpdateRequest {
 message CloudCredentialOwnershipUpdateResponse {}
 
 service Receiver {
+    // * Create new alert manager receiver
     rpc Create(ReceiverCreateRequest) 
         returns (ReceiverCreateResponse) {
             option (google.api.http) = {
@@ -1327,6 +1328,7 @@ service Receiver {
             };
     }
 
+    // * Returns a list of alert manager receivers
     rpc Enumerate(ReceiverEnumerateRequest)
         returns (ReceiverEnumerateResponse) {
             option (google.api.http) = {
@@ -1334,6 +1336,7 @@ service Receiver {
             };
         }
 
+    // * Returns the details of a specific alert manager receiver
     rpc Inspect(ReceiverInspectRequest)
         returns (ReceiverInspectResponse) {
             option (google.api.http) = {
@@ -1341,6 +1344,7 @@ service Receiver {
         };
     }
 
+    // * Update the details of a alert manager receiver
     rpc Update(ReceiverUpdateRequest)
         returns (ReceiverUpdateResponse) {
          option (google.api.http) = {
@@ -1349,6 +1353,7 @@ service Receiver {
         };
     }
 
+    // * Delete a specific alert manager receiver
     rpc Delete(ReceiverDeleteRequest)
     returns (ReceiverDeleteResponse) {
         option (google.api.http) = {
@@ -1359,21 +1364,20 @@ service Receiver {
 
 message EmailConfig {
     // * Sender email address
-    string from = 2;
-    // * receiver email
-    repeated string receiver = 4;
+    string from = 1;
+    // * receiver email, User level set of receiver emails list
+    // repeated ObjectRef recipient_ref = 2;
     // * Host IP Address
-    string host = 5;
+    string host = 3;
     // * Host port default value is 25
-    string port = 6;
-    bool send_resolved = 7;
-    // * Encrytion if any (optional) default value is false
-    bool encrytion_ssl = 8;
-    bool encryption_starttls = 9;
+    string port = 4;
+    // * Encryption if any (optional) default value is false
+    bool encrytion_ssl = 6;
+    bool encryption_starttls = 7;
     // * Authentication if any (optional) default values is false
-    bool authentication = 10;
-    string auth_username = 11;
-    string auth_password = 12 [
+    bool authentication = 8;
+    string auth_username = 9;
+    string auth_password = 10 [
         (gogoproto.jsontag) = "encryptionkey",
         (gogoproto.moretags) = "secure:\"true\""
     ];
@@ -1386,12 +1390,14 @@ message ReceiverInfo {
         INVALID  = 0;
         EMAIL = 1;
     }
+    // * True if px-backup validates the receiver setup
+    bool valid = 2;
 
     oneof config {
         EmailConfig email_config = 100;
     }
-
 }
+
 message ReceiverObject {
     Metadata metadata = 1
     [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
@@ -1420,6 +1426,7 @@ message ReceiverInspectRequest {
     string name  = 2;
     bool include_secrets = 3;
     string uid = 4;
+    string type = 5;
 }
 
 message ReceiverInspectResponse {
@@ -1440,6 +1447,126 @@ message ReceiverDeleteRequest {
 }
 
 message ReceiverDeleteResponse {}
+
+
+service Recipient {
+    rpc Create(RecipientCreateRequest) 
+        returns (RecipientCreateResponse) {
+            option (google.api.http) = {
+                post : "/v1/recipient"
+                body : "*"
+            };
+    }
+
+    // * Returns a list of recipients for alerting
+    rpc Enumerate(RecipientEnumerateRequest)
+        returns (RecipientEnumerateResponse) {
+            option (google.api.http) = {
+                get : "/v1/recipient/{org_id}"
+            };
+        }
+
+    // * Returns the details of a specific recipient
+    rpc Inspect(RecipientInspectRequest)
+        returns (RecipientInspectResponse) {
+            option (google.api.http) = {
+            get : "/v1/recipient/{name}/{uid}"
+        };
+    }
+
+    // * Update the details of a recipient
+    rpc Update(RecipientUpdateRequest)
+        returns (RecipientUpdateResponse) {
+         option (google.api.http) = {
+            put : "/v1/recipient"
+            body : "*"
+        };
+    }
+
+    // * Delete a specific recipient
+    rpc Delete(RecipientDeleteRequest)
+    returns (RecipientDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/recipient/{org_id}/{name}/{uid}"
+        };
+    }
+}
+
+message RecipientObject {
+    Metadata metadata = 1
+    [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    RecipientInfo recipient_info = 2;
+}
+
+message RecipientInfo {
+    // * Type of notification on user level
+    Type type = 1;
+    enum Type {
+        INVALID = 0;
+        EMAIL = 1;
+    }
+    // * Based on type recipient list is added
+    repeated string recipient_id = 2;
+    // * current status set by user
+    bool active = 3;
+    // * Filter level of alert by severity
+    Severity severity = 5;
+    enum Severity {
+        UNKNOWN = 0;
+        CRITICAL = 1;
+        WARNING = 2;
+    }
+
+}
+
+message RecipientCreateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    RecipientInfo recipient_info = 2;
+}
+
+message RecipientCreateResponse {}
+
+message RecipientEnumerateRequest {
+    string org_id = 1;
+    // * Type of notification on user level
+    Type type = 2;
+    enum Type {
+        INVALID = 0;
+        EMAIL = 1;
+    }
+}
+
+message RecipientEnumerateResponse {
+    repeated RecipientObject recipients = 1;
+    // * Enabled will be an in memory value always fetched from Recevier Info
+    bool enabled = 2;
+}
+
+message RecipientInspectRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    bool include_secrets = 4;
+}
+
+message RecipientInspectResponse {
+    RecipientObject recipient = 1;
+}
+
+message RecipientUpdateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    RecipientInfo recipient_info = 2;
+}
+
+message RecipientUpdateResponse {}
+
+message RecipientDeleteRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+
+message RecipientDeleteResponse {}
 
 service BackupLocation {
     // Creates new backup location
