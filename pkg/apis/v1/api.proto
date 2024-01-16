@@ -230,6 +230,10 @@ message CloudCredentialObject {
     CloudCredentialInfo cloud_credential_info = 2;
 }
 
+enum BackupObjectType {
+        default = 0; //default
+        virtualMachine = 1;
+}
 message SchedulePolicyInfo {
     IntervalPolicy interval = 1;
     DailyPolicy daily = 2;
@@ -344,6 +348,10 @@ message BackupScheduleInfo {
     // Target namespace of CR
     string target_namespace = 24;
     ObjectRef cluster_ref = 25;
+    // Is this a VM Backup object
+    BackupObjectType backup_object_type = 26;
+    // Skip auto rules for VM Backup Object
+    bool skipVMAutoExecRules = 27;
 
     message BackupType {
         Type type = 1;
@@ -511,7 +519,10 @@ message BackupInfo {
     string target_namespace = 33;
     // this flag signifies if the backup involves large number of resources or not
     bool large_resource_enabled = 34;
-
+    // Is this a VM Backup object
+    BackupObjectType backup_object_type = 35;
+    // Skip auto rules for VM Backup Object
+    bool skipVMAutoExecRules = 36;
     message BackupType {
         Type type = 1;
 
@@ -575,6 +586,8 @@ message BackupInfo {
         Applications = 5;
         Final = 6;
     }
+
+
 }
 
 // Message for Backup object which will be stored in Datastore.
@@ -656,6 +669,8 @@ message RestoreInfo {
     // current activity while doing resource restore
     RestoreResourceState restore_status = 22;
     ObjectRef cluster_ref = 23;
+    // Is this a VM Backup object
+    BackupObjectType backup_object_type = 24;
 
     message RestoreResourceState {
         ResourceStatus restore_status = 1;
@@ -951,6 +966,10 @@ message BackupScheduleCreateRequest {
     BackupType backup_type = 17;
     string ns_label_selectors = 18;
     ObjectRef cluster_ref = 19;
+    // Is this a VM Backup object
+    BackupObjectType backup_object_type = 20;
+    // Skip auto rules for VM Backup Object
+    bool skipVMAutoExecRules = 21;
 
     enum BackupType {
         Invalid = 0;
@@ -988,6 +1007,10 @@ message BackupScheduleUpdateRequest {
     ObjectRef backup_location_ref = 14;
     ObjectRef pre_exec_rule_ref = 15;
     ObjectRef post_exec_rule_ref = 16;
+    // Is this a VM Backup object
+    BackupObjectType backup_object_type = 17;
+    // Skip auto rules for VM Backup Object
+    bool skipVMAutoExecRules = 18;
 }
 
 // Define BackupScheduleUpdateResponse struct
@@ -1571,6 +1594,10 @@ message BackupCreateRequest {
     BackupType backup_type = 14;
     ObjectRef cluster_ref = 15;
     string ns_label_selectors = 16;
+    // Is this a VM Backup object
+    BackupObjectType backup_object_type = 17;
+    // Skip auto rules for VM Backup Object
+    bool skipVMAutoExecRules = 18;
 
     enum BackupType {
         Invalid = 0;
@@ -1709,7 +1736,8 @@ message RestoreCreateRequest {
     // mapping of source rancher project display names to target rancher project display names
     map<string, string> rancher_project_name_mapping = 11;
     ObjectRef cluster_ref = 12;
-
+    // Is this a VM Backup object
+    BackupObjectType backup_object_type = 13;
 }
 
 // Define RestoreCreateResponse struct

@@ -2625,6 +2625,15 @@
         },
         "ns_label_selectors": {
           "type": "string"
+        },
+        "backup_object_type": {
+          "$ref": "#/definitions/BackupObjectType",
+          "title": "Is this a VM Backup object"
+        },
+        "skipVMAutoExecRules": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "Skip auto rules for VM Backup Object"
         }
       },
       "title": "Request message structure for backup create"
@@ -2806,6 +2815,15 @@
           "type": "boolean",
           "format": "boolean",
           "title": "this flag signifies if the backup involves large number of resources or not"
+        },
+        "backup_object_type": {
+          "$ref": "#/definitions/BackupObjectType",
+          "title": "Is this a VM Backup object"
+        },
+        "skipVMAutoExecRules": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "Skip auto rules for VM Backup Object"
         }
       }
     },
@@ -3142,6 +3160,14 @@
       },
       "description": "Message for Backup object which will be stored in Datastore."
     },
+    "BackupObjectType": {
+      "type": "string",
+      "enum": [
+        "default",
+        "virtualMachine"
+      ],
+      "default": "default"
+    },
     "BackupScheduleCreateRequest": {
       "type": "object",
       "properties": {
@@ -3223,6 +3249,15 @@
         },
         "cluster_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "backup_object_type": {
+          "$ref": "#/definitions/BackupObjectType",
+          "title": "Is this a VM Backup object"
+        },
+        "skipVMAutoExecRules": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "Skip auto rules for VM Backup Object"
         }
       },
       "title": "Define BackupScheduleCreateRequest struct"
@@ -3363,6 +3398,15 @@
         },
         "cluster_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "backup_object_type": {
+          "$ref": "#/definitions/BackupObjectType",
+          "title": "Is this a VM Backup object"
+        },
+        "skipVMAutoExecRules": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "Skip auto rules for VM Backup Object"
         }
       }
     },
@@ -3538,6 +3582,15 @@
         },
         "post_exec_rule_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "backup_object_type": {
+          "$ref": "#/definitions/BackupObjectType",
+          "title": "Is this a VM Backup object"
+        },
+        "skipVMAutoExecRules": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "Skip auto rules for VM Backup Object"
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
@@ -4857,6 +4910,10 @@
         },
         "cluster_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "backup_object_type": {
+          "$ref": "#/definitions/BackupObjectType",
+          "title": "Is this a VM Backup object"
         }
       },
       "title": "Define RestoreCreateRequest struct"
@@ -5004,6 +5061,10 @@
         },
         "cluster_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "backup_object_type": {
+          "$ref": "#/definitions/BackupObjectType",
+          "title": "Is this a VM Backup object"
         }
       },
       "title": "Message for restore info"
