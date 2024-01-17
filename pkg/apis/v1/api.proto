@@ -233,7 +233,7 @@ message CloudCredentialObject {
 // defines if backupObjectType is default for all namespace  or  virtualMachine for kubevirt VirtualMachine specific backup
 enum BackupObjectType {
         default = 0; //default for all namespace backup
-        virtualMachine = 1; // virtualMachine for VirtualMachine specific backup 
+        virtualMachine = 1; // virtualMachine for VirtualMachine specific backup
 }
 message SchedulePolicyInfo {
     IntervalPolicy interval = 1;
