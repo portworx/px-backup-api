@@ -2628,12 +2628,12 @@
         },
         "backup_object_type": {
           "$ref": "#/definitions/BackupObjectType",
-          "title": "Is this a VM Backup object"
+          "title": "backup object type is all namespace or virtualMachine specific backup"
         },
-        "skipVMAutoExecRules": {
+        "skip_vm_auto_exec_rules": {
           "type": "boolean",
           "format": "boolean",
-          "title": "Skip auto rules for VM Backup Object"
+          "title": "Skip auto rules for VirtualMachine Backup Object type"
         }
       },
       "title": "Request message structure for backup create"
@@ -2818,12 +2818,12 @@
         },
         "backup_object_type": {
           "$ref": "#/definitions/BackupObjectType",
-          "title": "Is this a VM Backup object"
+          "title": "backup object type is all namespace or virtualMachine specific backup"
         },
-        "skipVMAutoExecRules": {
+        "skip_vm_auto_exec_rules": {
           "type": "boolean",
           "format": "boolean",
-          "title": "Skip auto rules for VM Backup Object"
+          "title": "Skip auto rules for VirtualMachine Backup Object type"
         }
       }
     },
@@ -3166,7 +3166,8 @@
         "default",
         "virtualMachine"
       ],
-      "default": "default"
+      "default": "default",
+      "title": "defines if backupObjectType is default for all namespace  or  virtualMachine for kubevirt VirtualMachine specific backup"
     },
     "BackupScheduleCreateRequest": {
       "type": "object",
@@ -3252,12 +3253,12 @@
         },
         "backup_object_type": {
           "$ref": "#/definitions/BackupObjectType",
-          "title": "Is this a VM Backup object"
+          "title": "backup object type is all namespace or virtualMachine specific backup"
         },
-        "skipVMAutoExecRules": {
+        "skip_vm_auto_exec_rules": {
           "type": "boolean",
           "format": "boolean",
-          "title": "Skip auto rules for VM Backup Object"
+          "title": "Skip auto rules for VirtualMachine Backup Object type"
         }
       },
       "title": "Define BackupScheduleCreateRequest struct"
@@ -3401,12 +3402,12 @@
         },
         "backup_object_type": {
           "$ref": "#/definitions/BackupObjectType",
-          "title": "Is this a VM Backup object"
+          "title": "backup object type is all namespace or virtualMachine specific backup"
         },
-        "skipVMAutoExecRules": {
+        "skip_vm_auto_exec_rules": {
           "type": "boolean",
           "format": "boolean",
-          "title": "Skip auto rules for VM Backup Object"
+          "title": "Skip auto rules for VirtualMachine Backup Object type"
         }
       }
     },
@@ -3582,15 +3583,6 @@
         },
         "post_exec_rule_ref": {
           "$ref": "#/definitions/ObjectRef"
-        },
-        "backup_object_type": {
-          "$ref": "#/definitions/BackupObjectType",
-          "title": "Is this a VM Backup object"
-        },
-        "skipVMAutoExecRules": {
-          "type": "boolean",
-          "format": "boolean",
-          "title": "Skip auto rules for VM Backup Object"
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
@@ -4913,7 +4905,7 @@
         },
         "backup_object_type": {
           "$ref": "#/definitions/BackupObjectType",
-          "title": "Is this a VM Backup object"
+          "title": "backup object type is all namespace or virtualMachine specific backup"
         }
       },
       "title": "Define RestoreCreateRequest struct"
@@ -5064,7 +5056,7 @@
         },
         "backup_object_type": {
           "$ref": "#/definitions/BackupObjectType",
-          "title": "Is this a VM Backup object"
+          "title": "backup object type is all namespace or virtualMachine specific backup"
         }
       },
       "title": "Message for restore info"
