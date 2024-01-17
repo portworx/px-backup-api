@@ -587,8 +587,6 @@ message BackupInfo {
         Applications = 5;
         Final = 6;
     }
-
-
 }
 
 // Message for Backup object which will be stored in Datastore.
