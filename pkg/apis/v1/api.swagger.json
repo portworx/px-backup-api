@@ -3163,10 +3163,10 @@
     "BackupObjectType": {
       "type": "string",
       "enum": [
-        "default",
-        "virtualMachine"
+        "Unused",
+        "VirtualMachine"
       ],
-      "default": "default",
+      "default": "Unused",
       "title": "defines if backupObjectType is default for all namespace  or  virtualMachine for kubevirt VirtualMachine specific backup"
     },
     "BackupScheduleCreateRequest": {
