@@ -2627,7 +2627,7 @@
           "type": "string"
         },
         "backup_object_type": {
-          "$ref": "#/definitions/BackupObjectType",
+          "$ref": "#/definitions/BackupCreateRequestBackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
         },
         "skip_vm_auto_exec_rules": {
@@ -2637,6 +2637,23 @@
         }
       },
       "title": "Request message structure for backup create"
+    },
+    "BackupCreateRequestBackupObjectType": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/BackupCreateRequestBackupObjectTypeType"
+        }
+      }
+    },
+    "BackupCreateRequestBackupObjectTypeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "All",
+        "VirtualMachine"
+      ],
+      "default": "Invalid"
     },
     "BackupCreateRequestBackupType": {
       "type": "string",
@@ -2817,7 +2834,7 @@
           "title": "this flag signifies if the backup involves large number of resources or not"
         },
         "backup_object_type": {
-          "$ref": "#/definitions/BackupObjectType",
+          "$ref": "#/definitions/BackupInfoBackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
         },
         "skip_vm_auto_exec_rules": {
@@ -2826,6 +2843,23 @@
           "title": "Skip auto rules for VirtualMachine Backup Object type"
         }
       }
+    },
+    "BackupInfoBackupObjectType": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/BackupInfoBackupObjectTypeType"
+        }
+      }
+    },
+    "BackupInfoBackupObjectTypeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "All",
+        "VirtualMachine"
+      ],
+      "default": "Invalid"
     },
     "BackupInfoBackupSchedule": {
       "type": "object",
@@ -3160,15 +3194,6 @@
       },
       "description": "Message for Backup object which will be stored in Datastore."
     },
-    "BackupObjectType": {
-      "type": "string",
-      "enum": [
-        "Unused",
-        "VirtualMachine"
-      ],
-      "default": "Unused",
-      "title": "defines if backupObjectType is default for all namespace  or  virtualMachine for kubevirt VirtualMachine specific backup"
-    },
     "BackupScheduleCreateRequest": {
       "type": "object",
       "properties": {
@@ -3252,7 +3277,7 @@
           "$ref": "#/definitions/ObjectRef"
         },
         "backup_object_type": {
-          "$ref": "#/definitions/BackupObjectType",
+          "$ref": "#/definitions/BackupScheduleCreateRequestBackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
         },
         "skip_vm_auto_exec_rules": {
@@ -3262,6 +3287,23 @@
         }
       },
       "title": "Define BackupScheduleCreateRequest struct"
+    },
+    "BackupScheduleCreateRequestBackupObjectType": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/BackupScheduleCreateRequestBackupObjectTypeType"
+        }
+      }
+    },
+    "BackupScheduleCreateRequestBackupObjectTypeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "All",
+        "VirtualMachine"
+      ],
+      "default": "Invalid"
     },
     "BackupScheduleCreateRequestBackupType": {
       "type": "string",
@@ -3401,7 +3443,7 @@
           "$ref": "#/definitions/ObjectRef"
         },
         "backup_object_type": {
-          "$ref": "#/definitions/BackupObjectType",
+          "$ref": "#/definitions/BackupScheduleInfoBackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
         },
         "skip_vm_auto_exec_rules": {
@@ -3410,6 +3452,23 @@
           "title": "Skip auto rules for VirtualMachine Backup Object type"
         }
       }
+    },
+    "BackupScheduleInfoBackupObjectType": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/BackupScheduleInfoBackupObjectTypeType"
+        }
+      }
+    },
+    "BackupScheduleInfoBackupObjectTypeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "All",
+        "VirtualMachine"
+      ],
+      "default": "Invalid"
     },
     "BackupScheduleInfoBackupType": {
       "type": "object",
@@ -4904,11 +4963,28 @@
           "$ref": "#/definitions/ObjectRef"
         },
         "backup_object_type": {
-          "$ref": "#/definitions/BackupObjectType",
+          "$ref": "#/definitions/RestoreCreateRequestBackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
         }
       },
       "title": "Define RestoreCreateRequest struct"
+    },
+    "RestoreCreateRequestBackupObjectType": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/RestoreCreateRequestBackupObjectTypeType"
+        }
+      }
+    },
+    "RestoreCreateRequestBackupObjectTypeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "All",
+        "VirtualMachine"
+      ],
+      "default": "Invalid"
     },
     "RestoreCreateResponse": {
       "type": "object",
@@ -5055,11 +5131,28 @@
           "$ref": "#/definitions/ObjectRef"
         },
         "backup_object_type": {
-          "$ref": "#/definitions/BackupObjectType",
+          "$ref": "#/definitions/RestoreInfoBackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
         }
       },
       "title": "Message for restore info"
+    },
+    "RestoreInfoBackupObjectType": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/RestoreInfoBackupObjectTypeType"
+        }
+      }
+    },
+    "RestoreInfoBackupObjectTypeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "All",
+        "VirtualMachine"
+      ],
+      "default": "Invalid"
     },
     "RestoreInfoRestoreResourceState": {
       "type": "object",

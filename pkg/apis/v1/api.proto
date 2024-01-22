@@ -230,11 +230,6 @@ message CloudCredentialObject {
     CloudCredentialInfo cloud_credential_info = 2;
 }
 
-// defines if backupObjectType is default for all namespace  or  virtualMachine for kubevirt VirtualMachine specific backup
-enum BackupObjectType {
-        Unused = 0; // Unused default value
-        VirtualMachine = 1; // virtualMachine for VirtualMachine specific backup
-}
 message SchedulePolicyInfo {
     IntervalPolicy interval = 1;
     DailyPolicy daily = 2;
@@ -354,6 +349,7 @@ message BackupScheduleInfo {
     // Skip auto rules for VirtualMachine Backup Object type
     bool skip_vm_auto_exec_rules = 27;
 
+
     message BackupType {
         Type type = 1;
         enum Type {
@@ -400,6 +396,14 @@ message BackupScheduleInfo {
         Delete = 1;
         Retain = 2;
     }
+    message BackupObjectType {
+        Type type = 1;
+         enum Type {
+             Invalid = 0;
+             All = 1; // for All application backup
+             VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
+         }
+     }
 }
 
 message BackupScheduleObject {
@@ -524,6 +528,7 @@ message BackupInfo {
     BackupObjectType backup_object_type = 35;
     // Skip auto rules for VirtualMachine Backup Object type
     bool skip_vm_auto_exec_rules = 36;
+
     message BackupType {
         Type type = 1;
 
@@ -587,6 +592,16 @@ message BackupInfo {
         Applications = 5;
         Final = 6;
     }
+    message BackupObjectType {
+        Type type= 1;
+        enum Type {
+            Invalid = 0;
+            All = 1; // for All application backup
+            VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
+        }
+    }
+
+
 }
 
 // Message for Backup object which will be stored in Datastore.
@@ -720,6 +735,14 @@ message RestoreInfo {
 
         Status status = 1;
         string reason = 2;
+    }
+    message BackupObjectType {
+       Type type = 1;
+        enum Type {
+            Invalid = 0;
+            All = 1; // for All application backup
+            VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
+        }
     }
 }
 
@@ -974,6 +997,14 @@ message BackupScheduleCreateRequest {
         Invalid = 0;
         Generic = 1;
         Normal = 2;
+    }
+    message BackupObjectType {
+        Type type = 1;
+        enum Type {
+            Invalid = 0;
+            All = 1; // for All application backup
+            VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
+        }
     }
 }
 
@@ -1599,6 +1630,14 @@ message BackupCreateRequest {
         Generic = 1;
         Normal = 2;
     }
+    message BackupObjectType {
+        Type type = 1;
+         enum Type {
+             Invalid = 0;
+             All = 1; // for All application backup
+             VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
+         }
+     }
 }
 
 // Response message structure for backup create
@@ -1733,6 +1772,15 @@ message RestoreCreateRequest {
     ObjectRef cluster_ref = 12;
     // backup object type is all namespace or virtualMachine specific backup
     BackupObjectType backup_object_type = 13;
+
+    message BackupObjectType {
+        Type type = 1;
+         enum Type {
+             Invalid = 0;
+             All = 1; // for All application backup
+             VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
+         }
+     }
 }
 
 // Define RestoreCreateResponse struct
