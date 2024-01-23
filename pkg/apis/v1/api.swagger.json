@@ -1609,6 +1609,33 @@
         ]
       }
     },
+    "/v1/receiver/validate": {
+      "post": {
+        "summary": "* Validates SMTP service",
+        "operationId": "ValidateSMTP",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReceiverValidateSMTPResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReceiverValidateSMTPRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Receiver"
+        ]
+      }
+    },
     "/v1/receiver/{name}/{uid}": {
       "get": {
         "summary": "* Returns the details of a specific alert manager receiver",
@@ -5173,11 +5200,6 @@
         "type": {
           "$ref": "#/definitions/ReceiverInfoType"
         },
-        "valid": {
-          "type": "boolean",
-          "format": "boolean",
-          "title": "* True if px-backup validates the receiver setup"
-        },
         "email_config": {
           "$ref": "#/definitions/EmailConfig"
         }
@@ -5190,6 +5212,27 @@
         "EMAIL"
       ],
       "default": "INVALID"
+    },
+    "ReceiverInspectRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "include_secrets": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "uid": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
     },
     "ReceiverInspectResponse": {
       "type": "object",
@@ -5222,6 +5265,29 @@
       }
     },
     "ReceiverUpdateResponse": {
+      "type": "object"
+    },
+    "ReceiverValidateSMTPRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "recipient_id": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "receiver_info_config": {
+          "$ref": "#/definitions/ReceiverInfo"
+        },
+        "receiver_inspect_config": {
+          "$ref": "#/definitions/ReceiverInspectRequest"
+        }
+      }
+    },
+    "ReceiverValidateSMTPResponse": {
       "type": "object"
     },
     "RecipientCreateRequest": {

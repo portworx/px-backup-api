@@ -1360,6 +1360,15 @@ service Receiver {
             delete : "/v1/receiver/{org_id}/{name}/{uid}"
         };
     }
+
+    // * Validates SMTP service
+    rpc ValidateSMTP(ReceiverValidateSMTPRequest)
+    returns (ReceiverValidateSMTPResponse) {
+        option (google.api.http) = {
+            post: "/v1/receiver/validate"
+            body: "*"
+        };
+    }
 }
 
 message EmailConfig {
@@ -1390,8 +1399,6 @@ message ReceiverInfo {
         INVALID  = 0;
         EMAIL = 1;
     }
-    // * True if px-backup validates the receiver setup
-    bool valid = 2;
 
     oneof config {
         EmailConfig email_config = 100;
@@ -1448,6 +1455,17 @@ message ReceiverDeleteRequest {
 
 message ReceiverDeleteResponse {}
 
+message ReceiverValidateSMTPRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    repeated string recipient_id = 2;
+    oneof config {
+        ReceiverInfo receiver_info_config = 100;
+        ReceiverInspectRequest receiver_inspect_config = 101;
+
+    }
+}
+
+message ReceiverValidateSMTPResponse {}
 
 service Recipient {
     rpc Create(RecipientCreateRequest) 
