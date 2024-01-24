@@ -2598,7 +2598,7 @@
         },
         "csi_snapshot_class_name": {
           "type": "string",
-          "title": "Snapshot class name to use for backup (optional)"
+          "description": "Snapshot class name to use for backup (optional)\ndeprecated, not to be used."
         },
         "resource_types": {
           "type": "array",
@@ -2634,6 +2634,13 @@
           "type": "boolean",
           "format": "boolean",
           "title": "Skip auto rules for VirtualMachine Backup Object type"
+        },
+        "volume_snapshot_class_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "voume snapshot class mapping for csi based backup \u003cprovisioner, volumesnapshotclass\u003e"
         }
       },
       "title": "Request message structure for backup create"
