@@ -1625,7 +1625,7 @@ message BackupCreateRequest {
     BackupObjectType backup_object_type = 17;
     // Skip auto rules for VirtualMachine Backup Object type
     bool skip_vm_auto_exec_rules = 18;
-    // voume snapshot class mapping for csi based backup <provisioner, volumesnapshotclass>
+    // volume snapshot class mapping for csi based backup <provisioner(string), volumesnapshotclass(string)> (optional)
     map<string, string> volume_snapshot_class_mapping = 19;
 
     enum BackupType {
