@@ -2640,7 +2640,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "title": "voume snapshot class mapping for csi based backup \u003cprovisioner, volumesnapshotclass\u003e"
+          "title": "volume snapshot class mapping for csi based backup \u003cprovisioner(string), volumesnapshotclass(string)\u003e (optional)"
         }
       },
       "title": "Request message structure for backup create"

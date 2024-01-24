@@ -9018,7 +9018,7 @@ type BackupCreateRequest struct {
 	BackupObjectType *BackupCreateRequest_BackupObjectType `protobuf:"bytes,17,opt,name=backup_object_type,json=backupObjectType,proto3" json:"backup_object_type,omitempty"`
 	// Skip auto rules for VirtualMachine Backup Object type
 	SkipVmAutoExecRules bool `protobuf:"varint,18,opt,name=skip_vm_auto_exec_rules,json=skipVmAutoExecRules,proto3" json:"skip_vm_auto_exec_rules,omitempty"`
-	// voume snapshot class mapping for csi based backup <provisioner, volumesnapshotclass>
+	// volume snapshot class mapping for csi based backup <provisioner(string), volumesnapshotclass(string)> (optional)
 	VolumeSnapshotClassMapping map[string]string `protobuf:"bytes,19,rep,name=volume_snapshot_class_mapping,json=volumeSnapshotClassMapping,proto3" json:"volume_snapshot_class_mapping,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
 
