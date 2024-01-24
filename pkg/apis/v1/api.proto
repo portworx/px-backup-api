@@ -446,6 +446,8 @@ message BackupLocationInfo {
             ValidationFailed = 4;
             // If a BL is unusable due to failure, mark it as Disabled.
             Disabled = 5;
+            // If a BL is being used for partial backup, mark it as Limited.
+            Limited = 6;
         }
     }
 
