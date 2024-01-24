@@ -1610,6 +1610,7 @@ message BackupCreateRequest {
     // List of resources to backup (optional)
     repeated ResourceInfo include_resources = 8;
     // Snapshot class name to use for backup (optional)
+    // deprecated, not to be used.
     string csi_snapshot_class_name = 9;
     // List of resource types to backup (optional)
     repeated string resource_types = 10;
@@ -1624,6 +1625,8 @@ message BackupCreateRequest {
     BackupObjectType backup_object_type = 17;
     // Skip auto rules for VirtualMachine Backup Object type
     bool skip_vm_auto_exec_rules = 18;
+    // voume snapshot class mapping for csi based backup <provisioner, volumesnapshotclass>
+    map<string, string> volume_snapshot_class_mapping = 19;
 
     enum BackupType {
         Invalid = 0;
