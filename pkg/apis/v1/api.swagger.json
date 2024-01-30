@@ -2781,7 +2781,8 @@
           "type": "string"
         },
         "csi_snapshot_class_name": {
-          "type": "string"
+          "type": "string",
+          "description": "deprecated, not to be used."
         },
         "resource_types": {
           "type": "array",
@@ -2848,6 +2849,13 @@
           "type": "boolean",
           "format": "boolean",
           "title": "Skip auto rules for VirtualMachine Backup Object type"
+        },
+        "volume_snapshot_class_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "volume snapshot class mapping for csi based backup \u003cprovisioner(string), volumesnapshotclass(string)\u003e (optional)"
         }
       }
     },
@@ -3252,7 +3260,7 @@
         },
         "csi_snapshot_class_name": {
           "type": "string",
-          "title": "Snapshot class name to use for backup schedule (optional)"
+          "description": "Snapshot class name to use for backup schedule (optional)\ndeprecated, not to be used."
         },
         "resource_types": {
           "type": "array",
@@ -3291,6 +3299,13 @@
           "type": "boolean",
           "format": "boolean",
           "title": "Skip auto rules for VirtualMachine Backup Object type"
+        },
+        "volume_snapshot_class_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "volume snapshot class mapping for csi based backup \u003cprovisioner(string), volumesnapshotclass(string)\u003e (optional)"
         }
       },
       "title": "Define BackupScheduleCreateRequest struct"
@@ -3414,7 +3429,8 @@
           "type": "string"
         },
         "csi_snapshot_class_name": {
-          "type": "string"
+          "type": "string",
+          "description": "deprecated, not to be used."
         },
         "resource_types": {
           "type": "array",
@@ -3457,6 +3473,13 @@
           "type": "boolean",
           "format": "boolean",
           "title": "Skip auto rules for VirtualMachine Backup Object type"
+        },
+        "volume_snapshot_class_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "volume snapshot class mapping for csi based backup \u003cprovisioner(string), volumesnapshotclass(string)\u003e (optional)"
         }
       }
     },
@@ -3636,7 +3659,7 @@
         },
         "csi_snapshot_class_name": {
           "type": "string",
-          "title": "Snapshot class name to use for backup schedule (optional)"
+          "description": "Snapshot class name to use for backup schedule (optional)\ndeprecated, not to be used."
         },
         "schedule_policy_ref": {
           "$ref": "#/definitions/ObjectRef"
@@ -3649,6 +3672,13 @@
         },
         "post_exec_rule_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "volume_snapshot_class_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "volume snapshot class mapping for csi based backup \u003cprovisioner(string), volumesnapshotclass(string)\u003e (optional)"
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
