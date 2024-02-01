@@ -4449,7 +4449,7 @@
           "type": "string",
           "title": "* Host port default value is 25"
         },
-        "encrytion_ssl": {
+        "encryption_ssl": {
           "type": "boolean",
           "format": "boolean",
           "title": "* Encryption if any (optional) default value is false"
@@ -5349,6 +5349,10 @@
           "type": "boolean",
           "format": "boolean",
           "title": "* current status set by user"
+        },
+        "receiver_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "Link receiver object"
         },
         "severity": {
           "$ref": "#/definitions/RecipientInfoSeverity",
