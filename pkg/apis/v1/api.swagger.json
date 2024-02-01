@@ -181,6 +181,13 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "name": "enumerate_options.backup_object_type",
+            "description": "filter to use backupObjectType on object.",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -690,6 +697,13 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "name": "enumerate_options.backup_object_type",
+            "description": "filter to use backupObjectType on object.",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -1696,6 +1710,13 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "name": "enumerate_options.backup_object_type",
+            "description": "filter to use backupObjectType on object.",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -2014,6 +2035,13 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "name": "enumerate_options.backup_object_type",
+            "description": "filter to use backupObjectType on object.",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -4254,6 +4282,10 @@
             "type": "string"
           },
           "title": "Filter to use owner uids on objects. Any object that contains the\nfilter will be returned"
+        },
+        "backup_object_type": {
+          "type": "string",
+          "title": "filter to use backupObjectType on object"
         }
       }
     },
