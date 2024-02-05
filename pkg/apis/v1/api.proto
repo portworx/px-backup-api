@@ -803,6 +803,9 @@ message EnumerateOptions {
     // Filter to use owner uids on objects. Any object that contains the
     // filter will be returned
     repeated string owners = 9;
+    // filter to use backupObjectType on object
+    string backup_object_type = 10;
+
 }
 
 service SchedulePolicy {
@@ -1067,6 +1070,7 @@ message BackupScheduleEnumerateRequest {
     ObjectRef backup_location_ref = 4;
     // Optional arguments for enumeration
     EnumerateOptions enumerate_options = 5;
+
 }
 
 // Define BackupScheduleEnumerateResponse struct
