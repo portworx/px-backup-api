@@ -5409,7 +5409,12 @@
       }
     },
     "ReceiverCreateResponse": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "receiver": {
+          "$ref": "#/definitions/ReceiverObject"
+        }
+      }
     },
     "ReceiverDeleteResponse": {
       "type": "object"

@@ -1490,7 +1490,9 @@ message ReceiverCreateRequest {
     ReceiverInfo receiver_info = 2;
 }
 
-message ReceiverCreateResponse {}
+message ReceiverCreateResponse {
+    ReceiverObject receiver = 1; 
+}
 
 
 message ReceiverEnumerateRequest {
