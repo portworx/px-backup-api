@@ -188,6 +188,15 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "enumerate_options.status",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         ],
         "tags": [
@@ -704,6 +713,15 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "enumerate_options.status",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         ],
         "tags": [
@@ -2075,6 +2093,15 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "enumerate_options.status",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         ],
         "tags": [
@@ -2400,6 +2427,15 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "enumerate_options.status",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         ],
         "tags": [
@@ -4701,6 +4737,12 @@
         "backup_object_type": {
           "type": "string",
           "title": "filter to use backupObjectType on object"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
