@@ -805,6 +805,7 @@ message EnumerateOptions {
     repeated string owners = 9;
     // filter to use backupObjectType on object
     string backup_object_type = 10;
+    repeated string status = 11;
 
 }
 
