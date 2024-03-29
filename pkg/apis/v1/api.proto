@@ -1828,6 +1828,8 @@ message MetricsInspectRequest { string org_id = 1; }
 
 message MetricsInspectResponse {
     repeated Stats stats = 1;
+    // Time at which last stats data was synced in epoch time format
+    int64 last_sync_time = 2;
     message Stats {
         string cluster = 1;
         uint64 num_namespaces = 2;
