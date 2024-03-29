@@ -1836,6 +1836,7 @@ message MetricsInspectResponse {
         uint64 total_backup_size = 3;
         uint64 num_schedules = 4;
         ObjectRef cluster_ref = 5;
+        uint64 total_namespaces = 6;
     }
 }
 

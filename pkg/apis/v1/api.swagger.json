@@ -5239,6 +5239,10 @@
         },
         "cluster_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "total_namespaces": {
+          "type": "string",
+          "format": "uint64"
         }
       }
     },
