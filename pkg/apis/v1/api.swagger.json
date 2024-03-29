@@ -5211,6 +5211,11 @@
           "items": {
             "$ref": "#/definitions/MetricsInspectResponseStats"
           }
+        },
+        "last_sync_time": {
+          "type": "string",
+          "format": "int64",
+          "title": "Time at which last stats data was synced in epoch time format"
         }
       }
     },
