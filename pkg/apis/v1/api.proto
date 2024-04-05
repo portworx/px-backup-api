@@ -1063,6 +1063,8 @@ message BackupScheduleUpdateRequest {
     ObjectRef post_exec_rule_ref = 16;
     // volume snapshot class mapping for csi based backup <provisioner(string), volumesnapshotclass(string)> (optional)
     map<string, string> volume_snapshot_class_mapping = 17;
+    // Skip auto rules for VirtualMachine Backup Object type
+    bool skip_vm_auto_exec_rules = 18;
 }
 
 // Define BackupScheduleUpdateResponse struct

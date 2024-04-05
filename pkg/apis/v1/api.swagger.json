@@ -4125,6 +4125,11 @@
             "type": "string"
           },
           "title": "volume snapshot class mapping for csi based backup \u003cprovisioner(string), volumesnapshotclass(string)\u003e (optional)"
+        },
+        "skip_vm_auto_exec_rules": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "Skip auto rules for VirtualMachine Backup Object type"
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
