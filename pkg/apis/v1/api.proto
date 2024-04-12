@@ -66,6 +66,7 @@ message ClusterInfo {
         (gogoproto.moretags) = "secure:\"true\""
     ];
     Provider provider = 17;
+    string k8s_version = 18;
 
     // Message for maintaining status of the cluster.
     message StatusInfo {

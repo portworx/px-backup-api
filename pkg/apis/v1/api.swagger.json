@@ -4512,6 +4512,9 @@
         },
         "provider": {
           "$ref": "#/definitions/ClusterInfoProvider"
+        },
+        "k8s_version": {
+          "type": "string"
         }
       }
     },
