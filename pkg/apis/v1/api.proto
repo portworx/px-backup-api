@@ -162,6 +162,19 @@ message S3Config {
     // Server side encryption type name
     // Currently supporting only SSE-S3 and SSE-KMS type alone.
     Sse sse_type = 6;
+    // Azure environment type
+    // Currently supporting only AZURE_GLOBAL and AZURE_CHINA
+    AzureEnvironmentType azure_environment = 7;
+    message AzureEnvironmentType {
+        Type type = 1;
+        enum Type {
+            Invalid = 0;
+            // Azure public environment
+            AZURE_GLOBAL = 1;
+            // Azure china environment
+            AZURE_CHINA = 2;
+        }
+    }
     enum Sse {
         Invalid = 0;
         // Server-side encryption with AWS S3 managed keys

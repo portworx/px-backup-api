@@ -6375,8 +6375,30 @@
         "sse_type": {
           "$ref": "#/definitions/S3ConfigSse",
           "description": "Server side encryption type name\nCurrently supporting only SSE-S3 and SSE-KMS type alone."
+        },
+        "azure_environment": {
+          "$ref": "#/definitions/S3ConfigAzureEnvironmentType",
+          "title": "Azure environment type\nCurrently supporting only AZURE_GLOBAL and AZURE_CHINA"
         }
       }
+    },
+    "S3ConfigAzureEnvironmentType": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/S3ConfigAzureEnvironmentTypeType"
+        }
+      }
+    },
+    "S3ConfigAzureEnvironmentTypeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "AZURE_GLOBAL",
+        "AZURE_CHINA"
+      ],
+      "default": "Invalid",
+      "title": "- AZURE_GLOBAL: Azure public environment\n - AZURE_CHINA: Azure china environment"
     },
     "S3ConfigSse": {
       "type": "string",
