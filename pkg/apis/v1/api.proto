@@ -587,6 +587,13 @@ message BackupInfo {
         string pvc_id = 12;
         string provisioner = 13;
         string volumesnapshot = 14;
+        // As part of restrictive PSA setting, if an UID or GID is used during backup then same value should be used during restore (optional)
+        JobSecurityContext job_security_context = 15;
+
+        message JobSecurityContext {
+            int64 runAsUser = 1;
+            int64 runAsGroup = 2;
+        }
     }
 
     // Message for maintaining status of the object.

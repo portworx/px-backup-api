@@ -3435,6 +3435,10 @@
         },
         "volumesnapshot": {
           "type": "string"
+        },
+        "job_security_context": {
+          "$ref": "#/definitions/VolumeJobSecurityContext",
+          "title": "As part of restrictive PSA setting, if an UID or GID is used during backup then same value should be used during restore (optional)"
         }
       }
     },
@@ -6677,6 +6681,19 @@
         },
         "build_date": {
           "type": "string"
+        }
+      }
+    },
+    "VolumeJobSecurityContext": {
+      "type": "object",
+      "properties": {
+        "runAsUser": {
+          "type": "string",
+          "format": "int64"
+        },
+        "runAsGroup": {
+          "type": "string",
+          "format": "int64"
         }
       }
     }
