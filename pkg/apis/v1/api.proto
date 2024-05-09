@@ -165,6 +165,8 @@ message S3Config {
     // Azure environment type
     // Currently supporting only AZURE_GLOBAL and AZURE_CHINA
     AzureEnvironmentType azure_environment = 7;
+    // Azure resource group name. This is needed in the case of azure immutable bucket to get the retention period (optional)
+    string azure_resource_group_name = 8;
     message AzureEnvironmentType {
         Type type = 1;
         enum Type {
