@@ -465,6 +465,8 @@ message BackupLocationInfo {
             DeletePending = 2;
             ValidationInProgress = 3;
             ValidationFailed = 4;
+            // If a BL is being used for partial backup, mark it as LimitedAvailability.
+            LimitedAvailability = 5;
         }
     }
 

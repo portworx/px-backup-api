@@ -3544,9 +3544,11 @@
         "Valid",
         "DeletePending",
         "ValidationInProgress",
-        "ValidationFailed"
+        "ValidationFailed",
+        "LimitedAvailability"
       ],
-      "default": "Invalid"
+      "default": "Invalid",
+      "description": " - LimitedAvailability: If a BL is being used for partial backup, mark it as LimitedAvailability."
     },
     "BackupLocationInfoType": {
       "type": "string",
