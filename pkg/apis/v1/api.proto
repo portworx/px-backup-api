@@ -2426,6 +2426,8 @@ message LicenseUsageAirgappedResponse {
     repeated LicenseUsageAirgappedObject licenseUsageAirgapped = 1;
     bool complete = 2;
     uint64 total_count = 3;
+    string account_id = 4;
+    string subscription_id = 5;
 }
 
 service License {
