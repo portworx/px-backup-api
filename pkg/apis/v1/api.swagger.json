@@ -4956,6 +4956,12 @@
         "total_count": {
           "type": "string",
           "format": "uint64"
+        },
+        "account_id": {
+          "type": "string"
+        },
+        "subscription_id": {
+          "type": "string"
         }
       }
     },
