@@ -4937,6 +4937,12 @@
           "type": "string",
           "format": "int64",
           "title": "Time at which license consumption is recorded in epoch time format"
+        },
+        "account_id": {
+          "type": "string"
+        },
+        "subscription_id": {
+          "type": "string"
         }
       }
     },

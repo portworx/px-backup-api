@@ -2412,6 +2412,8 @@ message LicenseUsageAirgappedObject {
     int64 node_count = 2;
     // Time at which license consumption is recorded in epoch time format
     int64 report_time = 3;
+    string account_id = 4;
+    string subscription_id = 5;
 }
 
 message LicenseUsageAirgappedRequest {
