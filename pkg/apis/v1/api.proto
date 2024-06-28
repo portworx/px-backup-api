@@ -1188,6 +1188,22 @@ service Cluster {
             body : "*"
         };
     }
+
+    // ShareCluster shares access to the cluster to the user(s) or group(s)
+    rpc ShareCluster(ShareClusterRequest) returns (ShareClusterResponse) {
+        option (google.api.http) = {
+            patch : "/v1/sharecluster"
+            body : "*"
+        };
+    }
+
+    // UnShareCluster removes shared access for the user(s) or group(s) to the cluster
+    rpc UnShareCluster(UnShareClusterRequest) returns (UnShareClusterResponse) {
+        option (google.api.http) = {
+            patch : "/v1/unsharecluster"
+            body : "*"
+        };
+    }
 }
 
 message ClusterBackupShareUpdateRequest {
@@ -1301,6 +1317,35 @@ message ClusterDeleteRequest {
 
 // Define ClusterInspectResponse struct
 message ClusterDeleteResponse {}
+
+
+message ShareClusterRequest{
+    string org_id = 1;
+    ObjectRef cluster_ref = 2;
+    // userid of the user to share the cluster with
+    repeated string user = 3;
+    // group to share the cluster with
+    repeated string group = 4;
+    // share_cluster_backup share is optional, if set to true, it will additionally share existing backups
+    bool share_cluster_backup = 5;
+}
+
+message ShareClusterResponse{}
+
+message UnShareClusterRequest{
+    string org_id = 1;
+    ObjectRef cluster_ref = 2;
+    // userid of the user to share the cluster with
+    repeated string user = 3;
+    // group to share the cluster with
+    repeated string group = 4;
+    // unshare_cluster_backup is optional, if set to true, will unshare shared backups.
+
+
+    bool unshare_cluster_backup = 5;
+}
+
+message UnShareClusterResponse{}
 
 service CloudCredential {
     // Creates new cloud credential
