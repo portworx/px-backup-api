@@ -1909,7 +1909,43 @@ service Metrics {
             get : "/v1/metrics/{org_id}"
         };
     }
+
+    // Pass metrics from other pods to px-backup, which will push as px-backup metrics to Prometheus
+    rpc Create(MetricsCreateRequest) returns (MetricsCreateResponse) {
+        option (google.api.http) = {
+            post : "/v1/metrics/{org_id}"
+            body : "*"
+        };
+    }
 }
+
+message MetricsCreateRequest {
+   string org_id = 1;
+   MetricsInfo metrics_info = 2;
+
+}
+
+message MetricsInfo {
+    Type type = 1;
+    
+    // Check with charts/px-central/templates/px-backup/pxcentral-prometheus.yaml before 
+    // adding Type here, few metrics are ignored.
+    enum Type {
+        Invalid = 0;
+        BackupStatus = 1;
+        BackupResourceCount = 2;
+        BackupLocationStatus = 3;
+        ClusterStatus = 4;
+        RestoreStatus = 5;
+    }
+    
+    oneof MetricData {
+        BackupObject  backup = 100;
+    }
+    
+}
+
+message MetricsCreateResponse {}
 
 message MetricsInspectRequest { string org_id = 1; }
 
