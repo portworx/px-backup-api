@@ -1507,6 +1507,37 @@
         "tags": [
           "Metrics"
         ]
+      },
+      "post": {
+        "summary": "Pass metrics from other pods to px-backup, which will push as px-backup metrics to Prometheus",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MetricsCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MetricsCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Metrics"
+        ]
       }
     },
     "/v1/organization": {
@@ -5312,6 +5343,44 @@
           "title": "ownership of the object"
         }
       }
+    },
+    "MetricsCreateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "metrics_info": {
+          "$ref": "#/definitions/MetricsInfo"
+        }
+      }
+    },
+    "MetricsCreateResponse": {
+      "type": "object"
+    },
+    "MetricsInfo": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/MetricsInfoType"
+        },
+        "backup": {
+          "$ref": "#/definitions/BackupObject"
+        }
+      }
+    },
+    "MetricsInfoType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "BackupStatus",
+        "BackupResourceCount",
+        "BackupLocationStatus",
+        "ClusterStatus",
+        "RestoreStatus"
+      ],
+      "default": "Invalid",
+      "description": "Check with charts/px-central/templates/px-backup/pxcentral-prometheus.yaml before \nadding Type here, few metrics are ignored."
     },
     "MetricsInspectResponse": {
       "type": "object",
