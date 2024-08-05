@@ -569,6 +569,8 @@ message BackupInfo {
     map<string, string> volume_snapshot_class_mapping = 37;
     // option to take backup as direct kdmp 
     bool direct_kdmp = 38;
+    // this will store the timestamp, when the retention period of locked backup will be expired
+    google.protobuf.Timestamp retention_time = 39;
 
     message BackupType {
         Type type = 1;

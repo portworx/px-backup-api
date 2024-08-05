@@ -3354,6 +3354,11 @@
           "type": "boolean",
           "format": "boolean",
           "title": "option to take backup as direct kdmp"
+        },
+        "retention_time": {
+          "type": "string",
+          "format": "date-time",
+          "title": "this will store the timestamp, when the retention period of locked backup will be expired"
         }
       }
     },
