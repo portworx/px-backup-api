@@ -3292,6 +3292,10 @@
           "type": "boolean",
           "format": "boolean",
           "title": "option to take backup as direct kdmp"
+        },
+        "retention_time": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     },
