@@ -73,6 +73,12 @@ message ClusterInfo {
     // contains map[user]BackupShare details to be deleted for cluster level backups of
     // non owner of the cluster
     map<string, BackupShare> del_user_backup_share = 20;
+    // deleted_by uid of the user who initiated delete
+    string deleted_by = 21;
+    // delete_all_cluster_backups will delete all the backups on the cluster
+    // Allowed only to super Admin role
+    bool delete_all_cluster_backups = 22;
+
 
 
     // Message for maintaining status of the cluster.
@@ -1323,6 +1329,9 @@ message ClusterDeleteRequest {
     bool delete_restores = 4;
     // indicate the uid of the particular object
     string uid = 5;
+    // delete_all_cluster_backup if set will delete all backups on the cluster
+    // allowed only to super admin Role
+    bool delete_all_cluster_backups = 6;
 }
 
 // Define ClusterInspectResponse struct
