@@ -1186,6 +1186,14 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "delete_all_cluster_backups",
+            "description": "delete_all_cluster_backup if set will delete all backups on the cluster\nallowed only to super admin Role.",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
           }
         ],
         "tags": [
@@ -4589,6 +4597,15 @@
             "$ref": "#/definitions/BackupShare"
           },
           "title": "contains map[user]BackupShare details to be deleted for cluster level backups of\nnon owner of the cluster"
+        },
+        "deleted_by": {
+          "type": "string",
+          "title": "deleted_by uid of the user who initiated delete"
+        },
+        "delete_all_cluster_backups": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "delete_all_cluster_backups will delete all the backups on the cluster\nAllowed only to super Admin role"
         }
       }
     },
