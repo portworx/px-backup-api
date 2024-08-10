@@ -44,8 +44,8 @@ message ClusterInfo {
     // cloud_credential is deprecated, not to be used.
     string cloud_credential = 3;
     StatusInfo status = 4;
-    // delete_backups will determine whether the backups
-    // belong to given cluster needs to be deleted or not.
+    // delete_backups indicates whether  backups created by cluster owner that belong to the cluster need to
+    // be deleted or retained. This flag can be set by cluster owner with any role during cluster deletion
     bool delete_backups = 5;
     // delete_restores will determine whether the restore
     // belong to given cluster needs to be deleted or not.
@@ -73,6 +73,12 @@ message ClusterInfo {
     // contains map[user]BackupShare details to be deleted for cluster level backups of
     // non owner of the cluster
     map<string, BackupShare> del_user_backup_share = 20;
+    // deleted_by uid of the user who initiated cluster delete
+    string deleted_by = 21;
+   // delete_all_cluster_backups indicates whether all the backups(created by cluster owner, super admins and all the shared users)
+   // on the cluster need to be deleted or retained. This flag can be set only by SuperAdmin while deleting the cluster
+    bool delete_all_cluster_backups = 22;
+
 
 
     // Message for maintaining status of the cluster.
@@ -1323,6 +1329,9 @@ message ClusterDeleteRequest {
     bool delete_restores = 4;
     // indicate the uid of the particular object
     string uid = 5;
+    // delete_all_cluster_backup if set will delete all backups on the cluster
+    // allowed only to super admin Role
+    bool delete_all_cluster_backups = 6;
 }
 
 // Define ClusterInspectResponse struct
