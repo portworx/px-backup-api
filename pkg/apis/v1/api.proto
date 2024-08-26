@@ -452,6 +452,15 @@ message NFSConfig {
     string mount_option = 3;
 }
 
+message completionTimeInfo {
+    // This will store timestamp for the completion of volumes
+    google.protobuf.Timestamp volumes_completion_time = 1;
+    // This will store timestamp for the completion of resources
+    google.protobuf.Timestamp resources_completion_time = 2;
+    // This will store the total completion time of the entire backup/restore
+    google.protobuf.Timestamp total_completion_time = 3;
+}
+
 message BackupLocationInfo {
     Type type = 1;
     string path = 2;
@@ -571,6 +580,8 @@ message BackupInfo {
     bool direct_kdmp = 38;
     // this will store the timestamp, when the retention period of locked backup will be expired
     google.protobuf.Timestamp retention_time = 39;
+    // this will store the completion time of the volumes, resources and total backup
+    completionTimeInfo completion_time_info = 40;
 
     message BackupType {
         Type type = 1;
