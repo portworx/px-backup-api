@@ -3390,6 +3390,10 @@
           "type": "string",
           "format": "date-time",
           "title": "this will store the timestamp, when the retention period of locked backup will be expired"
+        },
+        "completion_time_info": {
+          "$ref": "#/definitions/completionTimeInfo",
+          "title": "this will store the completion time of the volumes, resources and total backup"
         }
       }
     },
@@ -6922,6 +6926,26 @@
         "runAsGroup": {
           "type": "string",
           "format": "int64"
+        }
+      }
+    },
+    "completionTimeInfo": {
+      "type": "object",
+      "properties": {
+        "volumes_completion_time": {
+          "type": "string",
+          "format": "date-time",
+          "title": "This will store timestamp for the completion of volumes"
+        },
+        "resources_completion_time": {
+          "type": "string",
+          "format": "date-time",
+          "title": "This will store timestamp for the completion of resources"
+        },
+        "total_completion_time": {
+          "type": "string",
+          "format": "date-time",
+          "title": "This will store the total completion time of the entire backup/restore"
         }
       }
     }
