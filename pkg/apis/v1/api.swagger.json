@@ -3165,6 +3165,11 @@
           "type": "boolean",
           "format": "boolean",
           "title": "option to take backup as direct kdmp"
+        },
+        "isSyncedBackup": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "this flag will check if the backup is a synced backup"
         }
       },
       "title": "Request message structure for backup create"
@@ -3394,6 +3399,11 @@
         "completion_time_info": {
           "$ref": "#/definitions/completionTimeInfo",
           "title": "this will store the completion time of the volumes, resources and total backup"
+        },
+        "isSyncedBackup": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "this flag will check if the backup is a synced backup"
         }
       }
     },
