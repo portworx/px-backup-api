@@ -2,7 +2,7 @@
 # Do not use directly, use `make docker-build-proto` instead
 #
 
-FROM golang:1.20
+FROM golang:1.23
 ENV GOPATH=/go
 RUN mkdir -p portworx/px-backup-api
 WORKDIR portworx/px-backup-api
