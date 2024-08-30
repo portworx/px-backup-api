@@ -3780,7 +3780,8 @@ type BackupInfo struct {
 	// volume snapshot class mapping for csi based backup <provisioner(string), volumesnapshotclass(string)> (optional)
 	VolumeSnapshotClassMapping map[string]string `protobuf:"bytes,37,rep,name=volume_snapshot_class_mapping,json=volumeSnapshotClassMapping,proto3" json:"volume_snapshot_class_mapping,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// option to take backup as direct kdmp
-	DirectKdmp    bool             `protobuf:"varint,38,opt,name=direct_kdmp,json=directKdmp,proto3" json:"direct_kdmp,omitempty"`
+	DirectKdmp bool `protobuf:"varint,38,opt,name=direct_kdmp,json=directKdmp,proto3" json:"direct_kdmp,omitempty"`
+	// this will store the timestamp, when the retention period of locked backup will be expired
 	RetentionTime *types.Timestamp `protobuf:"bytes,39,opt,name=retention_time,json=retentionTime,proto3" json:"retention_time,omitempty"`
 }
 
@@ -7755,6 +7756,7 @@ type ClusterDeleteRequest struct {
 	Name  string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	// delete_backups indicates whether the backup related to cluster need to
 	// be deleted or retained.
+	// delete_backups is deprecated, not to be used.
 	DeleteBackups bool `protobuf:"varint,3,opt,name=delete_backups,json=deleteBackups,proto3" json:"delete_backups,omitempty"`
 	// delete_restores indicates whether the restore related to cluster  need to
 	// be deleted or retained.
@@ -10324,6 +10326,7 @@ type BackupLocationDeleteRequest struct {
 	Name  string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	// delete_backups indicates whether the cloud backup files need to
 	// be deleted or retained.
+	// delete_backups is deprecated, not to be used.
 	DeleteBackups bool   `protobuf:"varint,3,opt,name=delete_backups,json=deleteBackups,proto3" json:"delete_backups,omitempty"`
 	Uid           string `protobuf:"bytes,4,opt,name=uid,proto3" json:"uid,omitempty"`
 }
