@@ -538,7 +538,7 @@
           },
           {
             "name": "delete_backups",
-            "description": "delete_backups indicates whether the cloud backup files need to\nbe deleted or retained.",
+            "description": "delete_backups indicates whether the cloud backup files need to\nbe deleted or retained.\ndelete_backups is deprecated, not to be used.",
             "in": "query",
             "required": false,
             "type": "boolean",
@@ -1166,7 +1166,7 @@
           },
           {
             "name": "delete_backups",
-            "description": "delete_backups indicates whether the backup related to cluster need to\nbe deleted or retained.",
+            "description": "delete_backups indicates whether the backup related to cluster need to\nbe deleted or retained.\ndelete_backups is deprecated, not to be used.",
             "in": "query",
             "required": false,
             "type": "boolean",
@@ -3295,7 +3295,8 @@
         },
         "retention_time": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "title": "this will store the timestamp, when the retention period of locked backup will be expired"
         }
       }
     },
