@@ -2064,8 +2064,6 @@ message BackupCreateRequest {
     map<string, string> volume_snapshot_class_mapping = 19;
     // option to take backup as direct kdmp 
     bool direct_kdmp = 20;
-    // this flag will check if the backup is a synced backup
-    bool isSyncedBackup = 21;
 
     enum BackupType {
         Invalid = 0;

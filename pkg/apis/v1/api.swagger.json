@@ -3165,11 +3165,6 @@
           "type": "boolean",
           "format": "boolean",
           "title": "option to take backup as direct kdmp"
-        },
-        "isSyncedBackup": {
-          "type": "boolean",
-          "format": "boolean",
-          "title": "this flag will check if the backup is a synced backup"
         }
       },
       "title": "Request message structure for backup create"
