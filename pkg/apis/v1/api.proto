@@ -1159,8 +1159,7 @@ message BackupScheduleInspectResponse {
 message BackupScheduleDeleteRequest {
     string org_id = 1;
     string name = 2;
-    // delete_backups indicates whether the cloud backup files need to
-    // be deleted or retained.
+    // delete_backups is deprecated, not to be used.
     bool delete_backups = 3;
     string uid = 4;
 }
@@ -1334,8 +1333,6 @@ message ClusterInspectResponse { ClusterObject cluster = 1; }
 message ClusterDeleteRequest {
     string org_id = 1;
     string name = 2;
-    // delete_backups indicates whether the backup related to cluster need to
-    // be deleted or retained.
     // delete_backups is deprecated, not to be used.
     bool delete_backups = 3;
     // delete_restores indicates whether the restore related to cluster  need to
@@ -1883,8 +1880,6 @@ message BackupLocationInspectResponse {
 message BackupLocationDeleteRequest {
     string org_id = 1;
     string name = 2;
-    // delete_backups indicates whether the cloud backup files need to
-    // be deleted or retained.
     // delete_backups is deprecated, not to be used.
     bool delete_backups = 3;
     string uid = 4;
