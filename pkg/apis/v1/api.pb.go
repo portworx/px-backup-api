@@ -7015,8 +7015,7 @@ func (m *BackupScheduleInspectResponse) GetBackupSchedule() *BackupScheduleObjec
 type BackupScheduleDeleteRequest struct {
 	OrgId string `protobuf:"bytes,1,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
 	Name  string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	// delete_backups indicates whether the cloud backup files need to
-	// be deleted or retained.
+	// delete_backups is deprecated, not to be used.
 	DeleteBackups bool   `protobuf:"varint,3,opt,name=delete_backups,json=deleteBackups,proto3" json:"delete_backups,omitempty"`
 	Uid           string `protobuf:"bytes,4,opt,name=uid,proto3" json:"uid,omitempty"`
 }
@@ -7754,8 +7753,6 @@ func (m *ClusterInspectResponse) GetCluster() *ClusterObject {
 type ClusterDeleteRequest struct {
 	OrgId string `protobuf:"bytes,1,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
 	Name  string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	// delete_backups indicates whether the backup related to cluster need to
-	// be deleted or retained.
 	// delete_backups is deprecated, not to be used.
 	DeleteBackups bool `protobuf:"varint,3,opt,name=delete_backups,json=deleteBackups,proto3" json:"delete_backups,omitempty"`
 	// delete_restores indicates whether the restore related to cluster  need to
@@ -10324,8 +10321,6 @@ func (m *BackupLocationInspectResponse) GetBackupLocation() *BackupLocationObjec
 type BackupLocationDeleteRequest struct {
 	OrgId string `protobuf:"bytes,1,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
 	Name  string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	// delete_backups indicates whether the cloud backup files need to
-	// be deleted or retained.
 	// delete_backups is deprecated, not to be used.
 	DeleteBackups bool   `protobuf:"varint,3,opt,name=delete_backups,json=deleteBackups,proto3" json:"delete_backups,omitempty"`
 	Uid           string `protobuf:"bytes,4,opt,name=uid,proto3" json:"uid,omitempty"`
