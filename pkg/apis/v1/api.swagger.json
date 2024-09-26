@@ -3297,6 +3297,10 @@
           "type": "string",
           "format": "date-time",
           "title": "this will store the timestamp, when the retention period of locked backup will be expired"
+        },
+        "log_status": {
+          "$ref": "#/definitions/BackupInfologStatusInfo",
+          "title": "This will provide the status of the log collection for the backup"
         }
       }
     },
@@ -3444,6 +3448,17 @@
         "job_security_context": {
           "$ref": "#/definitions/VolumeJobSecurityContext",
           "title": "As part of restrictive PSA setting, if an UID or GID is used during backup then same value should be used during restore (optional)"
+        }
+      }
+    },
+    "BackupInfologStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/logStatusInfoLogStatus"
+        },
+        "reason": {
+          "type": "string"
         }
       }
     },
@@ -6709,6 +6724,17 @@
           "format": "int64"
         }
       }
+    },
+    "logStatusInfoLogStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Pending",
+        "InProgress",
+        "Failed",
+        "Success"
+      ],
+      "default": "Invalid"
     }
   },
   "securityDefinitions": {
