@@ -1254,6 +1254,196 @@
         ]
       }
     },
+    "/v1/kmscredential": {
+      "post": {
+        "summary": "Creates new cloud credential",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/KmsCredentialCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/KmsCredentialCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "KmsCredential"
+        ]
+      },
+      "put": {
+        "summary": "Update given cloud credential details",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/KmsCredentialUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/KmsCredentialUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "KmsCredential"
+        ]
+      }
+    },
+    "/v1/kmscredential/updateownership": {
+      "put": {
+        "summary": "UpdateOwnership updates ownership of existing object",
+        "operationId": "UpdateOwnership",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/KmsCredentialOwnershipUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/KmsCredentialOwnershipUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "KmsCredential"
+        ]
+      }
+    },
+    "/v1/kmscredential/{org_id}": {
+      "get": {
+        "summary": "Enumerate returns a list of cloud credentials",
+        "operationId": "Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/KmsCredentialEnumerateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "include_secrets",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "KmsCredential"
+        ]
+      }
+    },
+    "/v1/kmscredential/{org_id}/{name}/{uid}": {
+      "get": {
+        "summary": "Inspect returns detailed information about the specified cloud credential",
+        "operationId": "Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/KmsCredentialInspectResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "include_secrets",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "KmsCredential"
+        ]
+      },
+      "delete": {
+        "summary": "Delete removes a cloud credential",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/KmsCredentialDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "KmsCredential"
+        ]
+      }
+    },
     "/v1/license": {
       "post": {
         "summary": "Activate activate a new license",
@@ -2955,6 +3145,17 @@
         }
       }
     },
+    "AwsScmConfig": {
+      "type": "object",
+      "properties": {
+        "secretName": {
+          "type": "string"
+        },
+        "secretNamespace": {
+          "type": "string"
+        }
+      }
+    },
     "AzureConfig": {
       "type": "object",
       "properties": {
@@ -2976,6 +3177,17 @@
         "subscription_id": {
           "type": "string",
           "description": "TODO: Need to see if this has to be here or in the backup object."
+        }
+      }
+    },
+    "AzureKvConfig": {
+      "type": "object",
+      "properties": {
+        "secretName": {
+          "type": "string"
+        },
+        "secretNamespace": {
+          "type": "string"
         }
       }
     },
@@ -4277,6 +4489,16 @@
         "type": {
           "$ref": "#/definitions/CloudCredentialInfoType"
         },
+        "kms_credential_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "cloudCred_key_name": {
+          "type": "string"
+        },
+        "kms_enabled": {
+          "type": "boolean",
+          "format": "boolean"
+        },
         "aws_config": {
           "$ref": "#/definitions/AWSConfig"
         },
@@ -4526,6 +4748,16 @@
         },
         "k8s_version": {
           "type": "string"
+        },
+        "kms_credential_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "kubeconfig_key_name": {
+          "type": "string"
+        },
+        "kms_enabled": {
+          "type": "boolean",
+          "format": "boolean"
         }
       }
     },
@@ -4791,6 +5023,127 @@
           "type": "string"
         }
       }
+    },
+    "KmsCredentialCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "kms_credential": {
+          "$ref": "#/definitions/KmsCredentialInfo"
+        }
+      },
+      "title": "Define KmsCredentialCreateRequest struct"
+    },
+    "KmsCredentialCreateResponse": {
+      "type": "object",
+      "properties": {
+        "kms_credential": {
+          "$ref": "#/definitions/KmsCredentialObject"
+        }
+      },
+      "title": "Define KmsCredentialCreateResponse struct"
+    },
+    "KmsCredentialDeleteResponse": {
+      "type": "object",
+      "title": "Define KmsCredentialInspectResponse struct"
+    },
+    "KmsCredentialEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "kms_credentials": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/KmsCredentialObject"
+          }
+        }
+      },
+      "title": "Define KmsCredentialEnumerateResponse struct"
+    },
+    "KmsCredentialInfo": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/KmsCredentialInfoType"
+        },
+        "vault_config": {
+          "$ref": "#/definitions/VaultConfig"
+        },
+        "azure_kv_config": {
+          "$ref": "#/definitions/AzureKvConfig"
+        },
+        "aws_scm_config": {
+          "$ref": "#/definitions/AwsScmConfig"
+        }
+      }
+    },
+    "KmsCredentialInfoType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Vault",
+        "Azurekv",
+        "Awsscm"
+      ],
+      "default": "Invalid"
+    },
+    "KmsCredentialInspectResponse": {
+      "type": "object",
+      "properties": {
+        "kms_credential": {
+          "$ref": "#/definitions/KmsCredentialObject"
+        }
+      },
+      "title": "Define KmsCredentialInspectResponse struct"
+    },
+    "KmsCredentialObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "kms_credential_info": {
+          "$ref": "#/definitions/KmsCredentialInfo"
+        }
+      }
+    },
+    "KmsCredentialOwnershipUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "kms credential name to be updated."
+        },
+        "ownership": {
+          "$ref": "#/definitions/Ownership"
+        },
+        "uid": {
+          "type": "string"
+        }
+      }
+    },
+    "KmsCredentialOwnershipUpdateResponse": {
+      "type": "object"
+    },
+    "KmsCredentialUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "kms_credential": {
+          "$ref": "#/definitions/KmsCredentialInfo"
+        }
+      },
+      "title": "Define KmsCredentialUpdateRequest struct"
+    },
+    "KmsCredentialUpdateResponse": {
+      "type": "object",
+      "title": "Define KmsCredentialUpdateResponse struct"
     },
     "LicenseActivateRequest": {
       "type": "object",
@@ -6662,6 +7015,17 @@
         "end_time": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "VaultConfig": {
+      "type": "object",
+      "properties": {
+        "secretName": {
+          "type": "string"
+        },
+        "secretNamespace": {
+          "type": "string"
         }
       }
     },

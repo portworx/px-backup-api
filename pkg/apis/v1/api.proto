@@ -67,6 +67,9 @@ message ClusterInfo {
     ];
     Provider provider = 17;
     string k8s_version = 18;
+    ObjectRef kms_credential_ref = 19;
+    string kubeconfig_key_name = 20;
+    bool kms_enabled = 21;
 
     // Message for maintaining status of the cluster.
     message StatusInfo {
@@ -221,6 +224,9 @@ message GoogleConfig {
 
 message CloudCredentialInfo {
     Type type = 1;
+    ObjectRef kms_credential_ref = 2;
+    string cloudCred_key_name = 3;
+    bool  kms_enabled = 4;
 
     enum Type {
         Invalid = 0;
@@ -239,11 +245,57 @@ message CloudCredentialInfo {
         RancherConfig rancher_config = 104;
     }
 }
-
 message CloudCredentialObject {
     Metadata metadata = 1
         [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
     CloudCredentialInfo cloud_credential_info = 2;
+}
+
+message VaultConfig {
+    string secretName = 1;
+    string secretNamespace = 2 [
+        (gogoproto.jsontag) = "jsonkey",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
+}
+
+message AwsScmConfig {
+    string secretName = 1;
+    string secretNamespace = 2 [
+        (gogoproto.jsontag) = "jsonkey",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
+}
+
+message AzureKvConfig {
+    string secretName = 1;
+    string secretNamespace = 2 [
+        (gogoproto.jsontag) = "jsonkey",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
+}
+
+message KmsCredentialInfo {
+    Type type = 1;
+
+    enum Type {
+        Invalid = 0;
+        Vault = 1;
+        Azurekv = 2;
+        Awsscm = 3;
+    }
+
+    oneof config {
+        VaultConfig vault_config = 100;
+        AzureKvConfig azure_kv_config = 101;
+        AwsScmConfig aws_scm_config = 102;
+    }
+}
+
+message KmsCredentialObject {
+    Metadata metadata = 1
+        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    KmsCredentialInfo kms_credential_info = 2;
 }
 
 message SchedulePolicyInfo {
@@ -1420,6 +1472,124 @@ message CloudCredentialOwnershipUpdateRequest {
 }
 
 message CloudCredentialOwnershipUpdateResponse {}
+
+service KmsCredential {
+    // Creates new cloud credential
+    rpc Create(KmsCredentialCreateRequest)
+        returns (KmsCredentialCreateResponse) {
+        option (google.api.http) = {
+            post : "/v1/kmscredential"
+            body : "*"
+        };
+    }
+
+    // Update given cloud credential details
+    rpc Update(KmsCredentialUpdateRequest)
+        returns (KmsCredentialUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/kmscredential"
+            body : "*"
+        };
+    }
+
+    // Enumerate returns a list of cloud credentials
+    rpc Enumerate(KmsCredentialEnumerateRequest)
+        returns (KmsCredentialEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/kmscredential/{org_id}"
+        };
+    }
+
+    // Inspect returns detailed information about the specified cloud credential
+    rpc Inspect(KmsCredentialInspectRequest)
+        returns (KmsCredentialInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/kmscredential/{org_id}/{name}/{uid}"
+        };
+    }
+
+    // Delete removes a cloud credential
+    rpc Delete(KmsCredentialDeleteRequest)
+        returns (KmsCredentialDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/kmscredential/{org_id}/{name}/{uid}"
+        };
+    }
+
+    // UpdateOwnership updates ownership of existing object
+    rpc UpdateOwnership(KmsCredentialOwnershipUpdateRequest)
+        returns (KmsCredentialOwnershipUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/kmscredential/updateownership"
+            body : "*"
+        };
+    }
+}
+
+// Define KmsCredentialCreateRequest struct
+message KmsCredentialCreateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    KmsCredentialInfo kms_credential = 2;
+}
+
+// Define KmsCredentialCreateResponse struct
+message KmsCredentialCreateResponse {
+    KmsCredentialObject kms_credential = 1;
+}
+
+// Define KmsCredentialUpdateRequest struct
+message KmsCredentialUpdateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    KmsCredentialInfo kms_credential = 2;
+}
+
+// Define KmsCredentialUpdateResponse struct
+message KmsCredentialUpdateResponse {}
+
+// Define KmsCredentialEnumerateRequest struct
+message KmsCredentialEnumerateRequest {
+    string org_id = 1;
+    bool include_secrets = 2;
+}
+
+// Define KmsCredentialEnumerateResponse struct
+message KmsCredentialEnumerateResponse {
+    repeated KmsCredentialObject kms_credentials = 1;
+}
+
+// Define KmsCredentialInspectRequest struct
+message KmsCredentialInspectRequest {
+    string org_id = 1;
+    string name = 2;
+    bool include_secrets = 3;
+    string uid = 4;
+}
+
+// Define KmsCredentialInspectResponse struct
+message KmsCredentialInspectResponse {
+    KmsCredentialObject kms_credential = 1;
+}
+
+// Define KmsCredentialDeleteRequest struct
+message KmsCredentialDeleteRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+
+// Define KmsCredentialInspectResponse struct
+message KmsCredentialDeleteResponse {}
+
+message KmsCredentialOwnershipUpdateRequest {
+    string org_id = 1;
+    // kms credential name to be updated.
+    string name = 2;
+    Ownership ownership = 3;
+    string uid = 4;
+}
+
+message KmsCredentialOwnershipUpdateResponse {}
+
 
 service Receiver {
     // Create new alert manager receiver
