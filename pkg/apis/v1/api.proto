@@ -583,6 +583,7 @@ message BackupInfo {
     google.protobuf.Timestamp retention_time = 39;
     // this will store the completion time of the volumes, resources and total backup
     completionTimeInfo completion_time_info = 40;
+    repeated string exclude_resource_types = 41;
 
     message BackupType {
         Type type = 1;

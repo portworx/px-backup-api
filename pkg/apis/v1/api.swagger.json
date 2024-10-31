@@ -3394,6 +3394,12 @@
         "completion_time_info": {
           "$ref": "#/definitions/completionTimeInfo",
           "title": "this will store the completion time of the volumes, resources and total backup"
+        },
+        "exclude_resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
