@@ -382,6 +382,7 @@ message BackupScheduleInfo {
     map<string, string> volume_snapshot_class_mapping = 28;
     // option to take backup as direct kdmp 
     bool direct_kdmp = 29;
+    repeated string exclude_resource_types = 30;
 
 
     message BackupType {
