@@ -3165,6 +3165,12 @@
           "type": "boolean",
           "format": "boolean",
           "title": "option to take backup as direct kdmp"
+        },
+        "exclude_resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "title": "Request message structure for backup create"
