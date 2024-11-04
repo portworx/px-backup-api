@@ -1973,6 +1973,24 @@ message MetricsInspectResponse {
     }
 }
 
+service ResourceCollector {
+
+    rpc GetResourceType(GetResourceTypeRequest) returns (GetResourceTypeResponse) {
+        option (google.api.http) = {
+            get : "/v1/getResourceType/{org_id}"
+        };
+    }
+}
+
+message GetResourceTypeRequest {
+	string org_id = 1;
+	ObjectRef cluster_ref = 2;
+}
+
+message GetResourceTypeResponse {
+	repeated string resource_type = 1;
+}
+
 service Backup {
     // Creates a new backup object
     rpc Create(BackupCreateRequest) returns (BackupCreateResponse) {
