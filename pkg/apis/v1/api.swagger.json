@@ -1245,6 +1245,42 @@
         ]
       }
     },
+    "/v1/getResourceType/{org_id}": {
+      "get": {
+        "operationId": "GetResourceType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetResourceTypeResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "cluster_ref.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cluster_ref.uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ResourceCollector"
+        ]
+      }
+    },
     "/v1/health": {
       "get": {
         "summary": "Status checks the health of the server",
@@ -4887,6 +4923,17 @@
             "type": "string"
           },
           "title": "filter based on the object status.\nNeed to pass the string value of the status field of the object ( backup /restore )\nFor example, {\"Success\", \"Failed\"}"
+        }
+      }
+    },
+    "GetResourceTypeResponse": {
+      "type": "object",
+      "properties": {
+        "resource_type": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
