@@ -927,7 +927,9 @@ message SchedulePolicyCreateRequest {
 }
 
 // Define SchedulePolicyCreateResponse struct
-message SchedulePolicyCreateResponse {}
+message SchedulePolicyCreateResponse {
+    SchedulePolicyObject schedule_policy = 1;
+}
 
 // Define SchedulePolicyUpdateRequest struct
 message SchedulePolicyUpdateRequest {
@@ -1083,7 +1085,9 @@ message BackupScheduleCreateRequest {
 }
 
 // Define BackupScheduleCreateResponse struct
-message BackupScheduleCreateResponse {}
+message BackupScheduleCreateResponse {
+    BackupScheduleObject backup_schedule = 1;
+}
 
 // Define BackupScheduleUpdateRequest struct
 message BackupScheduleUpdateRequest {
@@ -1280,7 +1284,9 @@ message ClusterCreateRequest {
 }
 
 // Define ClusterCreateResponse struct
-message ClusterCreateResponse {}
+message ClusterCreateResponse {
+    ClusterObject cluster = 1;
+}
 
 // Define ClusterUpdateRequest struct
 message ClusterUpdateRequest {
@@ -1716,7 +1722,10 @@ message RecipientCreateRequest {
     RecipientInfo recipient_info = 2;
 }
 
-message RecipientCreateResponse {}
+message RecipientCreateResponse {
+    RecipientObject recipient = 1;
+}
+
 
 message RecipientEnumerateRequest {
     string org_id = 1;
@@ -1828,7 +1837,9 @@ message BackupLocationCreateRequest {
 }
 
 // Define BackupLocationCreateResponse struct
-message BackupLocationCreateResponse {}
+message BackupLocationCreateResponse {
+    BackupLocationObject backup_location = 1;
+}
 
 // Define BackupLocationUpdateRequest struct
 message BackupLocationUpdateRequest {
@@ -2076,7 +2087,9 @@ message BackupCreateRequest {
 }
 
 // Response message structure for backup create
-message BackupCreateResponse {}
+message BackupCreateResponse {
+    BackupObject backup = 1;
+}
 
 // Define BackupUpdateRequest struct
 message BackupUpdateRequest {
@@ -2219,7 +2232,9 @@ message RestoreCreateRequest {
 }
 
 // Define RestoreCreateResponse struct
-message RestoreCreateResponse {}
+message RestoreCreateResponse {
+    RestoreObject restore = 1;
+}
 
 // Define RestoreUpdateRequest struct
 message RestoreUpdateRequest {
@@ -2335,7 +2350,9 @@ message RuleCreateRequest {
     RulesInfo rules_info = 2;
 }
 
-message RuleCreateResponse {}
+message RuleCreateResponse {
+    RuleObject rule = 1;
+}
 
 message RuleUpdateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
@@ -2892,7 +2909,9 @@ message RoleCreateRequest {
     string role_id = 3;
 }
 
-message RoleCreateResponse {}
+message RoleCreateResponse {
+    RoleObject role = 1;
+}
 // RoleUpdateRequest defines roleobject update structure
 message RoleUpdateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
