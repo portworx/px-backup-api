@@ -3197,6 +3197,11 @@
     },
     "BackupCreateResponse": {
       "type": "object",
+      "properties": {
+        "backup": {
+          "$ref": "#/definitions/BackupObject"
+        }
+      },
       "title": "Response message structure for backup create"
     },
     "BackupDeleteResponse": {
@@ -3567,6 +3572,11 @@
     },
     "BackupLocationCreateResponse": {
       "type": "object",
+      "properties": {
+        "backup_location": {
+          "$ref": "#/definitions/BackupLocationObject"
+        }
+      },
       "title": "Define BackupLocationCreateResponse struct"
     },
     "BackupLocationDeleteResponse": {
@@ -3887,6 +3897,11 @@
     },
     "BackupScheduleCreateResponse": {
       "type": "object",
+      "properties": {
+        "backup_schedule": {
+          "$ref": "#/definitions/BackupScheduleObject"
+        }
+      },
       "title": "Define BackupScheduleCreateResponse struct"
     },
     "BackupScheduleDeleteResponse": {
@@ -4539,6 +4554,11 @@
     },
     "ClusterCreateResponse": {
       "type": "object",
+      "properties": {
+        "cluster": {
+          "$ref": "#/definitions/ClusterObject"
+        }
+      },
       "title": "Define ClusterCreateResponse struct"
     },
     "ClusterDeleteResponse": {
@@ -5730,7 +5750,12 @@
       }
     },
     "RecipientCreateResponse": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "recipient": {
+          "$ref": "#/definitions/RecipientObject"
+        }
+      }
     },
     "RecipientDeleteResponse": {
       "type": "object"
@@ -5960,6 +5985,11 @@
     },
     "RestoreCreateResponse": {
       "type": "object",
+      "properties": {
+        "restore": {
+          "$ref": "#/definitions/RestoreObject"
+        }
+      },
       "title": "Define RestoreCreateResponse struct"
     },
     "RestoreDeleteResponse": {
@@ -6307,7 +6337,12 @@
       "title": "RoleCreateRequest defines roleobject create structure\nMetadata with each role object\nRoleConfig set of rules over api services for given role object"
     },
     "RoleCreateResponse": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "role": {
+          "$ref": "#/definitions/RoleObject"
+        }
+      }
     },
     "RoleDeleteResponse": {
       "type": "object",
@@ -6403,7 +6438,12 @@
       "title": "Request message for creating rules"
     },
     "RuleCreateResponse": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "rule": {
+          "$ref": "#/definitions/RuleObject"
+        }
+      }
     },
     "RuleDeleteResponse": {
       "type": "object",
@@ -6603,6 +6643,11 @@
     },
     "SchedulePolicyCreateResponse": {
       "type": "object",
+      "properties": {
+        "schedule_policy": {
+          "$ref": "#/definitions/SchedulePolicyObject"
+        }
+      },
       "title": "Define SchedulePolicyCreateResponse struct"
     },
     "SchedulePolicyDeleteResponse": {
