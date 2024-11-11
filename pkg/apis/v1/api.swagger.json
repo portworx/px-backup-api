@@ -3920,6 +3920,10 @@
         "total_count": {
           "type": "string",
           "format": "uint64"
+        },
+        "complete": {
+          "type": "boolean",
+          "format": "boolean"
         }
       },
       "title": "Define BackupScheduleEnumerateResponse struct"
