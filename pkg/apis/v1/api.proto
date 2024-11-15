@@ -382,6 +382,7 @@ message BackupScheduleInfo {
     map<string, string> volume_snapshot_class_mapping = 28;
     // option to take backup as direct kdmp 
     bool direct_kdmp = 29;
+    repeated string exclude_resource_types = 30;
 
 
     message BackupType {
@@ -582,6 +583,7 @@ message BackupInfo {
     google.protobuf.Timestamp retention_time = 39;
     // this will store the completion time of the volumes, resources and total backup
     completionTimeInfo completion_time_info = 40;
+    repeated string exclude_resource_types = 41;
 
     message BackupType {
         Type type = 1;
@@ -1067,6 +1069,7 @@ message BackupScheduleCreateRequest {
     map<string, string> volume_snapshot_class_mapping = 22;
     // option to take backup as direct kdmp 
     bool direct_kdmp = 23;
+    repeated string exclude_resource_types = 24;
 
 
     enum BackupType {
@@ -2071,6 +2074,8 @@ message BackupCreateRequest {
     map<string, string> volume_snapshot_class_mapping = 19;
     // option to take backup as direct kdmp 
     bool direct_kdmp = 20;
+    repeated string exclude_resource_types = 21;
+
 
     enum BackupType {
         Invalid = 0;
