@@ -3165,6 +3165,12 @@
           "type": "boolean",
           "format": "boolean",
           "title": "option to take backup as direct kdmp"
+        },
+        "exclude_resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "title": "Request message structure for backup create"
@@ -3399,6 +3405,12 @@
         "completion_time_info": {
           "$ref": "#/definitions/completionTimeInfo",
           "title": "this will store the completion time of the volumes, resources and total backup"
+        },
+        "exclude_resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -3865,6 +3877,12 @@
           "type": "boolean",
           "format": "boolean",
           "title": "option to take backup as direct kdmp"
+        },
+        "exclude_resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "title": "Define BackupScheduleCreateRequest struct"
@@ -4053,6 +4071,12 @@
           "type": "boolean",
           "format": "boolean",
           "title": "option to take backup as direct kdmp"
+        },
+        "exclude_resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
