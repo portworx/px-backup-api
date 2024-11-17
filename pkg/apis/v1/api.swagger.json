@@ -1988,6 +1988,43 @@
         ]
       }
     },
+    "/v1/resourceType/{org_id}": {
+      "get": {
+        "summary": "ResourceTypes api will return the list of ResourceTypes are support by px-backup for backup.",
+        "operationId": "ResourceTypes",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ResourceTypeResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "cluster_ref.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cluster_ref.uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ResourceCollector"
+        ]
+      }
+    },
     "/v1/restore": {
       "post": {
         "summary": "Creates new restore object in datastore\nIt will also trigger a restore operation on the target cluster",
@@ -5917,6 +5954,17 @@
         },
         "version": {
           "type": "string"
+        }
+      }
+    },
+    "ResourceTypeResponse": {
+      "type": "object",
+      "properties": {
+        "resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
