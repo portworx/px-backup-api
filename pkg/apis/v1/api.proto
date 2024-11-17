@@ -2977,3 +2977,20 @@ message ActivityDataObject {
         Deleted = 5;
     }
 }
+// ResourceCollector service to expose the APIs related to the k8s resources on the cluster.
+service ResourceCollector {
+    // ResourceTypes api will return the list of ResourceTypes are support by px-backup for backup.
+    rpc ResourceTypes(ResourceTypeRequest) returns (ResourceTypeResponse) {
+        option (google.api.http) = {
+            get : "/v1/resourceType/{org_id}"
+        };
+    }
+}
+message ResourceTypeRequest {
+	string org_id = 1;
+	ObjectRef cluster_ref = 2;
+}
+message ResourceTypeResponse {
+	repeated string resource_types = 1;
+}
+
