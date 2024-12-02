@@ -3865,6 +3865,11 @@
           "type": "boolean",
           "format": "boolean",
           "title": "option to take backup as direct kdmp"
+        },
+        "parallel_backup": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "option to enable parallel schedule backups."
         }
       },
       "title": "Define BackupScheduleCreateRequest struct"
@@ -4049,6 +4054,11 @@
           "type": "boolean",
           "format": "boolean",
           "title": "option to take backup as direct kdmp"
+        },
+        "parallel_backup": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "option to enable parallel schedule backups."
         }
       }
     },

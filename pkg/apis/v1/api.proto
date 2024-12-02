@@ -382,6 +382,8 @@ message BackupScheduleInfo {
     map<string, string> volume_snapshot_class_mapping = 28;
     // option to take backup as direct kdmp 
     bool direct_kdmp = 29;
+    // option to enable parallel schedule backups.
+    bool parallel_backup = 30;
 
 
     message BackupType {
@@ -1067,7 +1069,8 @@ message BackupScheduleCreateRequest {
     map<string, string> volume_snapshot_class_mapping = 22;
     // option to take backup as direct kdmp 
     bool direct_kdmp = 23;
-
+    // option to enable parallel schedule backups.
+    bool parallel_backup = 24;
 
     enum BackupType {
         Invalid = 0;
