@@ -4912,6 +4912,23 @@
         },
         "auth_password": {
           "type": "string"
+        },
+        "use_custom_certificate": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "Use custom certificate for SMTP server"
+        },
+        "cert_file": {
+          "type": "string",
+          "title": "Certificate file content"
+        },
+        "key_file": {
+          "type": "string",
+          "title": "Key file content"
+        },
+        "ca_cert_file": {
+          "type": "string",
+          "title": "CA certificate file content"
         }
       }
     },
