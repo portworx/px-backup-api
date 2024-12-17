@@ -586,6 +586,8 @@ message BackupInfo {
     // this will store the completion time of the volumes, resources and total backup
     completionTimeInfo completion_time_info = 40;
     repeated string exclude_resource_types = 41;
+    // this will be set when the backup has been created by a parallel backup enabled scheduled
+    bool parallel_backup = 42;
 
     message BackupType {
         Type type = 1;
