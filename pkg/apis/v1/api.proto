@@ -385,6 +385,8 @@ message BackupScheduleInfo {
     repeated string exclude_resource_types = 30;
     // option to enable parallel schedule backups.
     bool parallel_backup = 31;
+    // option to enable to keep the CR status of the resources in the backupschedule.
+    bool keep_cr_status = 32;
 
 
     message BackupType {
@@ -588,6 +590,8 @@ message BackupInfo {
     repeated string exclude_resource_types = 41;
     // this will be set when the backup has been created by a parallel backup enabled scheduled
     bool parallel_backup = 42;
+    // option to enable to keep the CR status of the resources in the backup.
+    bool keep_cr_status = 43;
 
     message BackupType {
         Type type = 1;
@@ -1074,9 +1078,10 @@ message BackupScheduleCreateRequest {
     // option to take backup as direct kdmp 
     bool direct_kdmp = 23;
     repeated string exclude_resource_types = 24;
-
     // option to enable parallel schedule backups.
     bool parallel_backup = 25;
+    // option to enable to keep the CR status of the resources in the backupschedule.
+    bool keep_cr_status = 26;
 
     enum BackupType {
         Invalid = 0;
@@ -2087,6 +2092,8 @@ message BackupCreateRequest {
     // option to take backup as direct kdmp 
     bool direct_kdmp = 20;
     repeated string exclude_resource_types = 21;
+    // option to enable to keep the CR status of the resources in the backup.
+    bool keep_cr_status = 22;
 
 
     enum BackupType {
