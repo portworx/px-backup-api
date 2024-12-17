@@ -3208,6 +3208,11 @@
           "items": {
             "type": "string"
           }
+        },
+        "keep_cr_status": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "option to enable to keep the CR status of the resources in the backup."
         }
       },
       "title": "Request message structure for backup create"
@@ -3448,6 +3453,11 @@
           "items": {
             "type": "string"
           }
+        },
+        "keep_cr_status": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "option to enable to keep the CR status of the resources in the backup."
         }
       }
     },
@@ -3925,6 +3935,11 @@
           "type": "boolean",
           "format": "boolean",
           "description": "option to enable parallel schedule backups."
+        },
+        "keep_cr_status": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "option to enable to keep the CR status of the resources in the backupschedule."
         }
       },
       "title": "Define BackupScheduleCreateRequest struct"
@@ -4124,6 +4139,11 @@
           "type": "boolean",
           "format": "boolean",
           "description": "option to enable parallel schedule backups."
+        },
+        "keep_cr_status": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "option to enable to keep the CR status of the resources in the backupschedule."
         }
       }
     },
