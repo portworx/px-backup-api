@@ -3448,6 +3448,11 @@
           "items": {
             "type": "string"
           }
+        },
+        "parallel_backup": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "this will be set when the backup has been created by a parallel backup enabled scheduled"
         }
       }
     },
