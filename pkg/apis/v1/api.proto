@@ -383,6 +383,8 @@ message BackupScheduleInfo {
     // option to take backup as direct kdmp 
     bool direct_kdmp = 29;
     repeated string exclude_resource_types = 30;
+    // option to enable parallel schedule backups.
+    bool parallel_backup = 31;
 
 
     message BackupType {
@@ -584,6 +586,8 @@ message BackupInfo {
     // this will store the completion time of the volumes, resources and total backup
     completionTimeInfo completion_time_info = 40;
     repeated string exclude_resource_types = 41;
+    // this will be set when the backup has been created by a parallel backup enabled scheduled
+    bool parallel_backup = 42;
 
     message BackupType {
         Type type = 1;
@@ -1071,6 +1075,8 @@ message BackupScheduleCreateRequest {
     bool direct_kdmp = 23;
     repeated string exclude_resource_types = 24;
 
+    // option to enable parallel schedule backups.
+    bool parallel_backup = 25;
 
     enum BackupType {
         Invalid = 0;
@@ -1123,6 +1129,8 @@ message BackupScheduleUpdateRequest {
     map<string, string> volume_snapshot_class_mapping = 17;
     // Skip auto rules for VirtualMachine Backup Object type
     bool skip_vm_auto_exec_rules = 18;
+    // option to enable parallel schedule backups.
+    bool parallel_backup = 19;
 }
 
 // Define BackupScheduleUpdateResponse struct

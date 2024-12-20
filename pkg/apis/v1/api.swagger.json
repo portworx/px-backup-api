@@ -3448,6 +3448,11 @@
           "items": {
             "type": "string"
           }
+        },
+        "parallel_backup": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "this will be set when the backup has been created by a parallel backup enabled scheduled"
         }
       }
     },
@@ -3920,6 +3925,11 @@
           "items": {
             "type": "string"
           }
+        },
+        "parallel_backup": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "option to enable parallel schedule backups."
         }
       },
       "title": "Define BackupScheduleCreateRequest struct"
@@ -4114,6 +4124,11 @@
           "items": {
             "type": "string"
           }
+        },
+        "parallel_backup": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "option to enable parallel schedule backups."
         }
       }
     },
@@ -4318,6 +4333,11 @@
           "type": "boolean",
           "format": "boolean",
           "title": "Skip auto rules for VirtualMachine Backup Object type"
+        },
+        "parallel_backup": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "option to enable parallel schedule backups."
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
