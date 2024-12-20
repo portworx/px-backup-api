@@ -11,6 +11,12 @@ PROTOC_FILES := pkg/apis/v1/api.proto
 PROTOC_FILES += pkg/apis/v1/common.proto
 endif
 
+ifdef macBuild
+    PLATFORM_FLAG = --platform=linux/amd64
+else
+    PLATFORM_FLAG =
+endif
+
 PROTOC_ZIP := protoc-3.14.0-linux-x86_64.zip
 
 GO111MODULE := on
@@ -20,7 +26,7 @@ GO111MODULE := on
 all: docker-build-proto
 
 docker-build-proto:
-	docker build . -t px-backup-api-build
+	docker build $(PLATFORM_FLAG) . -t px-backup-api-build
 	docker run  --rm  -v ${PWD}:/go/portworx/px-backup-api  px-backup-api-build /bin/bash -c "make proto pretest"
 
 start-build-container:
