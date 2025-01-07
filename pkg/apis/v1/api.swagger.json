@@ -4938,17 +4938,9 @@
           "format": "boolean",
           "title": "Allow custom certificate for SMTP server client creation"
         },
-        "cert_file": {
-          "type": "string",
-          "title": "Certificate file content"
-        },
-        "key_file": {
-          "type": "string",
-          "title": "Key file content"
-        },
-        "ca_cert_file": {
-          "type": "string",
-          "title": "CA certificate file content"
+        "tls_config": {
+          "$ref": "#/definitions/TlsConfig",
+          "title": "TLS configuration for SMTP server client creation"
         }
       }
     },
@@ -7011,6 +7003,23 @@
         "end_time": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "TlsConfig": {
+      "type": "object",
+      "properties": {
+        "cert_file": {
+          "type": "string",
+          "title": "Certificate file content"
+        },
+        "key_file": {
+          "type": "string",
+          "title": "Key file content"
+        },
+        "ca_cert_file": {
+          "type": "string",
+          "title": "CA certificate file content"
         }
       }
     },
