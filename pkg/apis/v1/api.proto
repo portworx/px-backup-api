@@ -1580,21 +1580,8 @@ message EmailConfig {
     ];
     // Allow custom certificate for SMTP server client creation
     bool allow_custom_certificate = 9;
-    // Certificate file content
-    string cert_file = 10 [
-        (gogoproto.jsontag) = "certfile",
-        (gogoproto.moretags) = "secure:\"true\""
-    ];
-    // Key file content
-    string key_file = 11 [
-        (gogoproto.jsontag) = "keyfile",
-        (gogoproto.moretags) = "secure:\"true\""
-    ];
-    // CA certificate file content
-    string ca_cert_file = 12 [
-        (gogoproto.jsontag) = "cacertfile",
-        (gogoproto.moretags) = "secure:\"true\""
-    ];
+    // TLS configuration for SMTP server client creation
+    TlsConfig tls_config = 10;
 }
 
 message ReceiverInfo {
