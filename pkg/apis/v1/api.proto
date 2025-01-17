@@ -593,7 +593,7 @@ message BackupInfo {
     // option to enable to keep the CR status of the resources in the backup.
     bool keep_cr_status = 43;
     // This will be set when all volumes are PXD and their local snapshots are completed.
-    bool are_all_PXDvolumes_localsnapshots_completed = 44;
+    bool isBackupReady_for_PXDLocalSnapshotRestore = 44;
 
     message BackupType {
         Type type = 1;
