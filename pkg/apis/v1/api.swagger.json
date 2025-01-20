@@ -3463,6 +3463,11 @@
           "type": "boolean",
           "format": "boolean",
           "description": "option to enable to keep the CR status of the resources in the backup."
+        },
+        "isBackupReady_for_PXDLocalSnapshotRestore": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "This will be set when all volumes are PXD and their local snapshots are completed."
         }
       }
     },
