@@ -3957,7 +3957,7 @@ type BackupInfo struct {
 	ParallelBackup bool `protobuf:"varint,42,opt,name=parallel_backup,json=parallelBackup,proto3" json:"parallel_backup,omitempty"`
 	// option to enable to keep the CR status of the resources in the backup.
 	KeepCrStatus bool `protobuf:"varint,43,opt,name=keep_cr_status,json=keepCrStatus,proto3" json:"keep_cr_status,omitempty"`
-	// This will be set when all volumes are PXD and their local snapshots are completed.
+	// This will be set when all volumes are only PXD and their local snapshots are completed and backup is ready for restore from local snapshot.
 	IsBackupReadyFor_PXDLocalSnapshotRestore bool `protobuf:"varint,44,opt,name=isBackupReady_for_PXDLocalSnapshotRestore,json=isBackupReadyForPXDLocalSnapshotRestore,proto3" json:"isBackupReady_for_PXDLocalSnapshotRestore,omitempty"`
 }
 
