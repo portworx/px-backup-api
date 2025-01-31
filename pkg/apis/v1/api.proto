@@ -285,9 +285,7 @@ message AzureKvConfig {
 
 message KmsCredentialInfo {
     Type type = 1;
-    repeated ObjectRef cloud_cred_backref = 2;
-    repeated ObjectRef cluster_backref = 3;
-    StatusInfo status = 4;
+    StatusInfo status = 2;
     enum Type {
         Invalid = 0;
         Vault = 1;
@@ -1459,7 +1457,7 @@ message UnShareClusterRequest{
 message UnShareClusterResponse{}
 
 service KmsCredential {
-    // Creates new cloud credential
+    // Creates new kms credential
     rpc Create(KmsCredentialCreateRequest)
         returns (KmsCredentialCreateResponse) {
         option (google.api.http) = {
@@ -1467,7 +1465,7 @@ service KmsCredential {
             body : "*"
         };
     }
-    // Update given cloud credential details
+    // Update given kms credential details
     rpc Update(KmsCredentialUpdateRequest)
         returns (KmsCredentialUpdateResponse) {
         option (google.api.http) = {
@@ -1475,21 +1473,21 @@ service KmsCredential {
             body : "*"
         };
     }
-    // Enumerate returns a list of cloud credentials
+    // Enumerate returns a list of kms credentials
     rpc Enumerate(KmsCredentialEnumerateRequest)
         returns (KmsCredentialEnumerateResponse) {
         option (google.api.http) = {
             get : "/v1/kmscredential/{org_id}"
         };
     }
-    // Inspect returns detailed information about the specified cloud credential
+    // Inspect returns detailed information about the specified kms credential
     rpc Inspect(KmsCredentialInspectRequest)
         returns (KmsCredentialInspectResponse) {
         option (google.api.http) = {
             get : "/v1/kmscredential/{org_id}/{name}/{uid}"
         };
     }
-    // Delete removes a cloud credential
+    // Delete removes a kms credential
     rpc Delete(KmsCredentialDeleteRequest)
         returns (KmsCredentialDeleteResponse) {
         option (google.api.http) = {
@@ -1518,6 +1516,20 @@ service KmsCredential {
         option (google.api.http) = {
             put : "/v1/kmscredential/updateownership"
             body : "*"
+        };
+    }
+    // GetReferencedObjectList returns list of referenced for particular KMS
+    rpc GetReferencedKMSObject(GetReferencedKMSObjectListRequest)
+        returns (GetReferencedKMSObjectListResponse) {
+        option (google.api.http) = {
+            get : "/v1/kmscredential/getreferencedobjectlist"
+        };
+    }
+    // GetKeysForKMS returns keys stored in the keypath given
+    rpc GetKeysForKMS(GetKeysForKMSRequest)
+        returns (GetKeysForKMSResponse) {
+        option (google.api.http) = {
+            get : "/v1/kmscredential/getkeysforkms"
         };
     }
 }
@@ -1592,6 +1604,30 @@ message KmsCredentialOwnershipUpdateRequest {
 }
 // Define KmsCredentialOwnershipUpdateResponse struct
 message KmsCredentialOwnershipUpdateResponse {}
+
+// Define GetReferencedKMSObjectListRequest struct
+message GetReferencedKMSObjectListRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+// Define GetReferencedKMSObjectListResponse struct
+message GetReferencedKMSObjectListResponse {
+    repeated Metadata cloud_cred_ref = 1;
+    repeated Metadata cluster_ref = 2;
+}
+
+// Define GetKeysForKMSRequest struct
+message GetKeysForKMSRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    string key_path = 4;
+}
+// Define GetKeysForKMSResponse struct
+message GetKeysForKMSResponse {
+    repeated string keys = 1;
+}
 
 service CloudCredential {
     // Creates new cloud credential

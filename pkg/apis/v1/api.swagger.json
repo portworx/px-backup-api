@@ -1264,7 +1264,7 @@
     },
     "/v1/kmscredential": {
       "post": {
-        "summary": "Creates new cloud credential",
+        "summary": "Creates new kms credential",
         "operationId": "Create",
         "responses": {
           "200": {
@@ -1289,7 +1289,7 @@
         ]
       },
       "put": {
-        "summary": "Update given cloud credential details",
+        "summary": "Update given kms credential details",
         "operationId": "Update",
         "responses": {
           "200": {
@@ -1307,6 +1307,86 @@
             "schema": {
               "$ref": "#/definitions/KmsCredentialUpdateRequest"
             }
+          }
+        ],
+        "tags": [
+          "KmsCredential"
+        ]
+      }
+    },
+    "/v1/kmscredential/getkeysforkms": {
+      "get": {
+        "summary": "GetKeysForKMS returns keys stored in the keypath given",
+        "operationId": "GetKeysForKMS",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetKeysForKMSResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "key_path",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "KmsCredential"
+        ]
+      }
+    },
+    "/v1/kmscredential/getreferencedobjectlist": {
+      "get": {
+        "summary": "GetReferencedObjectList returns list of referenced for particular KMS",
+        "operationId": "GetReferencedKMSObject",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetReferencedKMSObjectListResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -1397,7 +1477,7 @@
     },
     "/v1/kmscredential/{org_id}": {
       "get": {
-        "summary": "Enumerate returns a list of cloud credentials",
+        "summary": "Enumerate returns a list of kms credentials",
         "operationId": "Enumerate",
         "responses": {
           "200": {
@@ -1429,7 +1509,7 @@
     },
     "/v1/kmscredential/{org_id}/{name}/{uid}": {
       "get": {
-        "summary": "Inspect returns detailed information about the specified cloud credential",
+        "summary": "Inspect returns detailed information about the specified kms credential",
         "operationId": "Inspect",
         "responses": {
           "200": {
@@ -1471,7 +1551,7 @@
         ]
       },
       "delete": {
-        "summary": "Delete removes a cloud credential",
+        "summary": "Delete removes a kms credential",
         "operationId": "Delete",
         "responses": {
           "200": {
@@ -5309,6 +5389,36 @@
         }
       }
     },
+    "GetKeysForKMSResponse": {
+      "type": "object",
+      "properties": {
+        "keys": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "Define GetKeysForKMSResponse struct"
+    },
+    "GetReferencedKMSObjectListResponse": {
+      "type": "object",
+      "properties": {
+        "cloud_cred_ref": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Metadata"
+          }
+        },
+        "cluster_ref": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Metadata"
+          }
+        }
+      },
+      "title": "Define GetReferencedKMSObjectListResponse struct"
+    },
     "GoogleConfig": {
       "type": "object",
       "properties": {
@@ -5373,18 +5483,6 @@
       "properties": {
         "type": {
           "$ref": "#/definitions/KmsCredentialInfoType"
-        },
-        "cloud_cred_backref": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ObjectRef"
-          }
-        },
-        "cluster_backref": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ObjectRef"
-          }
         },
         "status": {
           "$ref": "#/definitions/KmsCredentialInfoStatusInfo"
