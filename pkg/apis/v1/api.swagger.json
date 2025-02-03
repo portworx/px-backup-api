@@ -3208,6 +3208,11 @@
           "items": {
             "type": "string"
           }
+        },
+        "keep_cr_status": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "option to enable to keep the CR status of the resources in the backup."
         }
       },
       "title": "Request message structure for backup create"
@@ -3448,6 +3453,21 @@
           "items": {
             "type": "string"
           }
+        },
+        "parallel_backup": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "this will be set when the backup has been created by a parallel backup enabled scheduled"
+        },
+        "keep_cr_status": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "option to enable to keep the CR status of the resources in the backup."
+        },
+        "isBackupReady_for_PXDLocalSnapshotRestore": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "This will be set when all volumes are only PXD and their local snapshots are completed and backup is ready for restore from local snapshot."
         }
       }
     },
@@ -3920,6 +3940,16 @@
           "items": {
             "type": "string"
           }
+        },
+        "parallel_backup": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "option to enable parallel schedule backups."
+        },
+        "keep_cr_status": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "option to enable to keep the CR status of the resources in the backupschedule."
         }
       },
       "title": "Define BackupScheduleCreateRequest struct"
@@ -4114,6 +4144,16 @@
           "items": {
             "type": "string"
           }
+        },
+        "parallel_backup": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "option to enable parallel schedule backups."
+        },
+        "keep_cr_status": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "option to enable to keep the CR status of the resources in the backupschedule."
         }
       }
     },
@@ -4318,6 +4358,11 @@
           "type": "boolean",
           "format": "boolean",
           "title": "Skip auto rules for VirtualMachine Backup Object type"
+        },
+        "parallel_backup": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "option to enable parallel schedule backups."
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
@@ -4912,6 +4957,15 @@
         },
         "auth_password": {
           "type": "string"
+        },
+        "allow_custom_certificate": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "Allow custom certificate for SMTP server client creation"
+        },
+        "tls_config": {
+          "$ref": "#/definitions/TlsConfig",
+          "title": "TLS configuration for SMTP server client creation"
         }
       }
     },
@@ -6974,6 +7028,23 @@
         "end_time": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "TlsConfig": {
+      "type": "object",
+      "properties": {
+        "cert_file": {
+          "type": "string",
+          "title": "Certificate file content"
+        },
+        "key_file": {
+          "type": "string",
+          "title": "Key file content"
+        },
+        "ca_cert_file": {
+          "type": "string",
+          "title": "CA certificate file content"
         }
       }
     },
