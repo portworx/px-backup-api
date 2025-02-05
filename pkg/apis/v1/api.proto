@@ -1554,6 +1554,8 @@ message KmsCredentialUpdateResponse {}
 message KmsCredentialEnumerateRequest {
     string org_id = 1;
     bool include_secrets = 2;
+    // Optional arguments for enumeration
+    EnumerateOptions enumerate_options = 3 [ (gogoproto.embed) = true ];
 }
 // Define KmsCredentialEnumerateResponse struct
 message KmsCredentialEnumerateResponse {
