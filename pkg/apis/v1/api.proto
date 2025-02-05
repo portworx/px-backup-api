@@ -1554,10 +1554,14 @@ message KmsCredentialUpdateResponse {}
 message KmsCredentialEnumerateRequest {
     string org_id = 1;
     bool include_secrets = 2;
+    // Optional arguments for enumeration
+    EnumerateOptions enumerate_options = 3;
 }
 // Define KmsCredentialEnumerateResponse struct
 message KmsCredentialEnumerateResponse {
     repeated KmsCredentialObject kms_credentials = 1;
+    uint64 total_count = 2;
+    bool complete = 3;
 }
 // Define KmsCredentialInspectRequest struct
 message KmsCredentialInspectRequest {
