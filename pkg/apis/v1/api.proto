@@ -1473,6 +1473,20 @@ service KmsCredential {
             body : "*"
         };
     }
+    // GetReferencedObjectList returns list of referenced for particular KMS
+    rpc GetReferencedKMSObject(GetReferencedKMSObjectListRequest)
+        returns (GetReferencedKMSObjectListResponse) {
+        option (google.api.http) = {
+            get : "/v1/kmscredential/getreferencedobjectlist"
+        };
+    }
+    // GetKeysForKMS returns keys stored in the keypath given
+    rpc GetKeysForKMS(GetKeysForKMSRequest)
+        returns (GetKeysForKMSResponse) {
+        option (google.api.http) = {
+            get : "/v1/kmscredential/getkeysforkms"
+        };
+    }
     // Enumerate returns a list of kms credentials
     rpc Enumerate(KmsCredentialEnumerateRequest)
         returns (KmsCredentialEnumerateResponse) {
@@ -1516,20 +1530,6 @@ service KmsCredential {
         option (google.api.http) = {
             put : "/v1/kmscredential/updateownership"
             body : "*"
-        };
-    }
-    // GetReferencedObjectList returns list of referenced for particular KMS
-    rpc GetReferencedKMSObject(GetReferencedKMSObjectListRequest)
-        returns (GetReferencedKMSObjectListResponse) {
-        option (google.api.http) = {
-            get : "/v1/kmscredential/getreferencedobjectlist"
-        };
-    }
-    // GetKeysForKMS returns keys stored in the keypath given
-    rpc GetKeysForKMS(GetKeysForKMSRequest)
-        returns (GetKeysForKMSResponse) {
-        option (google.api.http) = {
-            get : "/v1/kmscredential/getkeysforkms"
         };
     }
 }
