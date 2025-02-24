@@ -78,9 +78,10 @@ message ClusterInfo {
    // delete_all_cluster_backups indicates whether all the backups(created by cluster owner, super admins and all the shared users)
    // on the cluster need to be deleted or retained. This flag can be set only by SuperAdmin while deleting the cluster
     bool delete_all_cluster_backups = 22;
-    ObjectRef kms_credential_ref = 23;
-    string kubeconfig_key_name = 24;
-    bool kms_enabled = 25;
+    bool kms_enabled = 23;
+    ObjectRef kms_credential_ref = 24;
+    string kubeconfig_key_name = 25;
+    
 
 
 
@@ -1349,6 +1350,9 @@ message ClusterCreateRequest {
     ];
     // This is optional field and used by BaaS only
     Provider provider = 10;
+    bool kms_enabled = 11;
+    ObjectRef kms_credential_ref = 12;
+    string kubeconfig_key_name = 13;
      // Cloud provider type
     enum Provider {
         Invalid = 0;
@@ -1377,6 +1381,9 @@ message ClusterUpdateRequest {
     string cloud_credential = 4;
     ObjectRef cloud_credential_ref = 5;
     ObjectRef platform_credential_ref = 6;
+    bool kms_enabled = 7;
+    ObjectRef kms_credential_ref = 8;
+    string kubeconfig_key_name = 9;
 }
 
 // Define ClusterUpdateResponse struct
