@@ -1314,15 +1314,15 @@
         ]
       }
     },
-    "/v1/kmscredential/getkeysforkms": {
+    "/v1/kmscredential/getkeysfromkms": {
       "get": {
-        "summary": "GetKeysForKMS returns keys stored in the keypath given",
-        "operationId": "GetKeysForKMS",
+        "summary": "GetKeysFromKMS returns keys stored in the keypath given",
+        "operationId": "GetKeysFromKMS",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/GetKeysForKMSResponse"
+              "$ref": "#/definitions/GetKeysFromKMSResponse"
             }
           }
         },
@@ -1357,6 +1357,37 @@
         ]
       }
     },
+    "/v1/kmscredential/getreferencedcount": {
+      "get": {
+        "summary": "GetReferencedCount returns list of referenced object count for particular KMS",
+        "operationId": "GetReferencedCount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetReferencedCountResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "KmsCredential"
+        ]
+      }
+    },
     "/v1/kmscredential/getreferencedobjectlist": {
       "get": {
         "summary": "GetReferencedObjectList returns list of referenced for particular KMS",
@@ -1372,12 +1403,6 @@
         "parameters": [
           {
             "name": "org_id",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "name",
             "in": "query",
             "required": false,
             "type": "string"
@@ -4950,7 +4975,7 @@
         "kms_credential_ref": {
           "$ref": "#/definitions/ObjectRef"
         },
-        "cloudcred_key_name": {
+        "cloudcred_key_path": {
           "type": "string"
         },
         "kms_enabled": {
@@ -5111,7 +5136,7 @@
         "kms_credential_ref": {
           "$ref": "#/definitions/ObjectRef"
         },
-        "kubeconfig_key_name": {
+        "kubeconfig_key_path": {
           "type": "string"
         }
       },
@@ -5252,7 +5277,7 @@
         "kms_credential_ref": {
           "$ref": "#/definitions/ObjectRef"
         },
-        "kubeconfig_key_name": {
+        "kubeconfig_key_path": {
           "type": "string"
         }
       }
@@ -5369,7 +5394,7 @@
         "kms_credential_ref": {
           "$ref": "#/definitions/ObjectRef"
         },
-        "kubeconfig_key_name": {
+        "kubeconfig_key_path": {
           "type": "string"
         }
       },
@@ -5517,7 +5542,7 @@
         }
       }
     },
-    "GetKeysForKMSResponse": {
+    "GetKeysFromKMSResponse": {
       "type": "object",
       "properties": {
         "keys": {
@@ -5527,7 +5552,21 @@
           }
         }
       },
-      "title": "Define GetKeysForKMSResponse struct"
+      "title": "Define GetKeysFromKMSResponse struct"
+    },
+    "GetReferencedCountResponse": {
+      "type": "object",
+      "properties": {
+        "cloud_cred_ref_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "cluster_ref_count": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "title": "Define GetReferencedCountResponse struct"
     },
     "GetReferencedKMSObjectListResponse": {
       "type": "object",
