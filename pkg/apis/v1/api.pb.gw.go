@@ -657,18 +657,18 @@ func request_KmsCredential_GetReferencedKMSObject_0(ctx context.Context, marshal
 }
 
 var (
-	filter_KmsCredential_GetKeysForKMS_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+	filter_KmsCredential_GetReferencedCount_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_KmsCredential_GetKeysForKMS_0(ctx context.Context, marshaler runtime.Marshaler, client KmsCredentialClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetKeysForKMSRequest
+func request_KmsCredential_GetReferencedCount_0(ctx context.Context, marshaler runtime.Marshaler, client KmsCredentialClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetReferencedCountRequest
 	var metadata runtime.ServerMetadata
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_KmsCredential_GetKeysForKMS_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_KmsCredential_GetReferencedCount_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.GetKeysForKMS(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.GetReferencedCount(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
@@ -3533,7 +3533,7 @@ func RegisterKmsCredentialHandlerClient(ctx context.Context, mux *runtime.ServeM
 
 	})
 
-	mux.Handle("GET", pattern_KmsCredential_GetKeysForKMS_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_KmsCredential_GetReferencedCount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -3542,14 +3542,14 @@ func RegisterKmsCredentialHandlerClient(ctx context.Context, mux *runtime.ServeM
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_KmsCredential_GetKeysForKMS_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_KmsCredential_GetReferencedCount_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_KmsCredential_GetKeysForKMS_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_KmsCredential_GetReferencedCount_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -3683,7 +3683,7 @@ var (
 
 	pattern_KmsCredential_GetReferencedKMSObject_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "kmscredential", "getreferencedobjectlist"}, ""))
 
-	pattern_KmsCredential_GetKeysForKMS_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "kmscredential", "getkeysforkms"}, ""))
+	pattern_KmsCredential_GetReferencedCount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "kmscredential", "getreferencedcount"}, ""))
 
 	pattern_KmsCredential_Enumerate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "kmscredential", "org_id"}, ""))
 
@@ -3705,7 +3705,7 @@ var (
 
 	forward_KmsCredential_GetReferencedKMSObject_0 = runtime.ForwardResponseMessage
 
-	forward_KmsCredential_GetKeysForKMS_0 = runtime.ForwardResponseMessage
+	forward_KmsCredential_GetReferencedCount_0 = runtime.ForwardResponseMessage
 
 	forward_KmsCredential_Enumerate_0 = runtime.ForwardResponseMessage
 
