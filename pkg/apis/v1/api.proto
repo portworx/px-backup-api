@@ -80,7 +80,7 @@ message ClusterInfo {
     bool delete_all_cluster_backups = 22;
     bool kms_enabled = 23;
     ObjectRef kms_credential_ref = 24;
-    string kubeconfig_key_name = 25;
+    string kubeconfig_key_path = 25;
     
 
 
@@ -239,7 +239,7 @@ message GoogleConfig {
 message CloudCredentialInfo {
     Type type = 1;
     ObjectRef kms_credential_ref = 2;
-    string cloudcred_key_name = 3;
+    string cloudcred_key_path = 3;
     bool  kms_enabled = 4;
     enum Type {
         Invalid = 0;
@@ -1352,7 +1352,7 @@ message ClusterCreateRequest {
     Provider provider = 10;
     bool kms_enabled = 11;
     ObjectRef kms_credential_ref = 12;
-    string kubeconfig_key_name = 13;
+    string kubeconfig_key_path = 13;
      // Cloud provider type
     enum Provider {
         Invalid = 0;
@@ -1383,7 +1383,7 @@ message ClusterUpdateRequest {
     ObjectRef platform_credential_ref = 6;
     bool kms_enabled = 7;
     ObjectRef kms_credential_ref = 8;
-    string kubeconfig_key_name = 9;
+    string kubeconfig_key_path = 9;
 }
 
 // Define ClusterUpdateResponse struct
@@ -1487,11 +1487,11 @@ service KmsCredential {
             get : "/v1/kmscredential/getreferencedobjectlist"
         };
     }
-    // GetKeysForKMS returns keys stored in the keypath given
-    rpc GetKeysForKMS(GetKeysForKMSRequest)
-        returns (GetKeysForKMSResponse) {
+    // GetReferencedCount returns list of referenced object count for particular KMS
+    rpc GetReferencedCount(GetReferencedCountRequest)
+        returns (GetReferencedCountResponse) {
         option (google.api.http) = {
-            get : "/v1/kmscredential/getkeysforkms"
+            get : "/v1/kmscredential/getreferencedcount"
         };
     }
     // Enumerate returns a list of kms credentials
@@ -1546,17 +1546,21 @@ message KmsCredentialCreateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
     KmsCredentialInfo kms_credential = 2;
 }
+
 // Define KmsCredentialCreateResponse struct
 message KmsCredentialCreateResponse {
     KmsCredentialObject kms_credential = 1;
 }
+
 // Define KmsCredentialUpdateRequest struct
 message KmsCredentialUpdateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
     KmsCredentialInfo kms_credential = 2;
 }
+
 // Define KmsCredentialUpdateResponse struct
 message KmsCredentialUpdateResponse {}
+
 // Define KmsCredentialEnumerateRequest struct
 message KmsCredentialEnumerateRequest {
     string org_id = 1;
@@ -1564,12 +1568,14 @@ message KmsCredentialEnumerateRequest {
     // Optional arguments for enumeration
     EnumerateOptions enumerate_options = 3;
 }
+
 // Define KmsCredentialEnumerateResponse struct
 message KmsCredentialEnumerateResponse {
     repeated KmsCredentialObject kms_credentials = 1;
     uint64 total_count = 2;
     bool complete = 3;
 }
+
 // Define KmsCredentialInspectRequest struct
 message KmsCredentialInspectRequest {
     string org_id = 1;
@@ -1577,16 +1583,19 @@ message KmsCredentialInspectRequest {
     bool include_secrets = 3;
     string uid = 4;
 }
+
 // Define KmsCredentialInspectResponse struct
 message KmsCredentialInspectResponse {
     KmsCredentialObject kms_credential = 1;
 }
+
 // Define KmsCredentialValidateRequest struct
 message KmsCredentialValidateRequest {
     string org_id = 1;
     string name = 2;
     string uid = 3;
 }
+
 // Define KmsCredentialValidateResponse struct
 message KmsCredentialValidateResponse {}
 // Define KmsCredentialSyncRequest struct
@@ -1595,16 +1604,20 @@ message KmsCredentialSyncRequest {
     string name = 2;
     string uid = 3;
 }
+
 // Define KmsCredentialSyncResponse struct
 message KmsCredentialSyncResponse {}
+
 // Define KmsCredentialDeleteRequest struct
 message KmsCredentialDeleteRequest {
     string org_id = 1;
     string name = 2;
     string uid = 3;
 }
+
 // Define KmsCredentialDeleteResponse struct
 message KmsCredentialDeleteResponse {}
+
 // Define KmsCredentialOwnershipUpdateRequest struct
 message KmsCredentialOwnershipUpdateRequest {
     string org_id = 1;
@@ -1613,31 +1626,32 @@ message KmsCredentialOwnershipUpdateRequest {
     Ownership ownership = 3;
     string uid = 4;
 }
+
 // Define KmsCredentialOwnershipUpdateResponse struct
 message KmsCredentialOwnershipUpdateResponse {}
 
 // Define GetReferencedKMSObjectListRequest struct
 message GetReferencedKMSObjectListRequest {
     string org_id = 1;
-    string name = 2;
-    string uid = 3;
+    string uid = 2;
 }
+
 // Define GetReferencedKMSObjectListResponse struct
 message GetReferencedKMSObjectListResponse {
     repeated Metadata cloud_cred_ref = 1;
     repeated Metadata cluster_ref = 2;
 }
 
-// Define GetKeysForKMSRequest struct
-message GetKeysForKMSRequest {
+// Define GetReferencedCountRequest struct
+message GetReferencedCountRequest {
     string org_id = 1;
-    string name = 2;
-    string uid = 3;
-    string key_path = 4;
+    string uid = 2;
 }
-// Define GetKeysForKMSResponse struct
-message GetKeysForKMSResponse {
-    repeated string keys = 1;
+
+// Define GetReferencedCountResponse struct
+message GetReferencedCountResponse {
+    uint64 cloud_cred_ref_count = 1;
+    uint64 cluster_ref_count = 2;
 }
 
 service CloudCredential {
