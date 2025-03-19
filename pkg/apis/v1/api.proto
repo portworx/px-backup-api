@@ -1494,6 +1494,13 @@ service KmsCredential {
             get : "/v1/kmscredential/getreferencedcount"
         };
     }
+    // GetKeysFromKMS returns keys stored in the keypath given
+    rpc GetKeysFromKMS(GetKeysFromKMSRequest)
+        returns (GetKeysFromKMSResponse) {
+        option (google.api.http) = {
+            get : "/v1/kmscredential/getkeysfromkms"
+        };
+    }
     // Enumerate returns a list of kms credentials
     rpc Enumerate(KmsCredentialEnumerateRequest)
         returns (KmsCredentialEnumerateResponse) {
@@ -1652,6 +1659,19 @@ message GetReferencedCountRequest {
 message GetReferencedCountResponse {
     uint64 cloud_cred_ref_count = 1;
     uint64 cluster_ref_count = 2;
+}
+
+// Define GetKeysFromKMSRequest struct
+message GetKeysFromKMSRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    string key_path = 4;
+}
+
+// Define GetKeysFromKMSResponse struct
+message GetKeysFromKMSResponse {
+    repeated string keys = 1;
 }
 
 service CloudCredential {
