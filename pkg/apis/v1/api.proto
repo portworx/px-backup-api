@@ -284,9 +284,28 @@ message AzureKvConfig {
     ];
 }
 
+message KmsSyncInfo {
+    string last_sync_time = 1;
+    repeated string failed_clusters = 2;
+    SyncStatusInfo sync_status = 3;
+    // Message for maintaining status of the object.
+    message SyncStatusInfo {
+        Status status = 1;
+        string reason = 2;
+
+        enum Status {
+            InProgress = 0;
+            SyncFailed = 1;
+            PartialSync = 2;
+            Synced = 3;
+        }
+    }
+}
+
 message KmsCredentialInfo {
     Type type = 1;
     StatusInfo status = 2;
+    KmsSyncInfo kms_sync_info = 3;
     enum Type {
         Invalid = 0;
         Vault = 1;
@@ -1414,6 +1433,7 @@ message ClusterInspectRequest {
     string name = 2;
     bool include_secrets = 3;
     string uid = 4;
+    string secure_signature = 5;
 }
 
 // Define ClusterInspectResponse struct
