@@ -3213,6 +3213,10 @@
           "type": "boolean",
           "format": "boolean",
           "description": "option to enable to keep the CR status of the resources in the backup."
+        },
+        "advanced_resource_label_selector": {
+          "type": "string",
+          "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
         }
       },
       "title": "Request message structure for backup create"
@@ -3468,6 +3472,10 @@
           "type": "boolean",
           "format": "boolean",
           "description": "This will be set when all volumes are only PXD and their local snapshots are completed and backup is ready for restore from local snapshot."
+        },
+        "advanced_resource_label_selector": {
+          "type": "string",
+          "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
         }
       }
     },
@@ -3950,6 +3958,10 @@
           "type": "boolean",
           "format": "boolean",
           "description": "option to enable to keep the CR status of the resources in the backupschedule."
+        },
+        "advanced_resource_label_selector": {
+          "type": "string",
+          "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
         }
       },
       "title": "Define BackupScheduleCreateRequest struct"
@@ -4154,6 +4166,10 @@
           "type": "boolean",
           "format": "boolean",
           "description": "option to enable to keep the CR status of the resources in the backupschedule."
+        },
+        "advanced_resource_label_selector": {
+          "type": "string",
+          "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
         }
       }
     },
@@ -4363,6 +4379,10 @@
           "type": "boolean",
           "format": "boolean",
           "description": "option to enable parallel schedule backups."
+        },
+        "advanced_resource_label_selector": {
+          "type": "string",
+          "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
