@@ -1238,6 +1238,12 @@
             "required": false,
             "type": "boolean",
             "format": "boolean"
+          },
+          {
+            "name": "secure_signature",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -5662,6 +5668,9 @@
         "status": {
           "$ref": "#/definitions/KmsCredentialInfoStatusInfo"
         },
+        "kms_sync_info": {
+          "$ref": "#/definitions/KmsSyncInfo"
+        },
         "vault_config": {
           "$ref": "#/definitions/VaultConfig"
         },
@@ -5801,6 +5810,45 @@
     "KmsCredentialValidateResponse": {
       "type": "object",
       "title": "Define KmsCredentialValidateResponse struct"
+    },
+    "KmsSyncInfo": {
+      "type": "object",
+      "properties": {
+        "last_sync_time": {
+          "type": "string"
+        },
+        "failed_clusters": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sync_status": {
+          "$ref": "#/definitions/KmsSyncInfoSyncStatusInfo"
+        }
+      }
+    },
+    "KmsSyncInfoSyncStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/KmsSyncInfoSyncStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "description": "Message for maintaining status of the object."
+    },
+    "KmsSyncInfoSyncStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "InProgress",
+        "SyncFailed",
+        "PartialSync",
+        "Synced"
+      ],
+      "default": "InProgress"
     },
     "LicenseActivateRequest": {
       "type": "object",
