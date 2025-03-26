@@ -3623,6 +3623,9 @@
         "job_security_context": {
           "$ref": "#/definitions/VolumeJobSecurityContext",
           "title": "As part of restrictive PSA setting, if an UID or GID is used during backup then same value should be used during restore (optional)"
+        },
+        "virtual_machine_name": {
+          "type": "string"
         }
       }
     },
