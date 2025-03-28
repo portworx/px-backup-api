@@ -633,6 +633,7 @@ message BackupInfo {
         string volumesnapshot = 14;
         // As part of restrictive PSA setting, if an UID or GID is used during backup then same value should be used during restore (optional)
         JobSecurityContext job_security_context = 15;
+        string virtual_machine_name = 16;
 
         message JobSecurityContext {
             int64 runAsUser = 1;
