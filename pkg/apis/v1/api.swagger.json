@@ -4629,6 +4629,10 @@
         "advanced_resource_label_selector": {
           "type": "string",
           "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
+        },
+        "kms_credential_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "if the backupSchedule is using backuplocation that is kms enabled this will be set"
         }
       }
     },
@@ -5285,6 +5289,13 @@
         },
         "kubeconfig_key_path": {
           "type": "string"
+        },
+        "kmsSchedules": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ScheduleMap"
+          },
+          "title": "KMS ID → Schedule Map (name → value)"
         }
       }
     },
@@ -7557,6 +7568,17 @@
       ],
       "default": "Invalid",
       "title": "- SSE_S3: Server-side encryption with AWS S3 managed keys\n - SSE_KMS: Server-side encryption with AWS Key Management Service"
+    },
+    "ScheduleMap": {
+      "type": "object",
+      "properties": {
+        "schedules": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
     },
     "SchedulePolicyCreateRequest": {
       "type": "object",

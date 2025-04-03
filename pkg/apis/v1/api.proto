@@ -35,6 +35,10 @@ message OrganizationObject {
     Metadata metadata = 1 [ (gogoproto.embed) = true ];
 }
 
+message ScheduleMap {
+    map<string, string> schedules = 1;
+}
+
 message ClusterInfo {
     PXConfig px_config = 1 [ (gogoproto.jsontag) = "pxconfig" ];
     string kubeconfig = 2 [
@@ -81,6 +85,8 @@ message ClusterInfo {
     bool kms_enabled = 23;
     ObjectRef kms_credential_ref = 24;
     string kubeconfig_key_path = 25;
+    // KMS ID → Schedule Map (name → value)
+    map<string, ScheduleMap> kmsSchedules = 26;
     
 
 
@@ -467,6 +473,8 @@ message BackupScheduleInfo {
     bool keep_cr_status = 32;
     // older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter
     string advanced_resource_label_selector = 33;
+    // if the backupSchedule is using backuplocation that is kms enabled this will be set
+    ObjectRef kms_credential_ref = 34;
 
 
     message BackupType {
