@@ -35,10 +35,6 @@ message OrganizationObject {
     Metadata metadata = 1 [ (gogoproto.embed) = true ];
 }
 
-message ScheduleMap {
-    map<string, string> schedules = 1;
-}
-
 message ClusterInfo {
     PXConfig px_config = 1 [ (gogoproto.jsontag) = "pxconfig" ];
     string kubeconfig = 2 [
@@ -85,11 +81,7 @@ message ClusterInfo {
     bool kms_enabled = 23;
     ObjectRef kms_credential_ref = 24;
     string kubeconfig_key_path = 25;
-    // KMS ID → Schedule Map (name → value)
-    map<string, ScheduleMap> kmsSchedules = 26;
     
-
-
 
     // Message for maintaining status of the cluster.
     message StatusInfo {
@@ -292,26 +284,23 @@ message AzureKvConfig {
 
 message KmsSyncInfo {
     string last_sync_time = 1;
-    repeated string failed_clusters = 2;
-    SyncStatusInfo sync_status = 3;
+    string cluster = 2;
     // Message for maintaining status of the object.
-    message SyncStatusInfo {
-        Status status = 1;
-        string reason = 2;
+    Status status = 3;
+    string reason = 4;
 
-        enum Status {
-            InProgress = 0;
-            SyncFailed = 1;
-            PartialSync = 2;
-            Synced = 3;
-        }
+    enum Status {
+        InProgress = 0;
+        SyncFailed = 1;
+        PartialSync = 2;
+        Synced = 3;
     }
 }
 
 message KmsCredentialInfo {
     Type type = 1;
     StatusInfo status = 2;
-    KmsSyncInfo kms_sync_info = 3;
+    repeated KmsSyncInfo kms_sync_info = 3;
     enum Type {
         Invalid = 0;
         Vault = 1;
@@ -1528,14 +1517,14 @@ service KmsCredential {
     rpc GetReferencedCount(GetReferencedCountRequest)
         returns (GetReferencedCountResponse) {
         option (google.api.http) = {
-            get : "/v1/kmscredential/getreferencedcount"
+            get : "/v1/kmscredential/getreferencedcount/{uid}"
         };
     }
     // GetKeysFromKMS returns keys stored in the keypath given
     rpc GetKeysFromKMS(GetKeysFromKMSRequest)
         returns (GetKeysFromKMSResponse) {
         option (google.api.http) = {
-            get : "/v1/kmscredential/getkeysfromkms"
+            get : "/v1/kmscredential/getkeysfromkms/{uid}"
         };
     }
     // Enumerate returns a list of kms credentials
