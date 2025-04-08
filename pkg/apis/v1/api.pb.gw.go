@@ -372,7 +372,11 @@ func request_BackupSchedule_Inspect_0(ctx context.Context, marshaler runtime.Mar
 }
 
 var (
+<<<<<<< HEAD
 	filter_BackupSchedule_Delete_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0, "name": 1, "uid": 2}, Base: []int{1, 1, 2, 3, 0, 0, 0}, Check: []int{0, 1, 1, 1, 2, 3, 4}}
+=======
+	filter_BackupSchedule_Delete_0 = &utilities.DoubleArray{Encoding: map[string]int{"org_id": 0, "uid": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
+>>>>>>> PB-10326 : Add identifiers field to CreateMetadata and BackupScheduleDeleteRequest for bulk update and delete of backupSchedule
 )
 
 func request_BackupSchedule_Delete_0(ctx context.Context, marshaler runtime.Marshaler, client BackupScheduleClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
@@ -397,15 +401,15 @@ func request_BackupSchedule_Delete_0(ctx context.Context, marshaler runtime.Mars
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "org_id", err)
 	}
 
-	val, ok = pathParams["name"]
+	val, ok = pathParams["uid"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uid")
 	}
 
-	protoReq.Name, err = runtime.String(val)
+	protoReq.Uid, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uid", err)
 	}
 
 	val, ok = pathParams["uid"]
@@ -3046,7 +3050,11 @@ var (
 
 	pattern_BackupSchedule_Inspect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "backupschedule", "org_id", "name"}, ""))
 
+<<<<<<< HEAD
 	pattern_BackupSchedule_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "backupschedule", "org_id", "name", "uid"}, ""))
+=======
+	pattern_BackupSchedule_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "backupschedule", "org_id", "uid"}, ""))
+>>>>>>> PB-10326 : Add identifiers field to CreateMetadata and BackupScheduleDeleteRequest for bulk update and delete of backupSchedule
 
 	pattern_BackupSchedule_Delete_1 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "backupschedule", "org_id", "delete"}, ""))
 )
