@@ -81,6 +81,10 @@ message CreateMetadata {
     Ownership ownership = 5;
     // uid of the object
     string uid = 6;
+    //  ObjectRef can contain:
+    // - specific list of name+uid (e.g., 10 items)
+    // - wildcard: name = "*" or name = "pxb-*"
+    repeated ObjectRef identifiers = 10;
 }
 
 // BackupShare for storing user and group details for whom the backups

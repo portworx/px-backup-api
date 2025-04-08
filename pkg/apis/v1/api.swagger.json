@@ -731,6 +731,39 @@
         ]
       }
     },
+    "/v1/backupschedule/{org_id}/delete": {
+      "post": {
+        "summary": "Delete removes a backup schedule",
+        "operationId": "Delete2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupScheduleDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupScheduleDeleteRequest"
+            }
+          }
+        ],
+        "tags": [
+          "BackupSchedule"
+        ]
+      }
+    },
     "/v1/backupschedule/{org_id}/{name}": {
       "get": {
         "summary": "Inspect returns detail information about a specified backup schedule",
@@ -766,7 +799,9 @@
         "tags": [
           "BackupSchedule"
         ]
-      },
+      }
+    },
+    "/v1/backupschedule/{org_id}/{uid}": {
       "delete": {
         "summary": "Delete removes a backup schedule",
         "operationId": "Delete",
@@ -786,9 +821,15 @@
             "type": "string"
           },
           {
-            "name": "name",
+            "name": "uid",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
             "type": "string"
           },
           {
@@ -800,10 +841,16 @@
             "format": "boolean"
           },
           {
-            "name": "uid",
+            "name": "backup_object_type.type",
             "in": "query",
             "required": false,
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "All",
+              "VirtualMachine"
+            ],
+            "default": "Invalid"
           }
         ],
         "tags": [
@@ -4004,6 +4051,54 @@
       },
       "title": "Define BackupScheduleCreateResponse struct"
     },
+    "BackupScheduleDeleteRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "delete_backups": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "delete_backups is deprecated, not to be used."
+        },
+        "uid": {
+          "type": "string"
+        },
+        "identifiers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "title": "ObjectRef can contain:\n- specific list of name+uid (e.g., 10 items)\n- wildcard: name = \"*\" or name = \"pxb-*\""
+        },
+        "backup_object_type": {
+          "$ref": "#/definitions/BackupScheduleDeleteRequestBackupObjectType",
+          "title": "backup object type is all namespace or virtualMachine specific backup"
+        }
+      },
+      "title": "Define BackupScheduleDeleteRequest struct"
+    },
+    "BackupScheduleDeleteRequestBackupObjectType": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/BackupScheduleDeleteRequestBackupObjectTypeType"
+        }
+      }
+    },
+    "BackupScheduleDeleteRequestBackupObjectTypeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "All",
+        "VirtualMachine"
+      ],
+      "default": "Invalid"
+    },
     "BackupScheduleDeleteResponse": {
       "type": "object",
       "title": "Define BackupScheduleDeleteResponse struct"
@@ -4385,10 +4480,31 @@
         },
         "advanced_resource_label_selector": {
           "type": "string",
-          "description": "advanced_resource_label_selector is not supported for update; No-op."
+          "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
+        },
+        "backup_object_type": {
+          "$ref": "#/definitions/BackupScheduleUpdateRequestBackupObjectType",
+          "title": "backup object type is all namespace or virtualMachine specific backup"
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
+    },
+    "BackupScheduleUpdateRequestBackupObjectType": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/BackupScheduleUpdateRequestBackupObjectTypeType"
+        }
+      }
+    },
+    "BackupScheduleUpdateRequestBackupObjectTypeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "All",
+        "VirtualMachine"
+      ],
+      "default": "Invalid"
     },
     "BackupScheduleUpdateResponse": {
       "type": "object",
@@ -4943,6 +5059,13 @@
         "uid": {
           "type": "string",
           "title": "uid of the object"
+        },
+        "identifiers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "title": "ObjectRef can contain:\n- specific list of name+uid (e.g., 10 items)\n- wildcard: name = \"*\" or name = \"pxb-*\""
         }
       }
     },
