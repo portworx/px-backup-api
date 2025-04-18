@@ -67,6 +67,33 @@
         ]
       }
     },
+    "/v1/backup/retryBackupResources": {
+      "put": {
+        "summary": "RetryBackupResources retries backup of a failed or partial success backup",
+        "operationId": "RetryBackupResources",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupRetryResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupRetryRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
     "/v1/backup/updatebackupshare": {
       "put": {
         "summary": "UpdateBackupShare updates backupshare of existing backup object",
@@ -3842,6 +3869,39 @@
         }
       },
       "description": "Message for Backup object which will be stored in Datastore."
+    },
+    "BackupRetryRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "title": "Name of the failed or partial success backup to be retried"
+        },
+        "uid": {
+          "type": "string",
+          "title": "UID of the failed or partial success backup to be retried"
+        },
+        "include_resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceInfo"
+          },
+          "title": "List of resources to retry\ncurrently only supports VirtualMachine resources"
+        },
+        "skip_vm_auto_exec_rules": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "Modify Skip auto rules for VirtualMachine Backup Object type\nThis is only applicable for VirtualMachine backup object type\nWill update only if the orignal backup value differ. If original backup is set to true\nand if this field is set to true then no change is applied while retry."
+        }
+      },
+      "title": "Request message for retrying failed backup"
+    },
+    "BackupRetryResponse": {
+      "type": "object",
+      "title": "Response message for BackupRetryRequest"
     },
     "BackupScheduleCreateRequest": {
       "type": "object",

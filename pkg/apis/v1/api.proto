@@ -11,6 +11,7 @@ import "google/protobuf/timestamp.proto";
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "pkg/apis/v1/common.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/wrappers.proto";
 
 option (gogoproto.populate_all) = true;
 option (gogoproto.equal_all) = true;
@@ -2060,6 +2061,14 @@ service Backup {
             body : "*"
         };
     }
+    // RetryBackupResources retries backup of a failed or partial success backup
+    rpc RetryBackupResources(BackupRetryRequest)
+        returns (BackupRetryResponse) {
+        option (google.api.http) = {
+            put : "/v1/backup/retryBackupResources"
+            body : "*"
+        };
+    }
 }
 
 // Request message structure for backup create
@@ -2187,6 +2196,27 @@ message BackupShareUpdateRequest {
     BackupShare backupshare = 3;
     string uid = 4;
 }
+
+// Request message for retrying failed backup
+message BackupRetryRequest {
+    string org_id = 1;
+    // Name of the failed or partial success backup to be retried
+    string name = 2;
+    // UID of the failed or partial success backup to be retried
+    string uid = 3;
+    // List of resources to retry
+    // currently only supports VirtualMachine resources
+    repeated ResourceInfo include_resources = 4;
+    // Modify Skip auto rules for VirtualMachine Backup Object type
+    // This is only applicable for VirtualMachine backup object type
+    // Will update only if the orignal backup value differ. If original backup is set to true
+    // and if this field is set to true then no change is applied while retry. 
+    google.protobuf.BoolValue skip_vm_auto_exec_rules = 5;
+}
+
+// Response message for BackupRetryRequest
+message BackupRetryResponse {}
+
 
 // Response message for backup share update request
 message BackupShareUpdateResponse {}
