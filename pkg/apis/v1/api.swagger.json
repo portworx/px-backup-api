@@ -106,6 +106,33 @@
         ]
       }
     },
+    "/v1/backup/retryBackupResources": {
+      "put": {
+        "summary": "RetryBackupResources retries backup of a failed or partial success backup",
+        "operationId": "RetryBackupResources",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupRetryResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupRetryRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
     "/v1/backup/updatebackupshare": {
       "put": {
         "summary": "UpdateBackupShare updates backupshare of existing backup object",
@@ -3789,6 +3816,10 @@
         "virtual_machines_failed_count": {
           "type": "string",
           "format": "int64"
+        },
+        "retry_parent": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "this will store the reference of the parent backup in case of retry backup"
         }
       }
     },
@@ -4393,6 +4424,46 @@
         }
       },
       "title": "Volume details"
+    },
+    "BackupRetryRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string",
+          "title": "Organization id"
+        },
+        "name": {
+          "type": "string",
+          "title": "Name of the failed or partial success backup to be retried"
+        },
+        "uid": {
+          "type": "string",
+          "title": "UID of the failed or partial success backup to be retried"
+        },
+        "include_resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceInfo"
+          },
+          "description": "List of failed VirtualMachine resource only. If not passed, will retry all Failed VMs from Backup object."
+        },
+        "skip_vm_auto_exec_rules": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "skip_vm_auto_exec_rules when set to true will take crash-consistent backup for retry"
+        }
+      },
+      "title": "Request message for retrying failed backup"
+    },
+    "BackupRetryResponse": {
+      "type": "object",
+      "properties": {
+        "backup": {
+          "$ref": "#/definitions/BackupObject",
+          "title": "Auto-generated backup name format : \u003coriginal backup name\u003e-retry{count}-\u003cepoch\u003e ;"
+        }
+      },
+      "title": "Response message for BackupRetryRequest"
     },
     "BackupScheduleCreateRequest": {
       "type": "object",
