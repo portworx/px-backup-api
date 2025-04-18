@@ -603,15 +603,15 @@ message BackupInfo {
     repeated VirtualMachineInfo virtual_machines = 46;
     int64  virtual_machines_total_count = 47;
     int64  virtual_machines_failed_count = 48;
-
-    //VirtualMachine Info
+    // this will store the reference of the parent backup in case of retry backup
+    ObjectRef retry_parent = 49;
+    // VirtualMachine Info
     message VirtualMachineInfo {
         string name = 1;
         string namespace = 2;
         string os_name = 3;
         StatusInfo status = 5;
     }
-
     message BackupType {
         Type type = 1;
 
@@ -2184,6 +2184,14 @@ service Backup {
             get : "/v1/backup/getbackupresourcedetails/{org_id}/{name}/{uid}"
         };
     }
+    // RetryBackupResources retries backup of a failed or partial success backup
+    rpc RetryBackupResources(BackupRetryRequest)
+        returns (BackupRetryResponse) {
+        option (google.api.http) = {
+            put : "/v1/backup/retryBackupResources"
+            body : "*"
+        };
+    }
 }
 
 // Request message structure for backup create
@@ -2311,6 +2319,27 @@ message BackupShareUpdateRequest {
     BackupShare backupshare = 3;
     string uid = 4;
 }
+
+// Request message for retrying failed backup
+message BackupRetryRequest {
+    // Organization id
+    string org_id = 1;
+    // Name of the failed or partial success backup to be retried
+    string name = 2;
+    // UID of the failed or partial success backup to be retried
+    string uid = 3;
+    // List of failed VirtualMachine resource only. If not passed, will retry all Failed VMs from Backup object.
+    repeated ResourceInfo include_resources = 4;
+    // skip_vm_auto_exec_rules when set to true will take crash-consistent backup for retry 
+    bool skip_vm_auto_exec_rules = 5;
+}
+
+// Response message for BackupRetryRequest
+message BackupRetryResponse {
+    // Auto-generated backup name format : <original backup name>-retry{count}-<epoch> ;
+    BackupObject backup = 1;
+}
+
 
 // Response message for backup share update request
 message BackupShareUpdateResponse {}
