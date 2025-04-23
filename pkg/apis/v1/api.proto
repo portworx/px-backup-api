@@ -1157,8 +1157,8 @@ message BackupScheduleUpdateRequest {
     bool skip_vm_auto_exec_rules = 18;
     // option to enable parallel schedule backups.
     bool parallel_backup = 19;
-    // older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter
-    string advanced_resource_label_selector = 20;
+    // advanced_resource_label_selector is not supported for update; No-op.
+    string advanced_resource_label_selector = 20    [deprecated=true];
     // backup object type is all namespace or virtualMachine specific backup
     BackupObjectType backup_object_type = 21;
     // multiple policy reference for filtering
