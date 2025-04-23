@@ -4635,6 +4635,9 @@
         "advanced_resource_label_selector": {
           "type": "string",
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> PB-10250: Deprecating advanced_resource_label_selector for backupschedule update
           "description": "advanced_resource_label_selector is not supported for update; No-op."
         },
         "backup_object_type": {
