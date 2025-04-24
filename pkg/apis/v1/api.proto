@@ -1039,7 +1039,7 @@ service BackupSchedule {
     rpc Delete(BackupScheduleDeleteRequest)
         returns (BackupScheduleDeleteResponse) {
         option (google.api.http) = {
-            delete: "/v1/backupschedule/{org_id}/{uid}"
+            delete: "/v1/backupschedule/{org_id}/{name}/{uid}"
             additional_bindings {
                 post: "/v1/backupschedule/{org_id}/delete"
                 body: "*"
@@ -1153,12 +1153,16 @@ message BackupScheduleUpdateRequest {
     string advanced_resource_label_selector = 20;
     // backup object type is all namespace or virtualMachine specific backup
     BackupObjectType backup_object_type = 21;
+    // multiple policy reference for filtering
+    repeated ObjectRef policy_ref = 22;
+    // multiple name + uid for excluding, Wildcard (* or prefix) must be used in identifiers to use this filter
+    repeated ObjectRef exclude_objects = 23;
 
     message BackupObjectType {
         Type type = 1;
         enum Type {
             Invalid = 0;
-            All = 1; // for All application backup
+            All = 1; // for All application backup based on namespace
             VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
         }
     }
@@ -1215,12 +1219,16 @@ message BackupScheduleDeleteRequest {
     repeated ObjectRef identifiers = 5;
     // backup object type is all namespace or virtualMachine specific backup
     BackupObjectType backup_object_type = 6;
+    // multiple policy reference for filtering
+    repeated ObjectRef policy_ref = 7;
+    // multiple name + uid for excluding, Wildcard (* or prefix) must be used in identifiers to use this filter 
+    repeated ObjectRef exclude_objects = 8;
 
         message BackupObjectType {
         Type type = 1;
         enum Type {
             Invalid = 0;
-            All = 1; // for All application backup
+            All = 1; // for All application backup based on namespace
             VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
         }
     }
