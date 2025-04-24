@@ -801,7 +801,7 @@
         ]
       }
     },
-    "/v1/backupschedule/{org_id}/{uid}": {
+    "/v1/backupschedule/{org_id}/{name}/{uid}": {
       "delete": {
         "summary": "Delete removes a backup schedule",
         "operationId": "Delete",
@@ -821,15 +821,15 @@
             "type": "string"
           },
           {
-            "name": "uid",
+            "name": "name",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "name",
-            "in": "query",
-            "required": false,
+            "name": "uid",
+            "in": "path",
+            "required": true,
             "type": "string"
           },
           {
@@ -4078,6 +4078,20 @@
         "backup_object_type": {
           "$ref": "#/definitions/BackupScheduleDeleteRequestBackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
+        },
+        "policy_ref": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "title": "multiple policy reference for filtering"
+        },
+        "exclude_objects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "title": "multiple name + uid for excluding, Wildcard (* or prefix) must be used in identifiers to use this filter"
         }
       },
       "title": "Define BackupScheduleDeleteRequest struct"
@@ -4485,6 +4499,20 @@
         "backup_object_type": {
           "$ref": "#/definitions/BackupScheduleUpdateRequestBackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
+        },
+        "policy_ref": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "title": "multiple policy reference for filtering"
+        },
+        "exclude_objects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "title": "multiple name + uid for excluding, Wildcard (* or prefix) must be used in identifiers to use this filter"
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
