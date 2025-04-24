@@ -900,6 +900,19 @@ message TimeRange {
     google.protobuf.Timestamp end_time = 2;
 }
 
+// Sorting structure
+message SortOption {
+    // Name of the field to sort by
+    string field = 1;
+    // Sort order: ASCENDING or DESCENDING
+    SortOrder order = 2;
+    // Enum for sort order
+    enum SortOrder {
+        ASCENDING = 0;
+        DESCENDING = 1;
+    }
+}
+
 message EnumerateOptions {
     // label selectors for the object for filtering
     map<string, string> labels = 1;
@@ -935,7 +948,8 @@ message EnumerateOptions {
     // Need to pass the string value of the status field of the object ( backup /restore )
     // For example, {"Success", "Failed"}
     repeated string status = 11;
-
+    // SortOption to use for sorting the objects on type and order
+    SortOption sort_by = 12;
 }
 
 service SchedulePolicy {
