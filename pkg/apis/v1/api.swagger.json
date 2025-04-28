@@ -764,6 +764,39 @@
         ]
       }
     },
+    "/v1/backupschedule/{org_id}/enumerate": {
+      "post": {
+        "summary": "Enumerate returns a list of backup schedule",
+        "operationId": "Enumerate2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupScheduleEnumerateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupScheduleEnumerateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "BackupSchedule"
+        ]
+      }
+    },
     "/v1/backupschedule/{org_id}/{name}": {
       "get": {
         "summary": "Inspect returns detail information about a specified backup schedule",
@@ -4117,6 +4150,33 @@
       "type": "object",
       "title": "Define BackupScheduleDeleteResponse struct"
     },
+    "BackupScheduleEnumerateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "label selectors for the object for filtering"
+        },
+        "backup_location": {
+          "type": "string",
+          "description": "Backuplocation name.\nEnumerate will return list of backupschedule that\nuses this backuplocation\nbackup_location is deprecated, not to be used."
+        },
+        "backup_location_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "enumerate_options": {
+          "$ref": "#/definitions/EnumerateOptions",
+          "title": "Optional arguments for enumeration"
+        }
+      },
+      "title": "Define BackupScheduleEnumerateRequest struct"
+    },
     "BackupScheduleEnumerateResponse": {
       "type": "object",
       "properties": {
@@ -5200,6 +5260,20 @@
             "type": "string"
           },
           "title": "filter based on the object status.\nNeed to pass the string value of the status field of the object ( backup /restore )\nFor example, {\"Success\", \"Failed\"}"
+        },
+        "schedule_policy_ref": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "filter to use policy name and uid. Any object that contains the filter will be returned."
+        },
+        "backup_schedule_ref": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "filter to use backup schedule policy name and uid. Any object that contains the filter will be returned."
         }
       }
     },
