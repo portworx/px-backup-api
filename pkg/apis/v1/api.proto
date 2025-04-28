@@ -881,6 +881,10 @@ message EnumerateOptions {
     // Need to pass the string value of the status field of the object ( backup /restore )
     // For example, {"Success", "Failed"}
     repeated string status = 11;
+    // filter to use policy name and uid. Any object that contains the filter will be returned.
+    repeated ObjectRef schedule_policy_ref = 12;
+    // filter to use backup schedule policy name and uid. Any object that contains the filter will be returned.
+    repeated ObjectRef backup_schedule_ref = 13;
 
 }
 
@@ -1024,6 +1028,10 @@ service BackupSchedule {
         returns (BackupScheduleEnumerateResponse) {
         option (google.api.http) = {
             get : "/v1/backupschedule/{org_id}"
+            additional_bindings {
+                post: "/v1/backupschedule/{org_id}/enumerate"
+                body: "*"
+            }
         };
     }
 
