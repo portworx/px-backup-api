@@ -198,6 +198,35 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "name": "enumerate_options.sorting_config.sortField",
+            "description": "Name of the field to sort on.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "CreationTimestamp",
+              "Name",
+              "BackupClusterName",
+              "BackupSize",
+              "RestoreSize",
+              "RestoreClusterName"
+            ],
+            "default": "CreationTimestamp"
+          },
+          {
+            "name": "enumerate_options.sorting_config.sortOrder",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descendnig"
+            ],
+            "default": "Invalid"
           }
         ],
         "tags": [
@@ -724,6 +753,35 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "name": "enumerate_options.sorting_config.sortField",
+            "description": "Name of the field to sort on.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "CreationTimestamp",
+              "Name",
+              "BackupClusterName",
+              "BackupSize",
+              "RestoreSize",
+              "RestoreClusterName"
+            ],
+            "default": "CreationTimestamp"
+          },
+          {
+            "name": "enumerate_options.sorting_config.sortOrder",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descendnig"
+            ],
+            "default": "Invalid"
           }
         ],
         "tags": [
@@ -2261,6 +2319,35 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "name": "enumerate_options.sorting_config.sortField",
+            "description": "Name of the field to sort on.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "CreationTimestamp",
+              "Name",
+              "BackupClusterName",
+              "BackupSize",
+              "RestoreSize",
+              "RestoreClusterName"
+            ],
+            "default": "CreationTimestamp"
+          },
+          {
+            "name": "enumerate_options.sorting_config.sortOrder",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descendnig"
+            ],
+            "default": "Invalid"
           }
         ],
         "tags": [
@@ -2596,6 +2683,35 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "name": "enumerate_options.sorting_config.sortField",
+            "description": "Name of the field to sort on.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "CreationTimestamp",
+              "Name",
+              "BackupClusterName",
+              "BackupSize",
+              "RestoreSize",
+              "RestoreClusterName"
+            ],
+            "default": "CreationTimestamp"
+          },
+          {
+            "name": "enumerate_options.sorting_config.sortOrder",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descendnig"
+            ],
+            "default": "Invalid"
           }
         ],
         "tags": [
@@ -5274,6 +5390,10 @@
             "$ref": "#/definitions/ObjectRef"
           },
           "description": "filter to use backup schedule policy name and uid. Any object that contains the filter will be returned."
+        },
+        "sorting_config": {
+          "$ref": "#/definitions/SortingConfig",
+          "title": "Sorting backup objects based on the field and order\nIf the field is not set, default value will be \"CreationTimestamp\"\nIf the order is not set, default value will be \"descending\""
         }
       }
     },
@@ -7256,6 +7376,42 @@
     },
     "ShareClusterResponse": {
       "type": "object"
+    },
+    "SortingConfig": {
+      "type": "object",
+      "properties": {
+        "sortField": {
+          "$ref": "#/definitions/SortingConfigSortingFieldType",
+          "title": "Name of the field to sort on"
+        },
+        "sortOrder": {
+          "$ref": "#/definitions/SortingConfigSortingOrderType",
+          "title": "Order of sorting"
+        }
+      }
+    },
+    "SortingConfigSortingFieldType": {
+      "type": "string",
+      "enum": [
+        "CreationTimestamp",
+        "Name",
+        "BackupClusterName",
+        "BackupSize",
+        "RestoreSize",
+        "RestoreClusterName"
+      ],
+      "default": "CreationTimestamp",
+      "title": "Sorting field type"
+    },
+    "SortingConfigSortingOrderType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Ascending",
+        "Descendnig"
+      ],
+      "default": "Invalid",
+      "title": "Sorting order type"
     },
     "SuspendedBySource": {
       "type": "string",
