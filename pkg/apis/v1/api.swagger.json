@@ -205,6 +205,40 @@
         ]
       }
     },
+    "/v1/backup/{org_id}/enumerate": {
+      "post": {
+        "summary": "Enumerate returns a list of objects",
+        "operationId": "Enumerate2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupEnumerateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "description": "Organization id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupEnumerateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
     "/v1/backup/{org_id}/{name}": {
       "get": {
         "summary": "Inspect returns detail information about a specified object",
@@ -3339,6 +3373,20 @@
     "BackupDeleteResponse": {
       "type": "object",
       "title": "Response message structure for object delete"
+    },
+    "BackupEnumerateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string",
+          "title": "Organization id"
+        },
+        "enumerate_options": {
+          "$ref": "#/definitions/EnumerateOptions",
+          "title": "Optional arguments for enumeration"
+        }
+      },
+      "title": "Request message structure for enumerate object"
     },
     "BackupEnumerateResponse": {
       "type": "object",
