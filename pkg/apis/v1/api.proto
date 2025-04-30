@@ -2075,6 +2075,10 @@ service Backup {
     rpc Enumerate(BackupEnumerateRequest) returns (BackupEnumerateResponse) {
         option (google.api.http) = {
             get : "/v1/backup/{org_id}"
+            additional_bindings {
+                post: "/v1/backup/{org_id}/enumerate"
+                body: "*"
+            }
         };
     }
 
