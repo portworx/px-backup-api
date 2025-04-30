@@ -875,15 +875,31 @@
           },
           {
             "name": "backup_object_type.type",
+            "description": " - NS: Represents backup schedules scoped to Kubernetes namespaces (non-VM workloads).\nTypically used for application-level backups.\n - VM: Represents backup schedules scoped to VirtualMachine workloads.\nUsed for VM-based backup scenarios.\n - All: Represents both NS and VM backup schedule types. Used when an operation should apply to all types.",
             "in": "query",
             "required": false,
             "type": "string",
             "enum": [
               "Invalid",
-              "All",
-              "VirtualMachine"
+              "NS",
+              "VM",
+              "All"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "include_filter",
+            "description": "Substring or regex pattern to match backup schedules and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with include_objects.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "exclude_filter",
+            "description": "Substring or regex pattern to match backup schedules and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with exclude_objects.",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -3923,6 +3939,25 @@
       },
       "description": "Message for Backup object which will be stored in Datastore."
     },
+    "BackupObjectType": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/BackupObjectTypeType"
+        }
+      }
+    },
+    "BackupObjectTypeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "NS",
+        "VM",
+        "All"
+      ],
+      "default": "Invalid",
+      "description": " - NS: Represents backup schedules scoped to Kubernetes namespaces (non-VM workloads).\nTypically used for application-level backups.\n - VM: Represents backup schedules scoped to VirtualMachine workloads.\nUsed for VM-based backup scenarios.\n - All: Represents both NS and VM backup schedule types. Used when an operation should apply to all types."
+    },
     "BackupScheduleCreateRequest": {
       "type": "object",
       "properties": {
@@ -4101,15 +4136,15 @@
         "uid": {
           "type": "string"
         },
-        "identifiers": {
+        "include_objects": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ObjectRef"
           },
-          "title": "ObjectRef can contain:\n- specific list of name+uid (e.g., 10 items)\n- wildcard: name = \"*\" or name = \"pxb-*\""
+          "description": "List of exact backup schedules to include (name + UID required)."
         },
         "backup_object_type": {
-          "$ref": "#/definitions/BackupScheduleDeleteRequestBackupObjectType",
+          "$ref": "#/definitions/BackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
         },
         "policy_ref": {
@@ -4124,27 +4159,18 @@
           "items": {
             "$ref": "#/definitions/ObjectRef"
           },
-          "title": "multiple name + uid for excluding, Wildcard (* or prefix) must be used in identifiers to use this filter"
+          "description": "List of exact backup schedules to exclude (name + UID required)."
+        },
+        "include_filter": {
+          "type": "string",
+          "description": "Substring or regex pattern to match backup schedules and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with include_objects."
+        },
+        "exclude_filter": {
+          "type": "string",
+          "description": "Substring or regex pattern to match backup schedules and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with exclude_objects."
         }
       },
       "title": "Define BackupScheduleDeleteRequest struct"
-    },
-    "BackupScheduleDeleteRequestBackupObjectType": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "$ref": "#/definitions/BackupScheduleDeleteRequestBackupObjectTypeType"
-        }
-      }
-    },
-    "BackupScheduleDeleteRequestBackupObjectTypeType": {
-      "type": "string",
-      "enum": [
-        "Invalid",
-        "All",
-        "VirtualMachine"
-      ],
-      "default": "Invalid"
     },
     "BackupScheduleDeleteResponse": {
       "type": "object",
@@ -4557,7 +4583,7 @@
           "description": "advanced_resource_label_selector is not supported for update; No-op."
         },
         "backup_object_type": {
-          "$ref": "#/definitions/BackupScheduleUpdateRequestBackupObjectType",
+          "$ref": "#/definitions/BackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
         },
         "policy_ref": {
@@ -4572,27 +4598,25 @@
           "items": {
             "$ref": "#/definitions/ObjectRef"
           },
-          "title": "multiple name + uid for excluding, Wildcard (* or prefix) must be used in identifiers to use this filter"
+          "description": "List of exact backup schedules to exclude (name + UID required)."
+        },
+        "include_objects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "List of exact backup schedules to include (name + UID required)."
+        },
+        "include_filter": {
+          "type": "string",
+          "description": "Substring or regex pattern to match backup schedules and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with include_objects."
+        },
+        "exclude_filter": {
+          "type": "string",
+          "description": "Substring or regex pattern to match backup schedules and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with exclude_objects."
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
-    },
-    "BackupScheduleUpdateRequestBackupObjectType": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "$ref": "#/definitions/BackupScheduleUpdateRequestBackupObjectTypeType"
-        }
-      }
-    },
-    "BackupScheduleUpdateRequestBackupObjectTypeType": {
-      "type": "string",
-      "enum": [
-        "Invalid",
-        "All",
-        "VirtualMachine"
-      ],
-      "default": "Invalid"
     },
     "BackupScheduleUpdateResponse": {
       "type": "object",
@@ -5147,13 +5171,6 @@
         "uid": {
           "type": "string",
           "title": "uid of the object"
-        },
-        "identifiers": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ObjectRef"
-          },
-          "title": "ObjectRef can contain:\n- specific list of name+uid (e.g., 10 items)\n- wildcard: name = \"*\" or name = \"pxb-*\""
         }
       }
     },

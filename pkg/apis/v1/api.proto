@@ -1163,17 +1163,16 @@ message BackupScheduleUpdateRequest {
     BackupObjectType backup_object_type = 21;
     // multiple policy reference for filtering
     repeated ObjectRef policy_ref = 22;
-    // multiple name + uid for excluding, Wildcard (* or prefix) must be used in identifiers to use this filter
+    // List of exact backup schedules to exclude (name + UID required).
     repeated ObjectRef exclude_objects = 23;
-
-    message BackupObjectType {
-        Type type = 1;
-        enum Type {
-            Invalid = 0;
-            All = 1; // for All application backup based on namespace
-            VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
-        }
-    }
+    // List of exact backup schedules to include (name + UID required).
+    repeated ObjectRef include_objects = 24;
+    // Substring or regex pattern to match backup schedules and include (e.g. "*" for All, "pxb-" or any valid regex)
+    // Cannot be used with include_objects.
+    string include_filter = 25;
+    // Substring or regex pattern to match backup schedules and exclude (e.g. "*" for All, "pxb-" or any valid regex)
+    // Cannot be used with exclude_objects.
+    string exclude_filter = 26;
 }
 
 // Define BackupScheduleUpdateResponse struct
@@ -1221,25 +1220,20 @@ message BackupScheduleDeleteRequest {
     // delete_backups is deprecated, not to be used.
     bool delete_backups = 3;
     string uid = 4;
-    //  ObjectRef can contain:
-    // - specific list of name+uid (e.g., 10 items)
-    // - wildcard: name = "*" or name = "pxb-*"
-    repeated ObjectRef identifiers = 5;
+    // List of exact backup schedules to include (name + UID required).
+    repeated ObjectRef include_objects = 5;
     // backup object type is all namespace or virtualMachine specific backup
     BackupObjectType backup_object_type = 6;
     // multiple policy reference for filtering
     repeated ObjectRef policy_ref = 7;
-    // multiple name + uid for excluding, Wildcard (* or prefix) must be used in identifiers to use this filter 
+    // List of exact backup schedules to exclude (name + UID required).
     repeated ObjectRef exclude_objects = 8;
-
-        message BackupObjectType {
-        Type type = 1;
-        enum Type {
-            Invalid = 0;
-            All = 1; // for All application backup based on namespace
-            VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
-        }
-    }
+    // Substring or regex pattern to match backup schedules and include (e.g. "*" for All, "pxb-" or any valid regex)
+    // Cannot be used with include_objects.
+    string include_filter = 9;
+    // Substring or regex pattern to match backup schedules and exclude (e.g. "*" for All, "pxb-" or any valid regex)
+    // Cannot be used with exclude_objects.
+    string exclude_filter = 10;
 }
 
 // Define BackupScheduleDeleteResponse struct
@@ -3091,3 +3085,21 @@ message ResourceTypeResponse {
 	repeated string resource_types = 1;
 }
 
+message BackupObjectType {
+    enum Type {
+        Invalid = 0;
+
+        // Represents backup schedules scoped to Kubernetes namespaces (non-VM workloads).
+        // Typically used for application-level backups.
+        NS = 1;
+
+        // Represents backup schedules scoped to VirtualMachine workloads.
+        // Used for VM-based backup scenarios.
+        VM = 2;
+
+        // Represents both NS and VM backup schedule types. Used when an operation should apply to all types.
+        All = 3;
+    }
+
+    Type type = 1;
+}
