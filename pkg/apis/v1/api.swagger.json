@@ -2337,6 +2337,16 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "owners",
+            "description": "Filter to use owner uids on objects.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         ],
         "tags": [

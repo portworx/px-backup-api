@@ -2898,6 +2898,8 @@ message ActivityEnumerateRequest {
     // For which type of Actvity data eg: backup, restore, etc..
     string kind = 6;
     ObjectRef cluster_ref = 7;
+    // Filter to use owner uids on objects.
+    repeated string owners = 8;
 
     enum Interval {
         Invalid = 0;
