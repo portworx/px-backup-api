@@ -198,6 +198,14 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "name": "enumerate_options.include_incremental_backups",
+            "description": "Filter to use incremental_backup. Any object containing the given flag will be returned.",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
           }
         ],
         "tags": [
@@ -724,6 +732,14 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "name": "enumerate_options.include_incremental_backups",
+            "description": "Filter to use incremental_backup. Any object containing the given flag will be returned.",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
           }
         ],
         "tags": [
@@ -2261,6 +2277,14 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "name": "enumerate_options.include_incremental_backups",
+            "description": "Filter to use incremental_backup. Any object containing the given flag will be returned.",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
           }
         ],
         "tags": [
@@ -2596,6 +2620,14 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "name": "enumerate_options.include_incremental_backups",
+            "description": "Filter to use incremental_backup. Any object containing the given flag will be returned.",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
           }
         ],
         "tags": [
@@ -3706,6 +3738,11 @@
         },
         "virtual_machine_name": {
           "type": "string"
+        },
+        "incremental_backup": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "Flag to indicate whether the backup is full or incremental in case of PXD driver"
         }
       }
     },
@@ -5274,6 +5311,11 @@
             "$ref": "#/definitions/ObjectRef"
           },
           "description": "filter to use backup schedule policy name and uid. Any object that contains the filter will be returned."
+        },
+        "include_incremental_backups": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "Filter to use incremental_backup. Any object containing the given flag will be returned."
         }
       }
     },

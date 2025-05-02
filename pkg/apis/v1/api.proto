@@ -634,6 +634,8 @@ message BackupInfo {
         // As part of restrictive PSA setting, if an UID or GID is used during backup then same value should be used during restore (optional)
         JobSecurityContext job_security_context = 15;
         string virtual_machine_name = 16;
+        // Flag to indicate whether the backup is full or incremental in case of PXD driver
+        bool incremental_backup = 17;
 
         message JobSecurityContext {
             int64 runAsUser = 1;
@@ -885,6 +887,8 @@ message EnumerateOptions {
     repeated ObjectRef schedule_policy_ref = 12;
     // filter to use backup schedule policy name and uid. Any object that contains the filter will be returned.
     repeated ObjectRef backup_schedule_ref = 13;
+    // Filter to use incremental_backup. Any object containing the given flag will be returned.
+    bool include_incremental_backups = 14;
 
 }
 
