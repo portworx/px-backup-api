@@ -5339,6 +5339,10 @@
             "$ref": "#/definitions/ObjectRef"
           },
           "description": "filter to use backup schedule policy name and uid. Any object that contains the filter will be returned."
+        },
+        "sort_option": {
+          "$ref": "#/definitions/SortOption",
+          "title": "Sorting backup objects based on the field and order\nIf the field is not set, default value will be \"CreationTimestamp\"\nIf the order is not set, default value will be \"descending\""
         }
       }
     },
@@ -7321,6 +7325,27 @@
     },
     "ShareClusterResponse": {
       "type": "object"
+    },
+    "SortOption": {
+      "type": "object",
+      "properties": {
+        "sortBy": {
+          "$ref": "#/definitions/SortOptionSortByType",
+          "title": "Name of the field by which sort to be performed"
+        },
+        "sortOrder": {
+          "$ref": "#/definitions/SortOptionSortOrderType",
+          "title": "Order of sorting"
+        }
+      }
+    },
+    "SortOptionSortByType": {
+      "type": "object",
+      "title": "field by which sorting will performed"
+    },
+    "SortOptionSortOrderType": {
+      "type": "object",
+      "title": "Order of sorting"
     },
     "SuspendedBySource": {
       "type": "string",

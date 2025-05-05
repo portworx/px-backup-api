@@ -846,6 +846,33 @@ message TimeRange {
     google.protobuf.Timestamp end_time = 2;
 }
 
+message SortOption {
+    // field by which sorting will performed
+    message SortByType {
+        enum SortByType {
+            Invalid = 0;
+            CreationTimestamp = 1;
+            Name = 2;
+            ClusterName = 3;
+            Size = 4;
+        }
+    }
+    // Order of sorting
+    message SortOrderType {
+        // Sorting order type
+        enum SortOrderType {
+            Invalid = 0;
+            Ascending = 1;
+            Descending = -1;
+        }
+    }
+    // Name of the field by which sort to be performed
+    SortByType sortBy = 1;
+    // Order of sorting
+    SortOrderType sortOrder = 2;
+
+}
+
 message EnumerateOptions {
     // label selectors for the object for filtering
     map<string, string> labels = 1;
@@ -885,7 +912,10 @@ message EnumerateOptions {
     repeated ObjectRef schedule_policy_ref = 12;
     // filter to use backup schedule policy name and uid. Any object that contains the filter will be returned.
     repeated ObjectRef backup_schedule_ref = 13;
-
+    // Sorting backup objects based on the field and order
+    // If the field is not set, default value will be "CreationTimestamp"
+    // If the order is not set, default value will be "descending"
+    SortOption sort_option = 14;
 }
 
 service SchedulePolicy {
