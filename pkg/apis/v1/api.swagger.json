@@ -798,7 +798,6 @@
         ]
       }
     },
-<<<<<<< HEAD
     "/v1/backupschedule/{org_id}/enumerate": {
       "post": {
         "summary": "Enumerate returns a list of backup schedule",
@@ -832,8 +831,6 @@
         ]
       }
     },
-=======
->>>>>>> PB-10326 : Add identifiers field to CreateMetadata and BackupScheduleDeleteRequest for bulk update and delete of backupSchedule
     "/v1/backupschedule/{org_id}/{name}": {
       "get": {
         "summary": "Inspect returns detail information about a specified backup schedule",
@@ -871,11 +868,7 @@
         ]
       }
     },
-<<<<<<< HEAD
     "/v1/backupschedule/{org_id}/{name}/{uid}": {
-=======
-    "/v1/backupschedule/{org_id}/{uid}": {
->>>>>>> PB-10326 : Add identifiers field to CreateMetadata and BackupScheduleDeleteRequest for bulk update and delete of backupSchedule
       "delete": {
         "summary": "Delete removes a backup schedule",
         "operationId": "Delete",
@@ -895,21 +888,15 @@
             "type": "string"
           },
           {
-            "name": "uid",
+            "name": "name",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-<<<<<<< HEAD
             "name": "uid",
             "in": "path",
             "required": true,
-=======
-            "name": "name",
-            "in": "query",
-            "required": false,
->>>>>>> PB-10326 : Add identifiers field to CreateMetadata and BackupScheduleDeleteRequest for bulk update and delete of backupSchedule
             "type": "string"
           },
           {
@@ -922,7 +909,6 @@
           },
           {
             "name": "backup_object_type.type",
-<<<<<<< HEAD
             "description": " - NS: Represents backup schedules scoped to Kubernetes namespaces (non-VM workloads).\nTypically used for application-level backups.\n - VM: Represents backup schedules scoped to VirtualMachine workloads.\nUsed for VM-based backup scenarios.\n - All: Represents both NS and VM backup schedule types. Used when an operation should apply to all types.",
             "in": "query",
             "required": false,
@@ -945,17 +931,9 @@
           {
             "name": "exclude_filter",
             "description": "Substring or regex pattern to match backup schedules and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with exclude_objects.",
-=======
->>>>>>> PB-10326 : Add identifiers field to CreateMetadata and BackupScheduleDeleteRequest for bulk update and delete of backupSchedule
             "in": "query",
             "required": false,
-            "type": "string",
-            "enum": [
-              "Invalid",
-              "All",
-              "VirtualMachine"
-            ],
-            "default": "Invalid"
+            "type": "string"
           }
         ],
         "tags": [
@@ -4206,16 +4184,11 @@
         "uid": {
           "type": "string"
         },
-<<<<<<< HEAD
         "include_objects": {
-=======
-        "identifiers": {
->>>>>>> PB-10326 : Add identifiers field to CreateMetadata and BackupScheduleDeleteRequest for bulk update and delete of backupSchedule
           "type": "array",
           "items": {
             "$ref": "#/definitions/ObjectRef"
           },
-<<<<<<< HEAD
           "description": "List of exact backup schedules to include (name + UID required)."
         },
         "backup_object_type": {
@@ -4243,37 +4216,10 @@
         "exclude_filter": {
           "type": "string",
           "description": "Substring or regex pattern to match backup schedules and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with exclude_objects."
-=======
-          "title": "ObjectRef can contain:\n- specific list of name+uid (e.g., 10 items)\n- wildcard: name = \"*\" or name = \"pxb-*\""
-        },
-        "backup_object_type": {
-          "$ref": "#/definitions/BackupScheduleDeleteRequestBackupObjectType",
-          "title": "backup object type is all namespace or virtualMachine specific backup"
->>>>>>> PB-10326 : Add identifiers field to CreateMetadata and BackupScheduleDeleteRequest for bulk update and delete of backupSchedule
         }
       },
       "title": "Define BackupScheduleDeleteRequest struct"
     },
-<<<<<<< HEAD
-=======
-    "BackupScheduleDeleteRequestBackupObjectType": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "$ref": "#/definitions/BackupScheduleDeleteRequestBackupObjectTypeType"
-        }
-      }
-    },
-    "BackupScheduleDeleteRequestBackupObjectTypeType": {
-      "type": "string",
-      "enum": [
-        "Invalid",
-        "All",
-        "VirtualMachine"
-      ],
-      "default": "Invalid"
-    },
->>>>>>> PB-10326 : Add identifiers field to CreateMetadata and BackupScheduleDeleteRequest for bulk update and delete of backupSchedule
     "BackupScheduleDeleteResponse": {
       "type": "object",
       "title": "Define BackupScheduleDeleteResponse struct"
@@ -4682,10 +4628,6 @@
         },
         "advanced_resource_label_selector": {
           "type": "string",
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> PB-10250: Deprecating advanced_resource_label_selector for backupschedule update
           "description": "advanced_resource_label_selector is not supported for update; No-op."
         },
         "backup_object_type": {
@@ -4720,33 +4662,9 @@
         "exclude_filter": {
           "type": "string",
           "description": "Substring or regex pattern to match backup schedules and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with exclude_objects."
-=======
-          "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
-        },
-        "backup_object_type": {
-          "$ref": "#/definitions/BackupScheduleUpdateRequestBackupObjectType",
-          "title": "backup object type is all namespace or virtualMachine specific backup"
->>>>>>> PB-10326 : Add identifiers field to CreateMetadata and BackupScheduleDeleteRequest for bulk update and delete of backupSchedule
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
-    },
-    "BackupScheduleUpdateRequestBackupObjectType": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "$ref": "#/definitions/BackupScheduleUpdateRequestBackupObjectTypeType"
-        }
-      }
-    },
-    "BackupScheduleUpdateRequestBackupObjectTypeType": {
-      "type": "string",
-      "enum": [
-        "Invalid",
-        "All",
-        "VirtualMachine"
-      ],
-      "default": "Invalid"
     },
     "BackupScheduleUpdateResponse": {
       "type": "object",
