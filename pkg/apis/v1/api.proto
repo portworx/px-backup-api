@@ -598,7 +598,7 @@ message BackupInfo {
     bool isBackupReady_for_PXDLocalSnapshotRestore = 44;
     // older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter
     string advanced_resource_label_selector = 45;
-    bool no_volume_data = 46;
+    string noVolumeDataProvisioners = 46;
 
     message BackupType {
         Type type = 1;

@@ -3621,9 +3621,8 @@
           "type": "string",
           "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
         },
-        "no_volume_data": {
-          "type": "boolean",
-          "format": "boolean"
+        "noVolumeDataProvisioners": {
+          "type": "string"
         }
       }
     },
