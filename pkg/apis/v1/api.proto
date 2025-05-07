@@ -525,7 +525,9 @@ message ResourceInfo {
     string group = 3;
     string kind = 4;
     string version = 5;
+    repeated string virtual_machine_name = 6;
 }
+
 
 message BackupInfo {
     // Name of BackupLocation, deprecated. Not to be used.
@@ -598,6 +600,17 @@ message BackupInfo {
     bool isBackupReady_for_PXDLocalSnapshotRestore = 44;
     // older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter
     string advanced_resource_label_selector = 45;
+    repeated VirtualMachineInfo virtual_machines = 46;
+    int64  virtual_machines_total_count = 47;
+    int64  virtual_machines_failed_count = 48;
+
+    //VirtualMachine Info
+    message VirtualMachineInfo {
+        string name = 1;
+        string namespace = 2;
+        string os_name = 3;
+        StatusInfo status = 5;
+    }
 
     message BackupType {
         Type type = 1;
@@ -657,6 +670,7 @@ message BackupInfo {
         }
     }
 
+
     // Message for maintaining status of the object.
     message StatusInfo {
         Status status = 1;
@@ -674,6 +688,7 @@ message BackupInfo {
             PartialSuccess = 8;
             DeletePending = 9;
             CloudBackupMissing = 10;
+
         }
     }
 
@@ -694,7 +709,6 @@ message BackupInfo {
             VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
         }
     }
-
 
 }
 
@@ -2156,6 +2170,12 @@ service Backup {
             body : "*"
         };
     }
+    // For VirtualMachine backup object type, it returns the details of VirtualMachine and its resources mapped under it
+    rpc GetBackupResourceDetails(BackupResourceDetailGetRequest) returns (BackupResourceDetailGetResponse) {
+        option (google.api.http) = {
+            get : "/v1/backup/getbackupresourcedetails/{org_id}/{name}/{uid}"
+        };
+    }
 }
 
 // Request message structure for backup create
@@ -2286,6 +2306,94 @@ message BackupShareUpdateRequest {
 
 // Response message for backup share update request
 message BackupShareUpdateResponse {}
+
+// Request message to detailed backup resources
+message BackupResourceDetailGetRequest {
+    string org_id = 1;
+    // Backup name
+    string name = 2;
+    // Backup uid
+    string uid = 3;
+}
+message BackupResourceDetailGetResponse{
+   BackupResourceObject backup = 1;
+}
+
+message BackupResourceObject {
+    Metadata metadata = 1
+    [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    // Name of Cluster
+    string cluster = 2;
+    // Label selectors to choose resources
+    map<string, string> label_selectors = 3;
+    BackupInfo.StatusInfo status = 4;
+    BackupInfo.Stage stage = 5;
+    uint64 total_size = 6;
+    string csi_snapshot_class_name = 7;
+    repeated string resource_types = 8;
+    ObjectRef backup_location_ref = 9;
+    ObjectRef cluster_ref = 10;
+    string ns_label_selectors = 11;
+    // Name of rancher projects associated with resources
+    map<string, string> rancher_projects = 12;
+    // option to take backup as direct kdmp
+    bool direct_kdmp = 13;
+    // this flag signifies if the backup involves large number of resources or not
+    bool large_resource_enabled = 14;
+    // backup object type is all namespace or virtualMachine specific backup
+    BackupInfo.BackupObjectType backup_object_type = 15;
+    // Skip auto rules for VirtualMachine Backup Object type
+    bool skip_vm_auto_exec_rules = 16;
+    // volume snapshot class mapping for csi based backup <provisioner(string), volumesnapshotclass(string)> (optional)
+    map<string, string> volume_snapshot_class_mapping = 17;
+    google.protobuf.Timestamp retention_time = 18;
+    // this will store the completion time of the volumes, resources and total backup
+    completionTimeInfo completion_time_info = 19;
+    // older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter
+    string advanced_resource_label_selector = 20;
+    int64  virtual_machines_total_count = 21;
+    int64  virtual_machines_failed_count = 22;
+    repeated  string namespaces = 23;
+    ResourceContainer resource_details = 24;
+
+    // Resources details mapped to either Namespace or virtualMachine
+    message ResourceContainer {
+        oneof resource_list{
+            // List of resources mapped to virtualMachine
+            VirtualMachineList virtual_machine_list = 1;
+	    // TODO:  NamespaceList namespace_list = 2; for NS specific backup resources
+        }
+    }
+
+    // VirtualMachine Detail info List
+    message VirtualMachineList {
+        repeated VirtualMachineDetailInfo virtual_machines = 1;
+    }
+
+    // VirtualMachine Detail info with volumes and resources
+    message VirtualMachineDetailInfo {
+        BackupInfo.VirtualMachineInfo vm_info = 1;
+        repeated VolumeDetails volumes = 2;
+        repeated ResourceDetails resources = 3;
+    }
+
+    // Volume details
+    message VolumeDetails {
+        string name = 1;
+        uint64 size = 2;
+        bool is_incremental = 3;
+        BackupInfo.StatusInfo status = 4;
+    }
+
+    // Resource Info details
+    message ResourceDetails {
+        string name = 1;
+        string group = 3;
+        string kind = 4;
+        string version = 5;
+        BackupInfo.StatusInfo status = 6;
+    }
+}
 
 service Restore {
     // Creates new restore object in datastore
