@@ -198,6 +198,35 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "name": "enumerate_options.sort_option.sortBy.type",
+            "description": "Name of the field by which sort to be performed.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "CreationTimestamp",
+              "Name",
+              "ClusterName",
+              "Size",
+              "RestoreBackupName"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortOrder.type",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descending"
+            ],
+            "default": "Invalid"
           }
         ],
         "tags": [
@@ -758,6 +787,35 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "name": "enumerate_options.sort_option.sortBy.type",
+            "description": "Name of the field by which sort to be performed.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "CreationTimestamp",
+              "Name",
+              "ClusterName",
+              "Size",
+              "RestoreBackupName"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortOrder.type",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descending"
+            ],
+            "default": "Invalid"
           }
         ],
         "tags": [
@@ -2311,6 +2369,35 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "name": "enumerate_options.sort_option.sortBy.type",
+            "description": "Name of the field by which sort to be performed.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "CreationTimestamp",
+              "Name",
+              "ClusterName",
+              "Size",
+              "RestoreBackupName"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortOrder.type",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descending"
+            ],
+            "default": "Invalid"
           }
         ],
         "tags": [
@@ -2646,6 +2733,35 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "name": "enumerate_options.sort_option.sortBy.type",
+            "description": "Name of the field by which sort to be performed.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "CreationTimestamp",
+              "Name",
+              "ClusterName",
+              "Size",
+              "RestoreBackupName"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortOrder.type",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descending"
+            ],
+            "default": "Invalid"
           }
         ],
         "tags": [
@@ -7330,22 +7446,54 @@
       "type": "object",
       "properties": {
         "sortBy": {
-          "$ref": "#/definitions/SortOptionSortByType",
-          "title": "Name of the field by which sort to be performed"
+          "$ref": "#/definitions/SortOptionSortByType"
         },
         "sortOrder": {
-          "$ref": "#/definitions/SortOptionSortOrderType",
-          "title": "Order of sorting"
+          "$ref": "#/definitions/SortOptionSortOrderType"
         }
       }
     },
     "SortOptionSortByType": {
       "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/SortOptionSortByTypeType",
+          "title": "Name of the field by which sort to be performed"
+        }
+      },
       "title": "field by which sorting will performed"
+    },
+    "SortOptionSortByTypeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "CreationTimestamp",
+        "Name",
+        "ClusterName",
+        "Size",
+        "RestoreBackupName"
+      ],
+      "default": "Invalid"
     },
     "SortOptionSortOrderType": {
       "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/SortOptionSortOrderTypeType",
+          "title": "Order of sorting"
+        }
+      },
       "title": "Order of sorting"
+    },
+    "SortOptionSortOrderTypeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Ascending",
+        "Descending"
+      ],
+      "default": "Invalid",
+      "title": "Sorting order type"
     },
     "SuspendedBySource": {
       "type": "string",

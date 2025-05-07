@@ -849,28 +849,30 @@ message TimeRange {
 message SortOption {
     // field by which sorting will performed
     message SortByType {
-        enum SortByType {
+        enum Type {
             Invalid = 0;
             CreationTimestamp = 1;
             Name = 2;
             ClusterName = 3;
             Size = 4;
+            RestoreBackupName = 5;
         }
+        // Name of the field by which sort to be performed
+        Type type = 1;
     }
     // Order of sorting
     message SortOrderType {
         // Sorting order type
-        enum SortOrderType {
+        enum Type {
             Invalid = 0;
             Ascending = 1;
             Descending = -1;
         }
+        // Order of sorting
+        Type type = 1;
     }
-    // Name of the field by which sort to be performed
     SortByType sortBy = 1;
-    // Order of sorting
     SortOrderType sortOrder = 2;
-
 }
 
 message EnumerateOptions {
