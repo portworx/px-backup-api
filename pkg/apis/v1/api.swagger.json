@@ -67,6 +67,45 @@
         ]
       }
     },
+    "/v1/backup/getbackupresourcedetails/{org_id}/{name}/{uid}": {
+      "get": {
+        "summary": "For VirtualMachine backup object type, it returns the details of VirtualMachine and its resources mapped under it",
+        "operationId": "GetBackupResourceDetails",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupResourceDetailGetResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "description": "Backup name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "description": "Backup uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
     "/v1/backup/updatebackupshare": {
       "put": {
         "summary": "UpdateBackupShare updates backupshare of existing backup object",
@@ -3757,6 +3796,20 @@
         "schedule_policy_ref": {
           "$ref": "#/definitions/ObjectRef",
           "title": "schedule_policy_ref is used to get the schedule policy details for the backup"
+        },
+        "virtual_machines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupInfoVirtualMachineInfo"
+          }
+        },
+        "virtual_machines_total_count": {
+          "type": "string",
+          "format": "int64"
+        },
+        "virtual_machines_failed_count": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -3846,6 +3899,24 @@
         "CloudBackupMissing"
       ],
       "default": "Invalid"
+    },
+    "BackupInfoVirtualMachineInfo": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "os_name": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/BackupInfoStatusInfo"
+        }
+      },
+      "title": "VirtualMachine Info"
     },
     "BackupInfoVolume": {
       "type": "object",
@@ -4146,6 +4217,207 @@
       ],
       "default": "Invalid",
       "description": " - NS: Represents backup schedules scoped to Kubernetes namespaces (non-VM workloads).\nTypically used for application-level backups.\n - VM: Represents backup schedules scoped to VirtualMachine workloads.\nUsed for VM-based backup scenarios.\n - All: Represents both NS and VM backup schedule types. Used when an operation should apply to all types."
+    },
+    "BackupResourceDetailGetResponse": {
+      "type": "object",
+      "properties": {
+        "backup": {
+          "$ref": "#/definitions/BackupResourceObject"
+        }
+      }
+    },
+    "BackupResourceObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "cluster": {
+          "type": "string",
+          "title": "Name of Cluster"
+        },
+        "label_selectors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Label selectors to choose resources"
+        },
+        "status": {
+          "$ref": "#/definitions/BackupInfoStatusInfo"
+        },
+        "stage": {
+          "$ref": "#/definitions/BackupInfoStage"
+        },
+        "total_size": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "csi_snapshot_class_name": {
+          "type": "string"
+        },
+        "resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "backup_location_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "cluster_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "ns_label_selectors": {
+          "type": "string"
+        },
+        "rancher_projects": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Name of rancher projects associated with resources"
+        },
+        "direct_kdmp": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "option to take backup as direct kdmp"
+        },
+        "large_resource_enabled": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "this flag signifies if the backup involves large number of resources or not"
+        },
+        "backup_object_type": {
+          "$ref": "#/definitions/BackupInfoBackupObjectType",
+          "title": "backup object type is all namespace or virtualMachine specific backup"
+        },
+        "skip_vm_auto_exec_rules": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "Skip auto rules for VirtualMachine Backup Object type"
+        },
+        "volume_snapshot_class_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "volume snapshot class mapping for csi based backup \u003cprovisioner(string), volumesnapshotclass(string)\u003e (optional)"
+        },
+        "retention_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "completion_time_info": {
+          "$ref": "#/definitions/completionTimeInfo",
+          "title": "this will store the completion time of the volumes, resources and total backup"
+        },
+        "advanced_resource_label_selector": {
+          "type": "string",
+          "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
+        },
+        "virtual_machines_total_count": {
+          "type": "string",
+          "format": "int64"
+        },
+        "virtual_machines_failed_count": {
+          "type": "string",
+          "format": "int64"
+        },
+        "namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "resource_details": {
+          "$ref": "#/definitions/BackupResourceObjectResourceContainer"
+        }
+      }
+    },
+    "BackupResourceObjectResourceContainer": {
+      "type": "object",
+      "properties": {
+        "virtual_machine_list": {
+          "$ref": "#/definitions/BackupResourceObjectVirtualMachineList",
+          "title": "List of resources mapped to virtualMachine"
+        }
+      },
+      "title": "Resources details mapped to either Namespace or virtualMachine"
+    },
+    "BackupResourceObjectResourceDetails": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "group": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/BackupInfoStatusInfo"
+        }
+      },
+      "title": "Resource Info details"
+    },
+    "BackupResourceObjectVirtualMachineDetailInfo": {
+      "type": "object",
+      "properties": {
+        "vm_info": {
+          "$ref": "#/definitions/BackupInfoVirtualMachineInfo"
+        },
+        "volumes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupResourceObjectVolumeDetails"
+          }
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupResourceObjectResourceDetails"
+          }
+        }
+      },
+      "title": "VirtualMachine Detail info with volumes and resources"
+    },
+    "BackupResourceObjectVirtualMachineList": {
+      "type": "object",
+      "properties": {
+        "virtual_machines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupResourceObjectVirtualMachineDetailInfo"
+          }
+        }
+      },
+      "title": "VirtualMachine Detail info List"
+    },
+    "BackupResourceObjectVolumeDetails": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "is_incremental": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "status": {
+          "$ref": "#/definitions/BackupInfoStatusInfo"
+        }
+      },
+      "title": "Volume details"
     },
     "BackupScheduleCreateRequest": {
       "type": "object",
@@ -6498,6 +6770,12 @@
         },
         "version": {
           "type": "string"
+        },
+        "virtual_machine_name": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
