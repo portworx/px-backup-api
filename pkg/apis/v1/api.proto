@@ -661,9 +661,15 @@ message BackupInfo {
             enum Type {
                 Invalid = 0;
                 // for non-pxd volumes
+<<<<<<< HEAD
                 NotSupported = 1;
                 // for pxd volumes
                 Full = 2;
+=======
+                NotSupported = 1; 
+                // for pxd volumes
+                Full = 2; 
+>>>>>>> PB-10547: Enumerate filter for backup mode
                 // for pxd volumes
                 Incremental = 3;
             }
@@ -947,7 +953,9 @@ message EnumerateOptions {
     // Sorting backup objects based on the field and order
     // If the field is not set, default value will be "CreationTimestamp"
     // If the order is not set, default value will be "descending"
-    SortOption sort_option = 14;
+    SortOption sort_option = 14;    
+    // filter to use BackupMode on volumes being backed up
+    string backup_mode = 15;
 }
 
 service SchedulePolicy {
