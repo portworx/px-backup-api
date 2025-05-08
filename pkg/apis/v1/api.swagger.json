@@ -3886,6 +3886,10 @@
         },
         "virtual_machine_name": {
           "type": "string"
+        },
+        "backup_mode": {
+          "$ref": "#/definitions/VolumeBackupMode",
+          "title": "Indicate backup mode - full/incr (for pxd volumes) or not supported (for other volume drivers)"
         }
       }
     },
@@ -7593,6 +7597,25 @@
           "type": "string"
         }
       }
+    },
+    "VolumeBackupMode": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/VolumeBackupModeType"
+        }
+      }
+    },
+    "VolumeBackupModeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "NotSupported",
+        "Full",
+        "Incremental"
+      ],
+      "default": "Invalid",
+      "title": "- NotSupported: for non-pxd volumes\n - Full: for pxd volumes\n - Incremental: for pxd volumes"
     },
     "VolumeJobSecurityContext": {
       "type": "object",
