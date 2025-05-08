@@ -266,6 +266,13 @@
               "Descending"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.backup_mode",
+            "description": "filter to use BackupMode on volumes being backed up.",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -855,6 +862,13 @@
               "Descending"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.backup_mode",
+            "description": "filter to use BackupMode on volumes being backed up.",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -2437,6 +2451,13 @@
               "Descending"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.backup_mode",
+            "description": "filter to use BackupMode on volumes being backed up.",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -2801,6 +2822,13 @@
               "Descending"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.backup_mode",
+            "description": "filter to use BackupMode on volumes being backed up.",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -3957,6 +3985,10 @@
         },
         "virtual_machine_name": {
           "type": "string"
+        },
+        "backup_mode": {
+          "$ref": "#/definitions/VolumeBackupMode",
+          "title": "Indicate backup mode - full/incr (for pxd volumes) or not supported (for other volume drivers)"
         }
       }
     },
@@ -5731,6 +5763,10 @@
         "sort_option": {
           "$ref": "#/definitions/SortOption",
           "title": "Sorting backup objects based on the field and order\nIf the field is not set, default value will be \"CreationTimestamp\"\nIf the order is not set, default value will be \"descending\""
+        },
+        "backup_mode": {
+          "type": "string",
+          "title": "filter to use BackupMode on volumes being backed up"
         }
       }
     },
@@ -7871,6 +7907,25 @@
           "type": "string"
         }
       }
+    },
+    "VolumeBackupMode": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/VolumeBackupModeType"
+        }
+      }
+    },
+    "VolumeBackupModeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "NotSupported",
+        "Full",
+        "Incremental"
+      ],
+      "default": "Invalid",
+      "title": "- NotSupported: for non-pxd volumes\n - Full: for pxd volumes\n - Incremental: for pxd volumes"
     },
     "VolumeJobSecurityContext": {
       "type": "object",

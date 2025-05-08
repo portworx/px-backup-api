@@ -647,10 +647,26 @@ message BackupInfo {
         // As part of restrictive PSA setting, if an UID or GID is used during backup then same value should be used during restore (optional)
         JobSecurityContext job_security_context = 15;
         string virtual_machine_name = 16;
+        // Indicate backup mode - full/incr (for pxd volumes) or not supported (for other volume drivers)
+        BackupMode backup_mode = 17;
 
         message JobSecurityContext {
             int64 runAsUser = 1;
             int64 runAsGroup = 2;
+        }
+
+        message BackupMode {
+            Type type = 1;
+
+            enum Type {
+                Invalid = 0;
+                // for non-pxd volumes
+                NotSupported = 1; 
+                // for pxd volumes
+                Full = 2; 
+                // for pxd volumes
+                Incremental = 3;
+            }
         }
     }
 
@@ -931,7 +947,9 @@ message EnumerateOptions {
     // Sorting backup objects based on the field and order
     // If the field is not set, default value will be "CreationTimestamp"
     // If the order is not set, default value will be "descending"
-    SortOption sort_option = 14;
+    SortOption sort_option = 14;    
+    // filter to use BackupMode on volumes being backed up
+    string backup_mode = 15;
 }
 
 service SchedulePolicy {
