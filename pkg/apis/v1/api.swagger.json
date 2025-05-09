@@ -4337,6 +4337,18 @@
             "type": "string"
           }
         },
+        "volumes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupInfoVolume"
+          }
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceInfo"
+          }
+        },
         "resource_details": {
           "$ref": "#/definitions/BackupResourceObjectResourceContainer"
         }
