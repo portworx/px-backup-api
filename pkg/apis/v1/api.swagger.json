@@ -293,13 +293,6 @@
               "Descending"
             ],
             "default": "Invalid"
-          },
-          {
-            "name": "enumerate_options.backup_mode",
-            "description": "filter to use BackupMode on volumes being backed up.",
-            "in": "query",
-            "required": false,
-            "type": "string"
           }
         ],
         "tags": [
@@ -889,13 +882,6 @@
               "Descending"
             ],
             "default": "Invalid"
-          },
-          {
-            "name": "enumerate_options.backup_mode",
-            "description": "filter to use BackupMode on volumes being backed up.",
-            "in": "query",
-            "required": false,
-            "type": "string"
           }
         ],
         "tags": [
@@ -2478,13 +2464,6 @@
               "Descending"
             ],
             "default": "Invalid"
-          },
-          {
-            "name": "enumerate_options.backup_mode",
-            "description": "filter to use BackupMode on volumes being backed up.",
-            "in": "query",
-            "required": false,
-            "type": "string"
           }
         ],
         "tags": [
@@ -2849,13 +2828,6 @@
               "Descending"
             ],
             "default": "Invalid"
-          },
-          {
-            "name": "enumerate_options.backup_mode",
-            "description": "filter to use BackupMode on volumes being backed up.",
-            "in": "query",
-            "required": false,
-            "type": "string"
           }
         ],
         "tags": [
@@ -5834,10 +5806,6 @@
         "sort_option": {
           "$ref": "#/definitions/SortOption",
           "title": "Sorting backup objects based on the field and order\nIf the field is not set, default value will be \"CreationTimestamp\"\nIf the order is not set, default value will be \"descending\""
-        },
-        "backup_mode": {
-          "type": "string",
-          "title": "filter to use BackupMode on volumes being backed up"
         }
       }
     },
