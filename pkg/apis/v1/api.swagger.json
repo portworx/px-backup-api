@@ -3017,6 +3017,182 @@
           "Version"
         ]
       }
+    },
+    "/v1/volumeresourceonlypolicy": {
+      "post": {
+        "summary": "Creates new VolumeResourceOnly Policy.",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "VolumeResourceOnlyPolicy"
+        ]
+      },
+      "put": {
+        "summary": "Update given volumeResourceOnly policy details",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "VolumeResourceOnlyPolicy"
+        ]
+      }
+    },
+    "/v1/volumeresourceonlypolicy/updateownership": {
+      "put": {
+        "summary": "UpdateOwnership updates ownership of existing object",
+        "operationId": "UpdateOwnership",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyOwnershipUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyOwnershipUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "VolumeResourceOnlyPolicy"
+        ]
+      }
+    },
+    "/v1/volumeresourceonlypolicy/{org_id}": {
+      "get": {
+        "summary": "Enumerate returns a list of volumeResourceOnly policy",
+        "operationId": "Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyEnumerateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "VolumeResourceOnlyPolicy"
+        ]
+      }
+    },
+    "/v1/volumeresourceonlypolicy/{org_id}/{name}/{uid}": {
+      "get": {
+        "summary": "Inspect returns detail information about a specified volumeResourceOnly policy",
+        "operationId": "Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyInspectResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "VolumeResourceOnlyPolicy"
+        ]
+      },
+      "delete": {
+        "summary": "Delete removes a volumeResourceOnly policy",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "VolumeResourceOnlyPolicy"
+        ]
+      }
     }
   },
   "definitions": {
@@ -7143,6 +7319,127 @@
           "format": "int64"
         }
       }
+    },
+    "VolumeResourceOnlyPolicyCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "volume_resource_only_policy": {
+          "$ref": "#/definitions/VolumeResourceOnlyPolicyInfo"
+        }
+      },
+      "title": "Define VolumeResourceOnlyPolicyCreateRequest struct"
+    },
+    "VolumeResourceOnlyPolicyCreateResponse": {
+      "type": "object",
+      "properties": {
+        "volume_resource_only_policy": {
+          "$ref": "#/definitions/VolumeResourceOnlyPolicyObject"
+        }
+      },
+      "title": "Define VolumeResourceOnlyPolicyCreateResponse struct"
+    },
+    "VolumeResourceOnlyPolicyDeleteResponse": {
+      "type": "object",
+      "title": "Define VolumeResourceOnlyPolicyDeleteResponse struct"
+    },
+    "VolumeResourceOnlyPolicyEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "volume_resource_only_policies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VolumeResourceOnlyPolicyObject"
+          }
+        }
+      }
+    },
+    "VolumeResourceOnlyPolicyInfo": {
+      "type": "object",
+      "properties": {
+        "volume_type": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "provisioner": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "csi_driver": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "nfs_server": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "VolumeResourceOnlyPolicyInspectResponse": {
+      "type": "object",
+      "properties": {
+        "volume_resource_only_policy": {
+          "$ref": "#/definitions/VolumeResourceOnlyPolicyObject"
+        }
+      },
+      "title": "Define VolumeResourceOnlyPolicyInspectResponse struct"
+    },
+    "VolumeResourceOnlyPolicyObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "volume_resource_only_policy_info": {
+          "$ref": "#/definitions/VolumeResourceOnlyPolicyInfo"
+        }
+      }
+    },
+    "VolumeResourceOnlyPolicyOwnershipUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "ownership": {
+          "$ref": "#/definitions/Ownership"
+        },
+        "uid": {
+          "type": "string"
+        }
+      }
+    },
+    "VolumeResourceOnlyPolicyOwnershipUpdateResponse": {
+      "type": "object"
+    },
+    "VolumeResourceOnlyPolicyUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "volume_resource_only_policy": {
+          "$ref": "#/definitions/VolumeResourceOnlyPolicyInfo"
+        }
+      },
+      "title": "Define VolumeResourceOnlyPolicyUpdateRequest struct"
+    },
+    "VolumeResourceOnlyPolicyUpdateResponse": {
+      "type": "object",
+      "title": "Define VolumeResourceOnlyPolicyUpdateResponse struct"
     },
     "completionTimeInfo": {
       "type": "object",
