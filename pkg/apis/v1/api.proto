@@ -2385,7 +2385,9 @@ message BackupResourceObject {
     int64  virtual_machines_total_count = 21;
     int64  virtual_machines_failed_count = 22;
     repeated  string namespaces = 23;
-    ResourceContainer resource_details = 24;
+    repeated BackupInfo.Volume volumes = 24;
+    repeated ResourceInfo resources = 25;
+    ResourceContainer resource_details = 26;
 
     // Resources details mapped to either Namespace or virtualMachine
     message ResourceContainer {
@@ -2412,7 +2414,7 @@ message BackupResourceObject {
     message VolumeDetails {
         string name = 1;
         uint64 size = 2;
-        bool is_incremental = 3;
+        BackupInfo.Volume.BackupMode backup_mode = 3;
         BackupInfo.StatusInfo status = 4;
     }
 
