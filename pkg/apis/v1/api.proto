@@ -661,15 +661,9 @@ message BackupInfo {
             enum Type {
                 Invalid = 0;
                 // for non-pxd volumes
-<<<<<<< HEAD
                 NotSupported = 1;
                 // for pxd volumes
                 Full = 2;
-=======
-                NotSupported = 1; 
-                // for pxd volumes
-                Full = 2; 
->>>>>>> PB-10547: Enumerate filter for backup mode
                 // for pxd volumes
                 Incremental = 3;
             }
@@ -1244,7 +1238,7 @@ message BackupScheduleUpdateRequest {
     // Cannot be used with exclude_objects.
     string exclude_filter = 26;
     // option to provide clusterRef to delete the backupschedule from cluster
-    ObjectRef cluster_ref = 27; 
+    ObjectRef cluster_ref = 27;
 }
 
 // Define BackupScheduleUpdateResponse struct
@@ -1307,7 +1301,7 @@ message BackupScheduleDeleteRequest {
     // Cannot be used with exclude_objects.
     string exclude_filter = 10;
     // option to provide clusterRef to delete the backupschedule from cluster
-    ObjectRef cluster_ref = 11; 
+    ObjectRef cluster_ref = 11;
 }
 
 // Define BackupScheduleDeleteResponse struct
@@ -2391,7 +2385,9 @@ message BackupResourceObject {
     int64  virtual_machines_total_count = 21;
     int64  virtual_machines_failed_count = 22;
     repeated  string namespaces = 23;
-    ResourceContainer resource_details = 24;
+    repeated BackupInfo.Volume volumes = 24;
+    repeated ResourceInfo resources = 25;
+    ResourceContainer resource_details = 26;
 
     // Resources details mapped to either Namespace or virtualMachine
     message ResourceContainer {
@@ -2418,7 +2414,7 @@ message BackupResourceObject {
     message VolumeDetails {
         string name = 1;
         uint64 size = 2;
-        bool is_incremental = 3;
+        BackupInfo.Volume.BackupMode backup_mode = 3;
         BackupInfo.StatusInfo status = 4;
     }
 
