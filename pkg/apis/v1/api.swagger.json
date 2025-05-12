@@ -4385,6 +4385,18 @@
             "type": "string"
           }
         },
+        "volumes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupInfoVolume"
+          }
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceInfo"
+          }
+        },
         "resource_details": {
           "$ref": "#/definitions/BackupResourceObjectResourceContainer"
         }
@@ -4464,9 +4476,8 @@
           "type": "string",
           "format": "uint64"
         },
-        "is_incremental": {
-          "type": "boolean",
-          "format": "boolean"
+        "backup_mode": {
+          "$ref": "#/definitions/VolumeBackupMode"
         },
         "status": {
           "$ref": "#/definitions/BackupInfoStatusInfo"
