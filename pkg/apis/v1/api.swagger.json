@@ -992,6 +992,18 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "cluster_ref.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cluster_ref.uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -4336,6 +4348,10 @@
         "exclude_filter": {
           "type": "string",
           "description": "Substring or regex pattern to match backup schedules and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with exclude_objects."
+        },
+        "cluster_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "option to provide clusterRef to delete the backupschedule from cluster"
         }
       },
       "title": "Define BackupScheduleDeleteRequest struct"
@@ -4782,6 +4798,10 @@
         "exclude_filter": {
           "type": "string",
           "description": "Substring or regex pattern to match backup schedules and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with exclude_objects."
+        },
+        "cluster_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "option to provide clusterRef to delete the backupschedule from cluster"
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
