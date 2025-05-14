@@ -1221,6 +1221,8 @@ message BackupScheduleUpdateRequest {
     // Substring or regex pattern to match backup schedules and exclude (e.g. "*" for All, "pxb-" or any valid regex)
     // Cannot be used with exclude_objects.
     string exclude_filter = 26;
+    // option to provide clusterRef to delete the backupschedule from cluster
+    ObjectRef cluster_ref = 27; 
 }
 
 // Define BackupScheduleUpdateResponse struct
@@ -1282,6 +1284,8 @@ message BackupScheduleDeleteRequest {
     // Substring or regex pattern to match backup schedules and exclude (e.g. "*" for All, "pxb-" or any valid regex)
     // Cannot be used with exclude_objects.
     string exclude_filter = 10;
+    // option to provide clusterRef to delete the backupschedule from cluster
+    ObjectRef cluster_ref = 11; 
 }
 
 // Define BackupScheduleDeleteResponse struct
