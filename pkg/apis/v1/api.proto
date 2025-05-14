@@ -259,6 +259,28 @@ message CloudCredentialObject {
     CloudCredentialInfo cloud_credential_info = 2;
 }
 
+message VolumeResourceOnlyPolicyInfo {
+  enum VolumeType {
+    Invalid = 0;
+    portworx = 1;
+    csi = 2;
+    nfs = 3;
+  }
+  // List of volumeType to be skipped for backing up the volume data
+  repeated VolumeType volume_types = 1;
+  // List of CSI drivers that need to used to skip the backing up of volume data
+  repeated string csi_drivers = 2;
+  // List of NFS servers that need to used to skip the backing up of volume data in the case of NFS volumes
+  repeated string nfs_servers = 3;
+}
+
+
+message VolumeResourceOnlyPolicyObject {
+    Metadata metadata = 1
+        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    VolumeResourceOnlyPolicyInfo volume_resource_only_policy_info = 2;
+}
+
 message SchedulePolicyInfo {
     IntervalPolicy interval = 1;
     DailyPolicy daily = 2;
@@ -389,6 +411,8 @@ message BackupScheduleInfo {
     bool keep_cr_status = 32;
     // older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter
     string advanced_resource_label_selector = 33;
+    // reference to volumeResourceOnly policy object
+    ObjectRef VolumeResourceOnly_policy_ref = 34;
 
 
     message BackupType {
@@ -616,6 +640,8 @@ message BackupInfo {
         string os_name = 3;
         StatusInfo status = 5;
     }
+    // reference to volumeResourceOnly policy object
+    ObjectRef VolumeResourceOnly_policy_ref = 51;
     message BackupType {
         Type type = 1;
 
@@ -954,6 +980,109 @@ message EnumerateOptions {
     SortOption sort_option = 14;
 }
 
+service VolumeResourceOnlyPolicy {
+    // Creates new VolumeResourceOnly Policy.
+    rpc Create(VolumeResourceOnlyPolicyCreateRequest)
+        returns (VolumeResourceOnlyPolicyCreateResponse) {
+        option (google.api.http) = {
+            post : "/v1/volumeresourceonlypolicy"
+            body : "*"
+        };
+    }
+
+    // Update given volumeResourceOnly policy details
+    rpc Update(VolumeResourceOnlyPolicyUpdateRequest)
+        returns (VolumeResourceOnlyPolicyUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/volumeresourceonlypolicy"
+            body : "*"
+        };
+    }
+    // Enumerate returns a list of volumeResourceOnly policy
+    rpc Enumerate(VolumeResourceOnlyPolicyEnumerateRequest)
+        returns (VolumeResourceOnlyPolicyEnumerateResponse) {
+        option (google.api.http) = {
+	        get : "/v1/volumeresourceonlypolicy/{org_id}"
+	    };
+    }
+    // Inspect returns detail information about a specified volumeResourceOnly policy
+    rpc Inspect(VolumeResourceOnlyPolicyInspectRequest)
+        returns (VolumeResourceOnlyPolicyInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/volumeresourceonlypolicy/{org_id}/{name}/{uid}"
+        };
+    }
+
+    // Delete removes a volumeResourceOnly policy
+    rpc Delete(VolumeResourceOnlyPolicyDeleteRequest)
+        returns (VolumeResourceOnlyPolicyDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/volumeresourceonlypolicy/{org_id}/{name}/{uid}"
+        };
+    }
+    // UpdateOwnership updates ownership of existing object
+    rpc UpdateOwnership(VolumeResourceOnlyPolicyOwnershipUpdateRequest)
+        returns (VolumeResourceOnlyPolicyOwnershipUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/volumeresourceonlypolicy/updateownership"
+            body : "*"
+        };
+    }
+}
+
+// Define VolumeResourceOnlyPolicyCreateRequest struct
+message VolumeResourceOnlyPolicyCreateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    VolumeResourceOnlyPolicyInfo volume_resource_only_policy = 2;
+}
+
+// Define VolumeResourceOnlyPolicyCreateResponse struct
+message VolumeResourceOnlyPolicyCreateResponse {
+    VolumeResourceOnlyPolicyObject volume_resource_only_policy = 1;
+}
+// Define VolumeResourceOnlyPolicyUpdateRequest struct
+message VolumeResourceOnlyPolicyUpdateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    VolumeResourceOnlyPolicyInfo volume_resource_only_policy = 2;
+}
+// Define VolumeResourceOnlyPolicyUpdateResponse struct
+message VolumeResourceOnlyPolicyUpdateResponse {}
+// Define VolumeResourceOnlyPolicyEnumerateRequest struct
+message VolumeResourceOnlyPolicyEnumerateRequest {
+    string org_id = 1;
+    // label selectors for the object for filtering
+    map<string, string> labels = 2;
+}
+// Define VolumeResourceOnlyPolicyEnumerateResponse struct
+message VolumeResourceOnlyPolicyEnumerateResponse {
+    repeated VolumeResourceOnlyPolicyObject volume_resource_only_policies = 1;
+}
+// Define VolumeResourceOnlyPolicyInspectRequest struct
+message VolumeResourceOnlyPolicyInspectRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+// Define VolumeResourceOnlyPolicyInspectResponse struct
+message VolumeResourceOnlyPolicyInspectResponse {
+	VolumeResourceOnlyPolicyObject volume_resource_only_policy = 1;
+}
+// Define VolumeResourceOnlyPolicyDeleteRequest struct
+message VolumeResourceOnlyPolicyDeleteRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+// Define VolumeResourceOnlyPolicyDeleteResponse struct
+message VolumeResourceOnlyPolicyDeleteResponse {}
+message VolumeResourceOnlyPolicyOwnershipUpdateRequest {
+    string org_id = 1;
+    string name = 2;
+    Ownership ownership = 3;
+    string uid = 4;
+}
+message VolumeResourceOnlyPolicyOwnershipUpdateResponse {}
+
 service SchedulePolicy {
     // Creates new schedule policy.
     rpc Create(SchedulePolicyCreateRequest)
@@ -1169,6 +1298,8 @@ message BackupScheduleCreateRequest {
     bool keep_cr_status = 26;
     // older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter
     string advanced_resource_label_selector = 27;
+    // reference to volumeResourceOnly policy object
+    ObjectRef volume_resource_only_policy_ref = 28;
 
     enum BackupType {
         Invalid = 0;
@@ -1241,6 +1372,8 @@ message BackupScheduleUpdateRequest {
     string exclude_filter = 26;
     // option to provide clusterRef to suspend/resume the backupschedule from cluster
     ClusterScope cluster_scope = 27; 
+    // reference to volumeResourceOnly policy object
+    ObjectRef volume_resource_only_policy_ref = 28;
 }
 
 // Define BackupScheduleUpdateResponse struct
@@ -2235,6 +2368,9 @@ message BackupCreateRequest {
     bool keep_cr_status = 22;
     // older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter
     string advanced_resource_label_selector = 23;
+    // reference to volumeResourceOnly policy object
+    ObjectRef volume_resource_only_policy_ref = 24;
+
 
 
     enum BackupType {
