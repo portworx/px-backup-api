@@ -1221,8 +1221,8 @@ message BackupScheduleUpdateRequest {
     // Substring or regex pattern to match backup schedules and exclude (e.g. "*" for All, "pxb-" or any valid regex)
     // Cannot be used with exclude_objects.
     string exclude_filter = 26;
-    // option to provide clusterRef to delete the backupschedule from cluster
-    ObjectRef cluster_ref = 27; 
+    // option to provide clusterRef to suspend/resume the backupschedule from cluster
+    ClusterScope cluster_scope = 27; 
 }
 
 // Define BackupScheduleUpdateResponse struct
@@ -1285,7 +1285,7 @@ message BackupScheduleDeleteRequest {
     // Cannot be used with exclude_objects.
     string exclude_filter = 10;
     // option to provide clusterRef to delete the backupschedule from cluster
-    ObjectRef cluster_ref = 11; 
+    ClusterScope cluster_scope = 11;
 }
 
 // Define BackupScheduleDeleteResponse struct
@@ -3158,4 +3158,16 @@ message BackupObjectType {
     }
 
     Type type = 1;
+}
+
+message ClusterScope {
+  oneof scope {
+    ObjectRefList cluster_refs = 1;
+    bool all_clusters = 2;
+  }
+}
+
+// Helper message to hold multiple cluster references as oneof doesn't allow repeated labels
+message ObjectRefList {
+  repeated ObjectRef refs = 1;
 }
