@@ -994,16 +994,11 @@
             "type": "string"
           },
           {
-            "name": "cluster_ref.name",
+            "name": "cluster_scope.all_clusters",
             "in": "query",
             "required": false,
-            "type": "string"
-          },
-          {
-            "name": "cluster_ref.uid",
-            "in": "query",
-            "required": false,
-            "type": "string"
+            "type": "boolean",
+            "format": "boolean"
           }
         ],
         "tags": [
@@ -4349,8 +4344,8 @@
           "type": "string",
           "description": "Substring or regex pattern to match backup schedules and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with exclude_objects."
         },
-        "cluster_ref": {
-          "$ref": "#/definitions/ObjectRef",
+        "cluster_scope": {
+          "$ref": "#/definitions/ClusterScope",
           "title": "option to provide clusterRef to delete the backupschedule from cluster"
         }
       },
@@ -4799,9 +4794,9 @@
           "type": "string",
           "description": "Substring or regex pattern to match backup schedules and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with exclude_objects."
         },
-        "cluster_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "title": "option to provide clusterRef to delete the backupschedule from cluster"
+        "cluster_scope": {
+          "$ref": "#/definitions/ClusterScope",
+          "title": "option to provide clusterRef to suspend/resume the backupschedule from cluster"
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
@@ -5298,6 +5293,18 @@
         },
         "clusterInfo": {
           "$ref": "#/definitions/ClusterInfo"
+        }
+      }
+    },
+    "ClusterScope": {
+      "type": "object",
+      "properties": {
+        "cluster_refs": {
+          "$ref": "#/definitions/ObjectRefList"
+        },
+        "all_clusters": {
+          "type": "boolean",
+          "format": "boolean"
         }
       }
     },
@@ -6049,6 +6056,18 @@
           "type": "string"
         }
       }
+    },
+    "ObjectRefList": {
+      "type": "object",
+      "properties": {
+        "refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          }
+        }
+      },
+      "title": "Helper message to hold multiple cluster references as oneof doesn't allow repeated labels"
     },
     "OrganizationCreateRequest": {
       "type": "object",
