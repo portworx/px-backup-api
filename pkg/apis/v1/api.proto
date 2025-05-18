@@ -598,6 +598,9 @@ message BackupInfo {
     bool isBackupReady_for_PXDLocalSnapshotRestore = 44;
     // older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter
     string advanced_resource_label_selector = 45;
+    // schedule_policy_ref is used to get the schedule policy details for the backup
+    ObjectRef schedule_policy_ref = 46;
+
 
     message BackupType {
         Type type = 1;
