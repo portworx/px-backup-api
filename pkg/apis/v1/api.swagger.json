@@ -3753,6 +3753,10 @@
         "advanced_resource_label_selector": {
           "type": "string",
           "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
+        },
+        "schedule_policy_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "schedule_policy_ref is used to get the schedule policy details for the backup"
         }
       }
     },
