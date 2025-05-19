@@ -3865,6 +3865,10 @@
         "virtual_machines_failed_count": {
           "type": "string",
           "format": "int64"
+        },
+        "retry_parent": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "this will store the reference of the parent backup in case of retry backup"
         }
       }
     },

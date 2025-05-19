@@ -602,12 +602,13 @@ message BackupInfo {
     string advanced_resource_label_selector = 45;
     // schedule_policy_ref is used to get the schedule policy details for the backup
     ObjectRef schedule_policy_ref = 46;
-
     repeated VirtualMachineInfo virtual_machines = 47;
     int64  virtual_machines_total_count = 48;
     int64  virtual_machines_failed_count = 49;
+    // this will store the reference of the parent backup in case of retry backup
+    ObjectRef retry_parent = 50;
 
-    //VirtualMachine Info
+    // VirtualMachine Info
     message VirtualMachineInfo {
         string name = 1;
         string namespace = 2;
