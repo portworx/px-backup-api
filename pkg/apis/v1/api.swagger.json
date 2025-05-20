@@ -7878,14 +7878,14 @@
           "items": {
             "type": "string"
           },
-          "title": "List of CSI drivers that need to used to skip the backing up of volume data"
+          "title": "List of CSI drivers that need to used to skip the backing up of volume data\nThis parameter is valid only when the volume type is set with csi as one of the parameter"
         },
         "nfs_servers": {
           "type": "array",
           "items": {
             "type": "string"
           },
-          "title": "List of NFS servers that need to used to skip the backing up of volume data in the case of NFS volumes"
+          "title": "List of NFS servers that need to used to skip the backing up of volume data in the case of NFS volumes\nThis parameter is valid only when the volume type is set with nfs as one of the parameter"
         }
       }
     },
@@ -7893,9 +7893,9 @@
       "type": "string",
       "enum": [
         "Invalid",
-        "portworx",
-        "csi",
-        "nfs"
+        "Portworx",
+        "Csi",
+        "Nfs"
       ],
       "default": "Invalid"
     },

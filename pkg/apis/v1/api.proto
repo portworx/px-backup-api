@@ -262,15 +262,17 @@ message CloudCredentialObject {
 message VolumeResourceOnlyPolicyInfo {
   enum VolumeType {
     Invalid = 0;
-    portworx = 1;
-    csi = 2;
-    nfs = 3;
+    Portworx = 1;
+    Csi = 2;
+    Nfs = 3;
   }
   // List of volumeType to be skipped for backing up the volume data
   repeated VolumeType volume_types = 1;
   // List of CSI drivers that need to used to skip the backing up of volume data
+  // This parameter is valid only when the volume type is set with csi as one of the parameter
   repeated string csi_drivers = 2;
   // List of NFS servers that need to used to skip the backing up of volume data in the case of NFS volumes
+  // This parameter is valid only when the volume type is set with nfs as one of the parameter
   repeated string nfs_servers = 3;
 }
 
