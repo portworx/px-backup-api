@@ -4022,7 +4022,7 @@
           "$ref": "#/definitions/ObjectRef",
           "title": "this will store the reference of the parent backup in case of retry backup"
         },
-        "VolumeResourceOnly_policy_ref": {
+        "volumeResourceOnly_policy_ref": {
           "$ref": "#/definitions/ObjectRef",
           "title": "reference to volumeResourceOnly policy object"
         }
@@ -5104,7 +5104,7 @@
           "type": "string",
           "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
         },
-        "VolumeResourceOnly_policy_ref": {
+        "volumeResourceOnly_policy_ref": {
           "$ref": "#/definitions/ObjectRef",
           "title": "reference to volumeResourceOnly policy object"
         }
