@@ -5199,7 +5199,9 @@
         "Success",
         "Captured",
         "PartialSuccess",
-        "DeletePending"
+        "DeletePending",
+        "Suspending",
+        "Resuming"
       ],
       "default": "Invalid"
     },
