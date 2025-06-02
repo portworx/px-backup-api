@@ -429,6 +429,8 @@ message BackupScheduleInfo {
             Captured = 7;
             PartialSuccess = 8;
             DeletePending = 9;
+            Suspending = 10;
+            Resuming = 11;
         }
     }
 
