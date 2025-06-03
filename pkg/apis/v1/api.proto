@@ -414,7 +414,7 @@ message BackupScheduleInfo {
     // older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter
     string advanced_resource_label_selector = 33;
     // reference to volumeResourceOnly policy object
-    ObjectRef volumeResourceOnly_policy_ref = 34;
+    ObjectRef volume_resource_only_policy_ref = 34;
 
 
     message BackupType {
@@ -641,7 +641,7 @@ message BackupInfo {
         StatusInfo status = 5;
     }
     // reference to volumeResourceOnly policy object
-    ObjectRef volumeResourceOnly_policy_ref = 51;
+    ObjectRef volume_resource_only_policy_ref = 51;
     message BackupType {
         Type type = 1;
 
