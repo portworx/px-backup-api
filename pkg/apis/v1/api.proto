@@ -553,9 +553,13 @@ message ResourceInfo {
     string group = 3;
     string kind = 4;
     string version = 5;
-    repeated string virtual_machine_name = 6;
 }
 
+// ResourcesInfo used for VM backups
+message VirtualMachineResourceInfo {
+    ResourceInfo resource_info = 1 [ (gogoproto.embed) = true ];
+    repeated string virtual_machine_names = 2;
+}
 
 message BackupInfo {
     // Name of BackupLocation, deprecated. Not to be used.
@@ -567,6 +571,7 @@ message BackupInfo {
     // Label selectors to choose resources
     map<string, string> label_selectors = 4;
     StatusInfo status = 5;
+    // resourceInfo for backupObjectType Namespace
     repeated ResourceInfo resources = 6;
     repeated Volume volumes = 7;
     string backup_path = 8;
@@ -644,6 +649,8 @@ message BackupInfo {
     }
     // reference to volumeResourceOnly policy object
     ObjectRef volume_resource_only_policy_ref = 51;
+    // resourcesInfo for backupObjectType VirtualMachine
+    repeated VirtualMachineResourceInfo virtual_machine_resources = 52;
     message BackupType {
         Type type = 1;
 
