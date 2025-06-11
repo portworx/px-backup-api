@@ -3835,7 +3835,8 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/ResourceInfo"
-          }
+          },
+          "title": "resourceInfo for backupObjectType Namespace"
         },
         "volumes": {
           "type": "array",
@@ -4025,6 +4026,13 @@
         "volume_resource_only_policy_ref": {
           "$ref": "#/definitions/ObjectRef",
           "title": "reference to volumeResourceOnly policy object"
+        },
+        "virtual_machine_resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VirtualMachineResourceInfo"
+          },
+          "title": "resourcesInfo for backupObjectType VirtualMachine"
         }
       }
     },
@@ -7054,12 +7062,6 @@
         },
         "version": {
           "type": "string"
-        },
-        "virtual_machine_name": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
         }
       }
     },
@@ -8212,6 +8214,21 @@
           "type": "string"
         }
       }
+    },
+    "VirtualMachineResourceInfo": {
+      "type": "object",
+      "properties": {
+        "resource_info": {
+          "$ref": "#/definitions/ResourceInfo"
+        },
+        "virtual_machine_names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "ResourcesInfo used for VM backups"
     },
     "VolumeBackupMode": {
       "type": "object",
