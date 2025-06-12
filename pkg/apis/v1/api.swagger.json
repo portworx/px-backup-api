@@ -5776,6 +5776,10 @@
           "type": "boolean",
           "format": "boolean",
           "title": "delete_all_cluster_backups indicates whether all the backups(created by cluster owner, super admins and all the shared users)\non the cluster need to be deleted or retained. This flag can be set only by SuperAdmin while deleting the cluster"
+        },
+        "time_zone": {
+          "type": "string",
+          "title": "time_zone is the time zone of the cluster"
         }
       }
     },
