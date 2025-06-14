@@ -67,6 +67,72 @@
         ]
       }
     },
+    "/v1/backup/getbackupresourcedetails/{org_id}/{name}/{uid}": {
+      "get": {
+        "summary": "For VirtualMachine backup object type, it returns the details of VirtualMachine and its resources mapped under it",
+        "operationId": "GetBackupResourceDetails",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupResourceDetailGetResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "description": "Backup name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "description": "Backup uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
+    "/v1/backup/retryBackupResources": {
+      "put": {
+        "summary": "RetryBackupResources retries backup of a failed or partial success backup",
+        "operationId": "RetryBackupResources",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupRetryResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupRetryRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
     "/v1/backup/updatebackupshare": {
       "put": {
         "summary": "UpdateBackupShare updates backupshare of existing backup object",
@@ -197,6 +263,69 @@
             "type": "array",
             "items": {
               "type": "string"
+            }
+          },
+          {
+            "name": "enumerate_options.sort_option.sortBy.type",
+            "description": "Name of the field by which sort to be performed.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "CreationTimestamp",
+              "Name",
+              "ClusterName",
+              "Size",
+              "RestoreBackupName"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortOrder.type",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descending"
+            ],
+            "default": "Invalid"
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
+    "/v1/backup/{org_id}/enumerate": {
+      "post": {
+        "summary": "Enumerate returns a list of objects",
+        "operationId": "Enumerate2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupEnumerateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "description": "Organization id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupEnumerateRequest"
             }
           }
         ],
@@ -724,6 +853,35 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "name": "enumerate_options.sort_option.sortBy.type",
+            "description": "Name of the field by which sort to be performed.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "CreationTimestamp",
+              "Name",
+              "ClusterName",
+              "Size",
+              "RestoreBackupName"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortOrder.type",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descending"
+            ],
+            "default": "Invalid"
           }
         ],
         "tags": [
@@ -875,15 +1033,38 @@
           },
           {
             "name": "backup_object_type.type",
+            "description": " - NS: Represents backup schedules scoped to Kubernetes namespaces (non-VM workloads).\nTypically used for application-level backups.\n - VM: Represents backup schedules scoped to VirtualMachine workloads.\nUsed for VM-based backup scenarios.\n - All: Represents both NS and VM backup schedule types. Used when an operation should apply to all types.",
             "in": "query",
             "required": false,
             "type": "string",
             "enum": [
               "Invalid",
-              "All",
-              "VirtualMachine"
+              "NS",
+              "VM",
+              "All"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "include_filter",
+            "description": "Substring or regex pattern to match backup schedules and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with include_objects.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "exclude_filter",
+            "description": "Substring or regex pattern to match backup schedules and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with exclude_objects.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cluster_scope.all_clusters",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
           }
         ],
         "tags": [
@@ -2261,6 +2442,35 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "name": "enumerate_options.sort_option.sortBy.type",
+            "description": "Name of the field by which sort to be performed.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "CreationTimestamp",
+              "Name",
+              "ClusterName",
+              "Size",
+              "RestoreBackupName"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortOrder.type",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descending"
+            ],
+            "default": "Invalid"
           }
         ],
         "tags": [
@@ -2337,6 +2547,16 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "owners",
+            "description": "Filter to use owner uids on objects.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         ],
         "tags": [
@@ -2596,6 +2816,35 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "name": "enumerate_options.sort_option.sortBy.type",
+            "description": "Name of the field by which sort to be performed.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "CreationTimestamp",
+              "Name",
+              "ClusterName",
+              "Size",
+              "RestoreBackupName"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortOrder.type",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descending"
+            ],
+            "default": "Invalid"
           }
         ],
         "tags": [
@@ -3097,6 +3346,296 @@
           "Version"
         ]
       }
+    },
+    "/v1/volumeresourceonlypolicy": {
+      "post": {
+        "summary": "Creates new VolumeResourceOnly Policy.",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "VolumeResourceOnlyPolicy"
+        ]
+      },
+      "put": {
+        "summary": "Update given volumeResourceOnly policy details",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "VolumeResourceOnlyPolicy"
+        ]
+      }
+    },
+    "/v1/volumeresourceonlypolicy/updateownership": {
+      "put": {
+        "summary": "UpdateOwnership updates ownership of existing object",
+        "operationId": "UpdateOwnership",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyOwnershipUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyOwnershipUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "VolumeResourceOnlyPolicy"
+        ]
+      }
+    },
+    "/v1/volumeresourceonlypolicy/{org_id}": {
+      "get": {
+        "summary": "Enumerate returns a list of volumeResourceOnly policy",
+        "operationId": "Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyEnumerateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.max_objects",
+            "description": "max objects to fetch.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.time_range.start_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "enumerate_options.time_range.end_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "enumerate_options.name_filter",
+            "description": "Filter to use for name of objects. Any object that contains the filter\nwill be returned.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.cluster_name_filter",
+            "description": "Filter to use for cluster name of objects. Any object that contains the\nfilter will be returned.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.object_index",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.include_detailed_resources",
+            "description": "Ths option will be set to true by the caller, when they want to have\ncomplete backup object. That means the backupObject's\nresource list will be set to complete list of resources.\nIf this option is set to false, resource list will be\nset to nil and rest of the backupObject details will be returned in the\nresponse.",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          },
+          {
+            "name": "enumerate_options.cluster_uid_filter",
+            "description": "Filter to use with cluster uid on objects. Any object that contains the\nfilter will be returned\nCurrently backup enumerate request should pass this along with cluster\nname.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.owners",
+            "description": "Filter to use owner uids on objects. Any object that contains the\nfilter will be returned.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "enumerate_options.backup_object_type",
+            "description": "filter to use backupObjectType on object.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.status",
+            "description": "filter based on the object status.\nNeed to pass the string value of the status field of the object ( backup /restore )\nFor example, {\"Success\", \"Failed\"}.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "enumerate_options.sort_option.sortBy.type",
+            "description": "Name of the field by which sort to be performed.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "CreationTimestamp",
+              "Name",
+              "ClusterName",
+              "Size",
+              "RestoreBackupName"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortOrder.type",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descending"
+            ],
+            "default": "Invalid"
+          }
+        ],
+        "tags": [
+          "VolumeResourceOnlyPolicy"
+        ]
+      }
+    },
+    "/v1/volumeresourceonlypolicy/{org_id}/{name}/{uid}": {
+      "get": {
+        "summary": "Inspect returns detail information about a specified volumeResourceOnly policy",
+        "operationId": "Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyInspectResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "VolumeResourceOnlyPolicy"
+        ]
+      },
+      "delete": {
+        "summary": "Delete removes a volumeResourceOnly policy",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "VolumeResourceOnlyPolicy"
+        ]
+      }
     }
   },
   "definitions": {
@@ -3297,6 +3836,10 @@
         "advanced_resource_label_selector": {
           "type": "string",
           "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
+        },
+        "volume_resource_only_policy_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "reference to volumeResourceOnly policy object"
         }
       },
       "title": "Request message structure for backup create"
@@ -3339,6 +3882,20 @@
     "BackupDeleteResponse": {
       "type": "object",
       "title": "Response message structure for object delete"
+    },
+    "BackupEnumerateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string",
+          "title": "Organization id"
+        },
+        "enumerate_options": {
+          "$ref": "#/definitions/EnumerateOptions",
+          "title": "Optional arguments for enumeration"
+        }
+      },
+      "title": "Request message structure for enumerate object"
     },
     "BackupEnumerateResponse": {
       "type": "object",
@@ -3392,7 +3949,8 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/ResourceInfo"
-          }
+          },
+          "title": "resourceInfo for backupObjectType Namespace"
         },
         "volumes": {
           "type": "array",
@@ -3556,6 +4114,39 @@
         "advanced_resource_label_selector": {
           "type": "string",
           "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
+        },
+        "schedule_policy_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "schedule_policy_ref is used to get the schedule policy details for the backup"
+        },
+        "virtual_machines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupInfoVirtualMachineInfo"
+          }
+        },
+        "virtual_machines_total_count": {
+          "type": "string",
+          "format": "int64"
+        },
+        "virtual_machines_failed_count": {
+          "type": "string",
+          "format": "int64"
+        },
+        "retry_parent": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "this will store the reference of the parent backup in case of retry backup"
+        },
+        "volume_resource_only_policy_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "reference to volumeResourceOnly policy object"
+        },
+        "virtual_machine_resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VirtualMachineResourceInfo"
+          },
+          "title": "resourcesInfo for backupObjectType VirtualMachine"
         }
       }
     },
@@ -3646,6 +4237,24 @@
       ],
       "default": "Invalid"
     },
+    "BackupInfoVirtualMachineInfo": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "os_name": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/BackupInfoStatusInfo"
+        }
+      },
+      "title": "VirtualMachine Info"
+    },
     "BackupInfoVolume": {
       "type": "object",
       "properties": {
@@ -3706,6 +4315,10 @@
         },
         "virtual_machine_name": {
           "type": "string"
+        },
+        "backup_mode": {
+          "$ref": "#/definitions/VolumeBackupMode",
+          "title": "Indicate backup mode - full/incr (for pxd volumes) or not supported (for other volume drivers)"
         }
       }
     },
@@ -3923,6 +4536,277 @@
       },
       "description": "Message for Backup object which will be stored in Datastore."
     },
+    "BackupObjectType": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/BackupObjectTypeType"
+        }
+      }
+    },
+    "BackupObjectTypeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "NS",
+        "VM",
+        "All"
+      ],
+      "default": "Invalid",
+      "description": " - NS: Represents backup schedules scoped to Kubernetes namespaces (non-VM workloads).\nTypically used for application-level backups.\n - VM: Represents backup schedules scoped to VirtualMachine workloads.\nUsed for VM-based backup scenarios.\n - All: Represents both NS and VM backup schedule types. Used when an operation should apply to all types."
+    },
+    "BackupResourceDetailGetResponse": {
+      "type": "object",
+      "properties": {
+        "backup": {
+          "$ref": "#/definitions/BackupResourceObject"
+        }
+      }
+    },
+    "BackupResourceObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "cluster": {
+          "type": "string",
+          "title": "Name of Cluster"
+        },
+        "label_selectors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Label selectors to choose resources"
+        },
+        "status": {
+          "$ref": "#/definitions/BackupInfoStatusInfo"
+        },
+        "stage": {
+          "$ref": "#/definitions/BackupInfoStage"
+        },
+        "total_size": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "csi_snapshot_class_name": {
+          "type": "string"
+        },
+        "resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "backup_location_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "cluster_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "ns_label_selectors": {
+          "type": "string"
+        },
+        "rancher_projects": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Name of rancher projects associated with resources"
+        },
+        "direct_kdmp": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "option to take backup as direct kdmp"
+        },
+        "large_resource_enabled": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "this flag signifies if the backup involves large number of resources or not"
+        },
+        "backup_object_type": {
+          "$ref": "#/definitions/BackupInfoBackupObjectType",
+          "title": "backup object type is all namespace or virtualMachine specific backup"
+        },
+        "skip_vm_auto_exec_rules": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "Skip auto rules for VirtualMachine Backup Object type"
+        },
+        "volume_snapshot_class_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "volume snapshot class mapping for csi based backup \u003cprovisioner(string), volumesnapshotclass(string)\u003e (optional)"
+        },
+        "retention_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "completion_time_info": {
+          "$ref": "#/definitions/completionTimeInfo",
+          "title": "this will store the completion time of the volumes, resources and total backup"
+        },
+        "advanced_resource_label_selector": {
+          "type": "string",
+          "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
+        },
+        "virtual_machines_total_count": {
+          "type": "string",
+          "format": "int64"
+        },
+        "virtual_machines_failed_count": {
+          "type": "string",
+          "format": "int64"
+        },
+        "namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "volumes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupInfoVolume"
+          }
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceInfo"
+          }
+        },
+        "resource_details": {
+          "$ref": "#/definitions/BackupResourceObjectResourceContainer"
+        }
+      }
+    },
+    "BackupResourceObjectResourceContainer": {
+      "type": "object",
+      "properties": {
+        "virtual_machine_list": {
+          "$ref": "#/definitions/BackupResourceObjectVirtualMachineList",
+          "title": "List of resources mapped to virtualMachine"
+        }
+      },
+      "title": "Resources details mapped to either Namespace or virtualMachine"
+    },
+    "BackupResourceObjectResourceDetails": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "group": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/BackupInfoStatusInfo"
+        }
+      },
+      "title": "Resource Info details"
+    },
+    "BackupResourceObjectVirtualMachineDetailInfo": {
+      "type": "object",
+      "properties": {
+        "vm_info": {
+          "$ref": "#/definitions/BackupInfoVirtualMachineInfo"
+        },
+        "volumes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupResourceObjectVolumeDetails"
+          }
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupResourceObjectResourceDetails"
+          }
+        }
+      },
+      "title": "VirtualMachine Detail info with volumes and resources"
+    },
+    "BackupResourceObjectVirtualMachineList": {
+      "type": "object",
+      "properties": {
+        "virtual_machines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupResourceObjectVirtualMachineDetailInfo"
+          }
+        }
+      },
+      "title": "VirtualMachine Detail info List"
+    },
+    "BackupResourceObjectVolumeDetails": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "backup_mode": {
+          "$ref": "#/definitions/VolumeBackupMode"
+        },
+        "status": {
+          "$ref": "#/definitions/BackupInfoStatusInfo"
+        }
+      },
+      "title": "Volume details"
+    },
+    "BackupRetryRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string",
+          "title": "Organization id"
+        },
+        "name": {
+          "type": "string",
+          "title": "Name of the failed or partial success backup to be retried"
+        },
+        "uid": {
+          "type": "string",
+          "title": "UID of the failed or partial success backup to be retried"
+        },
+        "include_resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceInfo"
+          },
+          "description": "List of failed VirtualMachine resource only. If not passed, will retry all Failed VMs from Backup object."
+        },
+        "skip_vm_auto_exec_rules": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "skip_vm_auto_exec_rules when set to true will take crash-consistent backup for retry"
+        }
+      },
+      "title": "Request message for retrying failed backup"
+    },
+    "BackupRetryResponse": {
+      "type": "object",
+      "properties": {
+        "backup": {
+          "$ref": "#/definitions/BackupObject",
+          "title": "Auto-generated backup name format : \u003coriginal backup name\u003e-retry{count}-\u003cepoch\u003e ;"
+        }
+      },
+      "title": "Response message for BackupRetryRequest"
+    },
     "BackupScheduleCreateRequest": {
       "type": "object",
       "properties": {
@@ -4045,6 +4929,10 @@
         "advanced_resource_label_selector": {
           "type": "string",
           "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
+        },
+        "volume_resource_only_policy_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "reference to volumeResourceOnly policy object"
         }
       },
       "title": "Define BackupScheduleCreateRequest struct"
@@ -4101,15 +4989,15 @@
         "uid": {
           "type": "string"
         },
-        "identifiers": {
+        "include_objects": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ObjectRef"
           },
-          "title": "ObjectRef can contain:\n- specific list of name+uid (e.g., 10 items)\n- wildcard: name = \"*\" or name = \"pxb-*\""
+          "description": "List of exact backup schedules to include (name + UID required)."
         },
         "backup_object_type": {
-          "$ref": "#/definitions/BackupScheduleDeleteRequestBackupObjectType",
+          "$ref": "#/definitions/BackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
         },
         "policy_ref": {
@@ -4124,27 +5012,22 @@
           "items": {
             "$ref": "#/definitions/ObjectRef"
           },
-          "title": "multiple name + uid for excluding, Wildcard (* or prefix) must be used in identifiers to use this filter"
+          "description": "List of exact backup schedules to exclude (name + UID required)."
+        },
+        "include_filter": {
+          "type": "string",
+          "description": "Substring or regex pattern to match backup schedules and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with include_objects."
+        },
+        "exclude_filter": {
+          "type": "string",
+          "description": "Substring or regex pattern to match backup schedules and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with exclude_objects."
+        },
+        "cluster_scope": {
+          "$ref": "#/definitions/ClusterScope",
+          "title": "option to provide clusterRef to delete the backupschedule from cluster"
         }
       },
       "title": "Define BackupScheduleDeleteRequest struct"
-    },
-    "BackupScheduleDeleteRequestBackupObjectType": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "$ref": "#/definitions/BackupScheduleDeleteRequestBackupObjectTypeType"
-        }
-      }
-    },
-    "BackupScheduleDeleteRequestBackupObjectTypeType": {
-      "type": "string",
-      "enum": [
-        "Invalid",
-        "All",
-        "VirtualMachine"
-      ],
-      "default": "Invalid"
     },
     "BackupScheduleDeleteResponse": {
       "type": "object",
@@ -4342,6 +5225,10 @@
         "advanced_resource_label_selector": {
           "type": "string",
           "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
+        },
+        "volume_resource_only_policy_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "reference to volumeResourceOnly policy object"
         }
       }
     },
@@ -4434,7 +5321,9 @@
         "Success",
         "Captured",
         "PartialSuccess",
-        "DeletePending"
+        "DeletePending",
+        "Suspending",
+        "Resuming"
       ],
       "default": "Invalid"
     },
@@ -4557,7 +5446,7 @@
           "description": "advanced_resource_label_selector is not supported for update; No-op."
         },
         "backup_object_type": {
-          "$ref": "#/definitions/BackupScheduleUpdateRequestBackupObjectType",
+          "$ref": "#/definitions/BackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
         },
         "policy_ref": {
@@ -4572,27 +5461,33 @@
           "items": {
             "$ref": "#/definitions/ObjectRef"
           },
-          "title": "multiple name + uid for excluding, Wildcard (* or prefix) must be used in identifiers to use this filter"
+          "description": "List of exact backup schedules to exclude (name + UID required)."
+        },
+        "include_objects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "List of exact backup schedules to include (name + UID required)."
+        },
+        "include_filter": {
+          "type": "string",
+          "description": "Substring or regex pattern to match backup schedules and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with include_objects."
+        },
+        "exclude_filter": {
+          "type": "string",
+          "description": "Substring or regex pattern to match backup schedules and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with exclude_objects."
+        },
+        "cluster_scope": {
+          "$ref": "#/definitions/ClusterScope",
+          "title": "option to provide clusterRef to suspend/resume the backupschedule from cluster"
+        },
+        "volume_resource_only_policy_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "reference to volumeResourceOnly policy object"
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
-    },
-    "BackupScheduleUpdateRequestBackupObjectType": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "$ref": "#/definitions/BackupScheduleUpdateRequestBackupObjectTypeType"
-        }
-      }
-    },
-    "BackupScheduleUpdateRequestBackupObjectTypeType": {
-      "type": "string",
-      "enum": [
-        "Invalid",
-        "All",
-        "VirtualMachine"
-      ],
-      "default": "Invalid"
     },
     "BackupScheduleUpdateResponse": {
       "type": "object",
@@ -5003,6 +5898,10 @@
           "type": "boolean",
           "format": "boolean",
           "title": "delete_all_cluster_backups indicates whether all the backups(created by cluster owner, super admins and all the shared users)\non the cluster need to be deleted or retained. This flag can be set only by SuperAdmin while deleting the cluster"
+        },
+        "time_zone": {
+          "type": "string",
+          "title": "time_zone is the time zone of the cluster"
         }
       }
     },
@@ -5089,6 +5988,18 @@
         }
       }
     },
+    "ClusterScope": {
+      "type": "object",
+      "properties": {
+        "cluster_refs": {
+          "$ref": "#/definitions/ObjectRefList"
+        },
+        "all_clusters": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
+    },
     "ClusterUpdateRequest": {
       "type": "object",
       "properties": {
@@ -5147,13 +6058,6 @@
         "uid": {
           "type": "string",
           "title": "uid of the object"
-        },
-        "identifiers": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ObjectRef"
-          },
-          "title": "ObjectRef can contain:\n- specific list of name+uid (e.g., 10 items)\n- wildcard: name = \"*\" or name = \"pxb-*\""
         }
       }
     },
@@ -5274,6 +6178,10 @@
             "$ref": "#/definitions/ObjectRef"
           },
           "description": "filter to use backup schedule policy name and uid. Any object that contains the filter will be returned."
+        },
+        "sort_option": {
+          "$ref": "#/definitions/SortOption",
+          "title": "Sorting backup objects based on the field and order\nIf the field is not set, default value will be \"CreationTimestamp\"\nIf the order is not set, default value will be \"descending\""
         }
       }
     },
@@ -5840,6 +6748,18 @@
           "type": "string"
         }
       }
+    },
+    "ObjectRefList": {
+      "type": "object",
+      "properties": {
+        "refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          }
+        }
+      },
+      "title": "Helper message to hold multiple cluster references as oneof doesn't allow repeated labels"
     },
     "OrganizationCreateRequest": {
       "type": "object",
@@ -7257,6 +8177,59 @@
     "ShareClusterResponse": {
       "type": "object"
     },
+    "SortOption": {
+      "type": "object",
+      "properties": {
+        "sortBy": {
+          "$ref": "#/definitions/SortOptionSortByType"
+        },
+        "sortOrder": {
+          "$ref": "#/definitions/SortOptionSortOrderType"
+        }
+      }
+    },
+    "SortOptionSortByType": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/SortOptionSortByTypeType",
+          "title": "Name of the field by which sort to be performed"
+        }
+      },
+      "title": "field by which sorting will performed"
+    },
+    "SortOptionSortByTypeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "CreationTimestamp",
+        "Name",
+        "ClusterName",
+        "Size",
+        "RestoreBackupName"
+      ],
+      "default": "Invalid"
+    },
+    "SortOptionSortOrderType": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/SortOptionSortOrderTypeType",
+          "title": "Order of sorting"
+        }
+      },
+      "title": "Order of sorting"
+    },
+    "SortOptionSortOrderTypeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Ascending",
+        "Descending"
+      ],
+      "default": "Invalid",
+      "title": "Sorting order type"
+    },
     "SuspendedBySource": {
       "type": "string",
       "enum": [
@@ -7356,6 +8329,40 @@
         }
       }
     },
+    "VirtualMachineResourceInfo": {
+      "type": "object",
+      "properties": {
+        "resource_info": {
+          "$ref": "#/definitions/ResourceInfo"
+        },
+        "virtual_machine_names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "ResourcesInfo used for VM backups"
+    },
+    "VolumeBackupMode": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/VolumeBackupModeType"
+        }
+      }
+    },
+    "VolumeBackupModeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "NotSupported",
+        "Full",
+        "Incremental"
+      ],
+      "default": "Invalid",
+      "title": "- NotSupported: for non-pxd volumes\n - Full: for pxd volumes\n - Incremental: for pxd volumes"
+    },
     "VolumeJobSecurityContext": {
       "type": "object",
       "properties": {
@@ -7368,6 +8375,143 @@
           "format": "int64"
         }
       }
+    },
+    "VolumeResourceOnlyPolicyCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "volume_resource_only_policy": {
+          "$ref": "#/definitions/VolumeResourceOnlyPolicyInfo"
+        }
+      },
+      "title": "Define VolumeResourceOnlyPolicyCreateRequest struct"
+    },
+    "VolumeResourceOnlyPolicyCreateResponse": {
+      "type": "object",
+      "properties": {
+        "volume_resource_only_policy": {
+          "$ref": "#/definitions/VolumeResourceOnlyPolicyObject"
+        }
+      },
+      "title": "Define VolumeResourceOnlyPolicyCreateResponse struct"
+    },
+    "VolumeResourceOnlyPolicyDeleteResponse": {
+      "type": "object",
+      "title": "Define VolumeResourceOnlyPolicyDeleteResponse struct"
+    },
+    "VolumeResourceOnlyPolicyEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "volume_resource_only_policies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VolumeResourceOnlyPolicyObject"
+          }
+        },
+        "total_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "complete": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      },
+      "title": "Define VolumeResourceOnlyPolicyEnumerateResponse struct"
+    },
+    "VolumeResourceOnlyPolicyInfo": {
+      "type": "object",
+      "properties": {
+        "volume_types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VolumeResourceOnlyPolicyInfoVolumeType"
+          },
+          "title": "List of volumeType to be skipped for backing up the volume data"
+        },
+        "csi_drivers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of CSI drivers that need to used to skip the backing up of volume data\nThis parameter is valid only when the volume type is set with csi as one of the parameter"
+        },
+        "nfs_servers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of NFS servers that need to used to skip the backing up of volume data in the case of NFS volumes\nThis parameter is valid only when the volume type is set with nfs as one of the parameter"
+        }
+      }
+    },
+    "VolumeResourceOnlyPolicyInfoVolumeType": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Portworx",
+        "Csi",
+        "Nfs"
+      ],
+      "default": "Invalid"
+    },
+    "VolumeResourceOnlyPolicyInspectResponse": {
+      "type": "object",
+      "properties": {
+        "volume_resource_only_policy": {
+          "$ref": "#/definitions/VolumeResourceOnlyPolicyObject"
+        }
+      },
+      "title": "Define VolumeResourceOnlyPolicyInspectResponse struct"
+    },
+    "VolumeResourceOnlyPolicyObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "volume_resource_only_policy_info": {
+          "$ref": "#/definitions/VolumeResourceOnlyPolicyInfo"
+        }
+      }
+    },
+    "VolumeResourceOnlyPolicyOwnershipUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "ownership": {
+          "$ref": "#/definitions/Ownership"
+        },
+        "uid": {
+          "type": "string"
+        }
+      }
+    },
+    "VolumeResourceOnlyPolicyOwnershipUpdateResponse": {
+      "type": "object"
+    },
+    "VolumeResourceOnlyPolicyUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "volume_resource_only_policy": {
+          "$ref": "#/definitions/VolumeResourceOnlyPolicyInfo"
+        }
+      },
+      "title": "Define VolumeResourceOnlyPolicyUpdateRequest struct"
+    },
+    "VolumeResourceOnlyPolicyUpdateResponse": {
+      "type": "object",
+      "title": "Define VolumeResourceOnlyPolicyUpdateResponse struct"
     },
     "completionTimeInfo": {
       "type": "object",
