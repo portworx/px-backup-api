@@ -1063,10 +1063,14 @@ message VolumeResourceOnlyPolicyEnumerateRequest {
     string org_id = 1;
     // label selectors for the object for filtering
     map<string, string> labels = 2;
+    // Optional arguments for enumeration
+    EnumerateOptions enumerate_options = 3;
 }
 // Define VolumeResourceOnlyPolicyEnumerateResponse struct
 message VolumeResourceOnlyPolicyEnumerateResponse {
     repeated VolumeResourceOnlyPolicyObject volume_resource_only_policies = 1;
+    uint64 total_count = 2;
+    bool complete = 3;
 }
 // Define VolumeResourceOnlyPolicyInspectRequest struct
 message VolumeResourceOnlyPolicyInspectRequest {
