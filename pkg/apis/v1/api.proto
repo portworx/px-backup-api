@@ -946,6 +946,10 @@ message SortOption {
     SortOrderType sortOrder = 2;
 }
 
+message VolumeResourceOnlyPolicyEnumerateOptions {
+    CommonEnumerateOptions generic_enumerate_options = 1;
+   
+}
 message EnumerateOptions {
     // label selectors for the object for filtering
     map<string, string> labels = 1;
@@ -1064,7 +1068,7 @@ message VolumeResourceOnlyPolicyEnumerateRequest {
     // label selectors for the object for filtering
     map<string, string> labels = 2;
     // Optional arguments for enumeration
-    EnumerateOptions enumerate_options = 3;
+    VolumeResourceOnlyPolicyEnumerateOptions enumerate_options = 3;
 }
 // Define VolumeResourceOnlyPolicyEnumerateResponse struct
 message VolumeResourceOnlyPolicyEnumerateResponse {
