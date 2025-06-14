@@ -946,6 +946,17 @@ message SortOption {
     SortOrderType sortOrder = 2;
 }
 
+message VolumeResourceOnlyPolicyEnumerateOptions {
+    // label selectors for the object for filtering
+    map<string, string> labels = 1;
+    // max objects to fetch
+    uint64 max_objects = 2;
+    // Filter to use for name of objects. Any object that contains the filter
+    // will be returned
+    string name_filter = 3;
+    uint64 object_index = 4;
+   
+}
 message EnumerateOptions {
     // label selectors for the object for filtering
     map<string, string> labels = 1;
@@ -1064,7 +1075,7 @@ message VolumeResourceOnlyPolicyEnumerateRequest {
     // label selectors for the object for filtering
     map<string, string> labels = 2;
     // Optional arguments for enumeration
-    EnumerateOptions enumerate_options = 3;
+    VolumeResourceOnlyPolicyEnumerateOptions enumerate_options = 3;
 }
 // Define VolumeResourceOnlyPolicyEnumerateResponse struct
 message VolumeResourceOnlyPolicyEnumerateResponse {
