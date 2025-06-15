@@ -947,14 +947,7 @@ message SortOption {
 }
 
 message VolumeResourceOnlyPolicyEnumerateOptions {
-    // label selectors for the object for filtering
-    map<string, string> labels = 1;
-    // max objects to fetch
-    uint64 max_objects = 2;
-    // Filter to use for name of objects. Any object that contains the filter
-    // will be returned
-    string name_filter = 3;
-    uint64 object_index = 4;
+    CommonEnumerateOptions generic_enumerate_options = 1;
    
 }
 message EnumerateOptions {

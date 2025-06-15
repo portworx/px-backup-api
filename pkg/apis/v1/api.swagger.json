@@ -3446,7 +3446,7 @@
             "type": "string"
           },
           {
-            "name": "enumerate_options.max_objects",
+            "name": "enumerate_options.generic_enumerate_options.max_objects",
             "description": "max objects to fetch.",
             "in": "query",
             "required": false,
@@ -3454,14 +3454,14 @@
             "format": "uint64"
           },
           {
-            "name": "enumerate_options.name_filter",
+            "name": "enumerate_options.generic_enumerate_options.name_filter",
             "description": "Filter to use for name of objects. Any object that contains the filter\nwill be returned.",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
-            "name": "enumerate_options.object_index",
+            "name": "enumerate_options.generic_enumerate_options.object_index",
             "in": "query",
             "required": false,
             "type": "string",
@@ -5937,6 +5937,31 @@
       "type": "object",
       "title": "Define ClusterUpdateResponse struct"
     },
+    "CommonEnumerateOptions": {
+      "type": "object",
+      "properties": {
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "label selectors for the object for filtering"
+        },
+        "max_objects": {
+          "type": "string",
+          "format": "uint64",
+          "title": "max objects to fetch"
+        },
+        "name_filter": {
+          "type": "string",
+          "title": "Filter to use for name of objects. Any object that contains the filter\nwill be returned"
+        },
+        "object_index": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
     "CreateMetadata": {
       "type": "object",
       "properties": {
@@ -8312,25 +8337,8 @@
     "VolumeResourceOnlyPolicyEnumerateOptions": {
       "type": "object",
       "properties": {
-        "labels": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "title": "label selectors for the object for filtering"
-        },
-        "max_objects": {
-          "type": "string",
-          "format": "uint64",
-          "title": "max objects to fetch"
-        },
-        "name_filter": {
-          "type": "string",
-          "title": "Filter to use for name of objects. Any object that contains the filter\nwill be returned"
-        },
-        "object_index": {
-          "type": "string",
-          "format": "uint64"
+        "generic_enumerate_options": {
+          "$ref": "#/definitions/CommonEnumerateOptions"
         }
       }
     },
