@@ -5137,6 +5137,10 @@
         "volume_resource_only_policy_ref": {
           "$ref": "#/definitions/ObjectRef",
           "title": "reference to volumeResourceOnly policy object"
+        },
+        "bulk_failure_batch_id": {
+          "type": "string",
+          "title": "bulk_failrue_batch_id for failures when bulk backup schedule operations fail"
         }
       }
     },

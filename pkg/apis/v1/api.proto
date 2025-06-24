@@ -417,7 +417,8 @@ message BackupScheduleInfo {
     string advanced_resource_label_selector = 33;
     // reference to volumeResourceOnly policy object
     ObjectRef volume_resource_only_policy_ref = 34;
-
+    // bulk_failrue_batch_id for failures when bulk backup schedule operations fail
+    string bulk_failure_batch_id = 35;
 
     message BackupType {
         Type type = 1;
