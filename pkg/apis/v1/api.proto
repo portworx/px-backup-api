@@ -1525,6 +1525,29 @@ service Cluster {
             body : "*"
         };
     }
+
+    // ShareNamespace shares specific namespaces within a cluster with users/groups
+    rpc ShareNamespace(ShareNamespaceRequest) returns (ShareNamespaceResponse) {
+        option (google.api.http) = {
+            patch : "/v1/sharenamespace"
+            body : "*"
+        };
+    }
+
+    // UnshareNamespace removes shared access for the user(s) or group(s) to the specific namespaces within a cluster
+    rpc UnshareNamespace(UnshareNamespaceRequest) returns (UnshareNamespaceResponse) {
+        option (google.api.http) = {
+            patch: "/v1/unsharenamespace"
+            body: "*"
+        };
+    }
+
+    // ListNamespaceShares lists namespace shares for a cluster
+    rpc ListNamespaceShares(ListNamespaceSharesRequest) returns (ListNamespaceSharesResponse) {
+        option (google.api.http) = {
+            get : "/v1/sharenamespace/{org_id}"
+        };
+    }
 }
 
 message ClusterBackupShareUpdateRequest {
@@ -1668,6 +1691,70 @@ message UnShareClusterRequest{
 }
 
 message UnShareClusterResponse{}
+
+// ShareNamespaceRequest represents a request to share namespaces
+message ShareNamespaceRequest {
+    string org_id = 1;
+    // ClusterRef is the reference to the cluster
+    ObjectRef cluster_ref = 2;
+    // Namespaces contains explicitly shared namespaces
+    repeated string namespaces = 3;
+    // NamespaceSelector contains label selector for dynamic namespace selection
+    string namespace_selector = 4;
+    // userid of the user(s) to share the cluster with
+    repeated string users = 5;
+    // group(s) to share the cluster with
+    repeated string groups = 6;
+    // share_namespace_backups share is optional, if set to true, it will additionally share existing backups
+    bool share_namespace_backups = 7;
+}
+
+// ShareNamespaceResponse represents the response to a namespace share request
+message ShareNamespaceResponse {}
+
+// UnshareNamespaceRequest represents a request to unshare namespaces
+message UnshareNamespaceRequest {
+    string org_id = 1;
+    // ClusterRef is the reference to the cluster
+    ObjectRef cluster_ref = 2;
+    // Namespaces contains explicitly unshared namespaces
+    repeated string namespaces = 3;
+    // NamespaceSelector contains label selector for dynamic namespace unsharing
+    string namespace_selector = 4;
+    // Users to unshare the namespaces from
+    repeated string users = 5;
+    // Groups to unshare the namespaces from
+    repeated string groups = 6;
+}
+
+// UnshareNamespaceResponse represents the response to a namespace unshare request
+message UnshareNamespaceResponse {}
+
+// ListNamespaceSharesRequest represents a request to list namespace shares
+message ListNamespaceSharesRequest {
+    string org_id = 1;
+    // ClusterRef is the reference to the cluster (optional)
+    ObjectRef cluster_ref = 2;
+}
+
+// NamespaceShareInfo contains information about a namespace share
+message NamespaceShareInfo {
+    // ClusterRef is the reference to the cluster
+    ObjectRef cluster_ref = 1;
+    // SharedNamespaces contains explicitly shared namespaces
+    repeated string shared_namespaces = 2;
+    // NamespaceSelector contains label selector for dynamic namespace selection
+    string namespace_selector = 3;
+    // IncludeBackups indicates whether existing backups are included
+    bool include_backups = 4;
+    // SharedWith contains the users and groups this namespace share is shared with
+    BackupShare shared_with = 5;
+}
+
+// ListNamespaceSharesResponse represents the response to list namespace shares
+message ListNamespaceSharesResponse {
+    repeated NamespaceShareInfo namespace_shares = 1;
+}
 
 service CloudCredential {
     // Creates new cloud credential

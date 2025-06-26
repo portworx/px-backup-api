@@ -3303,6 +3303,70 @@
         ]
       }
     },
+    "/v1/sharenamespace": {
+      "patch": {
+        "summary": "ShareNamespace shares specific namespaces within a cluster with users/groups",
+        "operationId": "ShareNamespace",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ShareNamespaceResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ShareNamespaceRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Cluster"
+        ]
+      }
+    },
+    "/v1/sharenamespace/{org_id}": {
+      "get": {
+        "summary": "ListNamespaceShares lists namespace shares for a cluster",
+        "operationId": "ListNamespaceShares",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListNamespaceSharesResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "cluster_ref.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cluster_ref.uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Cluster"
+        ]
+      }
+    },
     "/v1/unsharecluster": {
       "patch": {
         "summary": "UnShareCluster removes shared access for the user(s) or group(s) to the cluster",
@@ -3322,6 +3386,33 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/UnShareClusterRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Cluster"
+        ]
+      }
+    },
+    "/v1/unsharenamespace": {
+      "patch": {
+        "summary": "UnshareNamespace removes shared access for the user(s) or group(s) to the specific namespaces within a cluster",
+        "operationId": "UnshareNamespace",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UnshareNamespaceResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UnshareNamespaceRequest"
             }
           }
         ],
@@ -6318,6 +6409,18 @@
         }
       }
     },
+    "ListNamespaceSharesResponse": {
+      "type": "object",
+      "properties": {
+        "namespace_shares": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NamespaceShareInfo"
+          }
+        }
+      },
+      "title": "ListNamespaceSharesResponse represents the response to list namespace shares"
+    },
     "ManagedClusterBulkAddRequest": {
       "type": "object",
       "properties": {
@@ -6670,6 +6773,36 @@
           "type": "string"
         }
       }
+    },
+    "NamespaceShareInfo": {
+      "type": "object",
+      "properties": {
+        "cluster_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "ClusterRef is the reference to the cluster"
+        },
+        "shared_namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "SharedNamespaces contains explicitly shared namespaces"
+        },
+        "namespace_selector": {
+          "type": "string",
+          "title": "NamespaceSelector contains label selector for dynamic namespace selection"
+        },
+        "include_backups": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "IncludeBackups indicates whether existing backups are included"
+        },
+        "shared_with": {
+          "$ref": "#/definitions/BackupShare",
+          "title": "SharedWith contains the users and groups this namespace share is shared with"
+        }
+      },
+      "title": "NamespaceShareInfo contains information about a namespace share"
     },
     "ObjectRef": {
       "type": "object",
@@ -8110,6 +8243,53 @@
     "ShareClusterResponse": {
       "type": "object"
     },
+    "ShareNamespaceRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "cluster_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "ClusterRef is the reference to the cluster"
+        },
+        "namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Namespaces contains explicitly shared namespaces"
+        },
+        "namespace_selector": {
+          "type": "string",
+          "title": "NamespaceSelector contains label selector for dynamic namespace selection"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "userid of the user(s) to share the cluster with"
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "group(s) to share the cluster with"
+        },
+        "share_namespace_backups": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "share_namespace_backups share is optional, if set to true, it will additionally share existing backups"
+        }
+      },
+      "title": "ShareNamespaceRequest represents a request to share namespaces"
+    },
+    "ShareNamespaceResponse": {
+      "type": "object",
+      "title": "ShareNamespaceResponse represents the response to a namespace share request"
+    },
     "SortOption": {
       "type": "object",
       "properties": {
@@ -8229,6 +8409,48 @@
     },
     "UnShareClusterResponse": {
       "type": "object"
+    },
+    "UnshareNamespaceRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "cluster_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "ClusterRef is the reference to the cluster"
+        },
+        "namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Namespaces contains explicitly unshared namespaces"
+        },
+        "namespace_selector": {
+          "type": "string",
+          "title": "NamespaceSelector contains label selector for dynamic namespace unsharing"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Users to unshare the namespaces from"
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Groups to unshare the namespaces from"
+        }
+      },
+      "title": "UnshareNamespaceRequest represents a request to unshare namespaces"
+    },
+    "UnshareNamespaceResponse": {
+      "type": "object",
+      "title": "UnshareNamespaceResponse represents the response to a namespace unshare request"
     },
     "VersionGetResponse": {
       "type": "object",
