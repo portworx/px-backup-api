@@ -555,6 +555,8 @@ message ResourceInfo {
     string group = 3;
     string kind = 4;
     string version = 5;
+    string status = 6;
+    string reason = 7;
 }
 
 // ResourcesInfo used for VM backups
