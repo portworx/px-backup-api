@@ -555,6 +555,19 @@ message ResourceInfo {
     string group = 3;
     string kind = 4;
     string version = 5;
+    StatusInfo status = 6;
+    
+    message StatusInfo {
+        Status status = 1;
+        string reason = 2;
+
+        enum Status {
+            Invalid = 0;
+            Success = 1;
+            Failed = 2;
+
+        }
+    }
 }
 
 // ResourcesInfo used for VM backups
@@ -2097,7 +2110,6 @@ service BackupLocation {
         };
     }
 
-    // Delete removes a backup location
     rpc Delete(BackupLocationDeleteRequest)
         returns (BackupLocationDeleteResponse) {
         option (google.api.http) = {
@@ -3471,3 +3483,4 @@ message ClusterScope {
 message ObjectRefList {
   repeated ObjectRef refs = 1;
 }
+
