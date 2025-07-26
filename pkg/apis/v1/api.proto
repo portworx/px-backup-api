@@ -276,6 +276,8 @@ message VolumeResourceOnlyPolicyInfo {
   // List of NFS servers that need to used to skip the backing up of volume data in the case of NFS volumes
   // This parameter is valid only when the volume type is set with nfs as one of the parameter
   repeated string nfs_servers = 3;
+  // Label selectors to choose t0 choose the volumes for which we need to skip backing up the volume data.
+  string label_selector = 4;
 }
 
 
