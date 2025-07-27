@@ -2563,8 +2563,49 @@ message BackupResourceObject {
         oneof resource_list{
             // List of resources mapped to virtualMachine
             VirtualMachineList virtual_machine_list = 1;
-	    // TODO:  NamespaceList namespace_list = 2; for NS specific backup resources
+            // List of resources mapped to namespace
+            NamespaceList namespace_list = 2;
         }
+    }
+    // NamespaceList Detail info List
+    message NamespaceList {
+        repeated NamespaceDetailInfo namespaces = 1;
+        repeated ResourceDetailsByType cluster_wide_resources = 2;
+    }
+    // Namespace Detail info with volumes and resources
+    message NamespaceDetailInfo {
+        NamespaceInfo ns_info = 1;
+        repeated VolumeDetails volumes = 2;
+        repeated ResourceDetailsByType resourceDetails = 3;
+    }
+
+    // Resource details grouped by type with GVK information
+    message ResourceDetailsByType {
+        GroupVersionKind gvk = 1;
+        ResourceList resource_list = 2;
+        BackupInfo.StatusInfo status = 3;
+    }
+
+    // Group, Version, Kind information
+    message GroupVersionKind {
+        string group = 1;
+        string version = 2;
+        string kind = 3;
+    }
+
+    // List of resources with names and status
+    message ResourceList {
+        repeated ResourceItem items = 1;
+    }
+
+    // Individual resource item with name and status
+    message ResourceItem {
+        string name = 1;
+        BackupInfo.StatusInfo status = 2;
+    }
+    message NamespaceInfo {
+        string namespace = 1;
+        BackupInfo.StatusInfo status = 2;
     }
 
     // VirtualMachine Detail info List
@@ -2577,6 +2618,7 @@ message BackupResourceObject {
         BackupInfo.VirtualMachineInfo vm_info = 1;
         repeated VolumeDetails volumes = 2;
         repeated ResourceDetails resources = 3;
+
     }
 
     // Volume details

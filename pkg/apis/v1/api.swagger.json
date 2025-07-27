@@ -4591,12 +4591,81 @@
         }
       }
     },
+    "BackupResourceObjectGroupVersionKind": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        }
+      },
+      "title": "Group, Version, Kind information"
+    },
+    "BackupResourceObjectNamespaceDetailInfo": {
+      "type": "object",
+      "properties": {
+        "ns_info": {
+          "$ref": "#/definitions/BackupResourceObjectNamespaceInfo"
+        },
+        "volumes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupResourceObjectVolumeDetails"
+          }
+        },
+        "resourceDetails": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupResourceObjectResourceDetailsByType"
+          }
+        }
+      },
+      "title": "Namespace Detail info with volumes and resources"
+    },
+    "BackupResourceObjectNamespaceInfo": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/BackupInfoStatusInfo"
+        }
+      }
+    },
+    "BackupResourceObjectNamespaceList": {
+      "type": "object",
+      "properties": {
+        "namespaces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupResourceObjectNamespaceDetailInfo"
+          }
+        },
+        "cluster_wide_resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupResourceObjectResourceDetailsByType"
+          }
+        }
+      },
+      "title": "NamespaceList Detail info List"
+    },
     "BackupResourceObjectResourceContainer": {
       "type": "object",
       "properties": {
         "virtual_machine_list": {
           "$ref": "#/definitions/BackupResourceObjectVirtualMachineList",
           "title": "List of resources mapped to virtualMachine"
+        },
+        "namespace_list": {
+          "$ref": "#/definitions/BackupResourceObjectNamespaceList",
+          "title": "List of resources mapped to namespace"
         }
       },
       "title": "Resources details mapped to either Namespace or virtualMachine"
@@ -4621,6 +4690,45 @@
         }
       },
       "title": "Resource Info details"
+    },
+    "BackupResourceObjectResourceDetailsByType": {
+      "type": "object",
+      "properties": {
+        "gvk": {
+          "$ref": "#/definitions/BackupResourceObjectGroupVersionKind"
+        },
+        "resource_list": {
+          "$ref": "#/definitions/BackupResourceObjectResourceList"
+        },
+        "status": {
+          "$ref": "#/definitions/BackupInfoStatusInfo"
+        }
+      },
+      "title": "Resource details grouped by type with GVK information"
+    },
+    "BackupResourceObjectResourceItem": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/BackupInfoStatusInfo"
+        }
+      },
+      "title": "Individual resource item with name and status"
+    },
+    "BackupResourceObjectResourceList": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupResourceObjectResourceItem"
+          }
+        }
+      },
+      "title": "List of resources with names and status"
     },
     "BackupResourceObjectVirtualMachineDetailInfo": {
       "type": "object",
