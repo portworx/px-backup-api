@@ -8389,6 +8389,11 @@
         "label_selector": {
           "type": "string",
           "description": "Label selectors to choose t0 choose the volumes for which we need to skip backing up the volume data."
+        },
+        "vm_skip_volume_data_for_non_root_disk": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "Set this parameter to true, if volume data need to skipped for the non-root disk for kubevirt VMs"
         }
       }
     },

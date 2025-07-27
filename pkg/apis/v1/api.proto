@@ -278,6 +278,8 @@ message VolumeResourceOnlyPolicyInfo {
   repeated string nfs_servers = 3;
   // Label selectors to choose t0 choose the volumes for which we need to skip backing up the volume data.
   string label_selector = 4;
+  // Set this parameter to true, if volume data need to skipped for the non-root disk for kubevirt VMs
+  bool vm_skip_volume_data_for_non_root_disk = 5;
 }
 
 
