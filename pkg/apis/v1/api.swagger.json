@@ -636,7 +636,6 @@
         ]
       },
       "delete": {
-        "summary": "Delete removes a backup location",
         "operationId": "Delete",
         "responses": {
           "200": {
@@ -7109,8 +7108,31 @@
         },
         "version": {
           "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/ResourceInfoStatusInfo"
         }
       }
+    },
+    "ResourceInfoStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/ResourceInfoStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "ResourceInfoStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Success",
+        "Failed"
+      ],
+      "default": "Invalid"
     },
     "ResourceTypeResponse": {
       "type": "object",
