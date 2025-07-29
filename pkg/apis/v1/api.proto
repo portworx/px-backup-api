@@ -563,6 +563,35 @@ message VirtualMachineResourceInfo {
     repeated string virtual_machine_names = 2;
 }
 
+// Message to hold spilled ResourceInfo when BackupInfo.resources exceeds 13MB limit
+message ResourceInfoDocument {
+    Metadata metadata = 1
+        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    // Reference to the parent backup object (for querying)
+    ObjectRef backup_ref = 2;
+    // Sequence number to maintain order of documents
+    int32 sequence_number = 3;
+    // Array of ResourceInfo that is stored in this Document
+    repeated ResourceInfo resources = 4;
+    // Total count of resources in this document
+    int64 resource_count = 5;
+    // Document creation timestamp
+    // TODO: We may not Need it as metatdata is having that info
+    google.protobuf.Timestamp created_at = 6;
+
+    message DocumentStatus {
+        Status status = 1;
+        string reason = 2;
+
+        enum Status {
+            Invalid = 0;
+            Active = 1;
+            Complete = 2;
+            Failed = 3;
+        }
+    }
+}
+
 message BackupInfo {
     // Name of BackupLocation, deprecated. Not to be used.
     string backup_location = 1;
@@ -642,6 +671,27 @@ message BackupInfo {
     int64  virtual_machines_failed_count = 49;
     // this will store the reference of the parent backup in case of retry backup
     ObjectRef retry_parent = 50;
+    // reference to volumeResourceOnly policy object
+    ObjectRef volume_resource_only_policy_ref = 51;
+    // resourcesInfo for backupObjectType VirtualMachine
+    repeated VirtualMachineResourceInfo virtual_machine_resources = 52;
+    // Large resources sync status information
+    LargeResourcesSyncInfo large_resources_sync_info = 53;
+
+    // Message for maintaining status of large resources sync
+    message LargeResourcesSyncInfo {
+        Status status = 1;
+        string reason = 2;
+
+        enum Status {
+            Invalid = 0;
+            NotStarted = 1;
+            InProgress = 2;
+            Completed = 3;
+            Failed = 4;
+        }
+    }
+    
     // VirtualMachine Info
     message VirtualMachineInfo {
         string name = 1;
@@ -649,10 +699,6 @@ message BackupInfo {
         string os_name = 3;
         StatusInfo status = 5;
     }
-    // reference to volumeResourceOnly policy object
-    ObjectRef volume_resource_only_policy_ref = 51;
-    // resourcesInfo for backupObjectType VirtualMachine
-    repeated VirtualMachineResourceInfo virtual_machine_resources = 52;
     message BackupType {
         Type type = 1;
 
@@ -2340,6 +2386,83 @@ service Backup {
             body : "*"
         };
     }
+
+    // Syncs large resource backup resources from S3 to MongoDB documents
+    rpc SyncLargeResourceBackup(LargeResourceBackupSyncRequest) returns (LargeResourceBackupSyncResponse) {
+        option (google.api.http) = {
+            get : "/v1/backup/syncLargeResources/{org_id}/{name}/{uid}"
+        };
+    }
+
+    // Enumerates large resource backup resources with filtering and pagination
+    rpc LargeResourceEnumerate(LargeResourceEnumerateRequest) returns (LargeResourceEnumerateResponse) {
+        option (google.api.http) = {
+            post : "/v1/backup/largeResources/enumerate"
+            body : "*"
+        };
+    }
+}
+
+// Define LargeResourceBackupSyncRequest struct for syncing specific backup resources
+message LargeResourceBackupSyncRequest {
+    string org_id = 1;
+    // Backup name to sync resources for
+    string name = 2;
+    // Backup UID to sync resources for
+    string uid = 3;
+}
+
+// Define LargeResourceBackupSyncResponse struct
+message LargeResourceBackupSyncResponse {
+    // Indicates if sync is complete or still in progress
+    bool sync_complete = 1;
+    // Total number of documents created
+    int32 total_documents = 2;
+    // Total resources synced
+    int64 total_resources = 3;
+}
+
+// Define LargeResourceEnumerateRequest struct
+message LargeResourceEnumerateRequest {
+    string org_id = 1;
+    // Backup name to enumerate resources for
+    string backup_name = 2;
+    // Backup UID to enumerate resources for
+    string backup_uid = 3;
+    // Filter options
+    ResourceFilter filter = 4;
+    // Pagination options (similar to backup enumerate)
+    uint64 max_objects = 5;
+    uint64 object_index = 6;
+
+    message ResourceFilter {
+        // Filter by resource kinds (can be single or multiple)
+        repeated string kinds = 1;
+        // Filter by resource group
+        string group = 2;
+        // Filter by resource version
+        string version = 3;
+        // Filter by namespaces (can be single or multiple)
+        repeated string namespaces = 4;
+        // Filter by resource name pattern
+        string name_pattern = 5;
+    }
+}
+
+// Define LargeResourceEnumerateResponse struct
+message LargeResourceEnumerateResponse {
+    // List of matching resources
+    repeated ResourceInfo resources = 1;
+    // Total count of resources matching filter
+    uint64 total_count = 2;
+    // Indicates if more resources are available
+    bool complete = 3;
+    // Next object index for pagination
+    uint64 next_object_index = 4;
+    // List of unique namespaces found in the backup
+    repeated string available_namespaces = 5;
+    // List of unique resource kinds found in the backup
+    repeated string available_kinds = 6;
 }
 
 // Request message structure for backup create

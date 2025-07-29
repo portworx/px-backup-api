@@ -106,6 +106,33 @@
         ]
       }
     },
+    "/v1/backup/largeResources/enumerate": {
+      "post": {
+        "summary": "Enumerates large resource backup resources with filtering and pagination",
+        "operationId": "LargeResourceEnumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LargeResourceEnumerateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LargeResourceEnumerateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
     "/v1/backup/retryBackupResources": {
       "put": {
         "summary": "RetryBackupResources retries backup of a failed or partial success backup",
@@ -126,6 +153,45 @@
             "schema": {
               "$ref": "#/definitions/BackupRetryRequest"
             }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
+    "/v1/backup/syncLargeResources/{org_id}/{name}/{uid}": {
+      "get": {
+        "summary": "Syncs large resource backup resources from S3 to MongoDB documents",
+        "operationId": "SyncLargeResourceBackup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LargeResourceBackupSyncResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "description": "Backup name to sync resources for",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "description": "Backup UID to sync resources for",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "tags": [
@@ -4055,6 +4121,10 @@
             "$ref": "#/definitions/VirtualMachineResourceInfo"
           },
           "title": "resourcesInfo for backupObjectType VirtualMachine"
+        },
+        "large_resources_sync_info": {
+          "$ref": "#/definitions/BackupInfoLargeResourcesSyncInfo",
+          "title": "Large resources sync status information"
         }
       }
     },
@@ -4100,6 +4170,29 @@
         "Invalid",
         "Generic",
         "Normal"
+      ],
+      "default": "Invalid"
+    },
+    "BackupInfoLargeResourcesSyncInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/BackupInfoLargeResourcesSyncInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "title": "Message for maintaining status of large resources sync"
+    },
+    "BackupInfoLargeResourcesSyncInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "NotStarted",
+        "InProgress",
+        "Completed",
+        "Failed"
       ],
       "default": "Invalid"
     },
@@ -6139,6 +6232,130 @@
           "type": "string"
         }
       }
+    },
+    "LargeResourceBackupSyncResponse": {
+      "type": "object",
+      "properties": {
+        "sync_complete": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "Indicates if sync is complete or still in progress"
+        },
+        "total_documents": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of documents created"
+        },
+        "total_resources": {
+          "type": "string",
+          "format": "int64",
+          "title": "Total resources synced"
+        }
+      },
+      "title": "Define LargeResourceBackupSyncResponse struct"
+    },
+    "LargeResourceEnumerateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "backup_name": {
+          "type": "string",
+          "title": "Backup name to enumerate resources for"
+        },
+        "backup_uid": {
+          "type": "string",
+          "title": "Backup UID to enumerate resources for"
+        },
+        "filter": {
+          "$ref": "#/definitions/LargeResourceEnumerateRequestResourceFilter",
+          "title": "Filter options"
+        },
+        "max_objects": {
+          "type": "string",
+          "format": "uint64",
+          "title": "Pagination options (similar to backup enumerate)"
+        },
+        "object_index": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "title": "Define LargeResourceEnumerateRequest struct"
+    },
+    "LargeResourceEnumerateRequestResourceFilter": {
+      "type": "object",
+      "properties": {
+        "kinds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Filter by resource kinds (can be single or multiple)"
+        },
+        "group": {
+          "type": "string",
+          "title": "Filter by resource group"
+        },
+        "version": {
+          "type": "string",
+          "title": "Filter by resource version"
+        },
+        "namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Filter by namespaces (can be single or multiple)"
+        },
+        "name_pattern": {
+          "type": "string",
+          "title": "Filter by resource name pattern"
+        }
+      }
+    },
+    "LargeResourceEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceInfo"
+          },
+          "title": "List of matching resources"
+        },
+        "total_count": {
+          "type": "string",
+          "format": "uint64",
+          "title": "Total count of resources matching filter"
+        },
+        "complete": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "Indicates if more resources are available"
+        },
+        "next_object_index": {
+          "type": "string",
+          "format": "uint64",
+          "title": "Next object index for pagination"
+        },
+        "available_namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of unique namespaces found in the backup"
+        },
+        "available_kinds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of unique resource kinds found in the backup"
+        }
+      },
+      "title": "Define LargeResourceEnumerateResponse struct"
     },
     "LicenseActivateRequest": {
       "type": "object",
