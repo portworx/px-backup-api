@@ -3841,7 +3841,7 @@
           "items": {
             "type": "string"
           },
-          "title": "Namespaces to backup. Only an admin can provide multiple namespaces"
+          "title": "Namespaces to backup. Only an admin can provide multiple namespaces, this will be updated to the namespaces present at the start of backup cycle"
         },
         "label_selectors": {
           "type": "object",
@@ -4055,6 +4055,13 @@
             "$ref": "#/definitions/VirtualMachineResourceInfo"
           },
           "title": "resourcesInfo for backupObjectType VirtualMachine"
+        },
+        "missing_namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "to capture namespaces missing when the backup initiated"
         }
       }
     },
@@ -5137,6 +5144,13 @@
         "volume_resource_only_policy_ref": {
           "$ref": "#/definitions/ObjectRef",
           "title": "reference to volumeResourceOnly policy object"
+        },
+        "missing_namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Namespaces that were unavailable in the cluster at the time of the last scheduled backup."
         }
       }
     },
