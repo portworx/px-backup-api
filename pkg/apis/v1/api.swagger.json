@@ -5776,13 +5776,6 @@
         "remark": {
           "$ref": "#/definitions/Remark",
           "title": "Last remark made during update operations"
-        },
-        "missing_namespaces": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "Namespaces that were unavailable in the cluster at the time of the last scheduled backup."
         }
       }
     },

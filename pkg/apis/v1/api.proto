@@ -419,8 +419,6 @@ message BackupScheduleInfo {
     ObjectRef volume_resource_only_policy_ref = 34;
     // Last remark made during update operations
     Remark remark = 35;
-    // Namespaces that were unavailable in the cluster at the time of the last scheduled backup.
-    repeated string missing_namespaces = 36;
 
 
     message BackupType {
