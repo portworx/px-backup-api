@@ -417,6 +417,8 @@ message BackupScheduleInfo {
     string advanced_resource_label_selector = 33;
     // reference to volumeResourceOnly policy object
     ObjectRef volume_resource_only_policy_ref = 34;
+    // Last remark made during update operations
+    Remark remark = 35;
 
 
     message BackupType {
@@ -1393,6 +1395,8 @@ message BackupScheduleUpdateRequest {
     ClusterScope cluster_scope = 27; 
     // reference to volumeResourceOnly policy object
     ObjectRef volume_resource_only_policy_ref = 28;
+    // User remarks for this update operation
+    string remark = 29;
 }
 
 // Define BackupScheduleUpdateResponse struct
@@ -2423,6 +2427,16 @@ message BackupUpdateRequest {
 
 // Define BackupUpdateResponse struct
 message BackupUpdateResponse {}
+
+// Remark represents a user comment why is he performing the action
+message Remark {
+    // The actual remark/comment text
+    string comment = 1;
+    // Username of the person making the remark
+    string updated_by = 2;
+    // Timestamp when the remark was made
+    google.protobuf.Timestamp updated_at = 3;
+}
 
 //  Request message structure for enumerate object
 message BackupEnumerateRequest {

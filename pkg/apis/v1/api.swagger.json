@@ -5650,6 +5650,10 @@
         "volume_resource_only_policy_ref": {
           "$ref": "#/definitions/ObjectRef",
           "title": "reference to volumeResourceOnly policy object"
+        },
+        "remark": {
+          "$ref": "#/definitions/Remark",
+          "title": "Last remark made during update operations"
         }
       }
     },
@@ -5903,6 +5907,10 @@
         "volume_resource_only_policy_ref": {
           "$ref": "#/definitions/ObjectRef",
           "title": "reference to volumeResourceOnly policy object"
+        },
+        "remark": {
+          "type": "string",
+          "title": "User remarks for this update operation"
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
@@ -7578,6 +7586,25 @@
     },
     "RecipientUpdateResponse": {
       "type": "object"
+    },
+    "Remark": {
+      "type": "object",
+      "properties": {
+        "comment": {
+          "type": "string",
+          "title": "The actual remark/comment text"
+        },
+        "updated_by": {
+          "type": "string",
+          "title": "Username of the person making the remark"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Timestamp when the remark was made"
+        }
+      },
+      "title": "Remark represents a user comment why is he performing the action"
     },
     "ReplacePolicyType": {
       "type": "string",
