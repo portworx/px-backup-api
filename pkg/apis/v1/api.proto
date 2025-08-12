@@ -1613,6 +1613,8 @@ message ClusterEnumerateRequest {
     ObjectRef cloud_credential_ref = 5;
     // Set this to true, to get the backupshare enabled cluster list
     bool only_backup_share = 6;
+    // Optional arguments for enumeration
+    EnumerateOptions enumerate_options = 7;
 }
 
 // Define ClusterEnumerateResponse struct
