@@ -2583,7 +2583,6 @@ message BackupResourceObject {
     message ResourceDetailsByType {
         GroupVersionKind gvk = 1;
         ResourceList resource_list = 2;
-        BackupInfo.StatusInfo status = 3;
     }
 
     // Group, Version, Kind information

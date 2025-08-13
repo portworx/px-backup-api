@@ -4699,9 +4699,6 @@
         },
         "resource_list": {
           "$ref": "#/definitions/BackupResourceObjectResourceList"
-        },
-        "status": {
-          "$ref": "#/definitions/BackupInfoStatusInfo"
         }
       },
       "title": "Resource details grouped by type with GVK information"
