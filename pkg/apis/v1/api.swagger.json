@@ -1393,6 +1393,120 @@
             "required": false,
             "type": "boolean",
             "format": "boolean"
+          },
+          {
+            "name": "enumerate_options.max_objects",
+            "description": "max objects to fetch.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.time_range.start_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "enumerate_options.time_range.end_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "enumerate_options.name_filter",
+            "description": "Filter to use for name of objects. Any object that contains the filter\nwill be returned.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.cluster_name_filter",
+            "description": "Filter to use for cluster name of objects. Any object that contains the\nfilter will be returned.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.object_index",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.include_detailed_resources",
+            "description": "Ths option will be set to true by the caller, when they want to have\ncomplete backup object. That means the backupObject's\nresource list will be set to complete list of resources.\nIf this option is set to false, resource list will be\nset to nil and rest of the backupObject details will be returned in the\nresponse.",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          },
+          {
+            "name": "enumerate_options.cluster_uid_filter",
+            "description": "Filter to use with cluster uid on objects. Any object that contains the\nfilter will be returned\nCurrently backup enumerate request should pass this along with cluster\nname.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.owners",
+            "description": "Filter to use owner uids on objects. Any object that contains the\nfilter will be returned.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "enumerate_options.backup_object_type",
+            "description": "filter to use backupObjectType on object.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.status",
+            "description": "filter based on the object status.\nNeed to pass the string value of the status field of the object ( backup /restore )\nFor example, {\"Success\", \"Failed\"}.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "enumerate_options.sort_option.sortBy.type",
+            "description": "Name of the field by which sort to be performed.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "CreationTimestamp",
+              "Name",
+              "ClusterName",
+              "Size",
+              "RestoreBackupName"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortOrder.type",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descending"
+            ],
+            "default": "Invalid"
           }
         ],
         "tags": [
