@@ -4054,6 +4054,13 @@
             "$ref": "#/definitions/VirtualMachineResourceInfo"
           },
           "title": "resourcesInfo for backupObjectType VirtualMachine"
+        },
+        "resources_with_status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceInfoWithStatus"
+          },
+          "title": "Generic resources with status (covers VM and non-VM resources)"
         }
       }
     },
@@ -7108,24 +7115,39 @@
         },
         "version": {
           "type": "string"
-        },
-        "status": {
-          "$ref": "#/definitions/ResourceInfoStatusInfo"
         }
       }
     },
-    "ResourceInfoStatusInfo": {
+    "ResourceInfoWithStatus": {
+      "type": "object",
+      "properties": {
+        "resource_info": {
+          "$ref": "#/definitions/ResourceInfo"
+        },
+        "virtual_machine_names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "$ref": "#/definitions/ResourceInfoWithStatusStatusInfo"
+        }
+      },
+      "title": "Generic resource info with status (covers VM and non-VM resources)"
+    },
+    "ResourceInfoWithStatusStatusInfo": {
       "type": "object",
       "properties": {
         "status": {
-          "$ref": "#/definitions/ResourceInfoStatusInfoStatus"
+          "$ref": "#/definitions/ResourceInfoWithStatusStatusInfoStatus"
         },
         "reason": {
           "type": "string"
         }
       }
     },
-    "ResourceInfoStatusInfoStatus": {
+    "ResourceInfoWithStatusStatusInfoStatus": {
       "type": "string",
       "enum": [
         "Invalid",
@@ -8297,7 +8319,7 @@
           }
         }
       },
-      "title": "ResourcesInfo used for VM backups"
+      "description": "ResourcesInfo used for VM backups\nNOTE: This message will be deprecated; prefer ResourceInfoWithStatus."
     },
     "VolumeBackupMode": {
       "type": "object",

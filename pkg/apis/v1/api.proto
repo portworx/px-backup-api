@@ -555,8 +555,14 @@ message ResourceInfo {
     string group = 3;
     string kind = 4;
     string version = 5;
-    StatusInfo status = 6;
-    
+}
+
+// Generic resource info with status (covers VM and non-VM resources)
+message ResourceInfoWithStatus {
+    ResourceInfo resource_info = 1 [ (gogoproto.embed) = true ];
+    repeated string virtual_machine_names = 2;
+    StatusInfo status = 3;
+
     message StatusInfo {
         Status status = 1;
         string reason = 2;
@@ -565,12 +571,12 @@ message ResourceInfo {
             Invalid = 0;
             Success = 1;
             Failed = 2;
-
         }
     }
 }
 
 // ResourcesInfo used for VM backups
+// NOTE: This message will be deprecated; prefer ResourceInfoWithStatus.
 message VirtualMachineResourceInfo {
     ResourceInfo resource_info = 1 [ (gogoproto.embed) = true ];
     repeated string virtual_machine_names = 2;
@@ -666,6 +672,9 @@ message BackupInfo {
     ObjectRef volume_resource_only_policy_ref = 51;
     // resourcesInfo for backupObjectType VirtualMachine
     repeated VirtualMachineResourceInfo virtual_machine_resources = 52;
+    // Generic resources with status (covers VM and non-VM resources)
+    repeated ResourceInfoWithStatus resources_with_status = 53;
+
     message BackupType {
         Type type = 1;
 
