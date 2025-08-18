@@ -1578,7 +1578,12 @@
             "description": "Set this to true, to get the backupshare enabled cluster list.",
             "in": "query",
             "required": false,
+<<<<<<< HEAD
             "type": "boolean"
+=======
+            "type": "boolean",
+            "format": "boolean"
+>>>>>>> e6ab758b (PB-11619: pb file and swagger.json changes for cluster sorting (#336))
           },
           {
             "name": "enumerate_options.max_objects",
@@ -1628,7 +1633,12 @@
             "description": "Ths option will be set to true by the caller, when they want to have\ncomplete backup object. That means the backupObject's\nresource list will be set to complete list of resources.\nIf this option is set to false, resource list will be\nset to nil and rest of the backupObject details will be returned in the\nresponse.",
             "in": "query",
             "required": false,
+<<<<<<< HEAD
             "type": "boolean"
+=======
+            "type": "boolean",
+            "format": "boolean"
+>>>>>>> e6ab758b (PB-11619: pb file and swagger.json changes for cluster sorting (#336))
           },
           {
             "name": "enumerate_options.cluster_uid_filter",
@@ -1645,8 +1655,12 @@
             "type": "array",
             "items": {
               "type": "string"
+<<<<<<< HEAD
             },
             "collectionFormat": "multi"
+=======
+            }
+>>>>>>> e6ab758b (PB-11619: pb file and swagger.json changes for cluster sorting (#336))
           },
           {
             "name": "enumerate_options.backup_object_type",
@@ -1663,8 +1677,12 @@
             "type": "array",
             "items": {
               "type": "string"
+<<<<<<< HEAD
             },
             "collectionFormat": "multi"
+=======
+            }
+>>>>>>> e6ab758b (PB-11619: pb file and swagger.json changes for cluster sorting (#336))
           },
           {
             "name": "enumerate_options.sort_option.sortBy.type",
