@@ -419,6 +419,8 @@ message BackupScheduleInfo {
     ObjectRef volume_resource_only_policy_ref = 34;
     // Last remark made during update operations
     Remark remark = 35;
+    // Namespaces that were unavailable in the cluster at the time of the last scheduled backup.
+    repeated string missing_namespaces = 36;
 
 
     message BackupType {
@@ -570,7 +572,7 @@ message BackupInfo {
     string backup_location = 1;
     // Name of Cluster
     string cluster = 2;
-    // Namespaces to backup. Only an admin can provide multiple namespaces. This will be updated with the namespaces present at the start of the backup cycle.
+    // Namespaces to backup. Only an admin can provide multiple namespaces, this will be updated to the namespaces present at the start of backup cycle
     repeated string namespaces = 3;
     // Label selectors to choose resources
     map<string, string> label_selectors = 4;
@@ -655,7 +657,7 @@ message BackupInfo {
     ObjectRef volume_resource_only_policy_ref = 51;
     // resourcesInfo for backupObjectType VirtualMachine
     repeated VirtualMachineResourceInfo virtual_machine_resources = 52;
-   // to capture namespaces that were missing when the backup was initiated
+    // to capture namespaces missing when the backup initiated
     repeated string missing_namespaces = 53;
     message BackupType {
         Type type = 1;
