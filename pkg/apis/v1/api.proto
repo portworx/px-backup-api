@@ -1397,6 +1397,12 @@ message BackupScheduleUpdateRequest {
     ObjectRef volume_resource_only_policy_ref = 28;
     // User remarks for this update operation
     string remark = 29;
+    // bulk_uid_check_relaxation - This flag needs to be set to relax the UID check for bulk update operations.
+    // In a bulk operation, the user will pass multiple filter options to select a list of BackupSchedule objects.
+    // For example, the user may send a schedulePolicyRef object to filter BackupSchedules that use that SchedulePolicy.
+    // If the user provides only the name in the schedulePolicyRef, and there are multiple SchedulePolicy objects with the same name,
+    // we cannot return an error. Therefore, we require the user to explicitly confirm acceptance of the side effects of UID relaxation.
+    bool bulk_uid_check_relaxation = 30;
 }
 
 // Define BackupScheduleUpdateResponse struct
@@ -1460,6 +1466,12 @@ message BackupScheduleDeleteRequest {
     string exclude_filter = 10;
     // option to provide clusterRef to delete the backupschedule from cluster
     ClusterScope cluster_scope = 11;
+    // bulk_uid_check_relaxation - This flag needs to be set to relax the UID check for bulk update operations.
+    // In a bulk operation, the user will pass multiple filter options to select a list of BackupSchedule objects.
+    // For example, the user may send a schedulePolicyRef object to filter BackupSchedules that use that SchedulePolicy.
+    // If the user provides only the name in the schedulePolicyRef, and there are multiple SchedulePolicy objects with the same name,
+    // we cannot return an error. Therefore, we require the user to explicitly confirm acceptance of the side effects of UID relaxation.
+    bool bulk_uid_check_relaxation = 12;
 }
 
 // Define BackupScheduleDeleteResponse struct
