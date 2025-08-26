@@ -1982,6 +1982,70 @@
         ]
       }
     },
+    "/v1/loglevel": {
+      "post": {
+        "summary": "Set new log level",
+        "operationId": "LogLevelService_Set",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LogLevelSetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LogLevelSetRequest"
+            }
+          }
+        ],
+        "tags": [
+          "LogLevelService"
+        ]
+      }
+    },
+    "/v1/loglevel/{org_id}": {
+      "get": {
+        "summary": "Get current Log Level",
+        "operationId": "LogLevelService_Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LogLevelGetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "LogLevelService"
+        ]
+      }
+    },
     "/v1/managedcluster/{org_id}": {
       "get": {
         "summary": "Inspect returns detailed information on a managed cluster from providers\nlike\nAWS, Azure, GCE, IBM\nusing the given credentials",
@@ -6962,6 +7026,42 @@
           "type": "string"
         },
         "subscription_id": {
+          "type": "string"
+        }
+      }
+    },
+    "LogLevel": {
+      "type": "string",
+      "enum": [
+        "Debug",
+        "Info",
+        "Trace"
+      ],
+      "default": "Debug"
+    },
+    "LogLevelGetResponse": {
+      "type": "object",
+      "properties": {
+        "current_level": {
+          "$ref": "#/definitions/LogLevel"
+        }
+      }
+    },
+    "LogLevelSetRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "level": {
+          "$ref": "#/definitions/LogLevel"
+        }
+      }
+    },
+    "LogLevelSetResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
           "type": "string"
         }
       }
