@@ -28,36 +28,14 @@ start-build-container:
 
 proto:
 	$(PROTOC) -I/usr/local/include -I. \
-		-I${GOPATH}/src \
-		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/protoc-gen-openapiv2 \
-		-I${GOPATH}/src/github.com/gogo/protobuf/protobuf \
 		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
 		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/ \
-		--gogofaster_out=\
-Mgogoproto/gogo.proto=github.com/gogo/protobuf/gogoproto,\
-Mgoogle/protobuf/any.proto=github.com/gogo/protobuf/types,\
-Mgoogle/protobuf/empty.proto=github.com/gogo/protobuf/types,\
-Mgoogle/protobuf/duration.proto=github.com/gogo/protobuf/types,\
-Mgoogle/protobuf/field_mask.proto=github.com/gogo/protobuf/types,\
-Mgoogle/protobuf/struct.proto=github.com/gogo/protobuf/types,\
-Mgoogle/protobuf/timestamp.proto=github.com/gogo/protobuf/types,\
-Mgoogle/protobuf/wrappers.proto=github.com/gogo/protobuf/types,\
-Mgoogle/api/annotations.proto=github.com/gogo/googleapis/google/api,\
-Mgoogle/protobuf/field_mask.proto=github.com/gogo/protobuf/types,\
-plugins=grpc:. \
-		--grpc-gateway_out=allow_patch_feature=false,\
-Mgogoproto/gogo.proto=github.com/gogo/protobuf/gogoproto,\
-Mgoogle/protobuf/any.proto=github.com/gogo/protobuf/types,\
-Mgoogle/protobuf/empty.proto=github.com/gogo/protobuf/types,\
-Mgoogle/protobuf/duration.proto=github.com/gogo/protobuf/types,\
-Mgoogle/protobuf/field_mask.proto=github.com/gogo/protobuf/types,\
-Mgoogle/protobuf/struct.proto=github.com/gogo/protobuf/types,\
-Mgoogle/protobuf/timestamp.proto=github.com/gogo/protobuf/types,\
-Mgoogle/protobuf/wrappers.proto=github.com/gogo/protobuf/types,\
-Mgoogle/api/annotations.proto=github.com/gogo/googleapis/google/api,\
-Mgoogle/protobuf/field_mask.proto=github.com/gogo/protobuf/types:.\
-		--swagger_out=logtostderr=true:. \
+		--go_out=. --go_opt=paths=source_relative \
+		--go-grpc_out=. --go-grpc_opt=paths=source_relative \
+		--grpc-gateway_out=logtostderr=true,generate_unbound_methods=true:. \
+		--openapiv2_out=logtostderr=true:. \
 		$(PROTOC_FILES)
+
 pretest: vet staticcheck errcheck
 
 vet:

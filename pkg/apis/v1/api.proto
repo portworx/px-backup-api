@@ -4,17 +4,13 @@
 // 'make proto' will run clang-format to fix formatiing
 syntax = "proto3";
 
-option go_package = "api";
+option go_package = "pkg/apis/v1;api";
 
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
-import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "pkg/apis/v1/common.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-option (gogoproto.populate_all) = true;
-option (gogoproto.equal_all) = true;
-option (gogoproto.testgen_all) = true;
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     security_definitions : {
         security : {
@@ -3023,7 +3019,7 @@ service ManagedClusters {
     rpc Enumerate(ManagedClusterEnumerateRequest)
         returns (ManagedClusterEnumerateResponse) {
         option (google.api.http) = {
-            get : "/v1/managedcluster/{org_id}"
+            get : "/v1/managedcluster/enumerate/{org_id}"
         };
     }
 
@@ -3034,7 +3030,7 @@ service ManagedClusters {
     rpc Inspect(ManagedClusterInspectRequest)
         returns (ManagedClusterInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/managedcluster/{org_id}"
+            get : "/v1/managedcluster/inspect/{org_id}"
         };
     }
 
