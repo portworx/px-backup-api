@@ -4269,7 +4269,7 @@ type BackupInfo struct {
 	BackupLocation string `protobuf:"bytes,1,opt,name=backup_location,json=backupLocation,proto3" json:"backup_location,omitempty"`
 	// Name of Cluster
 	Cluster string `protobuf:"bytes,2,opt,name=cluster,proto3" json:"cluster,omitempty"`
-	// Namespaces to backup. Only an admin can provide multiple namespaces, this will be updated to the namespaces present at the start of backup cycle
+	// Namespaces to backup. Only an admin can provide multiple namespaces. This will be updated with the namespaces present at the start of the backup cycle.
 	Namespaces []string `protobuf:"bytes,3,rep,name=namespaces,proto3" json:"namespaces,omitempty"`
 	// Label selectors to choose resources
 	LabelSelectors map[string]string      `protobuf:"bytes,4,rep,name=label_selectors,json=labelSelectors,proto3" json:"label_selectors,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
@@ -4347,7 +4347,7 @@ type BackupInfo struct {
 	VolumeResourceOnlyPolicyRef *ObjectRef `protobuf:"bytes,51,opt,name=volume_resource_only_policy_ref,json=volumeResourceOnlyPolicyRef,proto3" json:"volume_resource_only_policy_ref,omitempty"`
 	// resourcesInfo for backupObjectType VirtualMachine
 	VirtualMachineResources []*VirtualMachineResourceInfo `protobuf:"bytes,52,rep,name=virtual_machine_resources,json=virtualMachineResources,proto3" json:"virtual_machine_resources,omitempty"`
-	// to capture namespaces missing when the backup initiated
+	// to capture namespaces that were missing when the backup was initiated
 	MissingNamespaces []string `protobuf:"bytes,53,rep,name=missing_namespaces,json=missingNamespaces,proto3" json:"missing_namespaces,omitempty"`
 }
 

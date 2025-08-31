@@ -1628,8 +1628,7 @@
             "description": "Ths option will be set to true by the caller, when they want to have\ncomplete backup object. That means the backupObject's\nresource list will be set to complete list of resources.\nIf this option is set to false, resource list will be\nset to nil and rest of the backupObject details will be returned in the\nresponse.",
             "in": "query",
             "required": false,
-            "type": "boolean",
-            "format": "boolean"
+            "type": "boolean"
           },
           {
             "name": "enumerate_options.cluster_uid_filter",
@@ -1646,7 +1645,8 @@
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "collectionFormat": "multi"
           },
           {
             "name": "enumerate_options.backup_object_type",
@@ -1663,7 +1663,8 @@
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "collectionFormat": "multi"
           },
           {
             "name": "enumerate_options.sort_option.sortBy.type",
@@ -4493,7 +4494,7 @@
           "items": {
             "type": "string"
           },
-          "title": "Namespaces to backup. Only an admin can provide multiple namespaces, this will be updated to the namespaces present at the start of backup cycle"
+          "description": "Namespaces to backup. Only an admin can provide multiple namespaces. This will be updated with the namespaces present at the start of the backup cycle."
         },
         "label_selectors": {
           "type": "object",
@@ -4707,7 +4708,7 @@
           "items": {
             "type": "string"
           },
-          "title": "to capture namespaces missing when the backup initiated"
+          "title": "to capture namespaces that were missing when the backup was initiated"
         }
       }
     },
