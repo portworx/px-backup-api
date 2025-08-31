@@ -1579,6 +1579,121 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "enumerate_options.max_objects",
+            "description": "max objects to fetch.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.time_range.start_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "enumerate_options.time_range.end_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "enumerate_options.name_filter",
+            "description": "Filter to use for name of objects. Any object that contains the filter\nwill be returned.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.cluster_name_filter",
+            "description": "Filter to use for cluster name of objects. Any object that contains the\nfilter will be returned.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.object_index",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.include_detailed_resources",
+            "description": "Ths option will be set to true by the caller, when they want to have\ncomplete backup object. That means the backupObject's\nresource list will be set to complete list of resources.\nIf this option is set to false, resource list will be\nset to nil and rest of the backupObject details will be returned in the\nresponse.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "enumerate_options.cluster_uid_filter",
+            "description": "Filter to use with cluster uid on objects. Any object that contains the\nfilter will be returned\nCurrently backup enumerate request should pass this along with cluster\nname.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.owners",
+            "description": "Filter to use owner uids on objects. Any object that contains the\nfilter will be returned.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "enumerate_options.backup_object_type",
+            "description": "filter to use backupObjectType on object.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.status",
+            "description": "filter based on the object status.\nNeed to pass the string value of the status field of the object ( backup /restore )\nFor example, {\"Success\", \"Failed\"}.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortBy.type",
+            "description": "Name of the field by which sort to be performed.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "CreationTimestamp",
+              "Name",
+              "ClusterName",
+              "Size",
+              "RestoreBackupName"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortOrder.type",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descending"
+            ],
+            "default": "Invalid"
           }
         ],
         "tags": [
@@ -4379,7 +4494,7 @@
           "items": {
             "type": "string"
           },
-          "title": "Namespaces to backup. Only an admin can provide multiple namespaces"
+          "description": "Namespaces to backup. Only an admin can provide multiple namespaces. This will be updated with the namespaces present at the start of the backup cycle."
         },
         "label_selectors": {
           "type": "object",
@@ -4587,6 +4702,13 @@
             "$ref": "#/definitions/VirtualMachineResourceInfo"
           },
           "title": "resourcesInfo for backupObjectType VirtualMachine"
+        },
+        "missing_namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "to capture namespaces that were missing when the backup was initiated"
         }
       }
     },
@@ -5650,6 +5772,17 @@
         "volume_resource_only_policy_ref": {
           "$ref": "#/definitions/ObjectRef",
           "title": "reference to volumeResourceOnly policy object"
+        },
+        "remark": {
+          "$ref": "#/definitions/Remark",
+          "title": "Last remark made during update operations"
+        },
+        "missing_namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Namespaces that were unavailable in the cluster at the time of the last scheduled backup."
         }
       }
     },
@@ -5903,6 +6036,10 @@
         "volume_resource_only_policy_ref": {
           "$ref": "#/definitions/ObjectRef",
           "title": "reference to volumeResourceOnly policy object"
+        },
+        "remark": {
+          "type": "string",
+          "title": "User remarks for this update operation"
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
@@ -7578,6 +7715,25 @@
     },
     "RecipientUpdateResponse": {
       "type": "object"
+    },
+    "Remark": {
+      "type": "object",
+      "properties": {
+        "comment": {
+          "type": "string",
+          "title": "The actual remark/comment text"
+        },
+        "updated_by": {
+          "type": "string",
+          "title": "Username of the person making the remark"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Timestamp when the remark was made"
+        }
+      },
+      "title": "Remark represents a user comment why is he performing the action"
     },
     "ReplacePolicyType": {
       "type": "string",
