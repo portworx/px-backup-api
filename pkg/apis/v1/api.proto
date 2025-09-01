@@ -3491,3 +3491,47 @@ message ClusterScope {
 message ObjectRefList {
   repeated ObjectRef refs = 1;
 }
+
+service LogLevel {
+    // Get current Log Level
+    rpc Get(LogLevelGetRequest) returns (LogLevelGetResponse) {
+        option (google.api.http) = {
+            get : "/v1/loglevel/{org_id}"
+        };
+    }
+
+    // Set new log level
+    rpc Set(LogLevelSetRequest) returns (LogLevelSetResponse) {
+        option (google.api.http) = {
+            post : "/v1/loglevel"
+            body : "*"
+        };
+    }
+}
+
+message LogLevelGetRequest {
+    string org_id = 1;
+}
+
+message LogLevelGetResponse {
+    string current_level = 1;
+    repeated string available_levels = 2;
+}
+
+message LogLevelSetRequest {
+    string org_id = 1;
+    Level level = 2;
+    
+    enum Level {
+        Invalid = 0;
+        Debug = 1;
+        Info = 2;
+        Trace = 3;
+    }
+}
+
+message LogLevelSetResponse {
+    string previous_level = 1;
+    string new_level = 2;
+    string message = 3;
+}
