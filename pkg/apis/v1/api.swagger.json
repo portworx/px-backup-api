@@ -4709,6 +4709,13 @@
             "type": "string"
           },
           "title": "to capture namespaces that were missing when the backup was initiated"
+        },
+        "resource_details": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/BackupInfoNamespaceResourceDetails"
+          },
+          "title": "Detailed resource information grouped by namespace -\u003e GVK -\u003e chunk ID\nKey hierarchy:\n  namespace (string) -\u003e GVK (string) -\u003e chunk_id (uint64) -\u003e ResourceInfoWithStatus\nGVK should be a canonical string representation, e.g., \"group/version,Kind\""
         }
       }
     },
@@ -4754,6 +4761,68 @@
         "Invalid",
         "Generic",
         "Normal"
+      ],
+      "default": "Invalid"
+    },
+    "BackupInfoNamespaceResourceDetails": {
+      "type": "object",
+      "properties": {
+        "gvks": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/BackupInfoResourceChunks"
+          },
+          "title": "key: GVK (canonical string, e.g., \"group/version,Kind\")\nvalue: map\u003cchunk_id, ResourceInfoWithStatus\u003e"
+        }
+      },
+      "title": "Namespace -\u003e GVK -\u003e ChunkID details for resources captured in this backup"
+    },
+    "BackupInfoResourceChunks": {
+      "type": "object",
+      "properties": {
+        "chunks": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/BackupInfoResourceInfoWithStatus"
+          },
+          "title": "key: chunk ID -\u003e per-chunk resource info with status"
+        }
+      },
+      "title": "Wrapper to hold chunk-id keyed resource info"
+    },
+    "BackupInfoResourceInfoWithStatus": {
+      "type": "object",
+      "properties": {
+        "status_info": {
+          "$ref": "#/definitions/BackupInfoResourceInfoWithStatusStatusInfo"
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceInfoWithStatusResourceWithVMNames"
+          }
+        }
+      },
+      "title": "Per-chunk information that includes status and the set of resources"
+    },
+    "BackupInfoResourceInfoWithStatusStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/BackupInfoResourceInfoWithStatusStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "title": "Status for this chunk"
+    },
+    "BackupInfoResourceInfoWithStatusStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Success",
+        "Failed"
       ],
       "default": "Invalid"
     },
@@ -7249,7 +7318,7 @@
         "RestoreStatus"
       ],
       "default": "Invalid",
-      "description": "Check with charts/px-central/templates/px-backup/pxcentral-prometheus.yaml before \nadding Type here, few metrics are ignored."
+      "description": "Check with charts/px-central/templates/px-backup/pxcentral-prometheus.yaml before\nadding Type here, few metrics are ignored."
     },
     "MetricsInspectResponse": {
       "type": "object",
@@ -7763,6 +7832,21 @@
           "type": "string"
         }
       }
+    },
+    "ResourceInfoWithStatusResourceWithVMNames": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "vm_names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "Resource name and associated VM names, if any"
     },
     "ResourceTypeResponse": {
       "type": "object",
