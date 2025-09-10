@@ -132,7 +132,7 @@ message ClusterInfo {
         IBM = 4;
         Rancher = 5;
     }
-    
+
 }
 
 message ClusterObject {
@@ -406,7 +406,7 @@ message BackupScheduleInfo {
     bool skip_vm_auto_exec_rules = 27;
     // volume snapshot class mapping for csi based backup <provisioner(string), volumesnapshotclass(string)> (optional)
     map<string, string> volume_snapshot_class_mapping = 28;
-    // option to take backup as direct kdmp 
+    // option to take backup as direct kdmp
     bool direct_kdmp = 29;
     repeated string exclude_resource_types = 30;
     // option to enable parallel schedule backups.
@@ -561,6 +561,9 @@ message ResourceInfo {
     string version = 5;
 }
 
+
+
+
 // ResourcesInfo used for VM backups
 message VirtualMachineResourceInfo {
     ResourceInfo resource_info = 1 [ (gogoproto.embed) = true ];
@@ -624,7 +627,7 @@ message BackupInfo {
     bool skip_vm_auto_exec_rules = 36;
     // volume snapshot class mapping for csi based backup <provisioner(string), volumesnapshotclass(string)> (optional)
     map<string, string> volume_snapshot_class_mapping = 37;
-    // option to take backup as direct kdmp 
+    // option to take backup as direct kdmp
     bool direct_kdmp = 38;
     // this will store the timestamp, when the retention period of locked backup will be expired
     google.protobuf.Timestamp retention_time = 39;
@@ -655,10 +658,63 @@ message BackupInfo {
     }
     // reference to volumeResourceOnly policy object
     ObjectRef volume_resource_only_policy_ref = 51;
-    // resourcesInfo for backupObjectType VirtualMachine
-    repeated VirtualMachineResourceInfo virtual_machine_resources = 52;
+    // DEPRECATED: Use resource_representation oneof instead.
+    // For VM resources: use vm_resources field in the oneof.
+    // For hierarchical namespace/GVK structure: use resource_map field in the oneof.
+    // This field is retained for backward compatibility with existing backup objects.
+    repeated VirtualMachineResourceInfo virtual_machine_resources = 52 [deprecated=true];
+
    // to capture namespaces that were missing when the backup was initiated
     repeated string missing_namespaces = 53;
+
+    // Either set vm_resources (new wrapper) or resource_map, not both.
+    oneof resource_representation {
+        // Wrapper for repeated VM resources to allow inclusion in oneof
+        VirtualMachineResources vm_resources = 55;
+        // Hierarchical namespace -> GVK -> chunks resource details
+        NamespaceResourceMap resource_map = 54;
+    }
+
+    // Wrapper message for VM resources to be used inside oneof
+    message VirtualMachineResources {
+        repeated VirtualMachineResourceInfo virtual_machine_resources = 1;
+    }
+
+    // Detailed hierarchical representation of resources by namespace and GVK
+    message NamespaceResourceMap {
+        // Outermost map key: namespace
+        map<string, Resources> namespaces = 1;
+
+        // For each namespace, a map of GVK -> chunks.
+        // Map key is string representation of GVK (e.g., "apps/v1/Deployment")
+        message Resources {
+            map<string, Chunks> gvks = 1;
+        }
+
+        // Array of ResourceInfoWithStatus for a specific GroupVersionKind
+        message Chunks {
+            repeated ResourceInfoWithStatus chunks = 1;
+        }
+
+        // Per-chunk information that includes status and the set of resources
+        message ResourceInfoWithStatus {
+            uint64 chunk_id = 1;
+            StatusInfo status_info = 2;
+            repeated string resources = 3;
+
+            // Status for this chunk
+            message StatusInfo {
+                enum Status {
+                    Invalid = 0;
+                    Success = 1;
+                    Failed = 2;
+                }
+                Status status = 1;
+                string reason = 2;
+            }
+        }
+    }
+
     message BackupType {
         Type type = 1;
 
@@ -954,7 +1010,7 @@ message SortOption {
 
 message VolumeResourceOnlyPolicyEnumerateOptions {
     CommonEnumerateOptions generic_enumerate_options = 1;
-   
+
 }
 message EnumerateOptions {
     // label selectors for the object for filtering
@@ -1314,7 +1370,7 @@ message BackupScheduleCreateRequest {
     bool skip_vm_auto_exec_rules = 21;
     // volume snapshot class mapping for csi based backup <provisioner(string), volumesnapshotclass(string)> (optional)
     map<string, string> volume_snapshot_class_mapping = 22;
-    // option to take backup as direct kdmp 
+    // option to take backup as direct kdmp
     bool direct_kdmp = 23;
     repeated string exclude_resource_types = 24;
     // option to enable parallel schedule backups.
@@ -1396,7 +1452,7 @@ message BackupScheduleUpdateRequest {
     // Cannot be used with exclude_objects.
     string exclude_filter = 26;
     // option to provide clusterRef to suspend/resume the backupschedule from cluster
-    ClusterScope cluster_scope = 27; 
+    ClusterScope cluster_scope = 27;
     // reference to volumeResourceOnly policy object
     ObjectRef volume_resource_only_policy_ref = 28;
     // User remarks for this update operation
@@ -1798,7 +1854,7 @@ message CloudCredentialOwnershipUpdateResponse {}
 
 service Receiver {
     // Create new alert manager receiver
-    rpc Create(ReceiverCreateRequest) 
+    rpc Create(ReceiverCreateRequest)
         returns (ReceiverCreateResponse) {
             option (google.api.http) = {
                 post : "/v1/receiver"
@@ -1897,7 +1953,7 @@ message ReceiverCreateRequest {
 }
 
 message ReceiverCreateResponse {
-    ReceiverObject receiver = 1; 
+    ReceiverObject receiver = 1;
 }
 
 
@@ -1950,7 +2006,7 @@ message ReceiverValidateSMTPRequest {
 message ReceiverValidateSMTPResponse {}
 
 service Recipient {
-    rpc Create(RecipientCreateRequest) 
+    rpc Create(RecipientCreateRequest)
         returns (RecipientCreateResponse) {
             option (google.api.http) = {
                 post : "/v1/recipient"
@@ -2250,8 +2306,8 @@ message MetricsCreateRequest {
 
 message MetricsInfo {
     Type type = 1;
-    
-    // Check with charts/px-central/templates/px-backup/pxcentral-prometheus.yaml before 
+
+    // Check with charts/px-central/templates/px-backup/pxcentral-prometheus.yaml before
     // adding Type here, few metrics are ignored.
     enum Type {
         Invalid = 0;
@@ -2261,11 +2317,11 @@ message MetricsInfo {
         ClusterStatus = 4;
         RestoreStatus = 5;
     }
-    
+
     oneof MetricData {
         BackupObject  backup = 100;
     }
-    
+
 }
 
 message MetricsCreateResponse {}
@@ -2390,7 +2446,7 @@ message BackupCreateRequest {
     bool skip_vm_auto_exec_rules = 18;
     // volume snapshot class mapping for csi based backup <provisioner(string), volumesnapshotclass(string)> (optional)
     map<string, string> volume_snapshot_class_mapping = 19;
-    // option to take backup as direct kdmp 
+    // option to take backup as direct kdmp
     bool direct_kdmp = 20;
     repeated string exclude_resource_types = 21;
     // option to enable to keep the CR status of the resources in the backup.
@@ -2501,7 +2557,7 @@ message BackupRetryRequest {
     string uid = 3;
     // List of failed VirtualMachine resource only. If not passed, will retry all Failed VMs from Backup object.
     repeated ResourceInfo include_resources = 4;
-    // skip_vm_auto_exec_rules when set to true will take crash-consistent backup for retry 
+    // skip_vm_auto_exec_rules when set to true will take crash-consistent backup for retry
     bool skip_vm_auto_exec_rules = 5;
 }
 

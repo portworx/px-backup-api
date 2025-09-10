@@ -4701,7 +4701,7 @@
           "items": {
             "$ref": "#/definitions/VirtualMachineResourceInfo"
           },
-          "title": "resourcesInfo for backupObjectType VirtualMachine"
+          "description": "DEPRECATED: Use resource_representation oneof instead.\nFor VM resources: use vm_resources field in the oneof.\nFor hierarchical namespace/GVK structure: use resource_map field in the oneof.\nThis field is retained for backward compatibility with existing backup objects."
         },
         "missing_namespaces": {
           "type": "array",
@@ -4709,6 +4709,14 @@
             "type": "string"
           },
           "title": "to capture namespaces that were missing when the backup was initiated"
+        },
+        "vm_resources": {
+          "$ref": "#/definitions/BackupInfoVirtualMachineResources",
+          "title": "Wrapper for repeated VM resources to allow inclusion in oneof"
+        },
+        "resource_map": {
+          "$ref": "#/definitions/BackupInfoNamespaceResourceMap",
+          "title": "Hierarchical namespace -\u003e GVK -\u003e chunks resource details"
         }
       }
     },
@@ -4756,6 +4764,19 @@
         "Normal"
       ],
       "default": "Invalid"
+    },
+    "BackupInfoNamespaceResourceMap": {
+      "type": "object",
+      "properties": {
+        "namespaces": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/NamespaceResourceMapResources"
+          },
+          "title": "Outermost map key: namespace"
+        }
+      },
+      "title": "Detailed hierarchical representation of resources by namespace and GVK"
     },
     "BackupInfoStage": {
       "type": "string",
@@ -4816,6 +4837,18 @@
         }
       },
       "title": "VirtualMachine Info"
+    },
+    "BackupInfoVirtualMachineResources": {
+      "type": "object",
+      "properties": {
+        "virtual_machine_resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VirtualMachineResourceInfo"
+          }
+        }
+      },
+      "title": "Wrapper message for VM resources to be used inside oneof"
     },
     "BackupInfoVolume": {
       "type": "object",
@@ -7249,7 +7282,7 @@
         "RestoreStatus"
       ],
       "default": "Invalid",
-      "description": "Check with charts/px-central/templates/px-backup/pxcentral-prometheus.yaml before \nadding Type here, few metrics are ignored."
+      "description": "Check with charts/px-central/templates/px-backup/pxcentral-prometheus.yaml before\nadding Type here, few metrics are ignored."
     },
     "MetricsInspectResponse": {
       "type": "object",
@@ -7307,6 +7340,70 @@
           "type": "string"
         }
       }
+    },
+    "NamespaceResourceMapChunks": {
+      "type": "object",
+      "properties": {
+        "chunks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NamespaceResourceMapResourceInfoWithStatus"
+          }
+        }
+      },
+      "title": "Array of ResourceInfoWithStatus for a specific GroupVersionKind"
+    },
+    "NamespaceResourceMapResourceInfoWithStatus": {
+      "type": "object",
+      "properties": {
+        "chunk_id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "status_info": {
+          "$ref": "#/definitions/NamespaceResourceMapResourceInfoWithStatusStatusInfo"
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "Per-chunk information that includes status and the set of resources"
+    },
+    "NamespaceResourceMapResourceInfoWithStatusStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/NamespaceResourceMapResourceInfoWithStatusStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "title": "Status for this chunk"
+    },
+    "NamespaceResourceMapResourceInfoWithStatusStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Success",
+        "Failed"
+      ],
+      "default": "Invalid"
+    },
+    "NamespaceResourceMapResources": {
+      "type": "object",
+      "properties": {
+        "gvks": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/NamespaceResourceMapChunks"
+          }
+        }
+      },
+      "title": "For each namespace, a map of GVK -\u003e chunks.\nMap key is string representation of GVK (e.g., \"apps/v1/Deployment\")"
     },
     "ObjectRef": {
       "type": "object",
