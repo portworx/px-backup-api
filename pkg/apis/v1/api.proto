@@ -2377,8 +2377,8 @@ message ResourceInfoDocument {
     ObjectRef backup_ref = 2;
     // Sequence number to maintain order of documents
     int32 sequence_number = 3;
-    // Array of ResourceInfo that is stored in this Document
-    repeated ResourceInfo resources = 4;
+    // Hierarchical namespace -> GVK -> chunks resource details
+    ResourceMap resource_map = 4;
     // Total count of resources in this document
     int64 resource_count = 5;
 
@@ -2391,6 +2391,40 @@ message ResourceInfoDocument {
             Active = 1;
             Complete = 2;
             Failed = 3;
+        }
+    }
+}
+
+// Detailed hierarchical representation of resources by namespace and GVK
+message ResourceMap {
+    // Outermost map key: namespace
+    map<string, NamespaceResources> namespaces = 1;
+
+    // For each namespace, a map of GVK -> chunks.
+    // Map key is string representation of GVK (e.g., "apps/v1/Deployment")
+    message NamespaceResources {
+        map<string, Chunks> gvks = 1;
+    }
+
+    // Array of ResourceInfoWithStatus for a specific GroupVersionKind
+    message Chunks {
+        repeated ResourceInfoWithStatus chunks = 1;
+    }
+
+    // Per-chunk information that includes status and the set of resources
+    message ResourceInfoWithStatus {
+        StatusInfo status_info = 1;
+        repeated string resources = 2;
+
+        // Status for this chunk
+        message StatusInfo {
+            enum Status {
+                Invalid = 0;
+                Success = 1;
+                Failed = 2;
+            }
+            Status status = 1;
+            string reason = 2;
         }
     }
 }
