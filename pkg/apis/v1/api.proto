@@ -659,6 +659,25 @@ message BackupInfo {
     repeated VirtualMachineResourceInfo virtual_machine_resources = 52;
    // to capture namespaces that were missing when the backup was initiated
     repeated string missing_namespaces = 53;
+    // resources sync status information
+    SyncStatusInfo resources_sync_status_info = 54;
+    // namespace sync status information
+    SyncStatusInfo namespace_sync_status_info = 55;
+
+    // Message for maintaining status of large resources sync
+    message SyncStatusInfo {
+        Status status = 1;
+        string reason = 2;
+
+        enum Status {
+            Invalid = 0;
+            NotStarted = 1;
+            InProgress = 2;
+            Completed = 3;
+            Failed = 4;
+        }
+    }
+    
     message BackupType {
         Type type = 1;
 
@@ -2522,6 +2541,36 @@ message BackupResourceDetailGetRequest {
     string name = 2;
     // Backup uid
     string uid = 3;
+
+    // Filter options
+    Filter filter = 4;
+    // Filter to apply on resources
+    message Filter {
+        // Filter by resource gvk (can be single or multiple)
+        repeated string gvks = 1;
+        // Filter by namespaces (can be single or multiple)
+        repeated string namespaces = 2;
+        // Filter by exclude namespaces (can be single or multiple)
+        repeated string exclude_namespaces = 3;
+        // Filter by namespace name
+        string namespace_name_pattern = 4;
+        // Substring or regex pattern to match resource name and exclude (e.g. "*" for All, "pxb-" or any valid regex)
+        string resource_name_pattern = 5;
+        // Substring or regex pattern to match namespace name and exclude (e.g. "*" for All, "pxb-" or any valid regex)
+        repeated string resource_types = 6;
+        // Substring or regex pattern to match virtual machine name and exclude (e.g. "*" for All, "pxb-" or any valid regex)
+        string vm_name_pattern = 7;
+    }
+    // force_resync when set to true will force resync the large resources
+    bool force_resync = 5;
+    // max objects to fetch
+    uint64 max_objects = 6;
+    // object index from which to start fetching
+    uint64 object_index = 7;
+    // sync_namespaces_only when set to true will sync only the namespaces
+    bool sync_namespaces_only = 8;
+    // purge_synced_resources when set to true will purge the synced resources from the datastore
+    bool purge_synced_resources = 9;
 }
 message BackupResourceDetailGetResponse{
    BackupResourceObject backup = 1;
@@ -2565,6 +2614,30 @@ message BackupResourceObject {
     repeated BackupInfo.Volume volumes = 24;
     repeated ResourceInfo resources = 25;
     ResourceContainer resource_details = 26;
+    // Available resource types
+    repeated string available_resource_types = 27;
+    // Available namespaces
+    repeated string available_namespaces = 28;
+    // Total count of resources matching filter
+    uint64 total_resource_count = 29;
+    // resources sync status information
+    SyncStatusInfo resources_sync_status_info = 30;
+    // namespace only sync status information
+    SyncStatusInfo namespaces_only_sync_status_info = 31;
+
+    // Message for maintaining status of large resources sync
+    message SyncStatusInfo {
+        Status status = 1;
+        string reason = 2;
+
+        enum Status {
+            Invalid = 0;
+            NotStarted = 1;
+            InProgress = 2;
+            Completed = 3;
+            Failed = 4;
+        }
+    }
 
     // Resources details mapped to either Namespace or virtualMachine
     message ResourceContainer {
@@ -2672,6 +2745,27 @@ message RestoreCreateRequest {
     ObjectRef cluster_ref = 12;
     // backup object type is all namespace or virtualMachine specific backup
     BackupObjectType backup_object_type = 13;
+    // List of resources to exclude from restore.
+    repeated ResourceInfo exclude_resources = 14;
+    // Filter options
+    Filter filter = 15;
+    // Filter to apply on resources
+    message Filter {
+        // Filter by resource gvk (can be single or multiple)
+        repeated string gvks = 1;
+        // Filter by namespaces (can be single or multiple)
+        repeated string namespaces = 2;
+        // Filter by exclude namespaces (can be single or multiple)
+        repeated string exclude_namespaces = 3;
+        // Filter by namespace name
+        string namespace_name_pattern = 4;
+        // Substring or regex pattern to match resource name and exclude (e.g. "*" for All, "pxb-" or any valid regex)
+        string resource_name_pattern = 5;
+        // Substring or regex pattern to match namespace name and exclude (e.g. "*" for All, "pxb-" or any valid regex)
+        repeated string resource_types = 6;
+        // Substring or regex pattern to match virtual machine name and exclude (e.g. "*" for All, "pxb-" or any valid regex)
+        string vm_name_pattern = 7;
+    }
 
     message BackupObjectType {
         Type type = 1;
@@ -2680,7 +2774,7 @@ message RestoreCreateRequest {
              All = 1; // for All application backup
              VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
          }
-     }
+    }
 }
 
 // Define RestoreCreateResponse struct

@@ -113,6 +113,108 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "filter.gvks",
+            "description": "Filter by resource gvk (can be single or multiple).",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "filter.namespaces",
+            "description": "Filter by namespaces (can be single or multiple).",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "filter.exclude_namespaces",
+            "description": "Filter by exclude namespaces (can be single or multiple).",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "filter.namespace_name_pattern",
+            "description": "Filter by namespace name.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter.resource_name_pattern",
+            "description": "Substring or regex pattern to match resource name and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex).",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter.resource_types",
+            "description": "Substring or regex pattern to match namespace name and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex).",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "filter.vm_name_pattern",
+            "description": "Substring or regex pattern to match virtual machine name and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex).",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "force_resync",
+            "description": "force_resync when set to true will force resync the large resources.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "max_objects",
+            "description": "max objects to fetch.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "object_index",
+            "description": "object index from which to start fetching.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "sync_namespaces_only",
+            "description": "sync_namespaces_only when set to true will sync only the namespaces.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "purge_synced_resources",
+            "description": "purge_synced_resources when set to true will purge the synced resources from the datastore.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -4709,6 +4811,14 @@
             "type": "string"
           },
           "title": "to capture namespaces that were missing when the backup was initiated"
+        },
+        "resources_sync_status_info": {
+          "$ref": "#/definitions/BackupInfoSyncStatusInfo",
+          "title": "resources sync status information"
+        },
+        "namespace_sync_status_info": {
+          "$ref": "#/definitions/BackupInfoSyncStatusInfo",
+          "title": "namespace sync status information"
         }
       }
     },
@@ -4796,6 +4906,29 @@
         "PartialSuccess",
         "DeletePending",
         "CloudBackupMissing"
+      ],
+      "default": "Invalid"
+    },
+    "BackupInfoSyncStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/BackupInfoSyncStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "title": "Message for maintaining status of large resources sync"
+    },
+    "BackupInfoSyncStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "NotStarted",
+        "InProgress",
+        "Completed",
+        "Failed"
       ],
       "default": "Invalid"
     },
@@ -5114,6 +5247,52 @@
       "default": "Invalid",
       "description": " - NS: Represents backup schedules scoped to Kubernetes namespaces (non-VM workloads).\nTypically used for application-level backups.\n - VM: Represents backup schedules scoped to VirtualMachine workloads.\nUsed for VM-based backup scenarios.\n - All: Represents both NS and VM backup schedule types. Used when an operation should apply to all types."
     },
+    "BackupResourceDetailGetRequestFilter": {
+      "type": "object",
+      "properties": {
+        "gvks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Filter by resource gvk (can be single or multiple)"
+        },
+        "namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Filter by namespaces (can be single or multiple)"
+        },
+        "exclude_namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Filter by exclude namespaces (can be single or multiple)"
+        },
+        "namespace_name_pattern": {
+          "type": "string",
+          "title": "Filter by namespace name"
+        },
+        "resource_name_pattern": {
+          "type": "string",
+          "title": "Substring or regex pattern to match resource name and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        },
+        "resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Substring or regex pattern to match namespace name and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        },
+        "vm_name_pattern": {
+          "type": "string",
+          "title": "Substring or regex pattern to match virtual machine name and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        }
+      },
+      "title": "Filter to apply on resources"
+    },
     "BackupResourceDetailGetResponse": {
       "type": "object",
       "properties": {
@@ -5237,6 +5416,33 @@
         },
         "resource_details": {
           "$ref": "#/definitions/BackupResourceObjectResourceContainer"
+        },
+        "available_resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Available resource types"
+        },
+        "available_namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Available namespaces"
+        },
+        "total_resource_count": {
+          "type": "string",
+          "format": "uint64",
+          "title": "Total count of resources matching filter"
+        },
+        "resources_sync_status_info": {
+          "$ref": "#/definitions/BackupResourceObjectSyncStatusInfo",
+          "title": "resources sync status information"
+        },
+        "namespaces_only_sync_status_info": {
+          "$ref": "#/definitions/BackupResourceObjectSyncStatusInfo",
+          "title": "namespace only sync status information"
         }
       }
     },
@@ -5270,6 +5476,29 @@
         }
       },
       "title": "Resource Info details"
+    },
+    "BackupResourceObjectSyncStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/BackupResourceObjectSyncStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "title": "Message for maintaining status of large resources sync"
+    },
+    "BackupResourceObjectSyncStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "NotStarted",
+        "InProgress",
+        "Completed",
+        "Failed"
+      ],
+      "default": "Invalid"
     },
     "BackupResourceObjectVirtualMachineDetailInfo": {
       "type": "object",
@@ -7845,6 +8074,17 @@
         "backup_object_type": {
           "$ref": "#/definitions/RestoreCreateRequestBackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
+        },
+        "exclude_resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceInfo"
+          },
+          "description": "List of resources to exclude from restore."
+        },
+        "filter": {
+          "$ref": "#/definitions/RestoreCreateRequestFilter",
+          "title": "Filter options"
         }
       },
       "title": "Define RestoreCreateRequest struct"
@@ -7865,6 +8105,52 @@
         "VirtualMachine"
       ],
       "default": "Invalid"
+    },
+    "RestoreCreateRequestFilter": {
+      "type": "object",
+      "properties": {
+        "gvks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Filter by resource gvk (can be single or multiple)"
+        },
+        "namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Filter by namespaces (can be single or multiple)"
+        },
+        "exclude_namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Filter by exclude namespaces (can be single or multiple)"
+        },
+        "namespace_name_pattern": {
+          "type": "string",
+          "title": "Filter by namespace name"
+        },
+        "resource_name_pattern": {
+          "type": "string",
+          "title": "Substring or regex pattern to match resource name and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        },
+        "resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Substring or regex pattern to match namespace name and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        },
+        "vm_name_pattern": {
+          "type": "string",
+          "title": "Substring or regex pattern to match virtual machine name and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        }
+      },
+      "title": "Filter to apply on resources"
     },
     "RestoreCreateResponse": {
       "type": "object",
