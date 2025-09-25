@@ -760,7 +760,28 @@ message BackupInfo {
         }
     }
 
+    oneof sync_type {
+        // resources sync status information
+        SyncStatusInfo resources_sync_status_info = 56;
+        // namespace sync status information
+        SyncStatusInfo namespace_sync_status_info = 57;
+    }
+    // Message for maintaining status of sync operations
+    message SyncStatusInfo {
+        Status status = 1;
+        string reason = 2;
+         // When this status was last updated, this will be used for TTL calculation
+        google.protobuf.Timestamp updated_at = 3;
 
+        enum Status {
+            Invalid = 0;
+            Pending = 1;
+            InProgress = 2;
+            Completed = 3;
+            Failed = 4;
+        }
+    }
+    
     message BackupType {
         Type type = 1;
 
@@ -2639,6 +2660,10 @@ message BackupRetryResponse {
 // Response message for backup share update request
 message BackupShareUpdateResponse {}
 
+message NamespaceList {
+  repeated string namespaces = 1;
+}
+
 // Request message to detailed backup resources
 message BackupResourceDetailGetRequest {
     string org_id = 1;
@@ -2646,6 +2671,40 @@ message BackupResourceDetailGetRequest {
     string name = 2;
     // Backup uid
     string uid = 3;
+    // Filter options
+    Filter filter = 4;
+    // Filter to apply on resources
+    message Filter {
+        // Substring or regex pattern to match namespace name and include (e.g. "*" for All, "pxb-" or any valid regex)
+        string namespace_name_pattern = 1;
+        oneof namespace_list_filter {
+            // List of namespace names to include for filtering
+            NamespaceList include_namespaces = 2;
+            // Filter by exclude namespaces for filtering
+            NamespaceList exclude_namespaces = 3;
+        }
+        // gvks represents a list of Kubernetes Group/Version/Kind (GVK) identifiers.
+        // Each GVK follows the format "group/version/kind" (e.g., "apps/v1/Deployment").
+        // This field is used to filter resources based on their GVK.
+        repeated string gvks = 4;
+        // Substring or regex pattern to match resource name and include (e.g. "*" for All, "pxb-" or any valid regex)
+        string resource_name_pattern = 5;
+        // Substring or regex pattern to match virtual machine name and include (e.g. "*" for All, "pxb-" or any valid regex)
+        string vm_name_pattern = 6;
+        // filter based on the status.
+        // Need to pass the string value of the status field of resources
+        // For example, {"Success", "Failed"}
+        // default will be {"Success"}, when no value is passed
+        repeated string status = 7;
+        // max objects to fetch
+        uint64 max_objects = 8;
+        // object index from which to start fetching
+        uint64 object_index = 9;
+    }
+    // force_resync has to be set to resync the failed sync process
+    bool force_resync = 5;
+    // sync_namespaces_only when set to true will sync only the namespaces
+    bool sync_namespaces_only = 8;
 }
 message BackupResourceDetailGetResponse{
    BackupResourceObject backup = 1;
@@ -2689,6 +2748,34 @@ message BackupResourceObject {
     repeated BackupInfo.Volume volumes = 24;
     repeated ResourceInfo resources = 25;
     ResourceContainer resource_details = 26;
+    // complete list of available resource types associated with backup
+    repeated string available_resource_types = 27;
+    // complete list of available namespaces associated with backup
+    repeated string available_namespaces = 28;
+    // Total count of resources matching filter
+    uint64 total_resource_count = 29;
+    oneof sync_type {
+        // resources sync status information
+        SyncStatusInfo resources_sync_status_info = 54;
+        // namespace sync status information
+        SyncStatusInfo namespace_sync_status_info = 55;
+    }
+
+    // Message for maintaining status of sync operations
+    message SyncStatusInfo {
+        Status status = 1;
+        string reason = 2;
+         // When this status was last updated, this will be used for TTL calculation
+        google.protobuf.Timestamp updated_at = 3;
+
+        enum Status {
+            Invalid = 0;
+            Pending = 1;
+            InProgress = 2;
+            Completed = 3;
+            Failed = 4;
+        }
+    }
 
     // Resources details mapped to either Namespace or virtualMachine
     message ResourceContainer {
@@ -2796,6 +2883,29 @@ message RestoreCreateRequest {
     ObjectRef cluster_ref = 12;
     // backup object type is all namespace or virtualMachine specific backup
     BackupObjectType backup_object_type = 13;
+    // List of resources to exclude from restore.
+    repeated ResourceInfo exclude_resources = 14;
+    // Filter options
+    Filter filter = 15;
+    // Filter to apply on resources
+    message Filter {
+        // Substring or regex pattern to match namespace name and include (e.g. "*" for All, "pxb-" or any valid regex)
+        string namespace_name_pattern = 1;
+        oneof namespace_list_filter {
+            // List of namespace names to include for filtering
+            NamespaceList include_namespaces = 2;
+            // Filter by exclude namespaces for filtering
+            NamespaceList exclude_namespaces = 3;
+        }
+        // gvks represents a list of Kubernetes Group/Version/Kind (GVK) identifiers.
+        // Each GVK follows the format "group/version/kind" (e.g., "apps/v1/Deployment").
+        // This field is used to filter resources based on their GVK.
+        repeated string gvks = 4;
+        // Substring or regex pattern to match resource name and include (e.g. "*" for All, "pxb-" or any valid regex)
+        string resource_name_pattern = 5;
+        // Substring or regex pattern to match virtual machine name and include (e.g. "*" for All, "pxb-" or any valid regex)
+        string vm_name_pattern = 6;
+    }
 
     message BackupObjectType {
         Type type = 1;
