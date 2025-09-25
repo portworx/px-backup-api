@@ -113,6 +113,99 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "filter.namespace_name_pattern",
+            "description": "Substring or regex pattern to match namespace name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex).",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter.include_namespaces.namespaces",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "filter.exclude_namespaces.namespaces",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "filter.gvks",
+            "description": "gvks represents a list of Kubernetes Group/Version/Kind (GVK) identifiers.\nEach GVK follows the format \"group/version/kind\" (e.g., \"apps/v1/Deployment\").\nThis field is used to filter resources based on their GVK.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "filter.resource_name_pattern",
+            "description": "Substring or regex pattern to match resource name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex).",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter.vm_name_pattern",
+            "description": "Substring or regex pattern to match virtual machine name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex).",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter.status",
+            "description": "filter based on the status.\nNeed to pass the string value of the status field of resources\nFor example, {\"Success\", \"Failed\"}.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "filter.max_objects",
+            "description": "max objects to fetch.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "filter.object_index",
+            "description": "object index from which to start fetching.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "force_resync",
+            "description": "force_resync has to be set to resync the failed sync process.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "sync_namespaces_only",
+            "description": "sync_namespaces_only when set to true will sync only the namespaces.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -4717,6 +4810,14 @@
         "resource_map": {
           "$ref": "#/definitions/BackupInfoNamespaceResourceMap",
           "title": "Hierarchical namespace -\u003e GVK -\u003e chunks resource details"
+        },
+        "resources_sync_status_info": {
+          "$ref": "#/definitions/BackupInfoSyncStatusInfo",
+          "title": "resources sync status information"
+        },
+        "namespace_sync_status_info": {
+          "$ref": "#/definitions/BackupInfoSyncStatusInfo",
+          "title": "namespace sync status information"
         }
       }
     },
@@ -4817,6 +4918,34 @@
         "PartialSuccess",
         "DeletePending",
         "CloudBackupMissing"
+      ],
+      "default": "Invalid"
+    },
+    "BackupInfoSyncStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/BackupInfoSyncStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "When this status was last updated, this will be used for TTL calculation"
+        }
+      },
+      "title": "Message for maintaining status of sync operations"
+    },
+    "BackupInfoSyncStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Pending",
+        "InProgress",
+        "Completed",
+        "Failed"
       ],
       "default": "Invalid"
     },
@@ -5147,6 +5276,56 @@
       "default": "Invalid",
       "description": " - NS: Represents backup schedules scoped to Kubernetes namespaces (non-VM workloads).\nTypically used for application-level backups.\n - VM: Represents backup schedules scoped to VirtualMachine workloads.\nUsed for VM-based backup scenarios.\n - All: Represents both NS and VM backup schedule types. Used when an operation should apply to all types."
     },
+    "BackupResourceDetailGetRequestFilter": {
+      "type": "object",
+      "properties": {
+        "namespace_name_pattern": {
+          "type": "string",
+          "title": "Substring or regex pattern to match namespace name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        },
+        "include_namespaces": {
+          "$ref": "#/definitions/NamespaceList",
+          "title": "List of namespace names to include for filtering"
+        },
+        "exclude_namespaces": {
+          "$ref": "#/definitions/NamespaceList",
+          "title": "Filter by exclude namespaces for filtering"
+        },
+        "gvks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "gvks represents a list of Kubernetes Group/Version/Kind (GVK) identifiers.\nEach GVK follows the format \"group/version/kind\" (e.g., \"apps/v1/Deployment\").\nThis field is used to filter resources based on their GVK."
+        },
+        "resource_name_pattern": {
+          "type": "string",
+          "title": "Substring or regex pattern to match resource name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        },
+        "vm_name_pattern": {
+          "type": "string",
+          "title": "Substring or regex pattern to match virtual machine name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "filter based on the status.\nNeed to pass the string value of the status field of resources\nFor example, {\"Success\", \"Failed\"}"
+        },
+        "max_objects": {
+          "type": "string",
+          "format": "uint64",
+          "title": "max objects to fetch"
+        },
+        "object_index": {
+          "type": "string",
+          "format": "uint64",
+          "title": "object index from which to start fetching"
+        }
+      },
+      "title": "Filter to apply on resources"
+    },
     "BackupResourceDetailGetResponse": {
       "type": "object",
       "properties": {
@@ -5270,6 +5449,33 @@
         },
         "resource_details": {
           "$ref": "#/definitions/BackupResourceObjectResourceContainer"
+        },
+        "available_resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "complete list of available resource types associated with backup"
+        },
+        "available_namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "complete list of available namespaces associated with backup"
+        },
+        "total_resource_count": {
+          "type": "string",
+          "format": "uint64",
+          "title": "Total count of resources matching filter"
+        },
+        "resources_sync_status_info": {
+          "$ref": "#/definitions/BackupResourceObjectSyncStatusInfo",
+          "title": "resources sync status information"
+        },
+        "namespace_sync_status_info": {
+          "$ref": "#/definitions/BackupResourceObjectSyncStatusInfo",
+          "title": "namespace sync status information"
         }
       }
     },
@@ -5303,6 +5509,34 @@
         }
       },
       "title": "Resource Info details"
+    },
+    "BackupResourceObjectSyncStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/BackupResourceObjectSyncStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "When this status was last updated, this will be used for TTL calculation"
+        }
+      },
+      "title": "Message for maintaining status of sync operations"
+    },
+    "BackupResourceObjectSyncStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Pending",
+        "InProgress",
+        "Completed",
+        "Failed"
+      ],
+      "default": "Invalid"
     },
     "BackupResourceObjectVirtualMachineDetailInfo": {
       "type": "object",
@@ -7341,6 +7575,17 @@
         }
       }
     },
+    "NamespaceList": {
+      "type": "object",
+      "properties": {
+        "namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "NamespaceResourceMapChunks": {
       "type": "object",
       "properties": {
@@ -7942,6 +8187,17 @@
         "backup_object_type": {
           "$ref": "#/definitions/RestoreCreateRequestBackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
+        },
+        "exclude_resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceInfo"
+          },
+          "description": "List of resources to exclude from restore."
+        },
+        "filter": {
+          "$ref": "#/definitions/RestoreCreateRequestFilter",
+          "title": "Filter options"
         }
       },
       "title": "Define RestoreCreateRequest struct"
@@ -7962,6 +8218,39 @@
         "VirtualMachine"
       ],
       "default": "Invalid"
+    },
+    "RestoreCreateRequestFilter": {
+      "type": "object",
+      "properties": {
+        "namespace_name_pattern": {
+          "type": "string",
+          "title": "Substring or regex pattern to match namespace name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        },
+        "include_namespaces": {
+          "$ref": "#/definitions/NamespaceList",
+          "title": "List of namespace names to include for filtering"
+        },
+        "exclude_namespaces": {
+          "$ref": "#/definitions/NamespaceList",
+          "title": "Filter by exclude namespaces for filtering"
+        },
+        "gvks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "gvks represents a list of Kubernetes Group/Version/Kind (GVK) identifiers.\nEach GVK follows the format \"group/version/kind\" (e.g., \"apps/v1/Deployment\").\nThis field is used to filter resources based on their GVK."
+        },
+        "resource_name_pattern": {
+          "type": "string",
+          "title": "Substring or regex pattern to match resource name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        },
+        "vm_name_pattern": {
+          "type": "string",
+          "title": "Substring or regex pattern to match virtual machine name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        }
+      },
+      "title": "Filter to apply on resources"
     },
     "RestoreCreateResponse": {
       "type": "object",
