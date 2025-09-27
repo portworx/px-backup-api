@@ -4511,7 +4511,7 @@
           "items": {
             "$ref": "#/definitions/ResourceInfo"
           },
-          "title": "resourceInfo for backupObjectType Namespace"
+          "description": "resourceInfo for backupObjectType Namespace\nNOTE: This field will not be used and will be deprecated in future. Use resource_representation instead."
         },
         "volumes": {
           "type": "array",
@@ -4701,7 +4701,7 @@
           "items": {
             "$ref": "#/definitions/VirtualMachineResourceInfo"
           },
-          "title": "resourcesInfo for backupObjectType VirtualMachine"
+          "title": "resourcesInfo for backupObjectType VirtualMachine\nDEPRECATED: Use resource_representation instead"
         },
         "missing_namespaces": {
           "type": "array",
@@ -4709,6 +4709,12 @@
             "type": "string"
           },
           "title": "to capture namespaces that were missing when the backup was initiated"
+        },
+        "vm_resources": {
+          "$ref": "#/definitions/BackupInfoVirtualMachineResources"
+        },
+        "namespace_resources": {
+          "$ref": "#/definitions/BackupInfoNamespaceResources"
         }
       }
     },
@@ -4756,6 +4762,93 @@
         "Normal"
       ],
       "default": "Invalid"
+    },
+    "BackupInfoNamespaceResource": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Namespace name"
+        },
+        "status": {
+          "$ref": "#/definitions/BackupInfoNamespaceResourceStatusInfo",
+          "title": "Status information for this namespace"
+        },
+        "resource_types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NamespaceResourceResourceTypeInfo"
+          },
+          "title": "List of resource types in this namespace, grouped by resource type"
+        },
+        "metrics": {
+          "$ref": "#/definitions/BackupInfoNamespaceResourceMetrics",
+          "title": "Statistics for this namespace"
+        }
+      },
+      "title": "Message representing resources within a namespace with status, metrics, and resource type breakdown"
+    },
+    "BackupInfoNamespaceResourceMetrics": {
+      "type": "object",
+      "properties": {
+        "total_resources": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of resources in this namespace"
+        },
+        "total_volumes": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of volumes in this namespace"
+        },
+        "total_failed_resources": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of resources that failed in this namespace"
+        },
+        "total_failed_volumes": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of volumes that failed in this namespace"
+        }
+      },
+      "title": "Metrics containing namespace-level statistics for resources and volumes"
+    },
+    "BackupInfoNamespaceResourceStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/BackupInfoNamespaceResourceStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "title": "Status information for namespace-level operations"
+    },
+    "BackupInfoNamespaceResourceStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "InProgress",
+        "Success",
+        "Failed",
+        "PartialSuccess"
+      ],
+      "default": "Invalid"
+    },
+    "BackupInfoNamespaceResources": {
+      "type": "object",
+      "properties": {
+        "namespaces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupInfoNamespaceResource"
+          },
+          "title": "List of namespace resources with their status, metrics, and resource type information"
+        }
+      },
+      "title": "Message for Namespace resources"
     },
     "BackupInfoStage": {
       "type": "string",
@@ -4816,6 +4909,19 @@
         }
       },
       "title": "VirtualMachine Info"
+    },
+    "BackupInfoVirtualMachineResources": {
+      "type": "object",
+      "properties": {
+        "vms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VirtualMachineResourceInfo"
+          },
+          "title": "List of virtual machine resource information"
+        }
+      },
+      "title": "Message for VirtualMachine resources containing list of virtual machines related resource information"
     },
     "BackupInfoVolume": {
       "type": "object",
@@ -7307,6 +7413,91 @@
           "type": "string"
         }
       }
+    },
+    "NamespaceResourceChunkInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status": {
+          "$ref": "#/definitions/NamespaceResourceChunkInfoStatusInfo",
+          "title": "Processing status of this specific chunk"
+        },
+        "resource_names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of resource names contained in this chunk"
+        },
+        "total_resources": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of resources in this chunk"
+        }
+      },
+      "title": "ChunkInfo represents a processing unit containing a subset of resources of the same type in a namespace"
+    },
+    "NamespaceResourceChunkInfoStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/NamespaceResourceChunkInfoStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "title": "Status information for chunk-level operations"
+    },
+    "NamespaceResourceChunkInfoStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "InProgress",
+        "Success",
+        "Failed"
+      ],
+      "default": "Invalid"
+    },
+    "NamespaceResourceResourceTypeInfo": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "The Kubernetes resource type in the format group/version/kind (e.g., \"apps/v1/Deployment\")"
+        },
+        "chunks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NamespaceResourceChunkInfo"
+          },
+          "title": "List of chunks containing resources of this type"
+        },
+        "metrics": {
+          "$ref": "#/definitions/NamespaceResourceResourceTypeInfoMetrics",
+          "title": "Statistics for this resource type"
+        }
+      },
+      "title": "ResourceTypeInfo groups resources by their resource type and organizes them into chunks"
+    },
+    "NamespaceResourceResourceTypeInfoMetrics": {
+      "type": "object",
+      "properties": {
+        "total_resources": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of resources of this type"
+        },
+        "total_failed_resources": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of resources of this type that failed"
+        }
+      },
+      "title": "Metrics containing resource type-level statistics"
     },
     "ObjectRef": {
       "type": "object",

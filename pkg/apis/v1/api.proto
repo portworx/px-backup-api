@@ -578,6 +578,7 @@ message BackupInfo {
     map<string, string> label_selectors = 4;
     StatusInfo status = 5;
     // resourceInfo for backupObjectType Namespace
+    // NOTE: This field will not be used and will be deprecated in future. Use resource_representation instead.
     repeated ResourceInfo resources = 6;
     repeated Volume volumes = 7;
     string backup_path = 8;
@@ -656,9 +657,110 @@ message BackupInfo {
     // reference to volumeResourceOnly policy object
     ObjectRef volume_resource_only_policy_ref = 51;
     // resourcesInfo for backupObjectType VirtualMachine
-    repeated VirtualMachineResourceInfo virtual_machine_resources = 52;
+    // DEPRECATED: Use resource_representation instead
+    repeated VirtualMachineResourceInfo virtual_machine_resources = 52 [deprecated = true];
    // to capture namespaces that were missing when the backup was initiated
     repeated string missing_namespaces = 53;
+
+    // New resource representation using oneof for different resource types
+    // In case of VM backup, vm_resources will be used.
+    // In case of Namespace backup, namespace_resources will be used.
+    oneof resource_representation {
+        VirtualMachineResources vm_resources = 54;
+        NamespaceResources namespace_resources = 55;
+    }
+
+    // Message for VirtualMachine resources containing list of virtual machines related resource information
+    message VirtualMachineResources {
+        // List of virtual machine resource information
+        repeated VirtualMachineResourceInfo vms = 1;
+    }
+
+    // Message for Namespace resources
+    message NamespaceResources {
+        // List of namespace resources with their status, metrics, and resource type information
+        repeated NamespaceResource namespaces = 1;
+    }
+
+    // Message representing resources within a namespace with status, metrics, and resource type breakdown
+    message NamespaceResource {
+        // Namespace name
+        string name = 1;
+        // Status information for this namespace
+        StatusInfo status = 2;
+        // List of resource types in this namespace, grouped by resource type
+        repeated ResourceTypeInfo resource_types = 3;
+        // Statistics for this namespace
+        Metrics metrics = 4;
+
+      // Status information for namespace-level operations
+      message StatusInfo {
+        enum Status {
+          Invalid = 0;
+          InProgress = 1;
+          Success = 2;
+          Failed = 3;
+          PartialSuccess = 4;
+        }
+        Status status = 1;
+        string reason = 2;
+      }
+
+        // Metrics containing namespace-level statistics for resources and volumes
+        message Metrics {
+            // Total number of resources in this namespace
+            int32 total_resources = 1;
+            // Total number of volumes in this namespace
+            int32 total_volumes = 2;
+            // Total number of resources that failed in this namespace
+            int32 total_failed_resources = 3;
+            // Total number of volumes that failed in this namespace
+            int32 total_failed_volumes = 4;
+        }
+
+        // ResourceTypeInfo groups resources by their resource type and organizes them into chunks
+        message ResourceTypeInfo {
+            // The Kubernetes resource type in the format group/version/kind (e.g., "apps/v1/Deployment")
+            string name = 1;
+            // List of chunks containing resources of this type
+            repeated ChunkInfo chunks = 2;
+            // Statistics for this resource type
+            Metrics metrics = 3;
+
+            // Metrics containing resource type-level statistics
+            message Metrics {
+                // Total number of resources of this type
+                int32 total_resources = 1;
+                // Total number of resources of this type that failed
+                int32 total_failed_resources = 2;
+            }
+        }
+
+        // ChunkInfo represents a processing unit containing a subset of resources of the same type in a namespace
+        message ChunkInfo {
+            int32 id = 1;
+            // Processing status of this specific chunk
+            StatusInfo status = 2;
+            // List of resource names contained in this chunk
+            repeated string resource_names = 3;
+            // Total number of resources in this chunk
+            int32 total_resources = 4;
+
+          // Status information for chunk-level operations
+          message StatusInfo {
+            enum Status {
+              Invalid = 0;
+              InProgress = 1;
+              Success = 2;
+              Failed = 3;
+            }
+            Status status = 1;
+            string reason = 2;
+          }
+        }
+    }
+
+
     message BackupType {
         Type type = 1;
 
