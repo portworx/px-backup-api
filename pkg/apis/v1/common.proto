@@ -48,6 +48,8 @@ message Metadata {
     int64 create_time_in_sec = 8;
     // ownership of the object
     Ownership ownership = 9;
+    // last update time in sec
+    int64 last_update_time_in_sec = 10;
 }
 
 message TlsConfig {
