@@ -999,6 +999,12 @@ message EnumerateOptions {
     // If the field is not set, default value will be "CreationTimestamp"
     // If the order is not set, default value will be "descending"
     SortOption sort_option = 14;
+    // filter to use resource name and namespace. Any backup that contains the resource will be returned
+    ResourceInfo resource_info = 15;
+    // filter VM that matches the resource_info and has volume vm_volume_name attached to it
+    string vm_volume_name = 16;
+     // filter to exclude failed resources while enumerating object
+    bool exclude_failed_resource = 17;
 }
 
 service VolumeResourceOnlyPolicy {
