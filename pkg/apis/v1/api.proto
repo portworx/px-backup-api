@@ -1185,6 +1185,12 @@ message EnumerateOptions {
     SortOption sort_option = 14;
     // filter to use volumeResourceOnly policy name and uid. Any object that contains the filter will be returned.
     repeated ObjectRef volume_resource_only_policy_ref = 15;
+    // filter to use resource name and namespace. Any backup that contains the resource will be returned
+    ResourceInfo resource_info = 16;
+    // filter VM that matches the resource_info and has volume vm_volume_name attached to it
+    string vm_volume_name = 17;
+     // filter to exclude failed resources while enumerating object
+    bool exclude_failed_resource = 18;
 }
 
 service VolumeResourceOnlyPolicy {

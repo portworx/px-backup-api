@@ -315,6 +315,50 @@
               "Descending"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.resource_info.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.group",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.kind",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.version",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.vm_volume_name",
+            "description": "filter VM that matches the resource_info and has volume vm_volume_name attached to it.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.exclude_failed_resource",
+            "description": "filter to exclude failed resources while enumerating object.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -1046,6 +1090,50 @@
               "Descending"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.resource_info.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.group",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.kind",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.version",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.vm_volume_name",
+            "description": "filter VM that matches the resource_info and has volume vm_volume_name attached to it.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.exclude_failed_resource",
+            "description": "filter to exclude failed resources while enumerating object.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -1822,6 +1910,50 @@
               "Descending"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.resource_info.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.group",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.kind",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.version",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.vm_volume_name",
+            "description": "filter VM that matches the resource_info and has volume vm_volume_name attached to it.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.exclude_failed_resource",
+            "description": "filter to exclude failed resources while enumerating object.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -3137,6 +3269,50 @@
               "Descending"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.resource_info.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.group",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.kind",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.version",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.vm_volume_name",
+            "description": "filter VM that matches the resource_info and has volume vm_volume_name attached to it.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.exclude_failed_resource",
+            "description": "filter to exclude failed resources while enumerating object.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -3556,6 +3732,50 @@
               "Descending"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.resource_info.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.group",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.kind",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.version",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.vm_volume_name",
+            "description": "filter VM that matches the resource_info and has volume vm_volume_name attached to it.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.exclude_failed_resource",
+            "description": "filter to exclude failed resources while enumerating object.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -7292,6 +7512,18 @@
             "$ref": "#/definitions/ObjectRef"
           },
           "description": "filter to use volumeResourceOnly policy name and uid. Any object that contains the filter will be returned."
+        },
+        "resource_info": {
+          "$ref": "#/definitions/ResourceInfo",
+          "title": "filter to use resource name and namespace. Any backup that contains the resource will be returned"
+        },
+        "vm_volume_name": {
+          "type": "string",
+          "title": "filter VM that matches the resource_info and has volume vm_volume_name attached to it"
+        },
+        "exclude_failed_resource": {
+          "type": "boolean",
+          "title": "filter to exclude failed resources while enumerating object"
         }
       }
     },
