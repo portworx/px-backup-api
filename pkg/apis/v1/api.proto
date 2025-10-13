@@ -1002,6 +1002,8 @@ message EnumerateOptions {
     // If the field is not set, default value will be "CreationTimestamp"
     // If the order is not set, default value will be "descending"
     SortOption sort_option = 14;
+    // filter to use volumeResourceOnly policy name and uid. Any object that contains the filter will be returned.
+    repeated ObjectRef volume_resource_only_policy_ref = 15;
 }
 
 service VolumeResourceOnlyPolicy {

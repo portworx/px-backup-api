@@ -6863,6 +6863,13 @@
         "sort_option": {
           "$ref": "#/definitions/SortOption",
           "title": "Sorting backup objects based on the field and order\nIf the field is not set, default value will be \"CreationTimestamp\"\nIf the order is not set, default value will be \"descending\""
+        },
+        "volume_resource_only_policy_ref": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "filter to use volumeResourceOnly policy name and uid. Any object that contains the filter will be returned."
         }
       }
     },
