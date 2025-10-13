@@ -310,8 +310,7 @@
               "Name",
               "ClusterName",
               "Size",
-              "RestoreBackupName",
-              "LastUpdateTimestamp"
+              "RestoreBackupName"
             ],
             "default": "Invalid"
           },
@@ -975,8 +974,7 @@
               "Name",
               "ClusterName",
               "Size",
-              "RestoreBackupName",
-              "LastUpdateTimestamp"
+              "RestoreBackupName"
             ],
             "default": "Invalid"
           },
@@ -1685,8 +1683,7 @@
               "Name",
               "ClusterName",
               "Size",
-              "RestoreBackupName",
-              "LastUpdateTimestamp"
+              "RestoreBackupName"
             ],
             "default": "Invalid"
           },
@@ -3000,8 +2997,7 @@
               "Name",
               "ClusterName",
               "Size",
-              "RestoreBackupName",
-              "LastUpdateTimestamp"
+              "RestoreBackupName"
             ],
             "default": "Invalid"
           },
@@ -3419,8 +3415,7 @@
               "Name",
               "ClusterName",
               "Size",
-              "RestoreBackupName",
-              "LastUpdateTimestamp"
+              "RestoreBackupName"
             ],
             "default": "Invalid"
           },
@@ -4183,36 +4178,6 @@
             "required": false,
             "type": "string",
             "format": "uint64"
-          },
-          {
-            "name": "enumerate_options.sort_option.sortBy.type",
-            "description": "Name of the field by which sort to be performed.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "Invalid",
-              "CreationTimestamp",
-              "Name",
-              "ClusterName",
-              "Size",
-              "RestoreBackupName",
-              "LastUpdateTimestamp"
-            ],
-            "default": "Invalid"
-          },
-          {
-            "name": "enumerate_options.sort_option.sortOrder.type",
-            "description": "Order of sorting.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "Invalid",
-              "Ascending",
-              "Descending"
-            ],
-            "default": "Invalid"
           }
         ],
         "tags": [
@@ -7356,11 +7321,6 @@
         "ownership": {
           "$ref": "#/definitions/Ownership",
           "title": "ownership of the object"
-        },
-        "last_update_time_in_sec": {
-          "type": "string",
-          "format": "int64",
-          "title": "last update time in sec"
         }
       }
     },
@@ -8933,8 +8893,7 @@
         "Name",
         "ClusterName",
         "Size",
-        "RestoreBackupName",
-        "LastUpdateTimestamp"
+        "RestoreBackupName"
       ],
       "default": "Invalid"
     },
@@ -9134,10 +9093,6 @@
       "properties": {
         "generic_enumerate_options": {
           "$ref": "#/definitions/CommonEnumerateOptions"
-        },
-        "sort_option": {
-          "$ref": "#/definitions/SortOption",
-          "title": "Add sorting support for VRO list API"
         }
       }
     },
