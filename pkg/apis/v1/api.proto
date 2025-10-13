@@ -933,7 +933,6 @@ message SortOption {
             ClusterName = 3;
             Size = 4;
             RestoreBackupName = 5;
-            LastUpdateTimestamp = 6;
         }
         // Name of the field by which sort to be performed
         Type type = 1;
@@ -955,8 +954,6 @@ message SortOption {
 
 message VolumeResourceOnlyPolicyEnumerateOptions {
     CommonEnumerateOptions generic_enumerate_options = 1;
-    // Add sorting support for VRO list API
-    SortOption sort_option = 2;
    
 }
 message EnumerateOptions {
