@@ -957,7 +957,8 @@ message VolumeResourceOnlyPolicyEnumerateOptions {
     CommonEnumerateOptions generic_enumerate_options = 1;
     // Add sorting support for VRO list API
     SortOption sort_option = 2;
-   
+    // Add volume type filtering support for VRO list API
+    repeated VolumeResourceOnlyPolicyInfo.VolumeType volume_types = 3;
 }
 message EnumerateOptions {
     // label selectors for the object for filtering

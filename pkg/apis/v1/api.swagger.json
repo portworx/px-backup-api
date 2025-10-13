@@ -4213,6 +4213,23 @@
               "Descending"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.volume_types",
+            "description": "Add volume type filtering support for VRO list API.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Invalid",
+                "Portworx",
+                "Csi",
+                "Nfs"
+              ]
+            },
+            "collectionFormat": "multi"
           }
         ],
         "tags": [
@@ -9145,6 +9162,13 @@
         "sort_option": {
           "$ref": "#/definitions/SortOption",
           "title": "Add sorting support for VRO list API"
+        },
+        "volume_types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VolumeResourceOnlyPolicyInfoVolumeType"
+          },
+          "title": "Add volume type filtering support for VRO list API"
         }
       }
     },
