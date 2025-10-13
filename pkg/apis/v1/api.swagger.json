@@ -4213,6 +4213,62 @@
               "Descending"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.volume_types",
+            "description": "Add volume type filtering support for VRO list API.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Invalid",
+                "Portworx",
+                "Csi",
+                "Nfs"
+              ]
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "VolumeResourceOnlyPolicy"
+        ]
+      }
+    },
+    "/v1/volumeresourceonlypolicy/{org_id}/enumerate": {
+      "post": {
+        "summary": "Enumerate returns a list of volumeResourceOnly policy",
+        "operationId": "VolumeResourceOnlyPolicy_Enumerate2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyEnumerateRequest"
+            }
           }
         ],
         "tags": [
@@ -9148,8 +9204,35 @@
         "sort_option": {
           "$ref": "#/definitions/SortOption",
           "title": "Add sorting support for VRO list API"
+        },
+        "volume_types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VolumeResourceOnlyPolicyInfoVolumeType"
+          },
+          "title": "Add volume type filtering support for VRO list API"
         }
       }
+    },
+    "VolumeResourceOnlyPolicyEnumerateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "label selectors for the object for filtering"
+        },
+        "enumerate_options": {
+          "$ref": "#/definitions/VolumeResourceOnlyPolicyEnumerateOptions",
+          "title": "Optional arguments for enumeration"
+        }
+      },
+      "title": "Define VolumeResourceOnlyPolicyEnumerateRequest struct"
     },
     "VolumeResourceOnlyPolicyEnumerateResponse": {
       "type": "object",
