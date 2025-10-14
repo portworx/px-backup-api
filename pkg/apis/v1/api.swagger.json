@@ -6988,6 +6988,43 @@
         }
       }
     },
+    "FileLevelRestoreInfo": {
+      "type": "object",
+      "properties": {
+        "virtual_machine_name": {
+          "type": "string",
+          "title": "Name of the virtualMachine to which file level restore needs to be performed"
+        },
+        "volume_name": {
+          "type": "string",
+          "title": "PersistentVolumeClaim name. The Source volume from which files needs to be restored"
+        },
+        "restore_files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RestoreFileInfo"
+          },
+          "title": "List of files to be restored from the virtualMachine volume"
+        }
+      }
+    },
+    "FileLevelRestoreStatusInfo": {
+      "type": "object",
+      "properties": {
+        "virtual_machine_name": {
+          "type": "string"
+        },
+        "volume_name": {
+          "type": "string"
+        },
+        "restore_files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RestoreFileStatusInfo"
+          }
+        }
+      }
+    },
     "GoogleConfig": {
       "type": "object",
       "properties": {
@@ -8026,7 +8063,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "title": "mapping of the namespaces from the backup to which restore should be done"
+          "title": "mapping of the namespaces from the backup to which restore should be done\nset namespace_mapping equal if is_sfr is set to true"
         },
         "replace_policy": {
           "$ref": "#/definitions/ReplacePolicyType",
@@ -8077,6 +8114,14 @@
         "backup_object_type": {
           "$ref": "#/definitions/RestoreCreateRequestBackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
+        },
+        "is_sfr": {
+          "type": "boolean",
+          "title": "Set it to true if restore is for virtualMachine file level restore"
+        },
+        "file_level_restore_info": {
+          "$ref": "#/definitions/FileLevelRestoreInfo",
+          "title": "File level restore info details if is_sfr is set to true"
         }
       },
       "title": "Define RestoreCreateRequest struct"
@@ -8129,6 +8174,34 @@
         }
       },
       "title": "Define RestoreEnumerateResponse struct"
+    },
+    "RestoreFileInfo": {
+      "type": "object",
+      "properties": {
+        "source_path": {
+          "type": "string",
+          "title": "Source file path. Relative path to the file with in the selected volume"
+        },
+        "destination_path": {
+          "type": "string",
+          "title": "Destination File path. Absolute file path where the source file needs to be restored.\nEmpty if restore to the same path as that of the source path"
+        },
+        "is_dir": {
+          "type": "boolean",
+          "title": "True if source path is a directory path"
+        }
+      }
+    },
+    "RestoreFileStatusInfo": {
+      "type": "object",
+      "properties": {
+        "restore_file_info": {
+          "$ref": "#/definitions/RestoreFileInfo"
+        },
+        "status": {
+          "$ref": "#/definitions/RestoreInfoStatusInfo"
+        }
+      }
     },
     "RestoreInfo": {
       "type": "object",
@@ -8248,6 +8321,14 @@
         "backup_object_type": {
           "$ref": "#/definitions/RestoreInfoBackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
+        },
+        "is_sfr": {
+          "type": "boolean",
+          "title": "Is true if restore is VirtualMachine file level restore"
+        },
+        "file_level_restore_info": {
+          "$ref": "#/definitions/FileLevelRestoreStatusInfo",
+          "title": "File level restore info"
         }
       },
       "title": "Message for restore info"
