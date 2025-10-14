@@ -681,91 +681,10 @@ message BackupInfo {
         // List of namespace resources with their status, metrics, and resource type information
         repeated NamespaceResource namespaces = 1;
     }
-
-    // Message representing resources within a namespace with status, metrics, and resource type breakdown
-    message NamespaceResource {
-        // Namespace name
-        string name = 1;
-        // Status information for this namespace
-        StatusInfo status = 2;
-        // List of resource types in this namespace, grouped by resource type
-        repeated ResourceTypeInfo resource_types = 3;
-        // Statistics for this namespace
-        Metrics metrics = 4;
-
-      // Status information for namespace-level operations
-      message StatusInfo {
-        enum Status {
-          Invalid = 0;
-          InProgress = 1;
-          Success = 2;
-          Failed = 3;
-          PartialSuccess = 4;
-        }
-        Status status = 1;
-        string reason = 2;
-      }
-
-        // Metrics containing namespace-level statistics for resources and volumes
-        message Metrics {
-            // Total number of resources in this namespace
-            int32 total_resources = 1;
-            // Total number of volumes in this namespace
-            int32 total_volumes = 2;
-            // Total number of resources that failed in this namespace
-            int32 total_failed_resources = 3;
-            // Total number of volumes that failed in this namespace
-            int32 total_failed_volumes = 4;
-        }
-
-        // ResourceTypeInfo groups resources by their resource type and organizes them into chunks
-        message ResourceTypeInfo {
-            // The Kubernetes resource type in the format group/version/kind (e.g., "apps/v1/Deployment")
-            string name = 1;
-            // List of chunks containing resources of this type
-            repeated ChunkInfo chunks = 2;
-            // Statistics for this resource type
-            Metrics metrics = 3;
-
-            // Metrics containing resource type-level statistics
-            message Metrics {
-                // Total number of resources of this type
-                int32 total_resources = 1;
-                // Total number of resources of this type that failed
-                int32 total_failed_resources = 2;
-            }
-        }
-
-        // ChunkInfo represents a processing unit containing a subset of resources of the same type in a namespace
-        message ChunkInfo {
-            int32 id = 1;
-            // Processing status of this specific chunk
-            StatusInfo status = 2;
-            // List of resource names contained in this chunk
-            repeated string resource_names = 3;
-            // Total number of resources in this chunk
-            int32 total_resources = 4;
-
-          // Status information for chunk-level operations
-          message StatusInfo {
-            enum Status {
-              Invalid = 0;
-              InProgress = 1;
-              Success = 2;
-              Failed = 3;
-            }
-            Status status = 1;
-            string reason = 2;
-          }
-        }
-    }
-
-    oneof sync_type {
-        // resources sync status information
-        SyncStatusInfo resources_sync_status_info = 56;
-        // namespace sync status information
-        SyncStatusInfo namespace_sync_status_info = 57;
-    }
+    // resources sync status information
+    SyncStatusInfo resources_sync_status_info = 56;
+    // namespace sync status information
+    SyncStatusInfo namespace_sync_status_info = 57;
     // Message for maintaining status of sync operations
     message SyncStatusInfo {
         Status status = 1;
@@ -880,6 +799,96 @@ message BackupInfo {
         }
     }
 
+}
+
+// Message representing resources within a namespace with status, metrics, and resource type breakdown
+message NamespaceResource {
+    // Namespace name
+    string name = 1;
+    // Status information for this namespace
+    StatusInfo status = 2;
+    // List of resource types in this namespace, grouped by resource type
+    repeated ResourceTypeInfo resource_types = 3;
+    // Statistics for this namespace
+    Metrics metrics = 4;
+
+    // Status information for namespace-level operations
+    message StatusInfo {
+    enum Status {
+        Invalid = 0;
+        InProgress = 1;
+        Success = 2;
+        Failed = 3;
+        PartialSuccess = 4;
+    }
+    Status status = 1;
+    string reason = 2;
+    }
+
+    // Metrics containing namespace-level statistics for resources and volumes
+    message Metrics {
+        // Total number of resources in this namespace
+        int32 total_resources = 1;
+        // Total number of volumes in this namespace
+        int32 total_volumes = 2;
+        // Total number of resources that failed in this namespace
+        int32 total_failed_resources = 3;
+        // Total number of volumes that failed in this namespace
+        int32 total_failed_volumes = 4;
+    }
+
+    // ResourceTypeInfo groups resources by their resource type and organizes them into chunks
+    message ResourceTypeInfo {
+        // The Kubernetes resource type in the format group/version/kind (e.g., "apps/v1/Deployment")
+        string name = 1;
+        // List of chunks containing resources of this type
+        repeated ChunkInfo chunks = 2;
+        // Statistics for this resource type
+        Metrics metrics = 3;
+
+        // Metrics containing resource type-level statistics
+        message Metrics {
+            // Total number of resources of this type
+            int32 total_resources = 1;
+            // Total number of resources of this type that failed
+            int32 total_failed_resources = 2;
+        }
+    }
+
+    // ChunkInfo represents a processing unit containing a subset of resources of the same type in a namespace
+    message ChunkInfo {
+        int32 id = 1;
+        // Processing status of this specific chunk
+        StatusInfo status = 2;
+        // List of resource names contained in this chunk
+        repeated string resource_names = 3;
+        // Total number of resources in this chunk
+        int32 total_resources = 4;
+
+        // Status information for chunk-level operations
+        message StatusInfo {
+        enum Status {
+            Invalid = 0;
+            InProgress = 1;
+            Success = 2;
+            Failed = 3;
+        }
+        Status status = 1;
+        string reason = 2;
+        }
+    }
+}
+
+message NamespaceResourceObject {
+    Metadata metadata = 1 [ (gogoproto.embed) = true ];
+    ObjectRef backup_ref = 2;
+    repeated NamespaceResource namespaces = 3;
+}
+
+message ResourceObject {
+    Metadata metadata = 1 [ (gogoproto.embed) = true ];
+    ObjectRef backup_ref = 2;
+    repeated NamespaceResource namespaces = 3;
 }
 
 // Message for Backup object which will be stored in Datastore.
@@ -2748,17 +2757,13 @@ message BackupResourceObject {
     repeated BackupInfo.Volume volumes = 24;
     repeated ResourceInfo resources = 25;
     ResourceContainer resource_details = 26;
-    // complete list of available resource types associated with backup
-    repeated string available_resource_types = 27;
-    // complete list of available namespaces associated with backup
-    repeated string available_namespaces = 28;
     // Total count of resources matching filter
-    uint64 total_resource_count = 29;
+    uint64 total_resource_count = 27;
     oneof sync_type {
         // resources sync status information
-        SyncStatusInfo resources_sync_status_info = 54;
+        SyncStatusInfo resources_sync_status_info = 28;
         // namespace sync status information
-        SyncStatusInfo namespace_sync_status_info = 55;
+        SyncStatusInfo namespace_sync_status_info = 29;
     }
 
     // Message for maintaining status of sync operations
