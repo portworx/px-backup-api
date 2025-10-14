@@ -977,6 +977,10 @@ message RestoreInfo {
     BackupObjectType backup_object_type = 24;
     // VirtualMachine Restore Options
     VirtualMachineRestoreOptions virtual_machine_restore_options = 25;
+    // Is true if restore is VirtualMachine file level restore
+    bool is_sfr = 27;
+    // File level restore info
+    FileLevelRestoreStatusInfo file_level_restore_info = 28;
 
     message RestoreResourceState {
         ResourceStatus restore_status = 1;
@@ -1043,6 +1047,35 @@ message RestoreInfo {
         // Skip VM restart during virtualMachine restore
         bool skip_vm_restart = 2;
     }
+}
+
+message FileLevelRestoreInfo {
+    // Name of the virtualMachine to which file level restore needs to be performed
+    string virtual_machine_name = 1;
+    // PersistentVolumeClaim name. The Source volume from which files needs to be restored
+    string volume_name = 2;
+    // List of files to be restored from the virtualMachine volume
+    repeated RestoreFileInfo restore_files = 3;
+}
+
+message FileLevelRestoreStatusInfo {
+    string virtual_machine_name = 1;
+    string volume_name = 2;
+    repeated RestoreFileStatusInfo restore_files = 3;
+}
+
+message RestoreFileInfo {
+    // Source file path. Relative path to the file with in the selected volume
+    string source_path = 1;
+    // Destination File path. Absolute file path where the source file needs to be restored.
+    // Empty if restore to the same path as that of the source path
+    string destination_path = 2;
+    // True if source path is a directory path
+    bool is_dir = 3;
+}
+message RestoreFileStatusInfo {
+    RestoreFileInfo restore_file_info = 1 [ (gogoproto.embed) = true ];
+    RestoreInfo.StatusInfo status = 2;
 }
 
 // Message for Restore object which will be stored in Datastore.
@@ -2900,6 +2933,7 @@ message RestoreCreateRequest {
     // uid or name of cluster
     string cluster = 3;
     // mapping of the namespaces from the backup to which restore should be done
+    // set namespace_mapping equal if is_sfr is set to true
     map<string, string> namespace_mapping = 4;
     // replace policy to use if the resource already exists
     ReplacePolicy.Type replace_policy = 5;
@@ -2942,6 +2976,10 @@ message RestoreCreateRequest {
         // object index from which to start fetching
         uint64 object_index = 5;
     }
+    // Set it to true if restore is for virtualMachine file level restore
+    bool is_sfr = 17;
+    // File level restore info details if is_sfr is set to true
+    FileLevelRestoreInfo file_level_restore_info = 18;
 
     message BackupObjectType {
         Type type = 1;
