@@ -4864,87 +4864,13 @@
       ],
       "default": "Invalid"
     },
-    "BackupInfoNamespaceResource": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "title": "Namespace name"
-        },
-        "status": {
-          "$ref": "#/definitions/BackupInfoNamespaceResourceStatusInfo",
-          "title": "Status information for this namespace"
-        },
-        "resource_types": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/NamespaceResourceResourceTypeInfo"
-          },
-          "title": "List of resource types in this namespace, grouped by resource type"
-        },
-        "metrics": {
-          "$ref": "#/definitions/BackupInfoNamespaceResourceMetrics",
-          "title": "Statistics for this namespace"
-        }
-      },
-      "title": "Message representing resources within a namespace with status, metrics, and resource type breakdown"
-    },
-    "BackupInfoNamespaceResourceMetrics": {
-      "type": "object",
-      "properties": {
-        "total_resources": {
-          "type": "integer",
-          "format": "int32",
-          "title": "Total number of resources in this namespace"
-        },
-        "total_volumes": {
-          "type": "integer",
-          "format": "int32",
-          "title": "Total number of volumes in this namespace"
-        },
-        "total_failed_resources": {
-          "type": "integer",
-          "format": "int32",
-          "title": "Total number of resources that failed in this namespace"
-        },
-        "total_failed_volumes": {
-          "type": "integer",
-          "format": "int32",
-          "title": "Total number of volumes that failed in this namespace"
-        }
-      },
-      "title": "Metrics containing namespace-level statistics for resources and volumes"
-    },
-    "BackupInfoNamespaceResourceStatusInfo": {
-      "type": "object",
-      "properties": {
-        "status": {
-          "$ref": "#/definitions/BackupInfoNamespaceResourceStatusInfoStatus"
-        },
-        "reason": {
-          "type": "string"
-        }
-      },
-      "title": "Status information for namespace-level operations"
-    },
-    "BackupInfoNamespaceResourceStatusInfoStatus": {
-      "type": "string",
-      "enum": [
-        "Invalid",
-        "InProgress",
-        "Success",
-        "Failed",
-        "PartialSuccess"
-      ],
-      "default": "Invalid"
-    },
     "BackupInfoNamespaceResources": {
       "type": "object",
       "properties": {
         "namespaces": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/BackupInfoNamespaceResource"
+            "$ref": "#/definitions/NamespaceResource"
           },
           "title": "List of namespace resources with their status, metrics, and resource type information"
         }
@@ -5522,20 +5448,6 @@
         },
         "resource_details": {
           "$ref": "#/definitions/BackupResourceObjectResourceContainer"
-        },
-        "available_resource_types": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "complete list of available resource types associated with backup"
-        },
-        "available_namespaces": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "complete list of available namespaces associated with backup"
         },
         "total_resource_count": {
           "type": "string",
@@ -7659,6 +7571,31 @@
         }
       }
     },
+    "NamespaceResource": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Namespace name"
+        },
+        "status": {
+          "$ref": "#/definitions/NamespaceResourceStatusInfo",
+          "title": "Status information for this namespace"
+        },
+        "resource_types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NamespaceResourceResourceTypeInfo"
+          },
+          "title": "List of resource types in this namespace, grouped by resource type"
+        },
+        "metrics": {
+          "$ref": "#/definitions/NamespaceResourceMetrics",
+          "title": "Statistics for this namespace"
+        }
+      },
+      "title": "Message representing resources within a namespace with status, metrics, and resource type breakdown"
+    },
     "NamespaceResourceChunkInfo": {
       "type": "object",
       "properties": {
@@ -7707,6 +7644,32 @@
       ],
       "default": "Invalid"
     },
+    "NamespaceResourceMetrics": {
+      "type": "object",
+      "properties": {
+        "total_resources": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of resources in this namespace"
+        },
+        "total_volumes": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of volumes in this namespace"
+        },
+        "total_failed_resources": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of resources that failed in this namespace"
+        },
+        "total_failed_volumes": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of volumes that failed in this namespace"
+        }
+      },
+      "title": "Metrics containing namespace-level statistics for resources and volumes"
+    },
     "NamespaceResourceResourceTypeInfo": {
       "type": "object",
       "properties": {
@@ -7743,6 +7706,29 @@
         }
       },
       "title": "Metrics containing resource type-level statistics"
+    },
+    "NamespaceResourceStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/NamespaceResourceStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "title": "Status information for namespace-level operations"
+    },
+    "NamespaceResourceStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "InProgress",
+        "Success",
+        "Failed",
+        "PartialSuccess"
+      ],
+      "default": "Invalid"
     },
     "ObjectRef": {
       "type": "object",
