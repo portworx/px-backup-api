@@ -1037,6 +1037,13 @@ message RestoreInfo {
     BackupObjectType backup_object_type = 24;
     // VirtualMachine Restore Options
     VirtualMachineRestoreOptions virtual_machine_restore_options = 25;
+    // Is true if restore is VirtualMachine file level restore
+    bool is_sfr = 27;
+    // File level restore info
+    FileLevelRestoreStatusInfo file_level_restore_info = 28;
+    // Filter criteria used for this restore (for audit/duplicate restore)
+    Filter filter = 29;
+    string target_namespace_prefix = 30;
 
     message RestoreResourceState {
         ResourceStatus restore_status = 1;
@@ -1104,8 +1111,6 @@ message RestoreInfo {
         bool skip_vm_restart = 2;
     }
 
-    // Filter criteria used for this restore (for audit/duplicate restore)
-    Filter filter = 26;
     
     message Filter {
         oneof resource_filter {
@@ -1114,7 +1119,35 @@ message RestoreInfo {
         }
     }
 
-    string target_namespace_prefix = 27;
+}
+
+message FileLevelRestoreInfo {
+    // Name of the virtualMachine to which file level restore needs to be performed
+    string virtual_machine_name = 1;
+    // PersistentVolumeClaim name. The Source volume from which files needs to be restored
+    string volume_name = 2;
+    // List of files to be restored from the virtualMachine volume
+    repeated RestoreFileInfo restore_files = 3;
+}
+
+message FileLevelRestoreStatusInfo {
+    string virtual_machine_name = 1;
+    string volume_name = 2;
+    repeated RestoreFileStatusInfo restore_files = 3;
+}
+
+message RestoreFileInfo {
+    // Source file path. Relative path to the file with in the selected volume
+    string source_path = 1;
+    // Destination File path. Absolute file path where the source file needs to be restored.
+    // Empty if restore to the same path as that of the source path
+    string destination_path = 2;
+    // True if source path is a directory path
+    bool is_dir = 3;
+}
+message RestoreFileStatusInfo {
+    RestoreFileInfo restore_file_info = 1 [ (gogoproto.embed) = true ];
+    RestoreInfo.StatusInfo status = 2;
 }
 
 // Message for Restore object which will be stored in Datastore.
@@ -2960,6 +2993,7 @@ message RestoreCreateRequest {
     string cluster = 3;
     // mapping of the namespaces from the backup to which restore should be done
     // should be used only when restore is done without using filter
+    // set namespace_mapping key = value if is_sfr is set to true
     map<string, string> namespace_mapping = 4;
     // replace policy to use if the resource already exists
     ReplacePolicy.Type replace_policy = 5;
@@ -2985,6 +3019,14 @@ message RestoreCreateRequest {
     Filter filter = 15;
     // VirtualMachine Restore Options
     VirtualMachineRestoreOptions virtual_machine_restore_options = 16;
+    // Set it to true if restore is for virtualMachine file level restore
+    bool is_sfr = 17;
+    // File level restore info details if is_sfr is set to true
+    FileLevelRestoreInfo file_level_restore_info = 18;
+    // target_namespace_prefix will be used to prefix all the target namespaces created during restore using filter
+    // This will be ignored when restore is done without using filter
+    string target_namespace_prefix = 19;
+
     // Filter to apply on resources
     message Filter {
         // resource filter
@@ -3009,9 +3051,6 @@ message RestoreCreateRequest {
         // Skip VM restart during virtualMachine restore
         bool skip_vm_restart = 2;
     }
-    // target_namespace_prefix will be used to prefix all the target namespaces created during restore using filter
-    // This will be ignored when restore is done without using filter
-    string target_namespace_prefix = 17;
 }
 
 // Define RestoreCreateResponse struct
