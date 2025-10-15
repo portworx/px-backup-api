@@ -4216,7 +4216,7 @@
           },
           {
             "name": "enumerate_options.volume_types",
-            "description": "Add volume type filtering support for VRO list API.",
+            "description": "Add volume type filtering support for VRO list API - excluded from Swagger UI. Volume type filtering - not supported in Swagger UI due to repeated enum limitations",
             "in": "query",
             "required": false,
             "type": "array",
@@ -9207,7 +9207,9 @@
           "items": {
             "$ref": "#/definitions/VolumeResourceOnlyPolicyInfoVolumeType"
           },
-          "title": "Add volume type filtering support for VRO list API"
+          "description": "Volume type filtering - not supported in Swagger UI due to repeated enum limitations",
+          "title": "Add volume type filtering support for VRO list API - excluded from Swagger UI",
+          "readOnly": true
         }
       }
     },

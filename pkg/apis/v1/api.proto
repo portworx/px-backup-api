@@ -957,8 +957,13 @@ message VolumeResourceOnlyPolicyEnumerateOptions {
     CommonEnumerateOptions generic_enumerate_options = 1;
     // Add sorting support for VRO list API
     SortOption sort_option = 2;
-    // Add volume type filtering support for VRO list API
-    repeated VolumeResourceOnlyPolicyInfo.VolumeType volume_types = 3;
+    // Add volume type filtering support for VRO list API - excluded from Swagger UI
+    repeated VolumeResourceOnlyPolicyInfo.VolumeType volume_types = 3 [
+        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+            description: "Volume type filtering - not supported in Swagger UI due to repeated enum limitations"
+            read_only: true
+        }
+    ];
 }
 message EnumerateOptions {
     // label selectors for the object for filtering
