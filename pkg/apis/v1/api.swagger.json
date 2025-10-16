@@ -115,14 +115,14 @@
             "type": "string"
           },
           {
-            "name": "filter.namespace_name_pattern",
+            "name": "filter.namespace_filter.namespace_name_pattern",
             "description": "Substring or regex pattern to match namespace name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex).",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
-            "name": "filter.include_namespaces.namespaces",
+            "name": "filter.namespace_filter.include_namespaces.namespaces",
             "in": "query",
             "required": false,
             "type": "array",
@@ -132,7 +132,7 @@
             "collectionFormat": "multi"
           },
           {
-            "name": "filter.exclude_namespaces.namespaces",
+            "name": "filter.namespace_filter.exclude_namespaces.namespaces",
             "in": "query",
             "required": false,
             "type": "array",
@@ -142,7 +142,7 @@
             "collectionFormat": "multi"
           },
           {
-            "name": "filter.gvks",
+            "name": "filter.namespace_filter.gvks",
             "description": "gvks represents a list of Kubernetes Group/Version/Kind (GVK) identifiers.\nEach GVK follows the format \"group/version/kind\" (e.g., \"apps/v1/Deployment\").\nThis field is used to filter resources based on their GVK.",
             "in": "query",
             "required": false,
@@ -153,14 +153,14 @@
             "collectionFormat": "multi"
           },
           {
-            "name": "filter.resource_name_pattern",
+            "name": "filter.namespace_filter.resource_name_pattern",
             "description": "Substring or regex pattern to match resource name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex).",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
-            "name": "filter.vm_name_pattern",
+            "name": "filter.virtual_machine_filter.vm_name_pattern",
             "description": "Substring or regex pattern to match virtual machine name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex).",
             "in": "query",
             "required": false,
@@ -5278,32 +5278,11 @@
     "BackupResourceDetailGetRequestFilter": {
       "type": "object",
       "properties": {
-        "namespace_name_pattern": {
-          "type": "string",
-          "title": "Substring or regex pattern to match namespace name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        "namespace_filter": {
+          "$ref": "#/definitions/NamespaceFilter"
         },
-        "include_namespaces": {
-          "$ref": "#/definitions/NamespaceList",
-          "title": "List of namespace names to include for filtering"
-        },
-        "exclude_namespaces": {
-          "$ref": "#/definitions/NamespaceList",
-          "title": "Filter by exclude namespaces for filtering"
-        },
-        "gvks": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "gvks represents a list of Kubernetes Group/Version/Kind (GVK) identifiers.\nEach GVK follows the format \"group/version/kind\" (e.g., \"apps/v1/Deployment\").\nThis field is used to filter resources based on their GVK."
-        },
-        "resource_name_pattern": {
-          "type": "string",
-          "title": "Substring or regex pattern to match resource name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
-        },
-        "vm_name_pattern": {
-          "type": "string",
-          "title": "Substring or regex pattern to match virtual machine name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        "virtual_machine_filter": {
+          "$ref": "#/definitions/VirtualMachineFilter"
         },
         "status": {
           "type": "array",
@@ -7560,6 +7539,34 @@
         }
       }
     },
+    "NamespaceFilter": {
+      "type": "object",
+      "properties": {
+        "namespace_name_pattern": {
+          "type": "string",
+          "title": "Substring or regex pattern to match namespace name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        },
+        "include_namespaces": {
+          "$ref": "#/definitions/NamespaceList",
+          "title": "List of namespace names to include for filtering"
+        },
+        "exclude_namespaces": {
+          "$ref": "#/definitions/NamespaceList",
+          "title": "Filter by exclude namespaces for filtering"
+        },
+        "gvks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "gvks represents a list of Kubernetes Group/Version/Kind (GVK) identifiers.\nEach GVK follows the format \"group/version/kind\" (e.g., \"apps/v1/Deployment\").\nThis field is used to filter resources based on their GVK."
+        },
+        "resource_name_pattern": {
+          "type": "string",
+          "title": "Substring or regex pattern to match resource name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        }
+      }
+    },
     "NamespaceList": {
       "type": "object",
       "properties": {
@@ -8302,32 +8309,28 @@
     "RestoreCreateRequestFilter": {
       "type": "object",
       "properties": {
-        "namespace_name_pattern": {
-          "type": "string",
-          "title": "Substring or regex pattern to match namespace name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        "namespace_filter": {
+          "$ref": "#/definitions/NamespaceFilter"
         },
-        "include_namespaces": {
-          "$ref": "#/definitions/NamespaceList",
-          "title": "List of namespace names to include for filtering"
+        "virtual_machine_filter": {
+          "$ref": "#/definitions/VirtualMachineFilter"
         },
-        "exclude_namespaces": {
-          "$ref": "#/definitions/NamespaceList",
-          "title": "Filter by exclude namespaces for filtering"
-        },
-        "gvks": {
+        "status": {
           "type": "array",
           "items": {
             "type": "string"
           },
-          "description": "gvks represents a list of Kubernetes Group/Version/Kind (GVK) identifiers.\nEach GVK follows the format \"group/version/kind\" (e.g., \"apps/v1/Deployment\").\nThis field is used to filter resources based on their GVK."
+          "title": "filter based on the status.\nNeed to pass the string value of the status field of resources\nFor example, {\"Success\", \"Failed\"}\ndefault will be {\"Success\"}, when no value is passed"
         },
-        "resource_name_pattern": {
+        "max_objects": {
           "type": "string",
-          "title": "Substring or regex pattern to match resource name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+          "format": "uint64",
+          "title": "max objects to fetch"
         },
-        "vm_name_pattern": {
+        "object_index": {
           "type": "string",
-          "title": "Substring or regex pattern to match virtual machine name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+          "format": "uint64",
+          "title": "object index from which to start fetching"
         }
       },
       "title": "Filter to apply on resources"
@@ -9368,6 +9371,15 @@
         },
         "build_date": {
           "type": "string"
+        }
+      }
+    },
+    "VirtualMachineFilter": {
+      "type": "object",
+      "properties": {
+        "vm_name_pattern": {
+          "type": "string",
+          "title": "Substring or regex pattern to match virtual machine name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
         }
       }
     },
