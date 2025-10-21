@@ -857,7 +857,7 @@ message NamespaceResource {
 
     // ChunkInfo represents a processing unit containing a subset of resources of the same type in a namespace
     message ChunkInfo {
-        int32 id = 1;
+        string id = 1;
         // Processing status of this specific chunk
         StatusInfo status = 2;
         // List of resource names contained in this chunk
