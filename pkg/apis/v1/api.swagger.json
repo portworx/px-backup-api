@@ -122,7 +122,8 @@
             "type": "string"
           },
           {
-            "name": "filter.namespace_filter.include_namespaces.namespaces",
+            "name": "filter.namespace_filter.include_namespaces",
+            "description": "List of namespace names to include for filtering.",
             "in": "query",
             "required": false,
             "type": "array",
@@ -132,7 +133,8 @@
             "collectionFormat": "multi"
           },
           {
-            "name": "filter.namespace_filter.exclude_namespaces.namespaces",
+            "name": "filter.namespace_filter.exclude_namespaces",
+            "description": "Filter by exclude namespaces for filtering.",
             "in": "query",
             "required": false,
             "type": "array",
@@ -7761,11 +7763,17 @@
           "title": "Substring or regex pattern to match namespace name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
         },
         "include_namespaces": {
-          "$ref": "#/definitions/NamespaceList",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "title": "List of namespace names to include for filtering"
         },
         "exclude_namespaces": {
-          "$ref": "#/definitions/NamespaceList",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "title": "Filter by exclude namespaces for filtering"
         },
         "gvks": {
@@ -7778,17 +7786,6 @@
         "resource_name_pattern": {
           "type": "string",
           "title": "Substring or regex pattern to match resource name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
-        }
-      }
-    },
-    "NamespaceList": {
-      "type": "object",
-      "properties": {
-        "namespaces": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
         }
       }
     },

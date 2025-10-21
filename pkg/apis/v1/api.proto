@@ -2669,19 +2669,13 @@ message BackupRetryResponse {
 // Response message for backup share update request
 message BackupShareUpdateResponse {}
 
-message NamespaceList {
-  repeated string namespaces = 1;
-}
-
 message NamespaceFilter {
     // Substring or regex pattern to match namespace name and include (e.g. "*" for All, "pxb-" or any valid regex)
     string namespace_name_pattern = 1;
-    oneof namespace_list {
-        // List of namespace names to include for filtering
-        NamespaceList include_namespaces = 2;
-        // Filter by exclude namespaces for filtering
-        NamespaceList exclude_namespaces = 3;
-    }
+    // List of namespace names to include for filtering
+    repeated string include_namespaces = 2;
+    // Filter by exclude namespaces for filtering
+    repeated string exclude_namespaces = 3;
     // gvks represents a list of Kubernetes Group/Version/Kind (GVK) identifiers.
     // Each GVK follows the format "group/version/kind" (e.g., "apps/v1/Deployment").
     // This field is used to filter resources based on their GVK.
