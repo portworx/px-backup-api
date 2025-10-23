@@ -144,6 +144,28 @@
             "collectionFormat": "multi"
           },
           {
+            "name": "filter.namespace_filter.include_resources",
+            "description": "List of resource names to include for filtering.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "filter.namespace_filter.exclude_resources",
+            "description": "List of resource names to exclude for filtering.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
             "name": "filter.namespace_filter.gvks",
             "description": "gvks represents a list of Kubernetes Group/Version/Kind (GVK) identifiers.\nEach GVK follows the format \"group/version/kind\" (e.g., \"apps/v1/Deployment\").\nThis field is used to filter resources based on their GVK.",
             "in": "query",
@@ -5571,7 +5593,8 @@
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "title": "List of namespaces associated with the backup"
         },
         "volumes": {
           "type": "array",
@@ -5592,6 +5615,13 @@
           "type": "string",
           "format": "uint64",
           "title": "Total count of resources matching filter"
+        },
+        "filtered_namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "list of filtered namespaces"
         },
         "resources_sync_status_info": {
           "$ref": "#/definitions/BackupResourceObjectSyncStatusInfo",
@@ -7778,6 +7808,20 @@
             "type": "string"
           },
           "title": "Filter by exclude namespaces for filtering"
+        },
+        "include_resources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of resource names to include for filtering"
+        },
+        "exclude_resources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of resource names to exclude for filtering"
         },
         "gvks": {
           "type": "array",
