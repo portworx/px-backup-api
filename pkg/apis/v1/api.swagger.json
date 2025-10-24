@@ -144,28 +144,6 @@
             "collectionFormat": "multi"
           },
           {
-            "name": "filter.namespace_filter.include_resources",
-            "description": "List of resource names to include for filtering.",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
-          },
-          {
-            "name": "filter.namespace_filter.exclude_resources",
-            "description": "List of resource names to exclude for filtering.",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
-          },
-          {
             "name": "filter.namespace_filter.gvks",
             "description": "gvks represents a list of Kubernetes Group/Version/Kind (GVK) identifiers.\nEach GVK follows the format \"group/version/kind\" (e.g., \"apps/v1/Deployment\").\nThis field is used to filter resources based on their GVK.",
             "in": "query",
@@ -7809,16 +7787,16 @@
         "include_resources": {
           "type": "array",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/ResourceInfo"
           },
-          "title": "List of resource names to include for filtering"
+          "title": "List of resources to include for filtering"
         },
         "exclude_resources": {
           "type": "array",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/ResourceInfo"
           },
-          "title": "List of resource names to exclude for filtering"
+          "title": "List of resources to exclude for filtering"
         },
         "gvks": {
           "type": "array",
