@@ -2677,10 +2677,10 @@ message NamespaceFilter {
     repeated string include_namespaces = 2;
     // Filter by exclude namespaces for filtering
     repeated string exclude_namespaces = 3;
-    // List of resource names to include for filtering
-    repeated string include_resources = 4;
-    // List of resource names to exclude for filtering
-    repeated string exclude_resources = 5;
+    // List of resources to include for filtering
+    repeated ResourceInfo include_resources = 4;
+    // List of resources to exclude for filtering
+    repeated ResourceInfo exclude_resources = 5;
     // gvks represents a list of Kubernetes Group/Version/Kind (GVK) identifiers.
     // Each GVK follows the format "group/version/kind" (e.g., "apps/v1/Deployment").
     // This field is used to filter resources based on their GVK.
