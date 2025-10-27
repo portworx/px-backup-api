@@ -75,8 +75,8 @@
         ]
       }
     },
-    "/v1/backup/getbackupresourcedetails/{org_id}/{name}/{uid}": {
-      "get": {
+    "/v1/backup/getbackupresourcedetails": {
+      "post": {
         "summary": "For VirtualMachine backup object type, it returns the details of VirtualMachine and its resources mapped under it",
         "operationId": "Backup_GetBackupResourceDetails",
         "responses": {
@@ -95,119 +95,12 @@
         },
         "parameters": [
           {
-            "name": "org_id",
-            "in": "path",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "description": "Backup name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "uid",
-            "description": "Backup uid",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "filter.namespace_filter.namespace_name_pattern",
-            "description": "Substring or regex pattern to match namespace name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex).",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "filter.namespace_filter.include_namespaces",
-            "description": "List of namespace names to include for filtering.",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
-          },
-          {
-            "name": "filter.namespace_filter.exclude_namespaces",
-            "description": "Filter by exclude namespaces for filtering.",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
-          },
-          {
-            "name": "filter.namespace_filter.gvks",
-            "description": "gvks represents a list of Kubernetes Group/Version/Kind (GVK) identifiers.\nEach GVK follows the format \"group/version/kind\" (e.g., \"apps/v1/Deployment\").\nThis field is used to filter resources based on their GVK.",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
-          },
-          {
-            "name": "filter.namespace_filter.resource_name_pattern",
-            "description": "Substring or regex pattern to match resource name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex).",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "filter.virtual_machine_filter.vm_name_pattern",
-            "description": "Substring or regex pattern to match virtual machine name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex).",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "filter.status",
-            "description": "filter based on the status.\nNeed to pass the string value of the status field of resources\nFor example, {\"Success\", \"Failed\"}\ndefault will be {\"Success\"}, when no value is passed.",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
-          },
-          {
-            "name": "filter.max_objects",
-            "description": "max objects to fetch.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "filter.object_index",
-            "description": "object index from which to start fetching.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "force_resync",
-            "description": "force_resync has to be set to resync the failed sync process.",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "sync_namespaces_only",
-            "description": "sync_namespaces_only when set to true will sync only the namespaces.",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
+            "schema": {
+              "$ref": "#/definitions/BackupResourceDetailGetRequest"
+            }
           }
         ],
         "tags": [
@@ -5276,6 +5169,35 @@
       ],
       "default": "Invalid",
       "description": " - NS: Represents backup schedules scoped to Kubernetes namespaces (non-VM workloads).\nTypically used for application-level backups.\n - VM: Represents backup schedules scoped to VirtualMachine workloads.\nUsed for VM-based backup scenarios.\n - All: Represents both NS and VM backup schedule types. Used when an operation should apply to all types."
+    },
+    "BackupResourceDetailGetRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "title": "Backup name"
+        },
+        "uid": {
+          "type": "string",
+          "title": "Backup uid"
+        },
+        "filter": {
+          "$ref": "#/definitions/BackupResourceDetailGetRequestFilter",
+          "title": "Filter options"
+        },
+        "force_resync": {
+          "type": "boolean",
+          "title": "force_resync has to be set to resync the failed sync process"
+        },
+        "sync_namespaces_only": {
+          "type": "boolean",
+          "title": "sync_namespaces_only when set to true will sync only the namespaces"
+        }
+      },
+      "title": "Request message to detailed backup resources"
     },
     "BackupResourceDetailGetRequestFilter": {
       "type": "object",
