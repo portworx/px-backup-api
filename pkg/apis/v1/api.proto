@@ -2493,7 +2493,8 @@ service Backup {
     // For VirtualMachine backup object type, it returns the details of VirtualMachine and its resources mapped under it
     rpc GetBackupResourceDetails(BackupResourceDetailGetRequest) returns (BackupResourceDetailGetResponse) {
         option (google.api.http) = {
-            get : "/v1/backup/getbackupresourcedetails/{org_id}/{name}"
+            post: "/v1/backup/getbackupresourcedetails"
+            body: "*"
         };
     }
     // RetryBackupResources retries backup of a failed or partial success backup
