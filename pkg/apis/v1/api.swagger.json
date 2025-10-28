@@ -7956,6 +7956,14 @@
         "backup_object_type": {
           "$ref": "#/definitions/RestoreCreateRequestBackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
+        },
+        "skip_mac_masking": {
+          "type": "boolean",
+          "title": "Skip mac address masking for VirtualMachine Backup Object type during restore"
+        },
+        "skip_vm_restart": {
+          "type": "boolean",
+          "title": "Skip VM restart for VirtualMachine Backup Object type after restore"
         }
       },
       "title": "Define RestoreCreateRequest struct"
@@ -8127,6 +8135,14 @@
         "backup_object_type": {
           "$ref": "#/definitions/RestoreInfoBackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
+        },
+        "skip_mac_masking": {
+          "type": "boolean",
+          "title": "Skip mac address masking for VirtualMachine Backup Object type during restore"
+        },
+        "skip_vm_restart": {
+          "type": "boolean",
+          "title": "Skip VM restart for VirtualMachine Backup Object type after restore"
         }
       },
       "title": "Message for restore info"

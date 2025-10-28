@@ -840,6 +840,10 @@ message RestoreInfo {
     ObjectRef cluster_ref = 23;
     // backup object type is all namespace or virtualMachine specific backup
     BackupObjectType backup_object_type = 24;
+    // Skip mac address masking for VirtualMachine Backup Object type during restore
+    bool skip_mac_masking = 25;
+    // Skip VM restart for VirtualMachine Backup Object type after restore
+    bool skip_vm_restart = 26;
 
     message RestoreResourceState {
         ResourceStatus restore_status = 1;
@@ -2684,6 +2688,10 @@ message RestoreCreateRequest {
     ObjectRef cluster_ref = 12;
     // backup object type is all namespace or virtualMachine specific backup
     BackupObjectType backup_object_type = 13;
+    // Skip mac address masking for VirtualMachine Backup Object type during restore
+    bool skip_mac_masking = 14;
+    // Skip VM restart for VirtualMachine Backup Object type after restore
+    bool skip_vm_restart = 15;
 
     message BackupObjectType {
         Type type = 1;
