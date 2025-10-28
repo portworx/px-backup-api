@@ -972,6 +972,8 @@ message RestoreInfo {
     ObjectRef cluster_ref = 23;
     // backup object type is all namespace or virtualMachine specific backup
     BackupObjectType backup_object_type = 24;
+    // VirtualMachine Restore Options
+    VirtualMachineRestoreOptions virtual_machine_restore_options = 25;
 
     message RestoreResourceState {
         ResourceStatus restore_status = 1;
@@ -1030,6 +1032,13 @@ message RestoreInfo {
             All = 1; // for All application backup
             VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
         }
+    }
+
+    message VirtualMachineRestoreOptions {
+        // Skip mac address masking while restoring VirtualMachines
+        bool skip_mac_masking = 1;
+        // Skip VM restart during virtualMachine restore
+        bool skip_vm_restart = 2;
     }
 }
 
@@ -2906,6 +2915,8 @@ message RestoreCreateRequest {
     repeated ResourceInfo exclude_resources = 14;
     // Filter options
     Filter filter = 15;
+    // VirtualMachine Restore Options
+    VirtualMachineRestoreOptions virtual_machine_restore_options = 16;
     // Filter to apply on resources
     message Filter {
         // resource filter
@@ -2932,6 +2943,13 @@ message RestoreCreateRequest {
              VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
          }
      }
+
+    message VirtualMachineRestoreOptions {
+        // Skip mac address masking while restoring VirtualMachines
+        bool skip_mac_masking = 1;
+        // Skip VM restart during virtualMachine restore
+        bool skip_vm_restart = 2;
+    }
 }
 
 // Define RestoreCreateResponse struct
