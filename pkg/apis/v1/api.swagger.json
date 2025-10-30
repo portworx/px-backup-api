@@ -4847,7 +4847,7 @@
           "items": {
             "$ref": "#/definitions/VirtualMachineResourceInfo"
           },
-          "title": "resourcesInfo for backupObjectType VirtualMachine\nDEPRECATED: Use resource_representation instead"
+          "description": "resourcesInfo for backupObjectType VirtualMachine\nNOTE: Do not use this field as it will be deprecated in future. Use resource_representation instead."
         },
         "missing_namespaces": {
           "type": "array",
