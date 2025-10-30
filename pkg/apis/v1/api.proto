@@ -78,6 +78,8 @@ message ClusterInfo {
    // delete_all_cluster_backups indicates whether all the backups(created by cluster owner, super admins and all the shared users)
    // on the cluster need to be deleted or retained. This flag can be set only by SuperAdmin while deleting the cluster
     bool delete_all_cluster_backups = 22;
+    // time_zone is the time zone of the cluster
+    string time_zone = 23;
 
 
 
@@ -259,6 +261,30 @@ message CloudCredentialObject {
     CloudCredentialInfo cloud_credential_info = 2;
 }
 
+message VolumeResourceOnlyPolicyInfo {
+  enum VolumeType {
+    Invalid = 0;
+    Portworx = 1;
+    Csi = 2;
+    Nfs = 3;
+  }
+  // List of volumeType to be skipped for backing up the volume data
+  repeated VolumeType volume_types = 1;
+  // List of CSI drivers that need to used to skip the backing up of volume data
+  // This parameter is valid only when the volume type is set with csi as one of the parameter
+  repeated string csi_drivers = 2;
+  // List of NFS servers that need to used to skip the backing up of volume data in the case of NFS volumes
+  // This parameter is valid only when the volume type is set with nfs as one of the parameter
+  repeated string nfs_servers = 3;
+}
+
+
+message VolumeResourceOnlyPolicyObject {
+    Metadata metadata = 1
+        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    VolumeResourceOnlyPolicyInfo volume_resource_only_policy_info = 2;
+}
+
 message SchedulePolicyInfo {
     IntervalPolicy interval = 1;
     DailyPolicy daily = 2;
@@ -389,6 +415,12 @@ message BackupScheduleInfo {
     bool keep_cr_status = 32;
     // older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter
     string advanced_resource_label_selector = 33;
+    // reference to volumeResourceOnly policy object
+    ObjectRef volume_resource_only_policy_ref = 34;
+    // Last remark made during update operations
+    Remark remark = 35;
+    // Namespaces that were unavailable in the cluster at the time of the last scheduled backup.
+    repeated string missing_namespaces = 36;
 
 
     message BackupType {
@@ -429,6 +461,8 @@ message BackupScheduleInfo {
             Captured = 7;
             PartialSuccess = 8;
             DeletePending = 9;
+            Suspending = 10;
+            Resuming = 11;
         }
     }
 
@@ -527,16 +561,23 @@ message ResourceInfo {
     string version = 5;
 }
 
+// ResourcesInfo used for VM backups
+message VirtualMachineResourceInfo {
+    ResourceInfo resource_info = 1 [ (gogoproto.embed) = true ];
+    repeated string virtual_machine_names = 2;
+}
+
 message BackupInfo {
     // Name of BackupLocation, deprecated. Not to be used.
     string backup_location = 1;
     // Name of Cluster
     string cluster = 2;
-    // Namespaces to backup. Only an admin can provide multiple namespaces
+    // Namespaces to backup. Only an admin can provide multiple namespaces. This will be updated with the namespaces present at the start of the backup cycle.
     repeated string namespaces = 3;
     // Label selectors to choose resources
     map<string, string> label_selectors = 4;
     StatusInfo status = 5;
+    // resourceInfo for backupObjectType Namespace
     repeated ResourceInfo resources = 6;
     repeated Volume volumes = 7;
     string backup_path = 8;
@@ -598,7 +639,26 @@ message BackupInfo {
     bool isBackupReady_for_PXDLocalSnapshotRestore = 44;
     // older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter
     string advanced_resource_label_selector = 45;
-
+    // schedule_policy_ref is used to get the schedule policy details for the backup
+    ObjectRef schedule_policy_ref = 46;
+    repeated VirtualMachineInfo virtual_machines = 47;
+    int64  virtual_machines_total_count = 48;
+    int64  virtual_machines_failed_count = 49;
+    // this will store the reference of the parent backup in case of retry backup
+    ObjectRef retry_parent = 50;
+    // VirtualMachine Info
+    message VirtualMachineInfo {
+        string name = 1;
+        string namespace = 2;
+        string os_name = 3;
+        StatusInfo status = 5;
+    }
+    // reference to volumeResourceOnly policy object
+    ObjectRef volume_resource_only_policy_ref = 51;
+    // resourcesInfo for backupObjectType VirtualMachine
+    repeated VirtualMachineResourceInfo virtual_machine_resources = 52;
+   // to capture namespaces that were missing when the backup was initiated
+    repeated string missing_namespaces = 53;
     message BackupType {
         Type type = 1;
 
@@ -634,12 +694,29 @@ message BackupInfo {
         // As part of restrictive PSA setting, if an UID or GID is used during backup then same value should be used during restore (optional)
         JobSecurityContext job_security_context = 15;
         string virtual_machine_name = 16;
+        // Indicate backup mode - full/incr (for pxd volumes) or not supported (for other volume drivers)
+        BackupMode backup_mode = 17;
 
         message JobSecurityContext {
             int64 runAsUser = 1;
             int64 runAsGroup = 2;
         }
+
+        message BackupMode {
+            Type type = 1;
+
+            enum Type {
+                Invalid = 0;
+                // for non-pxd volumes
+                NotSupported = 1;
+                // for pxd volumes
+                Full = 2;
+                // for pxd volumes
+                Incremental = 3;
+            }
+        }
     }
+
 
     // Message for maintaining status of the object.
     message StatusInfo {
@@ -658,6 +735,7 @@ message BackupInfo {
             PartialSuccess = 8;
             DeletePending = 9;
             CloudBackupMissing = 10;
+
         }
     }
 
@@ -678,7 +756,6 @@ message BackupInfo {
             VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
         }
     }
-
 
 }
 
@@ -846,6 +923,39 @@ message TimeRange {
     google.protobuf.Timestamp end_time = 2;
 }
 
+message SortOption {
+    // field by which sorting will performed
+    message SortByType {
+        enum Type {
+            Invalid = 0;
+            CreationTimestamp = 1;
+            Name = 2;
+            ClusterName = 3;
+            Size = 4;
+            RestoreBackupName = 5;
+        }
+        // Name of the field by which sort to be performed
+        Type type = 1;
+    }
+    // Order of sorting
+    message SortOrderType {
+        // Sorting order type
+        enum Type {
+            Invalid = 0;
+            Ascending = 1;
+            Descending = -1;
+        }
+        // Order of sorting
+        Type type = 1;
+    }
+    SortByType sortBy = 1;
+    SortOrderType sortOrder = 2;
+}
+
+message VolumeResourceOnlyPolicyEnumerateOptions {
+    CommonEnumerateOptions generic_enumerate_options = 1;
+   
+}
 message EnumerateOptions {
     // label selectors for the object for filtering
     map<string, string> labels = 1;
@@ -885,8 +995,118 @@ message EnumerateOptions {
     repeated ObjectRef schedule_policy_ref = 12;
     // filter to use backup schedule policy name and uid. Any object that contains the filter will be returned.
     repeated ObjectRef backup_schedule_ref = 13;
-
+    // Sorting backup objects based on the field and order
+    // If the field is not set, default value will be "CreationTimestamp"
+    // If the order is not set, default value will be "descending"
+    SortOption sort_option = 14;
 }
+
+service VolumeResourceOnlyPolicy {
+    // Creates new VolumeResourceOnly Policy.
+    rpc Create(VolumeResourceOnlyPolicyCreateRequest)
+        returns (VolumeResourceOnlyPolicyCreateResponse) {
+        option (google.api.http) = {
+            post : "/v1/volumeresourceonlypolicy"
+            body : "*"
+        };
+    }
+
+    // Update given volumeResourceOnly policy details
+    rpc Update(VolumeResourceOnlyPolicyUpdateRequest)
+        returns (VolumeResourceOnlyPolicyUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/volumeresourceonlypolicy"
+            body : "*"
+        };
+    }
+    // Enumerate returns a list of volumeResourceOnly policy
+    rpc Enumerate(VolumeResourceOnlyPolicyEnumerateRequest)
+        returns (VolumeResourceOnlyPolicyEnumerateResponse) {
+        option (google.api.http) = {
+	        get : "/v1/volumeresourceonlypolicy/{org_id}"
+	    };
+    }
+    // Inspect returns detail information about a specified volumeResourceOnly policy
+    rpc Inspect(VolumeResourceOnlyPolicyInspectRequest)
+        returns (VolumeResourceOnlyPolicyInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/volumeresourceonlypolicy/{org_id}/{name}"
+        };
+    }
+
+    // Delete removes a volumeResourceOnly policy
+    rpc Delete(VolumeResourceOnlyPolicyDeleteRequest)
+        returns (VolumeResourceOnlyPolicyDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/volumeresourceonlypolicy/{org_id}/{name}"
+        };
+    }
+    // UpdateOwnership updates ownership of existing object
+    rpc UpdateOwnership(VolumeResourceOnlyPolicyOwnershipUpdateRequest)
+        returns (VolumeResourceOnlyPolicyOwnershipUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/volumeresourceonlypolicy/updateownership"
+            body : "*"
+        };
+    }
+}
+
+// Define VolumeResourceOnlyPolicyCreateRequest struct
+message VolumeResourceOnlyPolicyCreateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    VolumeResourceOnlyPolicyInfo volume_resource_only_policy = 2;
+}
+
+// Define VolumeResourceOnlyPolicyCreateResponse struct
+message VolumeResourceOnlyPolicyCreateResponse {
+    VolumeResourceOnlyPolicyObject volume_resource_only_policy = 1;
+}
+// Define VolumeResourceOnlyPolicyUpdateRequest struct
+message VolumeResourceOnlyPolicyUpdateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    VolumeResourceOnlyPolicyInfo volume_resource_only_policy = 2;
+}
+// Define VolumeResourceOnlyPolicyUpdateResponse struct
+message VolumeResourceOnlyPolicyUpdateResponse {}
+// Define VolumeResourceOnlyPolicyEnumerateRequest struct
+message VolumeResourceOnlyPolicyEnumerateRequest {
+    string org_id = 1;
+    // label selectors for the object for filtering
+    map<string, string> labels = 2;
+    // Optional arguments for enumeration
+    VolumeResourceOnlyPolicyEnumerateOptions enumerate_options = 3;
+}
+// Define VolumeResourceOnlyPolicyEnumerateResponse struct
+message VolumeResourceOnlyPolicyEnumerateResponse {
+    repeated VolumeResourceOnlyPolicyObject volume_resource_only_policies = 1;
+    uint64 total_count = 2;
+    bool complete = 3;
+}
+// Define VolumeResourceOnlyPolicyInspectRequest struct
+message VolumeResourceOnlyPolicyInspectRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+// Define VolumeResourceOnlyPolicyInspectResponse struct
+message VolumeResourceOnlyPolicyInspectResponse {
+	VolumeResourceOnlyPolicyObject volume_resource_only_policy = 1;
+}
+// Define VolumeResourceOnlyPolicyDeleteRequest struct
+message VolumeResourceOnlyPolicyDeleteRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+// Define VolumeResourceOnlyPolicyDeleteResponse struct
+message VolumeResourceOnlyPolicyDeleteResponse {}
+message VolumeResourceOnlyPolicyOwnershipUpdateRequest {
+    string org_id = 1;
+    string name = 2;
+    Ownership ownership = 3;
+    string uid = 4;
+}
+message VolumeResourceOnlyPolicyOwnershipUpdateResponse {}
 
 service SchedulePolicy {
     // Creates new schedule policy.
@@ -919,7 +1139,7 @@ service SchedulePolicy {
     rpc Inspect(SchedulePolicyInspectRequest)
         returns (SchedulePolicyInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/schedulepolicy/{org_id}/{name}/{uid}"
+            get : "/v1/schedulepolicy/{org_id}/{name}"
         };
     }
 
@@ -927,7 +1147,7 @@ service SchedulePolicy {
     rpc Delete(SchedulePolicyDeleteRequest)
         returns (SchedulePolicyDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/schedulepolicy/{org_id}/{name}/{uid}"
+            delete : "/v1/schedulepolicy/{org_id}/{name}"
         };
     }
 
@@ -1047,7 +1267,7 @@ service BackupSchedule {
     rpc Delete(BackupScheduleDeleteRequest)
         returns (BackupScheduleDeleteResponse) {
         option (google.api.http) = {
-            delete: "/v1/backupschedule/{org_id}/{name}/{uid}"
+            delete: "/v1/backupschedule/{org_id}/{name}"
             additional_bindings {
                 post: "/v1/backupschedule/{org_id}/delete"
                 body: "*"
@@ -1103,6 +1323,8 @@ message BackupScheduleCreateRequest {
     bool keep_cr_status = 26;
     // older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter
     string advanced_resource_label_selector = 27;
+    // reference to volumeResourceOnly policy object
+    ObjectRef volume_resource_only_policy_ref = 28;
 
     enum BackupType {
         Invalid = 0;
@@ -1163,17 +1385,28 @@ message BackupScheduleUpdateRequest {
     BackupObjectType backup_object_type = 21;
     // multiple policy reference for filtering
     repeated ObjectRef policy_ref = 22;
-    // multiple name + uid for excluding, Wildcard (* or prefix) must be used in identifiers to use this filter
+    // List of exact backup schedules to exclude (name + UID required).
     repeated ObjectRef exclude_objects = 23;
-
-    message BackupObjectType {
-        Type type = 1;
-        enum Type {
-            Invalid = 0;
-            All = 1; // for All application backup based on namespace
-            VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
-        }
-    }
+    // List of exact backup schedules to include (name + UID required).
+    repeated ObjectRef include_objects = 24;
+    // Substring or regex pattern to match backup schedules and include (e.g. "*" for All, "pxb-" or any valid regex)
+    // Cannot be used with include_objects.
+    string include_filter = 25;
+    // Substring or regex pattern to match backup schedules and exclude (e.g. "*" for All, "pxb-" or any valid regex)
+    // Cannot be used with exclude_objects.
+    string exclude_filter = 26;
+    // option to provide clusterRef to suspend/resume the backupschedule from cluster
+    ClusterScope cluster_scope = 27; 
+    // reference to volumeResourceOnly policy object
+    ObjectRef volume_resource_only_policy_ref = 28;
+    // User remarks for this update operation
+    string remark = 29;
+    // bulk_uid_check_relaxation - This flag needs to be set to relax the UID check for bulk update operations.
+    // In a bulk operation, the user will pass multiple filter options to select a list of BackupSchedule objects.
+    // For example, the user may send a schedulePolicyRef object to filter BackupSchedules that use that SchedulePolicy.
+    // If the user provides only the name in the schedulePolicyRef, and there are multiple SchedulePolicy objects with the same name,
+    // we cannot return an error. Therefore, we require the user to explicitly confirm acceptance of the side effects of UID relaxation.
+    bool bulk_uid_check_relaxation = 30;
 }
 
 // Define BackupScheduleUpdateResponse struct
@@ -1221,25 +1454,28 @@ message BackupScheduleDeleteRequest {
     // delete_backups is deprecated, not to be used.
     bool delete_backups = 3;
     string uid = 4;
-    //  ObjectRef can contain:
-    // - specific list of name+uid (e.g., 10 items)
-    // - wildcard: name = "*" or name = "pxb-*"
-    repeated ObjectRef identifiers = 5;
+    // List of exact backup schedules to include (name + UID required).
+    repeated ObjectRef include_objects = 5;
     // backup object type is all namespace or virtualMachine specific backup
     BackupObjectType backup_object_type = 6;
     // multiple policy reference for filtering
     repeated ObjectRef policy_ref = 7;
-    // multiple name + uid for excluding, Wildcard (* or prefix) must be used in identifiers to use this filter 
+    // List of exact backup schedules to exclude (name + UID required).
     repeated ObjectRef exclude_objects = 8;
-
-        message BackupObjectType {
-        Type type = 1;
-        enum Type {
-            Invalid = 0;
-            All = 1; // for All application backup based on namespace
-            VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
-        }
-    }
+    // Substring or regex pattern to match backup schedules and include (e.g. "*" for All, "pxb-" or any valid regex)
+    // Cannot be used with include_objects.
+    string include_filter = 9;
+    // Substring or regex pattern to match backup schedules and exclude (e.g. "*" for All, "pxb-" or any valid regex)
+    // Cannot be used with exclude_objects.
+    string exclude_filter = 10;
+    // option to provide clusterRef to delete the backupschedule from cluster
+    ClusterScope cluster_scope = 11;
+    // bulk_uid_check_relaxation - This flag needs to be set to relax the UID check for bulk update operations.
+    // In a bulk operation, the user will pass multiple filter options to select a list of BackupSchedule objects.
+    // For example, the user may send a schedulePolicyRef object to filter BackupSchedules that use that SchedulePolicy.
+    // If the user provides only the name in the schedulePolicyRef, and there are multiple SchedulePolicy objects with the same name,
+    // we cannot return an error. Therefore, we require the user to explicitly confirm acceptance of the side effects of UID relaxation.
+    bool bulk_uid_check_relaxation = 12;
 }
 
 // Define BackupScheduleDeleteResponse struct
@@ -1273,7 +1509,7 @@ service Cluster {
     // Inspect returns detail information about a specified cluster
     rpc Inspect(ClusterInspectRequest) returns (ClusterInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/cluster/{org_id}/{name}/{uid}"
+            get : "/v1/cluster/{org_id}/{name}"
         };
     }
 
@@ -1393,6 +1629,8 @@ message ClusterEnumerateRequest {
     ObjectRef cloud_credential_ref = 5;
     // Set this to true, to get the backupshare enabled cluster list
     bool only_backup_share = 6;
+    // Optional arguments for enumeration
+    EnumerateOptions enumerate_options = 7;
 }
 
 // Define ClusterEnumerateResponse struct
@@ -1484,7 +1722,7 @@ service CloudCredential {
     rpc Inspect(CloudCredentialInspectRequest)
         returns (CloudCredentialInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/cloudcredential/{org_id}/{name}/{uid}"
+            get : "/v1/cloudcredential/{org_id}/{name}"
         };
     }
 
@@ -1492,7 +1730,7 @@ service CloudCredential {
     rpc Delete(CloudCredentialDeleteRequest)
         returns (CloudCredentialDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/cloudcredential/{org_id}/{name}/{uid}"
+            delete : "/v1/cloudcredential/{org_id}/{name}"
         };
     }
 
@@ -1592,7 +1830,7 @@ service Receiver {
     rpc Inspect(ReceiverInspectRequest)
         returns (ReceiverInspectResponse) {
             option (google.api.http) = {
-            get : "/v1/receiver/{org_id}/{name}/{uid}/{include_secrets}/{type}"
+            get : "/v1/receiver/{org_id}/{name}/{include_secrets}/{type}"
         };
     }
 
@@ -1609,7 +1847,7 @@ service Receiver {
     rpc Delete(ReceiverDeleteRequest)
     returns (ReceiverDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/receiver/{org_id}/{name}/{uid}"
+            delete : "/v1/receiver/{org_id}/{name}"
         };
     }
 
@@ -1744,7 +1982,7 @@ service Recipient {
     rpc Inspect(RecipientInspectRequest)
         returns (RecipientInspectResponse) {
             option (google.api.http) = {
-            get : "/v1/recipient/{org_id}/{name}/{uid}"
+            get : "/v1/recipient/{org_id}/{name}"
         };
     }
 
@@ -1761,7 +1999,7 @@ service Recipient {
     rpc Delete(RecipientDeleteRequest)
     returns (RecipientDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/recipient/{org_id}/{name}/{uid}"
+            delete : "/v1/recipient/{org_id}/{name}"
         };
     }
 }
@@ -1877,7 +2115,7 @@ service BackupLocation {
     rpc Inspect(BackupLocationInspectRequest)
         returns (BackupLocationInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/backuplocation/{org_id}/{name}/{uid}"
+            get : "/v1/backuplocation/{org_id}/{name}"
         };
     }
 
@@ -1885,7 +2123,7 @@ service BackupLocation {
     rpc Delete(BackupLocationDeleteRequest)
         returns (BackupLocationDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/backuplocation/{org_id}/{name}/{uid}"
+            delete : "/v1/backuplocation/{org_id}/{name}"
         };
     }
 
@@ -2081,6 +2319,10 @@ service Backup {
     rpc Enumerate(BackupEnumerateRequest) returns (BackupEnumerateResponse) {
         option (google.api.http) = {
             get : "/v1/backup/{org_id}"
+            additional_bindings {
+                post: "/v1/backup/{org_id}/enumerate"
+                body: "*"
+            }
         };
     }
 
@@ -2103,6 +2345,20 @@ service Backup {
         returns (BackupShareUpdateResponse) {
         option (google.api.http) = {
             put : "/v1/backup/updatebackupshare"
+            body : "*"
+        };
+    }
+    // For VirtualMachine backup object type, it returns the details of VirtualMachine and its resources mapped under it
+    rpc GetBackupResourceDetails(BackupResourceDetailGetRequest) returns (BackupResourceDetailGetResponse) {
+        option (google.api.http) = {
+            get : "/v1/backup/getbackupresourcedetails/{org_id}/{name}"
+        };
+    }
+    // RetryBackupResources retries backup of a failed or partial success backup
+    rpc RetryBackupResources(BackupRetryRequest)
+        returns (BackupRetryResponse) {
+        option (google.api.http) = {
+            put : "/v1/backup/retryBackupResources"
             body : "*"
         };
     }
@@ -2153,6 +2409,9 @@ message BackupCreateRequest {
     bool keep_cr_status = 22;
     // older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter
     string advanced_resource_label_selector = 23;
+    // reference to volumeResourceOnly policy object
+    ObjectRef volume_resource_only_policy_ref = 24;
+
 
 
     enum BackupType {
@@ -2186,6 +2445,16 @@ message BackupUpdateRequest {
 
 // Define BackupUpdateResponse struct
 message BackupUpdateResponse {}
+
+// Remark represents a user comment why is he performing the action
+message Remark {
+    // The actual remark/comment text
+    string comment = 1;
+    // Username of the person making the remark
+    string updated_by = 2;
+    // Timestamp when the remark was made
+    google.protobuf.Timestamp updated_at = 3;
+}
 
 //  Request message structure for enumerate object
 message BackupEnumerateRequest {
@@ -2234,8 +2503,119 @@ message BackupShareUpdateRequest {
     string uid = 4;
 }
 
+// Request message for retrying failed backup
+message BackupRetryRequest {
+    // Organization id
+    string org_id = 1;
+    // Name of the failed or partial success backup to be retried
+    string name = 2;
+    // UID of the failed or partial success backup to be retried
+    string uid = 3;
+    // List of failed VirtualMachine resource only. If not passed, will retry all Failed VMs from Backup object.
+    repeated ResourceInfo include_resources = 4;
+    // skip_vm_auto_exec_rules when set to true will take crash-consistent backup for retry 
+    bool skip_vm_auto_exec_rules = 5;
+}
+
+// Response message for BackupRetryRequest
+message BackupRetryResponse {
+    // Auto-generated backup name format : <original backup name>-retry{count}-<epoch> ;
+    BackupObject backup = 1;
+}
+
+
 // Response message for backup share update request
 message BackupShareUpdateResponse {}
+
+// Request message to detailed backup resources
+message BackupResourceDetailGetRequest {
+    string org_id = 1;
+    // Backup name
+    string name = 2;
+    // Backup uid
+    string uid = 3;
+}
+message BackupResourceDetailGetResponse{
+   BackupResourceObject backup = 1;
+}
+
+message BackupResourceObject {
+    Metadata metadata = 1
+    [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    // Name of Cluster
+    string cluster = 2;
+    // Label selectors to choose resources
+    map<string, string> label_selectors = 3;
+    BackupInfo.StatusInfo status = 4;
+    BackupInfo.Stage stage = 5;
+    uint64 total_size = 6;
+    string csi_snapshot_class_name = 7;
+    repeated string resource_types = 8;
+    ObjectRef backup_location_ref = 9;
+    ObjectRef cluster_ref = 10;
+    string ns_label_selectors = 11;
+    // Name of rancher projects associated with resources
+    map<string, string> rancher_projects = 12;
+    // option to take backup as direct kdmp
+    bool direct_kdmp = 13;
+    // this flag signifies if the backup involves large number of resources or not
+    bool large_resource_enabled = 14;
+    // backup object type is all namespace or virtualMachine specific backup
+    BackupInfo.BackupObjectType backup_object_type = 15;
+    // Skip auto rules for VirtualMachine Backup Object type
+    bool skip_vm_auto_exec_rules = 16;
+    // volume snapshot class mapping for csi based backup <provisioner(string), volumesnapshotclass(string)> (optional)
+    map<string, string> volume_snapshot_class_mapping = 17;
+    google.protobuf.Timestamp retention_time = 18;
+    // this will store the completion time of the volumes, resources and total backup
+    completionTimeInfo completion_time_info = 19;
+    // older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter
+    string advanced_resource_label_selector = 20;
+    int64  virtual_machines_total_count = 21;
+    int64  virtual_machines_failed_count = 22;
+    repeated  string namespaces = 23;
+    repeated BackupInfo.Volume volumes = 24;
+    repeated ResourceInfo resources = 25;
+    ResourceContainer resource_details = 26;
+
+    // Resources details mapped to either Namespace or virtualMachine
+    message ResourceContainer {
+        oneof resource_list{
+            // List of resources mapped to virtualMachine
+            VirtualMachineList virtual_machine_list = 1;
+	    // TODO:  NamespaceList namespace_list = 2; for NS specific backup resources
+        }
+    }
+
+    // VirtualMachine Detail info List
+    message VirtualMachineList {
+        repeated VirtualMachineDetailInfo virtual_machines = 1;
+    }
+
+    // VirtualMachine Detail info with volumes and resources
+    message VirtualMachineDetailInfo {
+        BackupInfo.VirtualMachineInfo vm_info = 1;
+        repeated VolumeDetails volumes = 2;
+        repeated ResourceDetails resources = 3;
+    }
+
+    // Volume details
+    message VolumeDetails {
+        string name = 1;
+        uint64 size = 2;
+        BackupInfo.Volume.BackupMode backup_mode = 3;
+        BackupInfo.StatusInfo status = 4;
+    }
+
+    // Resource Info details
+    message ResourceDetails {
+        string name = 1;
+        string group = 3;
+        string kind = 4;
+        string version = 5;
+        BackupInfo.StatusInfo status = 6;
+    }
+}
 
 service Restore {
     // Creates new restore object in datastore
@@ -2511,14 +2891,14 @@ service Rules {
     // Inspect returns detailed information about the specified rule
     rpc Inspect(RuleInspectRequest) returns (RuleInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/rule/{org_id}/{name}/{uid}"
+            get : "/v1/rule/{org_id}/{name}"
         };
     }
 
     // Delete removes rule from px-backup
     rpc Delete(RuleDeleteRequest) returns (RuleDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/rule/{org_id}/{name}/{uid}"
+            delete : "/v1/rule/{org_id}/{name}"
         };
     }
 
@@ -2898,6 +3278,8 @@ message ActivityEnumerateRequest {
     // For which type of Actvity data eg: backup, restore, etc..
     string kind = 6;
     ObjectRef cluster_ref = 7;
+    // Filter to use owner uids on objects.
+    repeated string owners = 8;
 
     enum Interval {
         Invalid = 0;
@@ -2959,7 +3341,7 @@ service Role {
     // Inspect returns detailed information about requested role object
     rpc Inspect(RoleInspectRequest) returns (RoleInspectResponse) {
         option (google.api.http) = {
-            get : "/v1/role/{org_id}/{name}/{uid}"
+            get : "/v1/role/{org_id}/{name}"
         };
     }
     // Update given role information
@@ -2972,7 +3354,7 @@ service Role {
     // Delete removes given role from px-backup
     rpc Delete(RoleDeleteRequest) returns (RoleDeleteResponse) {
         option (google.api.http) = {
-            delete : "/v1/role/{org_id}/{name}/{uid}"
+            delete : "/v1/role/{org_id}/{name}"
         };
     }
     // Permission returns list of service,apis permission for given user
@@ -3091,3 +3473,73 @@ message ResourceTypeResponse {
 	repeated string resource_types = 1;
 }
 
+message BackupObjectType {
+    enum Type {
+        Invalid = 0;
+
+        // Represents backup schedules scoped to Kubernetes namespaces (non-VM workloads).
+        // Typically used for application-level backups.
+        NS = 1;
+
+        // Represents backup schedules scoped to VirtualMachine workloads.
+        // Used for VM-based backup scenarios.
+        VM = 2;
+
+        // Represents both NS and VM backup schedule types. Used when an operation should apply to all types.
+        All = 3;
+    }
+
+    Type type = 1;
+}
+
+message ClusterScope {
+  oneof scope {
+    ObjectRefList cluster_refs = 1;
+    bool all_clusters = 2;
+  }
+}
+
+// Helper message to hold multiple cluster references as oneof doesn't allow repeated labels
+message ObjectRefList {
+  repeated ObjectRef refs = 1;
+}
+
+enum LogLevel {
+    Debug = 0;
+    Info = 1;
+    Trace = 2;
+}
+
+service LogLevelService {
+    // Get current Log Level
+    rpc Get(LogLevelGetRequest) returns (LogLevelGetResponse) {
+        option (google.api.http) = {
+            get : "/v1/loglevel/{org_id}"
+        };
+    }
+
+    // Set new log level
+    rpc Set(LogLevelSetRequest) returns (LogLevelSetResponse) {
+        option (google.api.http) = {
+            post : "/v1/loglevel"
+            body : "*"
+        };
+    }
+}
+
+message LogLevelGetRequest {
+    string org_id = 1;
+}
+
+message LogLevelGetResponse {
+    LogLevel current_level = 1;
+}
+
+message LogLevelSetRequest {
+    string org_id = 1;
+    LogLevel level = 2;
+}
+
+message LogLevelSetResponse {
+    string message = 1;  // e.g., "Log level changed from INFO to DEBUG"
+}
