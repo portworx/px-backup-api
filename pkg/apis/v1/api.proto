@@ -657,8 +657,8 @@ message BackupInfo {
     // reference to volumeResourceOnly policy object
     ObjectRef volume_resource_only_policy_ref = 51;
     // resourcesInfo for backupObjectType VirtualMachine
-    // DEPRECATED: Use resource_representation instead
-    repeated VirtualMachineResourceInfo virtual_machine_resources = 52 [deprecated = true];
+    // NOTE: Do not use this field as it will be deprecated in future. Use resource_representation instead.
+    repeated VirtualMachineResourceInfo virtual_machine_resources = 52;
    // to capture namespaces that were missing when the backup was initiated
     repeated string missing_namespaces = 53;
 
@@ -895,6 +895,9 @@ message ResourceObject {
 message BackupObject {
     Metadata metadata = 1 [ (gogoproto.embed) = true ];
     BackupInfo backup_info = 2 [ (gogoproto.embed) = true ];
+    oneof _placeholder {
+      bool _unused = 50000;
+    }
 }
 
 // Message for passing pre and post exec rules for backup
