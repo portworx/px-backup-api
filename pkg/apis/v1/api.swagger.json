@@ -75,7 +75,7 @@
         ]
       }
     },
-    "/v1/backup/getbackupresourcedetails/{org_id}/{name}": {
+    "/v1/backup/getbackupresourcedetails/{org_id}/{name}/{uid}": {
       "get": {
         "summary": "For VirtualMachine backup object type, it returns the details of VirtualMachine and its resources mapped under it",
         "operationId": "Backup_GetBackupResourceDetails",
@@ -109,9 +109,9 @@
           },
           {
             "name": "uid",
-            "description": "Backup uid.",
-            "in": "query",
-            "required": false,
+            "description": "Backup uid",
+            "in": "path",
+            "required": true,
             "type": "string"
           }
         ],
@@ -670,7 +670,7 @@
         ]
       }
     },
-    "/v1/backuplocation/{org_id}/{name}": {
+    "/v1/backuplocation/{org_id}/{name}/{uid}": {
       "get": {
         "summary": "Inspect returns detailed information about a specified backup location",
         "operationId": "BackupLocation_Inspect",
@@ -703,8 +703,8 @@
           },
           {
             "name": "uid",
-            "in": "query",
-            "required": false,
+            "in": "path",
+            "required": true,
             "type": "string"
           },
           {
@@ -750,17 +750,17 @@
             "type": "string"
           },
           {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "delete_backups",
             "description": "delete_backups is deprecated, not to be used.",
             "in": "query",
             "required": false,
             "type": "boolean"
-          },
-          {
-            "name": "uid",
-            "in": "query",
-            "required": false,
-            "type": "string"
           }
         ],
         "tags": [
@@ -1116,7 +1116,9 @@
         "tags": [
           "BackupSchedule"
         ]
-      },
+      }
+    },
+    "/v1/backupschedule/{org_id}/{name}/{uid}": {
       "delete": {
         "summary": "Delete removes a backup schedule",
         "operationId": "BackupSchedule_Delete",
@@ -1148,17 +1150,17 @@
             "type": "string"
           },
           {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "delete_backups",
             "description": "delete_backups is deprecated, not to be used.",
             "in": "query",
             "required": false,
             "type": "boolean"
-          },
-          {
-            "name": "uid",
-            "in": "query",
-            "required": false,
-            "type": "string"
           },
           {
             "name": "backup_object_type.type",
@@ -1190,13 +1192,6 @@
           },
           {
             "name": "cluster_scope.all_clusters",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "bulk_uid_check_relaxation",
-            "description": "bulk_uid_check_relaxation - This flag needs to be set to relax the UID check for bulk update operations.\nIn a bulk operation, the user will pass multiple filter options to select a list of BackupSchedule objects.\nFor example, the user may send a schedulePolicyRef object to filter BackupSchedules that use that SchedulePolicy.\nIf the user provides only the name in the schedulePolicyRef, and there are multiple SchedulePolicy objects with the same name,\nwe cannot return an error. Therefore, we require the user to explicitly confirm acceptance of the side effects of UID relaxation.",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -1341,7 +1336,7 @@
         ]
       }
     },
-    "/v1/cloudcredential/{org_id}/{name}": {
+    "/v1/cloudcredential/{org_id}/{name}/{uid}": {
       "get": {
         "summary": "Inspect returns detailed information about the specified cloud credential",
         "operationId": "CloudCredential_Inspect",
@@ -1373,16 +1368,16 @@
             "type": "string"
           },
           {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "include_secrets",
             "in": "query",
             "required": false,
             "type": "boolean"
-          },
-          {
-            "name": "uid",
-            "in": "query",
-            "required": false,
-            "type": "string"
           }
         ],
         "tags": [
@@ -1421,8 +1416,8 @@
           },
           {
             "name": "uid",
-            "in": "query",
-            "required": false,
+            "in": "path",
+            "required": true,
             "type": "string"
           }
         ],
@@ -1707,53 +1702,6 @@
       }
     },
     "/v1/cluster/{org_id}/{name}": {
-      "get": {
-        "summary": "Inspect returns detail information about a specified cluster",
-        "operationId": "Cluster_Inspect",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/ClusterInspectResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "include_secrets",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "uid",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Cluster"
-        ]
-      },
       "delete": {
         "summary": "Delete removes a cluster",
         "operationId": "Cluster_Delete",
@@ -1808,6 +1756,55 @@
           {
             "name": "delete_all_cluster_backups",
             "description": "delete_all_cluster_backup if set will delete all backups on the cluster\nallowed only to super admin Role.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Cluster"
+        ]
+      }
+    },
+    "/v1/cluster/{org_id}/{name}/{uid}": {
+      "get": {
+        "summary": "Inspect returns detail information about a specified cluster",
+        "operationId": "Cluster_Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ClusterInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "include_secrets",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -1979,70 +1976,6 @@
         ],
         "tags": [
           "License"
-        ]
-      }
-    },
-    "/v1/loglevel": {
-      "post": {
-        "summary": "Set new log level",
-        "operationId": "LogLevelService_Set",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/LogLevelSetResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/LogLevelSetRequest"
-            }
-          }
-        ],
-        "tags": [
-          "LogLevelService"
-        ]
-      }
-    },
-    "/v1/loglevel/{org_id}": {
-      "get": {
-        "summary": "Get current Log Level",
-        "operationId": "LogLevelService_Get",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/LogLevelGetResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "LogLevelService"
         ]
       }
     },
@@ -2478,7 +2411,7 @@
         ]
       }
     },
-    "/v1/receiver/{org_id}/{name}": {
+    "/v1/receiver/{org_id}/{name}/{uid}": {
       "delete": {
         "summary": "Delete a specific alert manager receiver",
         "operationId": "Receiver_Delete",
@@ -2511,8 +2444,8 @@
           },
           {
             "name": "uid",
-            "in": "query",
-            "required": false,
+            "in": "path",
+            "required": true,
             "type": "string"
           }
         ],
@@ -2521,7 +2454,7 @@
         ]
       }
     },
-    "/v1/receiver/{org_id}/{name}/{include_secrets}/{type}": {
+    "/v1/receiver/{org_id}/{name}/{uid}/{include_secrets}/{type}": {
       "get": {
         "summary": "Returns the details of a specific alert manager receiver",
         "operationId": "Receiver_Inspect",
@@ -2553,6 +2486,12 @@
             "type": "string"
           },
           {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "include_secrets",
             "in": "path",
             "required": true,
@@ -2562,12 +2501,6 @@
             "name": "type",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "uid",
-            "in": "query",
-            "required": false,
             "type": "string"
           }
         ],
@@ -2682,7 +2615,7 @@
         ]
       }
     },
-    "/v1/recipient/{org_id}/{name}": {
+    "/v1/recipient/{org_id}/{name}/{uid}": {
       "get": {
         "summary": "Returns the details of a specific recipient",
         "operationId": "Recipient_Inspect",
@@ -2715,8 +2648,8 @@
           },
           {
             "name": "uid",
-            "in": "query",
-            "required": false,
+            "in": "path",
+            "required": true,
             "type": "string"
           }
         ],
@@ -2756,8 +2689,8 @@
           },
           {
             "name": "uid",
-            "in": "query",
-            "required": false,
+            "in": "path",
+            "required": true,
             "type": "string"
           }
         ],
@@ -3438,7 +3371,7 @@
         ]
       }
     },
-    "/v1/role/{org_id}/{name}": {
+    "/v1/role/{org_id}/{name}/{uid}": {
       "get": {
         "summary": "Inspect returns detailed information about requested role object",
         "operationId": "Role_Inspect",
@@ -3471,8 +3404,8 @@
           },
           {
             "name": "uid",
-            "in": "query",
-            "required": false,
+            "in": "path",
+            "required": true,
             "type": "string"
           }
         ],
@@ -3512,8 +3445,8 @@
           },
           {
             "name": "uid",
-            "in": "query",
-            "required": false,
+            "in": "path",
+            "required": true,
             "type": "string"
           }
         ],
@@ -3650,7 +3583,7 @@
         ]
       }
     },
-    "/v1/rule/{org_id}/{name}": {
+    "/v1/rule/{org_id}/{name}/{uid}": {
       "get": {
         "summary": "Inspect returns detailed information about the specified rule",
         "operationId": "Rules_Inspect",
@@ -3683,8 +3616,8 @@
           },
           {
             "name": "uid",
-            "in": "query",
-            "required": false,
+            "in": "path",
+            "required": true,
             "type": "string"
           }
         ],
@@ -3724,8 +3657,8 @@
           },
           {
             "name": "uid",
-            "in": "query",
-            "required": false,
+            "in": "path",
+            "required": true,
             "type": "string"
           }
         ],
@@ -3862,7 +3795,7 @@
         ]
       }
     },
-    "/v1/schedulepolicy/{org_id}/{name}": {
+    "/v1/schedulepolicy/{org_id}/{name}/{uid}": {
       "get": {
         "summary": "Inspect returns detail information about a specified schedule policy",
         "operationId": "SchedulePolicy_Inspect",
@@ -3895,8 +3828,8 @@
           },
           {
             "name": "uid",
-            "in": "query",
-            "required": false,
+            "in": "path",
+            "required": true,
             "type": "string"
           }
         ],
@@ -3936,8 +3869,8 @@
           },
           {
             "name": "uid",
-            "in": "query",
-            "required": false,
+            "in": "path",
+            "required": true,
             "type": "string"
           }
         ],
@@ -4185,7 +4118,7 @@
         ]
       }
     },
-    "/v1/volumeresourceonlypolicy/{org_id}/{name}": {
+    "/v1/volumeresourceonlypolicy/{org_id}/{name}/{uid}": {
       "get": {
         "summary": "Inspect returns detail information about a specified volumeResourceOnly policy",
         "operationId": "VolumeResourceOnlyPolicy_Inspect",
@@ -4218,8 +4151,8 @@
           },
           {
             "name": "uid",
-            "in": "query",
-            "required": false,
+            "in": "path",
+            "required": true,
             "type": "string"
           }
         ],
@@ -4259,8 +4192,8 @@
           },
           {
             "name": "uid",
-            "in": "query",
-            "required": false,
+            "in": "path",
+            "required": true,
             "type": "string"
           }
         ],
@@ -5642,10 +5575,6 @@
         "cluster_scope": {
           "$ref": "#/definitions/ClusterScope",
           "title": "option to provide clusterRef to delete the backupschedule from cluster"
-        },
-        "bulk_uid_check_relaxation": {
-          "type": "boolean",
-          "description": "bulk_uid_check_relaxation - This flag needs to be set to relax the UID check for bulk update operations.\nIn a bulk operation, the user will pass multiple filter options to select a list of BackupSchedule objects.\nFor example, the user may send a schedulePolicyRef object to filter BackupSchedules that use that SchedulePolicy.\nIf the user provides only the name in the schedulePolicyRef, and there are multiple SchedulePolicy objects with the same name,\nwe cannot return an error. Therefore, we require the user to explicitly confirm acceptance of the side effects of UID relaxation."
         }
       },
       "title": "Define BackupScheduleDeleteRequest struct"
@@ -6111,10 +6040,6 @@
         "remark": {
           "type": "string",
           "title": "User remarks for this update operation"
-        },
-        "bulk_uid_check_relaxation": {
-          "type": "boolean",
-          "description": "bulk_uid_check_relaxation - This flag needs to be set to relax the UID check for bulk update operations.\nIn a bulk operation, the user will pass multiple filter options to select a list of BackupSchedule objects.\nFor example, the user may send a schedulePolicyRef object to filter BackupSchedules that use that SchedulePolicy.\nIf the user provides only the name in the schedulePolicyRef, and there are multiple SchedulePolicy objects with the same name,\nwe cannot return an error. Therefore, we require the user to explicitly confirm acceptance of the side effects of UID relaxation."
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
@@ -7026,42 +6951,6 @@
           "type": "string"
         },
         "subscription_id": {
-          "type": "string"
-        }
-      }
-    },
-    "LogLevel": {
-      "type": "string",
-      "enum": [
-        "Debug",
-        "Info",
-        "Trace"
-      ],
-      "default": "Debug"
-    },
-    "LogLevelGetResponse": {
-      "type": "object",
-      "properties": {
-        "current_level": {
-          "$ref": "#/definitions/LogLevel"
-        }
-      }
-    },
-    "LogLevelSetRequest": {
-      "type": "object",
-      "properties": {
-        "org_id": {
-          "type": "string"
-        },
-        "level": {
-          "$ref": "#/definitions/LogLevel"
-        }
-      }
-    },
-    "LogLevelSetResponse": {
-      "type": "object",
-      "properties": {
-        "message": {
           "type": "string"
         }
       }
