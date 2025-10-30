@@ -657,8 +657,8 @@ message BackupInfo {
     // reference to volumeResourceOnly policy object
     ObjectRef volume_resource_only_policy_ref = 51;
     // resourcesInfo for backupObjectType VirtualMachine
-    // DEPRECATED: Use resource_representation instead
-    repeated VirtualMachineResourceInfo virtual_machine_resources = 52 [deprecated = true];
+    // NOTE: Do not use this field as it will be deprecated in future. Use resource_representation instead.
+    repeated VirtualMachineResourceInfo virtual_machine_resources = 52;
    // to capture namespaces that were missing when the backup was initiated
     repeated string missing_namespaces = 53;
 
