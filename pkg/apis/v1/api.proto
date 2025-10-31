@@ -895,6 +895,9 @@ message ResourceObject {
 message BackupObject {
     Metadata metadata = 1 [ (gogoproto.embed) = true ];
     BackupInfo backup_info = 2 [ (gogoproto.embed) = true ];
+    oneof _placeholder {
+      bool _unused = 50000;
+    }
 }
 
 // Message for passing pre and post exec rules for backup

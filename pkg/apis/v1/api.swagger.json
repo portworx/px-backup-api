@@ -5305,6 +5305,9 @@
         },
         "backup_info": {
           "$ref": "#/definitions/BackupInfo"
+        },
+        "_unused": {
+          "type": "boolean"
         }
       },
       "description": "Message for Backup object which will be stored in Datastore."
