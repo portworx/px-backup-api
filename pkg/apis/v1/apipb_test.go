@@ -1311,6 +1311,118 @@ func TestSchedulePolicyInfo_MonthlyPolicyMarshalTo(t *testing.T) {
 	}
 }
 
+func TestSchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicyProto(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedSchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy(popr, false)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	littlefuzz := make([]byte, len(dAtA))
+	copy(littlefuzz, dAtA)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+	if len(littlefuzz) > 0 {
+		fuzzamount := 100
+		for i := 0; i < fuzzamount; i++ {
+			littlefuzz[popr.Intn(len(littlefuzz))] = byte(popr.Intn(256))
+			littlefuzz = append(littlefuzz, byte(popr.Intn(256)))
+		}
+		// shouldn't panic
+		_ = github_com_gogo_protobuf_proto.Unmarshal(littlefuzz, msg)
+	}
+}
+
+func TestSchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicyMarshalTo(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedSchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy(popr, false)
+	size := p.Size()
+	dAtA := make([]byte, size)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	_, err := p.MarshalTo(dAtA)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestSchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyProto(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedSchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy(popr, false)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	littlefuzz := make([]byte, len(dAtA))
+	copy(littlefuzz, dAtA)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+	if len(littlefuzz) > 0 {
+		fuzzamount := 100
+		for i := 0; i < fuzzamount; i++ {
+			littlefuzz[popr.Intn(len(littlefuzz))] = byte(popr.Intn(256))
+			littlefuzz = append(littlefuzz, byte(popr.Intn(256)))
+		}
+		// shouldn't panic
+		_ = github_com_gogo_protobuf_proto.Unmarshal(littlefuzz, msg)
+	}
+}
+
+func TestSchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyMarshalTo(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedSchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy(popr, false)
+	size := p.Size()
+	dAtA := make([]byte, size)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	_, err := p.MarshalTo(dAtA)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
 func TestSchedulePolicyObjectProto(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
@@ -17909,6 +18021,42 @@ func TestSchedulePolicyInfo_MonthlyPolicyJSON(t *testing.T) {
 		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
 	}
 }
+func TestSchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicyJSON(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedSchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy(popr, true)
+	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
+	jsondata, err := marshaler.MarshalToString(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy{}
+	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
+	}
+}
+func TestSchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyJSON(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedSchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy(popr, true)
+	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
+	jsondata, err := marshaler.MarshalToString(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy{}
+	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
+	}
+}
 func TestSchedulePolicyObjectJSON(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
@@ -23747,6 +23895,62 @@ func TestSchedulePolicyInfo_MonthlyPolicyProtoCompactText(t *testing.T) {
 	p := NewPopulatedSchedulePolicyInfo_MonthlyPolicy(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
 	msg := &SchedulePolicyInfo_MonthlyPolicy{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestSchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicyProtoText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedSchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
+	msg := &SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestSchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicyProtoCompactText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedSchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
+	msg := &SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestSchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyProtoText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedSchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
+	msg := &SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestSchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyProtoCompactText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedSchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
+	msg := &SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -32335,6 +32539,50 @@ func TestSchedulePolicyInfo_MonthlyPolicySize(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
 	p := NewPopulatedSchedulePolicyInfo_MonthlyPolicy(popr, true)
+	size2 := github_com_gogo_protobuf_proto.Size(p)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	size := p.Size()
+	if len(dAtA) != size {
+		t.Errorf("seed = %d, size %v != marshalled size %v", seed, size, len(dAtA))
+	}
+	if size2 != size {
+		t.Errorf("seed = %d, size %v != before marshal proto.Size %v", seed, size, size2)
+	}
+	size3 := github_com_gogo_protobuf_proto.Size(p)
+	if size3 != size {
+		t.Errorf("seed = %d, size %v != after marshal proto.Size %v", seed, size, size3)
+	}
+}
+
+func TestSchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicySize(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedSchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy(popr, true)
+	size2 := github_com_gogo_protobuf_proto.Size(p)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	size := p.Size()
+	if len(dAtA) != size {
+		t.Errorf("seed = %d, size %v != marshalled size %v", seed, size, len(dAtA))
+	}
+	if size2 != size {
+		t.Errorf("seed = %d, size %v != before marshal proto.Size %v", seed, size, size2)
+	}
+	size3 := github_com_gogo_protobuf_proto.Size(p)
+	if size3 != size {
+		t.Errorf("seed = %d, size %v != after marshal proto.Size %v", seed, size, size3)
+	}
+}
+
+func TestSchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicySize(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedSchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy(popr, true)
 	size2 := github_com_gogo_protobuf_proto.Size(p)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {

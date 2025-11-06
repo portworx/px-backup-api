@@ -311,6 +311,43 @@ func (VolumeResourceOnlyPolicyInfo_VolumeType) EnumDescriptor() ([]byte, []int) 
 	return fileDescriptor_9943feda3d652502, []int{12, 0}
 }
 
+type SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex int32
+
+const (
+	SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_Invalid SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex = 0
+	SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_first   SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex = 1
+	SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_second  SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex = 2
+	SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_third   SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex = 3
+	SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_fourth  SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex = 4
+	SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_last    SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex = 5
+)
+
+var SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex_name = map[int32]string{
+	0: "Invalid",
+	1: "first",
+	2: "second",
+	3: "third",
+	4: "fourth",
+	5: "last",
+}
+
+var SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex_value = map[string]int32{
+	"Invalid": 0,
+	"first":   1,
+	"second":  2,
+	"third":   3,
+	"fourth":  4,
+	"last":    5,
+}
+
+func (x SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex) String() string {
+	return proto.EnumName(SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex_name, int32(x))
+}
+
+func (SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_9943feda3d652502, []int{14, 4, 1, 0}
+}
+
 type BackupScheduleInfo_ReclaimPolicyType int32
 
 const (
@@ -3031,6 +3068,8 @@ func (m *SchedulePolicyInfo_DailyPolicy) GetIncrementalCount() *SchedulePolicyIn
 type SchedulePolicyInfo_WeeklyPolicy struct {
 	// Day of the week when the policy should be triggered.
 	// For example, sunday or sun
+	// Multiple days can be configured in the weekly policy. Multiple days can be passed in the day string with comma seperated.
+	// For example, sun, mon, fri
 	Day string `protobuf:"bytes,1,opt,name=day,proto3" json:"day,omitempty"`
 	// Time, when the policy should be triggered. Expected format is
 	// time.Kitchen eg 12:04PM or 12:04pm.
@@ -3040,6 +3079,9 @@ type SchedulePolicyInfo_WeeklyPolicy struct {
 	// Number of incremental snapshots to take before taking a full
 	// snapshot.
 	IncrementalCount *SchedulePolicyInfo_IncrementalCount `protobuf:"bytes,4,opt,name=incremental_count,json=incrementalCount,proto3" json:"incremental_count,omitempty"`
+	// bi_weekly flag need to be enabled, if schedule need to happen on alternate week.
+	// By default, it will false. That means the schedule will happen every week.
+	BiWeekly bool `protobuf:"varint,5,opt,name=bi_weekly,json=biWeekly,proto3" json:"bi_weekly,omitempty"`
 }
 
 func (m *SchedulePolicyInfo_WeeklyPolicy) Reset()         { *m = SchedulePolicyInfo_WeeklyPolicy{} }
@@ -3103,6 +3145,13 @@ func (m *SchedulePolicyInfo_WeeklyPolicy) GetIncrementalCount() *SchedulePolicyI
 	return nil
 }
 
+func (m *SchedulePolicyInfo_WeeklyPolicy) GetBiWeekly() bool {
+	if m != nil {
+		return m.BiWeekly
+	}
+	return false
+}
+
 type SchedulePolicyInfo_MonthlyPolicy struct {
 	// Date of the month when the policy should be triggered. If a given
 	// date
@@ -3111,15 +3160,20 @@ type SchedulePolicyInfo_MonthlyPolicy struct {
 	// For example if 31 is specified, it'll trigger on either 1st or 2nd
 	// March
 	// depending on if it is a leap year.
-	Date int64 `protobuf:"varint,1,opt,name=date,proto3" json:"date,omitempty"`
+	Date int64 `protobuf:"varint,1,opt,name=date,proto3" json:"date,omitempty"` // Deprecated: Do not use.
 	// Time, when the policy should be triggered. Expected format is
 	// time.Kitchen eg 12:04PM or 12:04pm.
-	Time string `protobuf:"bytes,2,opt,name=time,proto3" json:"time,omitempty"`
+	Time string `protobuf:"bytes,2,opt,name=time,proto3" json:"time,omitempty"` // Deprecated: Do not use.
 	// Number of objects to retain for monthly policy, default value is 10.
-	Retain int64 `protobuf:"varint,3,opt,name=retain,proto3" json:"retain,omitempty"`
+	Retain int64 `protobuf:"varint,3,opt,name=retain,proto3" json:"retain,omitempty"` // Deprecated: Do not use.
 	// Number of incremental snapshots to take before taking a full
 	// snapshot.
-	IncrementalCount *SchedulePolicyInfo_IncrementalCount `protobuf:"bytes,4,opt,name=incremental_count,json=incrementalCount,proto3" json:"incremental_count,omitempty"`
+	IncrementalCount *SchedulePolicyInfo_IncrementalCount `protobuf:"bytes,4,opt,name=incremental_count,json=incrementalCount,proto3" json:"incremental_count,omitempty"` // Deprecated: Do not use.
+	// Types that are valid to be assigned to MonthlyPolicy:
+	//
+	//	*SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_
+	//	*SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy_
+	MonthlyPolicy isSchedulePolicyInfo_MonthlyPolicy_MonthlyPolicy `protobuf_oneof:"monthly_policy"`
 }
 
 func (m *SchedulePolicyInfo_MonthlyPolicy) Reset()         { *m = SchedulePolicyInfo_MonthlyPolicy{} }
@@ -3155,6 +3209,33 @@ func (m *SchedulePolicyInfo_MonthlyPolicy) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_SchedulePolicyInfo_MonthlyPolicy proto.InternalMessageInfo
 
+type isSchedulePolicyInfo_MonthlyPolicy_MonthlyPolicy interface {
+	isSchedulePolicyInfo_MonthlyPolicy_MonthlyPolicy()
+	Equal(interface{}) bool
+	MarshalTo([]byte) (int, error)
+	Size() int
+}
+
+type SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_ struct {
+	RelativeMonthlyPolicy *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy `protobuf:"bytes,100,opt,name=relative_monthly_policy,json=relativeMonthlyPolicy,proto3,oneof" json:"relative_monthly_policy,omitempty"`
+}
+type SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy_ struct {
+	SelectiveMonthlyPolicy *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy `protobuf:"bytes,101,opt,name=selective_monthly_policy,json=selectiveMonthlyPolicy,proto3,oneof" json:"selective_monthly_policy,omitempty"`
+}
+
+func (*SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_) isSchedulePolicyInfo_MonthlyPolicy_MonthlyPolicy() {
+}
+func (*SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy_) isSchedulePolicyInfo_MonthlyPolicy_MonthlyPolicy() {
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy) GetMonthlyPolicy() isSchedulePolicyInfo_MonthlyPolicy_MonthlyPolicy {
+	if m != nil {
+		return m.MonthlyPolicy
+	}
+	return nil
+}
+
+// Deprecated: Do not use.
 func (m *SchedulePolicyInfo_MonthlyPolicy) GetDate() int64 {
 	if m != nil {
 		return m.Date
@@ -3162,6 +3243,7 @@ func (m *SchedulePolicyInfo_MonthlyPolicy) GetDate() int64 {
 	return 0
 }
 
+// Deprecated: Do not use.
 func (m *SchedulePolicyInfo_MonthlyPolicy) GetTime() string {
 	if m != nil {
 		return m.Time
@@ -3169,6 +3251,7 @@ func (m *SchedulePolicyInfo_MonthlyPolicy) GetTime() string {
 	return ""
 }
 
+// Deprecated: Do not use.
 func (m *SchedulePolicyInfo_MonthlyPolicy) GetRetain() int64 {
 	if m != nil {
 		return m.Retain
@@ -3176,7 +3259,207 @@ func (m *SchedulePolicyInfo_MonthlyPolicy) GetRetain() int64 {
 	return 0
 }
 
+// Deprecated: Do not use.
 func (m *SchedulePolicyInfo_MonthlyPolicy) GetIncrementalCount() *SchedulePolicyInfo_IncrementalCount {
+	if m != nil {
+		return m.IncrementalCount
+	}
+	return nil
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy) GetRelativeMonthlyPolicy() *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy {
+	if x, ok := m.GetMonthlyPolicy().(*SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_); ok {
+		return x.RelativeMonthlyPolicy
+	}
+	return nil
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy) GetSelectiveMonthlyPolicy() *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy {
+	if x, ok := m.GetMonthlyPolicy().(*SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy_); ok {
+		return x.SelectiveMonthlyPolicy
+	}
+	return nil
+}
+
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*SchedulePolicyInfo_MonthlyPolicy) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
+		(*SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_)(nil),
+		(*SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy_)(nil),
+	}
+}
+
+type SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy struct {
+	// Date of the month when the policy should be triggered. If a given date
+	// doesn't exist in a month it'll rollover to the next date of the month.
+	// For example if 31 is specified, it'll trigger on either 1st or 2nd March
+	// depending on if it is a leap year.
+	Date int64 `protobuf:"varint,1,opt,name=date,proto3" json:"date,omitempty"`
+	// Time, when the policy should be triggered. Expected format is
+	// time.Kitchen eg 12:04PM or 12:04pm.
+	Time string `protobuf:"bytes,2,opt,name=time,proto3" json:"time,omitempty"`
+	// Number of objects to retain for monthly policy, default value is 10.
+	Retain int64 `protobuf:"varint,3,opt,name=retain,proto3" json:"retain,omitempty"`
+	// Number of incremental snapshots to take before taking a full snapshot.
+	IncrementalCount *SchedulePolicyInfo_IncrementalCount `protobuf:"bytes,4,opt,name=incremental_count,json=incrementalCount,proto3" json:"incremental_count,omitempty"`
+	// months specify the list months on which schedule needs to be taken.
+	// If it is empty, the schedule will be taken on every month of the year.
+	// months will take comma seperated multiple month value.
+	Months string `protobuf:"bytes,5,opt,name=months,proto3" json:"months,omitempty"`
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) Reset() {
+	*m = SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy{}
+}
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) String() string {
+	return proto.CompactTextString(m)
+}
+func (*SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) ProtoMessage() {}
+func (*SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9943feda3d652502, []int{14, 4, 0}
+}
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy.Merge(m, src)
+}
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) XXX_Size() int {
+	return m.Size()
+}
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) XXX_DiscardUnknown() {
+	xxx_messageInfo_SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy proto.InternalMessageInfo
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) GetDate() int64 {
+	if m != nil {
+		return m.Date
+	}
+	return 0
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) GetTime() string {
+	if m != nil {
+		return m.Time
+	}
+	return ""
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) GetRetain() int64 {
+	if m != nil {
+		return m.Retain
+	}
+	return 0
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) GetIncrementalCount() *SchedulePolicyInfo_IncrementalCount {
+	if m != nil {
+		return m.IncrementalCount
+	}
+	return nil
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) GetMonths() string {
+	if m != nil {
+		return m.Months
+	}
+	return ""
+}
+
+type SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy struct {
+	// Relative day of relative week, Only one day can be specified.
+	// For example, sun or mon
+	Day         string                                                            `protobuf:"bytes,1,opt,name=day,proto3" json:"day,omitempty"`
+	WeeklyIndex SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex `protobuf:"varint,2,opt,name=weekly_index,json=weeklyIndex,proto3,enum=SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex" json:"weekly_index,omitempty"`
+	// Time, when the policy should be triggered. Expected format is
+	// time.Kitchen eg 12:04PM or 12:04pm.
+	Time string `protobuf:"bytes,3,opt,name=time,proto3" json:"time,omitempty"`
+	// Number of objects to retain for monthly policy, default value is 10.
+	Retain int64 `protobuf:"varint,4,opt,name=retain,proto3" json:"retain,omitempty"`
+	// Number of incremental snapshots to take before taking a full snapshot.
+	IncrementalCount *SchedulePolicyInfo_IncrementalCount `protobuf:"bytes,5,opt,name=incremental_count,json=incrementalCount,proto3" json:"incremental_count,omitempty"`
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) Reset() {
+	*m = SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy{}
+}
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) String() string {
+	return proto.CompactTextString(m)
+}
+func (*SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) ProtoMessage() {}
+func (*SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9943feda3d652502, []int{14, 4, 1}
+}
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy.Merge(m, src)
+}
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) XXX_Size() int {
+	return m.Size()
+}
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) XXX_DiscardUnknown() {
+	xxx_messageInfo_SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy proto.InternalMessageInfo
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) GetDay() string {
+	if m != nil {
+		return m.Day
+	}
+	return ""
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) GetWeeklyIndex() SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex {
+	if m != nil {
+		return m.WeeklyIndex
+	}
+	return SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_Invalid
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) GetTime() string {
+	if m != nil {
+		return m.Time
+	}
+	return ""
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) GetRetain() int64 {
+	if m != nil {
+		return m.Retain
+	}
+	return 0
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) GetIncrementalCount() *SchedulePolicyInfo_IncrementalCount {
 	if m != nil {
 		return m.IncrementalCount
 	}
@@ -21676,6 +21959,7 @@ func init() {
 	proto.RegisterEnum("S3Config_AzureEnvironmentType_Type", S3Config_AzureEnvironmentType_Type_name, S3Config_AzureEnvironmentType_Type_value)
 	proto.RegisterEnum("CloudCredentialInfo_Type", CloudCredentialInfo_Type_name, CloudCredentialInfo_Type_value)
 	proto.RegisterEnum("VolumeResourceOnlyPolicyInfo_VolumeType", VolumeResourceOnlyPolicyInfo_VolumeType_name, VolumeResourceOnlyPolicyInfo_VolumeType_value)
+	proto.RegisterEnum("SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex", SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex_name, SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex_value)
 	proto.RegisterEnum("BackupScheduleInfo_ReclaimPolicyType", BackupScheduleInfo_ReclaimPolicyType_name, BackupScheduleInfo_ReclaimPolicyType_value)
 	proto.RegisterEnum("BackupScheduleInfo_BackupType_Type", BackupScheduleInfo_BackupType_Type_name, BackupScheduleInfo_BackupType_Type_value)
 	proto.RegisterEnum("BackupScheduleInfo_SuspendedBy_Source", BackupScheduleInfo_SuspendedBy_Source_name, BackupScheduleInfo_SuspendedBy_Source_value)
@@ -21740,6 +22024,8 @@ func init() {
 	proto.RegisterType((*SchedulePolicyInfo_DailyPolicy)(nil), "SchedulePolicyInfo.DailyPolicy")
 	proto.RegisterType((*SchedulePolicyInfo_WeeklyPolicy)(nil), "SchedulePolicyInfo.WeeklyPolicy")
 	proto.RegisterType((*SchedulePolicyInfo_MonthlyPolicy)(nil), "SchedulePolicyInfo.MonthlyPolicy")
+	proto.RegisterType((*SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy)(nil), "SchedulePolicyInfo.MonthlyPolicy.SelectiveMonthlyPolicy")
+	proto.RegisterType((*SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy)(nil), "SchedulePolicyInfo.MonthlyPolicy.RelativeMonthlyPolicy")
 	proto.RegisterType((*SchedulePolicyObject)(nil), "SchedulePolicyObject")
 	proto.RegisterType((*BackupScheduleInfo)(nil), "BackupScheduleInfo")
 	proto.RegisterMapType((map[string]*BackupScheduleInfo_StatusInfoList)(nil), "BackupScheduleInfo.BackupStatusEntry")
@@ -23894,6 +24180,9 @@ func (this *SchedulePolicyInfo_WeeklyPolicy) Equal(that interface{}) bool {
 	if !this.IncrementalCount.Equal(that1.IncrementalCount) {
 		return false
 	}
+	if this.BiWeekly != that1.BiWeekly {
+		return false
+	}
 	return true
 }
 func (this *SchedulePolicyInfo_MonthlyPolicy) Equal(that interface{}) bool {
@@ -23916,6 +24205,135 @@ func (this *SchedulePolicyInfo_MonthlyPolicy) Equal(that interface{}) bool {
 		return false
 	}
 	if this.Date != that1.Date {
+		return false
+	}
+	if this.Time != that1.Time {
+		return false
+	}
+	if this.Retain != that1.Retain {
+		return false
+	}
+	if !this.IncrementalCount.Equal(that1.IncrementalCount) {
+		return false
+	}
+	if that1.MonthlyPolicy == nil {
+		if this.MonthlyPolicy != nil {
+			return false
+		}
+	} else if this.MonthlyPolicy == nil {
+		return false
+	} else if !this.MonthlyPolicy.Equal(that1.MonthlyPolicy) {
+		return false
+	}
+	return true
+}
+func (this *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_)
+	if !ok {
+		that2, ok := that.(SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.RelativeMonthlyPolicy.Equal(that1.RelativeMonthlyPolicy) {
+		return false
+	}
+	return true
+}
+func (this *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy_) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy_)
+	if !ok {
+		that2, ok := that.(SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy_)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.SelectiveMonthlyPolicy.Equal(that1.SelectiveMonthlyPolicy) {
+		return false
+	}
+	return true
+}
+func (this *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy)
+	if !ok {
+		that2, ok := that.(SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Date != that1.Date {
+		return false
+	}
+	if this.Time != that1.Time {
+		return false
+	}
+	if this.Retain != that1.Retain {
+		return false
+	}
+	if !this.IncrementalCount.Equal(that1.IncrementalCount) {
+		return false
+	}
+	if this.Months != that1.Months {
+		return false
+	}
+	return true
+}
+func (this *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy)
+	if !ok {
+		that2, ok := that.(SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Day != that1.Day {
+		return false
+	}
+	if this.WeeklyIndex != that1.WeeklyIndex {
 		return false
 	}
 	if this.Time != that1.Time {
@@ -39896,6 +40314,16 @@ func (m *SchedulePolicyInfo_WeeklyPolicy) MarshalToSizedBuffer(dAtA []byte) (int
 	_ = i
 	var l int
 	_ = l
+	if m.BiWeekly {
+		i--
+		if m.BiWeekly {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x28
+	}
 	if m.IncrementalCount != nil {
 		{
 			size, err := m.IncrementalCount.MarshalToSizedBuffer(dAtA[:i])
@@ -39950,6 +40378,15 @@ func (m *SchedulePolicyInfo_MonthlyPolicy) MarshalToSizedBuffer(dAtA []byte) (in
 	_ = i
 	var l int
 	_ = l
+	if m.MonthlyPolicy != nil {
+		{
+			size := m.MonthlyPolicy.Size()
+			i -= size
+			if _, err := m.MonthlyPolicy.MarshalTo(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
 	if m.IncrementalCount != nil {
 		{
 			size, err := m.IncrementalCount.MarshalToSizedBuffer(dAtA[:i])
@@ -39978,6 +40415,170 @@ func (m *SchedulePolicyInfo_MonthlyPolicy) MarshalToSizedBuffer(dAtA []byte) (in
 		i = encodeVarintApi(dAtA, i, uint64(m.Date))
 		i--
 		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.RelativeMonthlyPolicy != nil {
+		{
+			size, err := m.RelativeMonthlyPolicy.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa2
+	}
+	return len(dAtA) - i, nil
+}
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy_) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy_) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.SelectiveMonthlyPolicy != nil {
+		{
+			size, err := m.SelectiveMonthlyPolicy.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xaa
+	}
+	return len(dAtA) - i, nil
+}
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Months) > 0 {
+		i -= len(m.Months)
+		copy(dAtA[i:], m.Months)
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Months)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if m.IncrementalCount != nil {
+		{
+			size, err := m.IncrementalCount.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x22
+	}
+	if m.Retain != 0 {
+		i = encodeVarintApi(dAtA, i, uint64(m.Retain))
+		i--
+		dAtA[i] = 0x18
+	}
+	if len(m.Time) > 0 {
+		i -= len(m.Time)
+		copy(dAtA[i:], m.Time)
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Time)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Date != 0 {
+		i = encodeVarintApi(dAtA, i, uint64(m.Date))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.IncrementalCount != nil {
+		{
+			size, err := m.IncrementalCount.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x2a
+	}
+	if m.Retain != 0 {
+		i = encodeVarintApi(dAtA, i, uint64(m.Retain))
+		i--
+		dAtA[i] = 0x20
+	}
+	if len(m.Time) > 0 {
+		i -= len(m.Time)
+		copy(dAtA[i:], m.Time)
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Time)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if m.WeeklyIndex != 0 {
+		i = encodeVarintApi(dAtA, i, uint64(m.WeeklyIndex))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Day) > 0 {
+		i -= len(m.Day)
+		copy(dAtA[i:], m.Day)
+		i = encodeVarintApi(dAtA, i, uint64(len(m.Day)))
+		i--
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -56348,6 +56949,7 @@ func NewPopulatedSchedulePolicyInfo_WeeklyPolicy(r randyApi, easy bool) *Schedul
 	if r.Intn(5) != 0 {
 		this.IncrementalCount = NewPopulatedSchedulePolicyInfo_IncrementalCount(r, easy)
 	}
+	this.BiWeekly = bool(bool(r.Intn(2) == 0))
 	if !easy && r.Intn(10) != 0 {
 	}
 	return this
@@ -56359,6 +56961,60 @@ func NewPopulatedSchedulePolicyInfo_MonthlyPolicy(r randyApi, easy bool) *Schedu
 	if r.Intn(2) == 0 {
 		this.Date *= -1
 	}
+	this.Time = string(randStringApi(r))
+	this.Retain = int64(r.Int63())
+	if r.Intn(2) == 0 {
+		this.Retain *= -1
+	}
+	if r.Intn(5) != 0 {
+		this.IncrementalCount = NewPopulatedSchedulePolicyInfo_IncrementalCount(r, easy)
+	}
+	oneofNumber_MonthlyPolicy := []int32{100, 101}[r.Intn(2)]
+	switch oneofNumber_MonthlyPolicy {
+	case 100:
+		this.MonthlyPolicy = NewPopulatedSchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_(r, easy)
+	case 101:
+		this.MonthlyPolicy = NewPopulatedSchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy_(r, easy)
+	}
+	if !easy && r.Intn(10) != 0 {
+	}
+	return this
+}
+
+func NewPopulatedSchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_(r randyApi, easy bool) *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_ {
+	this := &SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_{}
+	this.RelativeMonthlyPolicy = NewPopulatedSchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy(r, easy)
+	return this
+}
+func NewPopulatedSchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy_(r randyApi, easy bool) *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy_ {
+	this := &SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy_{}
+	this.SelectiveMonthlyPolicy = NewPopulatedSchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy(r, easy)
+	return this
+}
+func NewPopulatedSchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy(r randyApi, easy bool) *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy {
+	this := &SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy{}
+	this.Date = int64(r.Int63())
+	if r.Intn(2) == 0 {
+		this.Date *= -1
+	}
+	this.Time = string(randStringApi(r))
+	this.Retain = int64(r.Int63())
+	if r.Intn(2) == 0 {
+		this.Retain *= -1
+	}
+	if r.Intn(5) != 0 {
+		this.IncrementalCount = NewPopulatedSchedulePolicyInfo_IncrementalCount(r, easy)
+	}
+	this.Months = string(randStringApi(r))
+	if !easy && r.Intn(10) != 0 {
+	}
+	return this
+}
+
+func NewPopulatedSchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy(r randyApi, easy bool) *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy {
+	this := &SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy{}
+	this.Day = string(randStringApi(r))
+	this.WeeklyIndex = SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex([]int32{0, 1, 2, 3, 4, 5}[r.Intn(6)])
 	this.Time = string(randStringApi(r))
 	this.Retain = int64(r.Int63())
 	if r.Intn(2) == 0 {
@@ -61519,6 +62175,9 @@ func (m *SchedulePolicyInfo_WeeklyPolicy) Size() (n int) {
 		l = m.IncrementalCount.Size()
 		n += 1 + l + sovApi(uint64(l))
 	}
+	if m.BiWeekly {
+		n += 2
+	}
 	return n
 }
 
@@ -61530,6 +62189,87 @@ func (m *SchedulePolicyInfo_MonthlyPolicy) Size() (n int) {
 	_ = l
 	if m.Date != 0 {
 		n += 1 + sovApi(uint64(m.Date))
+	}
+	l = len(m.Time)
+	if l > 0 {
+		n += 1 + l + sovApi(uint64(l))
+	}
+	if m.Retain != 0 {
+		n += 1 + sovApi(uint64(m.Retain))
+	}
+	if m.IncrementalCount != nil {
+		l = m.IncrementalCount.Size()
+		n += 1 + l + sovApi(uint64(l))
+	}
+	if m.MonthlyPolicy != nil {
+		n += m.MonthlyPolicy.Size()
+	}
+	return n
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.RelativeMonthlyPolicy != nil {
+		l = m.RelativeMonthlyPolicy.Size()
+		n += 2 + l + sovApi(uint64(l))
+	}
+	return n
+}
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy_) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.SelectiveMonthlyPolicy != nil {
+		l = m.SelectiveMonthlyPolicy.Size()
+		n += 2 + l + sovApi(uint64(l))
+	}
+	return n
+}
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Date != 0 {
+		n += 1 + sovApi(uint64(m.Date))
+	}
+	l = len(m.Time)
+	if l > 0 {
+		n += 1 + l + sovApi(uint64(l))
+	}
+	if m.Retain != 0 {
+		n += 1 + sovApi(uint64(m.Retain))
+	}
+	if m.IncrementalCount != nil {
+		l = m.IncrementalCount.Size()
+		n += 1 + l + sovApi(uint64(l))
+	}
+	l = len(m.Months)
+	if l > 0 {
+		n += 1 + l + sovApi(uint64(l))
+	}
+	return n
+}
+
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Day)
+	if l > 0 {
+		n += 1 + l + sovApi(uint64(l))
+	}
+	if m.WeeklyIndex != 0 {
+		n += 1 + sovApi(uint64(m.WeeklyIndex))
 	}
 	l = len(m.Time)
 	if l > 0 {
@@ -72112,6 +72852,26 @@ func (m *SchedulePolicyInfo_WeeklyPolicy) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BiWeekly", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.BiWeekly = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := skipApi(dAtA[iNdEx:])
@@ -72233,6 +72993,452 @@ func (m *SchedulePolicyInfo_MonthlyPolicy) Unmarshal(dAtA []byte) error {
 				}
 			}
 		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IncrementalCount", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.IncrementalCount == nil {
+				m.IncrementalCount = &SchedulePolicyInfo_IncrementalCount{}
+			}
+			if err := m.IncrementalCount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 100:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RelativeMonthlyPolicy", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.MonthlyPolicy = &SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy_{v}
+			iNdEx = postIndex
+		case 101:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SelectiveMonthlyPolicy", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.MonthlyPolicy = &SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy_{v}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipApi(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowApi
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: SelectiveMonthlyPolicy: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: SelectiveMonthlyPolicy: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Date", wireType)
+			}
+			m.Date = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Date |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Time", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Time = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Retain", wireType)
+			}
+			m.Retain = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Retain |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IncrementalCount", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.IncrementalCount == nil {
+				m.IncrementalCount = &SchedulePolicyInfo_IncrementalCount{}
+			}
+			if err := m.IncrementalCount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Months", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Months = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipApi(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthApi
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowApi
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: RelativeMonthlyPolicy: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: RelativeMonthlyPolicy: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Day", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Day = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field WeeklyIndex", wireType)
+			}
+			m.WeeklyIndex = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.WeeklyIndex |= SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Time", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Time = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Retain", wireType)
+			}
+			m.Retain = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Retain |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field IncrementalCount", wireType)
 			}
