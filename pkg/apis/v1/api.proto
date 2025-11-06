@@ -327,6 +327,8 @@ message SchedulePolicyInfo {
     message WeeklyPolicy {
         // Day of the week when the policy should be triggered.
         // For example, sunday or sun
+	    // Multiple days can be configured in the weekly policy. Multiple days can be passed in the day string with comma seperated.
+	    // For example, sun, mon, fri
         string day = 1;
         // Time, when the policy should be triggered. Expected format is
         // time.Kitchen eg 12:04PM or 12:04pm.
@@ -336,6 +338,9 @@ message SchedulePolicyInfo {
         // Number of incremental snapshots to take before taking a full
         // snapshot.
         IncrementalCount incremental_count = 4;
+	    // bi_weekly flag need to be enabled, if schedule need to happen on alternate week.
+	    // By default, it will false. That means the schedule will happen every week.
+	    bool bi_weekly = 5;
     }
 
     message MonthlyPolicy {
@@ -346,15 +351,60 @@ message SchedulePolicyInfo {
         // For example if 31 is specified, it'll trigger on either 1st or 2nd
         // March
         // depending on if it is a leap year.
-        int64 date = 1;
+        int64 date = 1 [deprecated=true];
         // Time, when the policy should be triggered. Expected format is
         // time.Kitchen eg 12:04PM or 12:04pm.
-        string time = 2;
+        string time = 2 [deprecated=true];
         // Number of objects to retain for monthly policy, default value is 10.
-        int64 retain = 3;
+        int64 retain = 3 [deprecated=true];
         // Number of incremental snapshots to take before taking a full
         // snapshot.
-        IncrementalCount incremental_count = 4;
+        IncrementalCount incremental_count = 4 [deprecated=true];
+	    oneof monthly_policy {
+            RelativeMonthlyPolicy relative_monthly_policy = 100;
+            SelectiveMonthlyPolicy selective_monthly_policy = 101;
+        }
+
+	    message SelectiveMonthlyPolicy {
+		    // Date of the month when the policy should be triggered. If a given date
+		    // doesn't exist in a month it'll rollover to the next date of the month.
+		    // For example if 31 is specified, it'll trigger on either 1st or 2nd March
+		    // depending on if it is a leap year.
+		    int64 date = 1;
+		    // Time, when the policy should be triggered. Expected format is
+		    // time.Kitchen eg 12:04PM or 12:04pm.
+		    string time = 2;
+		    // Number of objects to retain for monthly policy, default value is 10.
+		    int64 retain = 3;
+		    // Number of incremental snapshots to take before taking a full snapshot.
+		    IncrementalCount incremental_count = 4;
+		    // months specify the list months on which schedule needs to be taken.
+		    // If it is empty, the schedule will be taken on every month of the year.
+		    // months will take comma seperated multiple month value.
+		    string months = 5;
+	    }
+
+	    message RelativeMonthlyPolicy {
+		    enum weeklyIndex {
+			    Invalid = 0;
+			    first = 1;
+			    second  = 2;
+			    third = 3;
+			    fourth = 4;
+			    last = 5;
+		    }
+		    // Relative day of relative week, Only one day can be specified.
+		    // For example, sun or mon
+		    string day = 1;
+		    weeklyIndex weekly_index = 2;
+		    // Time, when the policy should be triggered. Expected format is
+		    // time.Kitchen eg 12:04PM or 12:04pm.
+		    string time = 3;
+		    // Number of objects to retain for monthly policy, default value is 10.
+		    int64 retain = 4;
+		    // Number of incremental snapshots to take before taking a full snapshot.
+		    IncrementalCount incremental_count = 5;
+	    }
     }
 }
 
