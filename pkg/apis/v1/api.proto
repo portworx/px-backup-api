@@ -2783,7 +2783,7 @@ message BackupResourceObject {
     // Total count of resources matching filter
     uint64 total_resource_count = 27;
     // list of filtered namespaces
-    repeated string filtered_namespaces = 28;
+    repeated FilteredNamespaceInfo filtered_namespaces = 28;
     oneof sync_type {
         // resources sync status information
         SyncStatusInfo resources_sync_status_info = 29;
@@ -2843,6 +2843,12 @@ message BackupResourceObject {
         string kind = 4;
         string version = 5;
         BackupInfo.StatusInfo status = 6;
+    }
+
+    // Filtered Namespaces along with associated resource types
+    message FilteredNamespaceInfo {
+        string namespace = 1;
+        repeated string resource_types = 2;
     }
 }
 
