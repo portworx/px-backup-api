@@ -2962,15 +2962,6 @@ message RestoreCreateRequest {
             NamespaceFilter namespace_filter = 1;
             VirtualMachineFilter virtual_machine_filter = 2;
         }
-        // filter based on the status.
-        // Need to pass the string value of the status field of resources
-        // For example, {"Success", "Failed"}
-        // default will be {"Success"}, when no value is passed
-        repeated string status = 3;
-        // max objects to fetch
-        uint64 max_objects = 4;
-        // object index from which to start fetching
-        uint64 object_index = 5;
     }
 
     message BackupObjectType {
