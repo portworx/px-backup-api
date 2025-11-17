@@ -5522,7 +5522,7 @@
         "filtered_namespaces": {
           "type": "array",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/BackupResourceObjectFilteredNamespaceInfo"
           },
           "title": "list of filtered namespaces"
         },
@@ -5535,6 +5535,21 @@
           "title": "namespace sync status information"
         }
       }
+    },
+    "BackupResourceObjectFilteredNamespaceInfo": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string"
+        },
+        "resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "Filtered Namespaces along with associated resource types"
     },
     "BackupResourceObjectResourceContainer": {
       "type": "object",
