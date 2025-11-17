@@ -8487,23 +8487,6 @@
         },
         "virtual_machine_filter": {
           "$ref": "#/definitions/VirtualMachineFilter"
-        },
-        "status": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "filter based on the status.\nNeed to pass the string value of the status field of resources\nFor example, {\"Success\", \"Failed\"}\ndefault will be {\"Success\"}, when no value is passed"
-        },
-        "max_objects": {
-          "type": "string",
-          "format": "uint64",
-          "title": "max objects to fetch"
-        },
-        "object_index": {
-          "type": "string",
-          "format": "uint64",
-          "title": "object index from which to start fetching"
         }
       },
       "title": "Filter to apply on resources"
