@@ -311,6 +311,11 @@ func (VolumeResourceOnlyPolicyInfo_VolumeType) EnumDescriptor() ([]byte, []int) 
 	return fileDescriptor_9943feda3d652502, []int{12, 0}
 }
 
+// Usually every weekday is repreated atleast four times in any month and few week days
+// are repeated 5 times. Hence we have given both fourth and last as an option.
+// In Nov 2025, fourth sun != last sun, fourth mon = last mon
+// In case of February in a non-leap year, each week day is repeated exactly 4 times.
+// So, both fourth and last option becomes same. fourth sun = last sun
 type SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicyWeeklyIndex int32
 
 const (
@@ -3138,12 +3143,12 @@ type SchedulePolicyInfo_WeeklyPolicy struct {
 	// Day of the week when the policy should be triggered.
 	// For example, sunday or sun
 	// Multiple days can be configured in the weekly policy. Multiple days can be passed in the day string with comma seperated.
-	// For example, sun, mon, fri
+	// For example, sunday,monday or sun,mon or Sun,Mon or Sunday,Monday
 	Day string `protobuf:"bytes,1,opt,name=day,proto3" json:"day,omitempty"`
 	// Time, when the policy should be triggered. Expected format is
 	// time.Kitchen eg 12:04PM or 12:04pm.
 	Time string `protobuf:"bytes,2,opt,name=time,proto3" json:"time,omitempty"`
-	// Number of objects to retain for weekly policy, default value is 10.
+	// Number of objects to retain for weekly policy, default value is 5.
 	Retain int64 `protobuf:"varint,3,opt,name=retain,proto3" json:"retain,omitempty"`
 	// Number of incremental snapshots to take before taking a full
 	// snapshot.
@@ -3222,21 +3227,17 @@ func (m *SchedulePolicyInfo_WeeklyPolicy) GetBiWeekly() bool {
 }
 
 type SchedulePolicyInfo_MonthlyPolicy struct {
-	// Date of the month when the policy should be triggered. If a given
-	// date
-	// doesn't exist in a month it'll rollover to the next date of the
-	// month.
-	// For example if 31 is specified, it'll trigger on either 1st or 2nd
-	// March
+	// Date of the month when the policy should be triggered. If a given date
+	// doesn't exist in a month it'll rollover to the next date of the month.
+	// For example if 31 is specified, it'll trigger on either 1st or 2nd March
 	// depending on if it is a leap year.
 	Date int64 `protobuf:"varint,1,opt,name=date,proto3" json:"date,omitempty"` // Deprecated: Do not use.
 	// Time, when the policy should be triggered. Expected format is
 	// time.Kitchen eg 12:04PM or 12:04pm.
 	Time string `protobuf:"bytes,2,opt,name=time,proto3" json:"time,omitempty"` // Deprecated: Do not use.
-	// Number of objects to retain for monthly policy, default value is 10.
+	// Number of objects to retain for monthly policy, default value is 12.
 	Retain int64 `protobuf:"varint,3,opt,name=retain,proto3" json:"retain,omitempty"` // Deprecated: Do not use.
-	// Number of incremental snapshots to take before taking a full
-	// snapshot.
+	// Number of incremental snapshots to take before taking a full snapshot.
 	IncrementalCount *SchedulePolicyInfo_IncrementalCount `protobuf:"bytes,4,opt,name=incremental_count,json=incrementalCount,proto3" json:"incremental_count,omitempty"` // Deprecated: Do not use.
 	// Types that are valid to be assigned to MonthlyPolicy:
 	//
@@ -3367,13 +3368,14 @@ type SchedulePolicyInfo_MonthlyPolicy_SelectiveMonthlyPolicy struct {
 	// Time, when the policy should be triggered. Expected format is
 	// time.Kitchen eg 12:04PM or 12:04pm.
 	Time string `protobuf:"bytes,2,opt,name=time,proto3" json:"time,omitempty"`
-	// Number of objects to retain for monthly policy, default value is 10.
+	// Number of objects to retain for monthly policy, default value is 12.
 	Retain int64 `protobuf:"varint,3,opt,name=retain,proto3" json:"retain,omitempty"`
 	// Number of incremental snapshots to take before taking a full snapshot.
 	IncrementalCount *SchedulePolicyInfo_IncrementalCount `protobuf:"bytes,4,opt,name=incremental_count,json=incrementalCount,proto3" json:"incremental_count,omitempty"`
 	// months specify the list months on which schedule needs to be taken.
 	// If it is empty, the schedule will be taken on every month of the year.
 	// months will take comma seperated multiple month value.
+	// For example, jan,feb or Jan,Feb or january,february or January,February
 	Months string `protobuf:"bytes,5,opt,name=months,proto3" json:"months,omitempty"`
 }
 
@@ -3457,7 +3459,7 @@ type SchedulePolicyInfo_MonthlyPolicy_RelativeMonthlyPolicy struct {
 	// Time, when the policy should be triggered. Expected format is
 	// time.Kitchen eg 12:04PM or 12:04pm.
 	Time string `protobuf:"bytes,3,opt,name=time,proto3" json:"time,omitempty"`
-	// Number of objects to retain for monthly policy, default value is 10.
+	// Number of objects to retain for monthly policy, default value is 12.
 	Retain int64 `protobuf:"varint,4,opt,name=retain,proto3" json:"retain,omitempty"`
 	// Number of incremental snapshots to take before taking a full snapshot.
 	IncrementalCount *SchedulePolicyInfo_IncrementalCount `protobuf:"bytes,5,opt,name=incremental_count,json=incrementalCount,proto3" json:"incremental_count,omitempty"`
