@@ -2704,6 +2704,12 @@ message NamespaceFilter {
 message VirtualMachineFilter {
     // Substring or regex pattern to match virtual machine name and include (e.g. "*" for All, "pxb-" or any valid regex)
     string vm_name_pattern = 1;
+    // List of os names to include for filtering
+    repeated string os_name = 2;
+    // List of vms to include for filtering
+    repeated BackupInfo.VirtualMachineInfo include_vms = 3;
+    // List of vms to exclude for filtering
+    repeated BackupInfo.VirtualMachineInfo exclude_vms = 4;
 }
 
 // Request message to detailed backup resources

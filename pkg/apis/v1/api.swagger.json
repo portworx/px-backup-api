@@ -9571,6 +9571,27 @@
         "vm_name_pattern": {
           "type": "string",
           "title": "Substring or regex pattern to match virtual machine name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        },
+        "os_name": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of os names to include for filtering"
+        },
+        "include_vms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupInfoVirtualMachineInfo"
+          },
+          "title": "List of vms to include for filtering"
+        },
+        "exclude_vms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupInfoVirtualMachineInfo"
+          },
+          "title": "List of vms to exclude for filtering"
         }
       }
     },
