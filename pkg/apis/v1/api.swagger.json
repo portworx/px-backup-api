@@ -5522,7 +5522,7 @@
         "filtered_namespaces": {
           "type": "array",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/BackupResourceObjectFilteredNamespaceInfo"
           },
           "title": "list of filtered namespaces"
         },
@@ -5535,6 +5535,21 @@
           "title": "namespace sync status information"
         }
       }
+    },
+    "BackupResourceObjectFilteredNamespaceInfo": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string"
+        },
+        "resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "Filtered Namespaces along with associated resource types"
     },
     "BackupResourceObjectResourceContainer": {
       "type": "object",
@@ -8476,23 +8491,6 @@
         },
         "virtual_machine_filter": {
           "$ref": "#/definitions/VirtualMachineFilter"
-        },
-        "status": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "filter based on the status.\nNeed to pass the string value of the status field of resources\nFor example, {\"Success\", \"Failed\"}\ndefault will be {\"Success\"}, when no value is passed"
-        },
-        "max_objects": {
-          "type": "string",
-          "format": "uint64",
-          "title": "max objects to fetch"
-        },
-        "object_index": {
-          "type": "string",
-          "format": "uint64",
-          "title": "object index from which to start fetching"
         }
       },
       "title": "Filter to apply on resources"
@@ -9573,6 +9571,27 @@
         "vm_name_pattern": {
           "type": "string",
           "title": "Substring or regex pattern to match virtual machine name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        },
+        "os_name": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of os names to include for filtering"
+        },
+        "include_vms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupInfoVirtualMachineInfo"
+          },
+          "title": "List of vms to include for filtering"
+        },
+        "exclude_vms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupInfoVirtualMachineInfo"
+          },
+          "title": "List of vms to exclude for filtering"
         }
       }
     },

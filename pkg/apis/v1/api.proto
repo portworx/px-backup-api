@@ -2704,6 +2704,12 @@ message NamespaceFilter {
 message VirtualMachineFilter {
     // Substring or regex pattern to match virtual machine name and include (e.g. "*" for All, "pxb-" or any valid regex)
     string vm_name_pattern = 1;
+    // List of os names to include for filtering
+    repeated string os_name = 2;
+    // List of vms to include for filtering
+    repeated BackupInfo.VirtualMachineInfo include_vms = 3;
+    // List of vms to exclude for filtering
+    repeated BackupInfo.VirtualMachineInfo exclude_vms = 4;
 }
 
 // Request message to detailed backup resources
@@ -2783,7 +2789,7 @@ message BackupResourceObject {
     // Total count of resources matching filter
     uint64 total_resource_count = 27;
     // list of filtered namespaces
-    repeated string filtered_namespaces = 28;
+    repeated FilteredNamespaceInfo filtered_namespaces = 28;
     oneof sync_type {
         // resources sync status information
         SyncStatusInfo resources_sync_status_info = 29;
@@ -2843,6 +2849,12 @@ message BackupResourceObject {
         string kind = 4;
         string version = 5;
         BackupInfo.StatusInfo status = 6;
+    }
+
+    // Filtered Namespaces along with associated resource types
+    message FilteredNamespaceInfo {
+        string namespace = 1;
+        repeated string resource_types = 2;
     }
 }
 
@@ -2926,15 +2938,6 @@ message RestoreCreateRequest {
             NamespaceFilter namespace_filter = 1;
             VirtualMachineFilter virtual_machine_filter = 2;
         }
-        // filter based on the status.
-        // Need to pass the string value of the status field of resources
-        // For example, {"Success", "Failed"}
-        // default will be {"Success"}, when no value is passed
-        repeated string status = 3;
-        // max objects to fetch
-        uint64 max_objects = 4;
-        // object index from which to start fetching
-        uint64 object_index = 5;
     }
 
     message BackupObjectType {
