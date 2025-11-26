@@ -1379,8 +1379,8 @@ message BackupScheduleUpdateRequest {
     bool skip_vm_auto_exec_rules = 18;
     // option to enable parallel schedule backups.
     bool parallel_backup = 19;
-    // advanced_resource_label_selector is not supported for update; No-op.
-    string advanced_resource_label_selector = 20    [deprecated=true];
+    // advanced_resource_label_selector - older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter
+    string advanced_resource_label_selector = 20;
     // backup object type is all namespace or virtualMachine specific backup
     BackupObjectType backup_object_type = 21;
     // multiple policy reference for filtering
@@ -1407,6 +1407,7 @@ message BackupScheduleUpdateRequest {
     // If the user provides only the name in the schedulePolicyRef, and there are multiple SchedulePolicy objects with the same name,
     // we cannot return an error. Therefore, we require the user to explicitly confirm acceptance of the side effects of UID relaxation.
     bool bulk_uid_check_relaxation = 30;
+    string ns_label_selectors = 31;
 }
 
 // Define BackupScheduleUpdateResponse struct
