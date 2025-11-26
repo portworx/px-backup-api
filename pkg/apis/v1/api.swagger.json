@@ -6065,7 +6065,7 @@
         },
         "advanced_resource_label_selector": {
           "type": "string",
-          "description": "advanced_resource_label_selector is not supported for update; No-op."
+          "title": "advanced_resource_label_selector - older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
         },
         "backup_object_type": {
           "$ref": "#/definitions/BackupObjectType",
@@ -6115,6 +6115,9 @@
         "bulk_uid_check_relaxation": {
           "type": "boolean",
           "description": "bulk_uid_check_relaxation - This flag needs to be set to relax the UID check for bulk update operations.\nIn a bulk operation, the user will pass multiple filter options to select a list of BackupSchedule objects.\nFor example, the user may send a schedulePolicyRef object to filter BackupSchedules that use that SchedulePolicy.\nIf the user provides only the name in the schedulePolicyRef, and there are multiple SchedulePolicy objects with the same name,\nwe cannot return an error. Therefore, we require the user to explicitly confirm acceptance of the side effects of UID relaxation."
+        },
+        "ns_label_selectors": {
+          "type": "string"
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
