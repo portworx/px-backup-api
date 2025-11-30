@@ -1072,6 +1072,9 @@ message RestoreFileInfo {
     string destination_path = 2;
     // True if source path is a directory path
     bool is_dir = 3;
+    // Partition info of the volume where the source file exists, if  the volume is partitioned 
+    // For eg: vda1 or sda14
+    string partition_info = 4;
 }
 message RestoreFileStatusInfo {
     RestoreFileInfo restore_file_info = 1 [ (gogoproto.embed) = true ];

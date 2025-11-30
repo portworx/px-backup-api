@@ -8833,6 +8833,10 @@
         "is_dir": {
           "type": "boolean",
           "title": "True if source path is a directory path"
+        },
+        "partition_info": {
+          "type": "string",
+          "title": "Partition info of the volume where the source file exists, if  the volume is partitioned \nFor eg: vda1 or sda14"
         }
       }
     },
