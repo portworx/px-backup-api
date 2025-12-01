@@ -2946,6 +2946,7 @@ message RestoreCreateRequest {
     // uid or name of cluster
     string cluster = 3;
     // mapping of the namespaces from the backup to which restore should be done
+    // Only one of namespace_mapping, target_namespace_prefix, or use_source_as_target_namespace can be set at a time
     map<string, string> namespace_mapping = 4;
     // replace policy to use if the resource already exists
     ReplacePolicy.Type replace_policy = 5;
@@ -2995,6 +2996,12 @@ message RestoreCreateRequest {
         // Skip VM restart during virtualMachine restore
         bool skip_vm_restart = 2;
     }
+    // when set to true, it will use the source namespace as target namespace for restore done using filter, default is false
+    // Only one of namespace_mapping, target_namespace_prefix, or use_source_as_target_namespace can be set at a time
+    bool use_source_as_target_namespace = 17;
+    // target_namespace_prefix will be used to prefix all the target namespaces
+    // Only one of namespace_mapping, target_namespace_prefix, or use_source_as_target_namespace can be set at a time
+    string target_namespace_prefix = 18;
 }
 
 // Define RestoreCreateResponse struct
