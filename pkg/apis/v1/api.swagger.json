@@ -8629,7 +8629,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "title": "mapping of the namespaces from the backup to which restore should be done"
+          "title": "mapping of the namespaces from the backup to which restore should be done\nOnly one of namespace_mapping, target_namespace_prefix, or use_source_as_target_namespace can be set at a time"
         },
         "replace_policy": {
           "$ref": "#/definitions/ReplacePolicyType",
@@ -8695,6 +8695,14 @@
         "virtual_machine_restore_options": {
           "$ref": "#/definitions/RestoreCreateRequestVirtualMachineRestoreOptions",
           "title": "VirtualMachine Restore Options"
+        },
+        "use_source_as_target_namespace": {
+          "type": "boolean",
+          "title": "when set to true, it will use the source namespace as target namespace for restore done using filter, default is false\nOnly one of namespace_mapping, target_namespace_prefix, or use_source_as_target_namespace can be set at a time"
+        },
+        "target_namespace_prefix": {
+          "type": "string",
+          "title": "target_namespace_prefix will be used to prefix all the target namespaces\nOnly one of namespace_mapping, target_namespace_prefix, or use_source_as_target_namespace can be set at a time"
         }
       },
       "title": "Define RestoreCreateRequest struct"
