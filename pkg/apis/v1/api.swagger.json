@@ -8662,6 +8662,10 @@
         "virtual_machine_restore_options": {
           "$ref": "#/definitions/RestoreInfoVirtualMachineRestoreOptions",
           "title": "VirtualMachine Restore Options"
+        },
+        "filter": {
+          "$ref": "#/definitions/RestoreInfoFilter",
+          "title": "Filter criteria used for this restore (for audit/duplicate restore)"
         }
       },
       "title": "Message for restore info"
@@ -8682,6 +8686,17 @@
         "VirtualMachine"
       ],
       "default": "Invalid"
+    },
+    "RestoreInfoFilter": {
+      "type": "object",
+      "properties": {
+        "namespace_filter": {
+          "$ref": "#/definitions/NamespaceFilter"
+        },
+        "virtual_machine_filter": {
+          "$ref": "#/definitions/VirtualMachineFilter"
+        }
+      }
     },
     "RestoreInfoRestoreResourceState": {
       "type": "object",
