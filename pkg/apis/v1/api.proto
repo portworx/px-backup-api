@@ -1099,6 +1099,16 @@ message RestoreInfo {
         // Skip VM restart during virtualMachine restore
         bool skip_vm_restart = 2;
     }
+
+    // Filter criteria used for this restore (for audit/duplicate restore)
+    Filter filter = 26;
+    
+    message Filter {
+        oneof resource_filter {
+            NamespaceFilter namespace_filter = 1;
+            VirtualMachineFilter virtual_machine_filter = 2;
+        }
+    }
 }
 
 // Message for Restore object which will be stored in Datastore.
