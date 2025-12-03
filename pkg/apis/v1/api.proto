@@ -1062,47 +1062,11 @@ service Health {
     }
 }
 
-message TimeRange {
-    google.protobuf.Timestamp start_time = 1;
-    google.protobuf.Timestamp end_time = 2;
-}
-
-message SortOption {
-    // field by which sorting will performed
-    message SortByType {
-        enum Type {
-            Invalid = 0;
-            CreationTimestamp = 1;
-            Name = 2;
-            ClusterName = 3;
-            Size = 4;
-            RestoreBackupName = 5;
-            LastUpdateTimestamp = 6;
-        }
-        // Name of the field by which sort to be performed
-        Type type = 1;
-    }
-    // Order of sorting
-    message SortOrderType {
-        // Sorting order type
-        enum Type {
-            Invalid = 0;
-            Ascending = 1;
-            Descending = -1;
-        }
-        // Order of sorting
-        Type type = 1;
-    }
-    SortByType sortBy = 1;
-    SortOrderType sortOrder = 2;
-}
-
 message VolumeResourceOnlyPolicyEnumerateOptions {
+    // Optional arguments for enumeration
     CommonEnumerateOptions generic_enumerate_options = 1;
-    // Add sorting support for VRO list API
-    SortOption sort_option = 2;
     // Add volume type filtering support for VRO list API
-    repeated VolumeResourceOnlyPolicyInfo.VolumeType volume_types = 3;
+    repeated VolumeResourceOnlyPolicyInfo.VolumeType volume_types = 2;
 }
 message EnumerateOptions {
     // label selectors for the object for filtering
@@ -1922,11 +1886,15 @@ message CloudCredentialUpdateResponse {}
 message CloudCredentialEnumerateRequest {
     string org_id = 1;
     bool include_secrets = 2;
+    // Optional arguments for enumeration
+    CommonEnumerateOptions enumerate_options = 3;
 }
 
 // Define CloudCredentialEnumerateResponse struct
 message CloudCredentialEnumerateResponse {
     repeated CloudCredentialObject cloud_credentials = 1;
+    uint64 total_count = 2;
+    bool complete = 3;
 }
 
 // Define CloudCredentialInspectRequest struct
@@ -2336,11 +2304,16 @@ message BackupLocationEnumerateRequest {
     // If true, include backuplocation that are in ValidationInProgress state as
     // well
     bool include_validation_state = 6;
+    // Optional arguments for enumeration
+    CommonEnumerateOptions enumerate_options = 7;
+
 }
 
 // Define BackupLocationEnumerateResponse struct
 message BackupLocationEnumerateResponse {
     repeated BackupLocationObject backup_locations = 1;
+    uint64 total_count = 2;
+    bool complete = 3;
 }
 
 // Define BackupLocationInspectRequest struct
