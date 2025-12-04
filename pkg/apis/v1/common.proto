@@ -193,6 +193,41 @@ message ObjectRef {
     string uid = 2;
 }
 
+message TimeRange {
+  google.protobuf.Timestamp start_time = 1;
+  google.protobuf.Timestamp end_time = 2;
+}
+
+message SortOption {
+  // field by which sorting will performed
+  message SortByType {
+    enum Type {
+      Invalid = 0;
+      CreationTimestamp = 1;
+      Name = 2;
+      ClusterName = 3;
+      Size = 4;
+      RestoreBackupName = 5;
+      LastUpdateTimestamp = 6;
+    }
+    // Name of the field by which sort to be performed
+    Type type = 1;
+  }
+  // Order of sorting
+  message SortOrderType {
+    // Sorting order type
+    enum Type {
+      Invalid = 0;
+      Ascending = 1;
+      Descending = -1;
+    }
+    // Order of sorting
+    Type type = 1;
+  }
+  SortByType sortBy = 1;
+  SortOrderType sortOrder = 2;
+}
+
 message CommonEnumerateOptions {
     // label selectors for the object for filtering
     map<string, string> labels = 1;
@@ -202,5 +237,8 @@ message CommonEnumerateOptions {
     // will be returned
     string name_filter = 3;
     uint64 object_index = 4;
-
+    // Add sorting support for VRO list API
+    SortOption sort_option = 5;
+    // Time range for which to return objects
+    TimeRange time_range = 6;
 }

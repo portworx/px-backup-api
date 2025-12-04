@@ -652,6 +652,72 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "enumerate_options.max_objects",
+            "description": "max objects to fetch.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.name_filter",
+            "description": "Filter to use for name of objects. Any object that contains the filter\nwill be returned.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.object_index",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortBy.type",
+            "description": "Name of the field by which sort to be performed.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "CreationTimestamp",
+              "Name",
+              "ClusterName",
+              "Size",
+              "RestoreBackupName",
+              "LastUpdateTimestamp"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortOrder.type",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descending"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.time_range.start_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "enumerate_options.time_range.end_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
           }
         ],
         "tags": [
@@ -1324,6 +1390,72 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "enumerate_options.max_objects",
+            "description": "max objects to fetch.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.name_filter",
+            "description": "Filter to use for name of objects. Any object that contains the filter\nwill be returned.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.object_index",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortBy.type",
+            "description": "Name of the field by which sort to be performed.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "CreationTimestamp",
+              "Name",
+              "ClusterName",
+              "Size",
+              "RestoreBackupName",
+              "LastUpdateTimestamp"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortOrder.type",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descending"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.time_range.start_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "enumerate_options.time_range.end_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
           }
         ],
         "tags": [
@@ -4173,7 +4305,7 @@
             "format": "uint64"
           },
           {
-            "name": "enumerate_options.sort_option.sortBy.type",
+            "name": "enumerate_options.generic_enumerate_options.sort_option.sortBy.type",
             "description": "Name of the field by which sort to be performed.",
             "in": "query",
             "required": false,
@@ -4190,7 +4322,7 @@
             "default": "Invalid"
           },
           {
-            "name": "enumerate_options.sort_option.sortOrder.type",
+            "name": "enumerate_options.generic_enumerate_options.sort_option.sortOrder.type",
             "description": "Order of sorting.",
             "in": "query",
             "required": false,
@@ -4201,6 +4333,20 @@
               "Descending"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.generic_enumerate_options.time_range.start_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "enumerate_options.generic_enumerate_options.time_range.end_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
           },
           {
             "name": "enumerate_options.volume_types",
@@ -5140,6 +5286,13 @@
           "items": {
             "$ref": "#/definitions/BackupLocationObject"
           }
+        },
+        "total_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "complete": {
+          "type": "boolean"
         }
       },
       "title": "Define BackupLocationEnumerateResponse struct"
@@ -6501,6 +6654,13 @@
           "items": {
             "$ref": "#/definitions/CloudCredentialObject"
           }
+        },
+        "total_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "complete": {
+          "type": "boolean"
         }
       },
       "title": "Define CloudCredentialEnumerateResponse struct"
@@ -6937,6 +7097,14 @@
         "object_index": {
           "type": "string",
           "format": "uint64"
+        },
+        "sort_option": {
+          "$ref": "#/definitions/SortOption",
+          "title": "Add sorting support for VRO list API"
+        },
+        "time_range": {
+          "$ref": "#/definitions/TimeRange",
+          "title": "Time range for which to return objects"
         }
       }
     },
@@ -9655,11 +9823,8 @@
       "type": "object",
       "properties": {
         "generic_enumerate_options": {
-          "$ref": "#/definitions/CommonEnumerateOptions"
-        },
-        "sort_option": {
-          "$ref": "#/definitions/SortOption",
-          "title": "Add sorting support for VRO list API"
+          "$ref": "#/definitions/CommonEnumerateOptions",
+          "title": "Optional arguments for enumeration"
         },
         "volume_types": {
           "type": "array",

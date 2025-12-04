@@ -150,6 +150,75 @@ func (Ownership_AccessType) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_b12f1cda86a0f641, []int{4, 0}
 }
 
+type SortOption_SortByType_Type int32
+
+const (
+	SortOption_SortByType_Invalid             SortOption_SortByType_Type = 0
+	SortOption_SortByType_CreationTimestamp   SortOption_SortByType_Type = 1
+	SortOption_SortByType_Name                SortOption_SortByType_Type = 2
+	SortOption_SortByType_ClusterName         SortOption_SortByType_Type = 3
+	SortOption_SortByType_Size                SortOption_SortByType_Type = 4
+	SortOption_SortByType_RestoreBackupName   SortOption_SortByType_Type = 5
+	SortOption_SortByType_LastUpdateTimestamp SortOption_SortByType_Type = 6
+)
+
+var SortOption_SortByType_Type_name = map[int32]string{
+	0: "Invalid",
+	1: "CreationTimestamp",
+	2: "Name",
+	3: "ClusterName",
+	4: "Size",
+	5: "RestoreBackupName",
+	6: "LastUpdateTimestamp",
+}
+
+var SortOption_SortByType_Type_value = map[string]int32{
+	"Invalid":             0,
+	"CreationTimestamp":   1,
+	"Name":                2,
+	"ClusterName":         3,
+	"Size":                4,
+	"RestoreBackupName":   5,
+	"LastUpdateTimestamp": 6,
+}
+
+func (x SortOption_SortByType_Type) String() string {
+	return proto.EnumName(SortOption_SortByType_Type_name, int32(x))
+}
+
+func (SortOption_SortByType_Type) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_b12f1cda86a0f641, []int{7, 0, 0}
+}
+
+// Sorting order type
+type SortOption_SortOrderType_Type int32
+
+const (
+	SortOption_SortOrderType_Invalid    SortOption_SortOrderType_Type = 0
+	SortOption_SortOrderType_Ascending  SortOption_SortOrderType_Type = 1
+	SortOption_SortOrderType_Descending SortOption_SortOrderType_Type = -1
+)
+
+var SortOption_SortOrderType_Type_name = map[int32]string{
+	0:  "Invalid",
+	1:  "Ascending",
+	-1: "Descending",
+}
+
+var SortOption_SortOrderType_Type_value = map[string]int32{
+	"Invalid":    0,
+	"Ascending":  1,
+	"Descending": -1,
+}
+
+func (x SortOption_SortOrderType_Type) String() string {
+	return proto.EnumName(SortOption_SortOrderType_Type_name, int32(x))
+}
+
+func (SortOption_SortOrderType_Type) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_b12f1cda86a0f641, []int{7, 1, 0}
+}
+
 type Metadata struct {
 	// name of the object
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
@@ -800,6 +869,202 @@ func (m *ObjectRef) GetUid() string {
 	return ""
 }
 
+type TimeRange struct {
+	StartTime *types.Timestamp `protobuf:"bytes,1,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+	EndTime   *types.Timestamp `protobuf:"bytes,2,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
+}
+
+func (m *TimeRange) Reset()         { *m = TimeRange{} }
+func (m *TimeRange) String() string { return proto.CompactTextString(m) }
+func (*TimeRange) ProtoMessage()    {}
+func (*TimeRange) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b12f1cda86a0f641, []int{6}
+}
+func (m *TimeRange) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *TimeRange) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_TimeRange.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *TimeRange) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TimeRange.Merge(m, src)
+}
+func (m *TimeRange) XXX_Size() int {
+	return m.Size()
+}
+func (m *TimeRange) XXX_DiscardUnknown() {
+	xxx_messageInfo_TimeRange.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TimeRange proto.InternalMessageInfo
+
+func (m *TimeRange) GetStartTime() *types.Timestamp {
+	if m != nil {
+		return m.StartTime
+	}
+	return nil
+}
+
+func (m *TimeRange) GetEndTime() *types.Timestamp {
+	if m != nil {
+		return m.EndTime
+	}
+	return nil
+}
+
+type SortOption struct {
+	SortBy    *SortOption_SortByType    `protobuf:"bytes,1,opt,name=sortBy,proto3" json:"sortBy,omitempty"`
+	SortOrder *SortOption_SortOrderType `protobuf:"bytes,2,opt,name=sortOrder,proto3" json:"sortOrder,omitempty"`
+}
+
+func (m *SortOption) Reset()         { *m = SortOption{} }
+func (m *SortOption) String() string { return proto.CompactTextString(m) }
+func (*SortOption) ProtoMessage()    {}
+func (*SortOption) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b12f1cda86a0f641, []int{7}
+}
+func (m *SortOption) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *SortOption) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_SortOption.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *SortOption) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SortOption.Merge(m, src)
+}
+func (m *SortOption) XXX_Size() int {
+	return m.Size()
+}
+func (m *SortOption) XXX_DiscardUnknown() {
+	xxx_messageInfo_SortOption.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SortOption proto.InternalMessageInfo
+
+func (m *SortOption) GetSortBy() *SortOption_SortByType {
+	if m != nil {
+		return m.SortBy
+	}
+	return nil
+}
+
+func (m *SortOption) GetSortOrder() *SortOption_SortOrderType {
+	if m != nil {
+		return m.SortOrder
+	}
+	return nil
+}
+
+// field by which sorting will performed
+type SortOption_SortByType struct {
+	// Name of the field by which sort to be performed
+	Type SortOption_SortByType_Type `protobuf:"varint,1,opt,name=type,proto3,enum=SortOption_SortByType_Type" json:"type,omitempty"`
+}
+
+func (m *SortOption_SortByType) Reset()         { *m = SortOption_SortByType{} }
+func (m *SortOption_SortByType) String() string { return proto.CompactTextString(m) }
+func (*SortOption_SortByType) ProtoMessage()    {}
+func (*SortOption_SortByType) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b12f1cda86a0f641, []int{7, 0}
+}
+func (m *SortOption_SortByType) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *SortOption_SortByType) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_SortOption_SortByType.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *SortOption_SortByType) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SortOption_SortByType.Merge(m, src)
+}
+func (m *SortOption_SortByType) XXX_Size() int {
+	return m.Size()
+}
+func (m *SortOption_SortByType) XXX_DiscardUnknown() {
+	xxx_messageInfo_SortOption_SortByType.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SortOption_SortByType proto.InternalMessageInfo
+
+func (m *SortOption_SortByType) GetType() SortOption_SortByType_Type {
+	if m != nil {
+		return m.Type
+	}
+	return SortOption_SortByType_Invalid
+}
+
+// Order of sorting
+type SortOption_SortOrderType struct {
+	// Order of sorting
+	Type SortOption_SortOrderType_Type `protobuf:"varint,1,opt,name=type,proto3,enum=SortOption_SortOrderType_Type" json:"type,omitempty"`
+}
+
+func (m *SortOption_SortOrderType) Reset()         { *m = SortOption_SortOrderType{} }
+func (m *SortOption_SortOrderType) String() string { return proto.CompactTextString(m) }
+func (*SortOption_SortOrderType) ProtoMessage()    {}
+func (*SortOption_SortOrderType) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b12f1cda86a0f641, []int{7, 1}
+}
+func (m *SortOption_SortOrderType) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *SortOption_SortOrderType) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_SortOption_SortOrderType.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *SortOption_SortOrderType) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SortOption_SortOrderType.Merge(m, src)
+}
+func (m *SortOption_SortOrderType) XXX_Size() int {
+	return m.Size()
+}
+func (m *SortOption_SortOrderType) XXX_DiscardUnknown() {
+	xxx_messageInfo_SortOption_SortOrderType.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SortOption_SortOrderType proto.InternalMessageInfo
+
+func (m *SortOption_SortOrderType) GetType() SortOption_SortOrderType_Type {
+	if m != nil {
+		return m.Type
+	}
+	return SortOption_SortOrderType_Invalid
+}
+
 type CommonEnumerateOptions struct {
 	// label selectors for the object for filtering
 	Labels map[string]string `protobuf:"bytes,1,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
@@ -809,13 +1074,17 @@ type CommonEnumerateOptions struct {
 	// will be returned
 	NameFilter  string `protobuf:"bytes,3,opt,name=name_filter,json=nameFilter,proto3" json:"name_filter,omitempty"`
 	ObjectIndex uint64 `protobuf:"varint,4,opt,name=object_index,json=objectIndex,proto3" json:"object_index,omitempty"`
+	// Add sorting support for VRO list API
+	SortOption *SortOption `protobuf:"bytes,5,opt,name=sort_option,json=sortOption,proto3" json:"sort_option,omitempty"`
+	// Time range for which to return objects
+	TimeRange *TimeRange `protobuf:"bytes,6,opt,name=time_range,json=timeRange,proto3" json:"time_range,omitempty"`
 }
 
 func (m *CommonEnumerateOptions) Reset()         { *m = CommonEnumerateOptions{} }
 func (m *CommonEnumerateOptions) String() string { return proto.CompactTextString(m) }
 func (*CommonEnumerateOptions) ProtoMessage()    {}
 func (*CommonEnumerateOptions) Descriptor() ([]byte, []int) {
-	return fileDescriptor_b12f1cda86a0f641, []int{6}
+	return fileDescriptor_b12f1cda86a0f641, []int{8}
 }
 func (m *CommonEnumerateOptions) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -872,10 +1141,26 @@ func (m *CommonEnumerateOptions) GetObjectIndex() uint64 {
 	return 0
 }
 
+func (m *CommonEnumerateOptions) GetSortOption() *SortOption {
+	if m != nil {
+		return m.SortOption
+	}
+	return nil
+}
+
+func (m *CommonEnumerateOptions) GetTimeRange() *TimeRange {
+	if m != nil {
+		return m.TimeRange
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterEnum("LicenseType", LicenseType_name, LicenseType_value)
 	proto.RegisterEnum("BackupShare_AccessType", BackupShare_AccessType_name, BackupShare_AccessType_value)
 	proto.RegisterEnum("Ownership_AccessType", Ownership_AccessType_name, Ownership_AccessType_value)
+	proto.RegisterEnum("SortOption_SortByType_Type", SortOption_SortByType_Type_name, SortOption_SortByType_Type_value)
+	proto.RegisterEnum("SortOption_SortOrderType_Type", SortOption_SortOrderType_Type_name, SortOption_SortOrderType_Type_value)
 	proto.RegisterType((*Metadata)(nil), "Metadata")
 	proto.RegisterMapType((map[string]string)(nil), "Metadata.LabelsEntry")
 	proto.RegisterType((*TlsConfig)(nil), "TlsConfig")
@@ -887,6 +1172,10 @@ func init() {
 	proto.RegisterType((*Ownership_AccessConfig)(nil), "Ownership.AccessConfig")
 	proto.RegisterType((*Ownership_PublicAccessControl)(nil), "Ownership.PublicAccessControl")
 	proto.RegisterType((*ObjectRef)(nil), "ObjectRef")
+	proto.RegisterType((*TimeRange)(nil), "TimeRange")
+	proto.RegisterType((*SortOption)(nil), "SortOption")
+	proto.RegisterType((*SortOption_SortByType)(nil), "SortOption.SortByType")
+	proto.RegisterType((*SortOption_SortOrderType)(nil), "SortOption.SortOrderType")
 	proto.RegisterType((*CommonEnumerateOptions)(nil), "CommonEnumerateOptions")
 	proto.RegisterMapType((map[string]string)(nil), "CommonEnumerateOptions.LabelsEntry")
 }
@@ -894,71 +1183,86 @@ func init() {
 func init() { proto.RegisterFile("pkg/apis/v1/common.proto", fileDescriptor_b12f1cda86a0f641) }
 
 var fileDescriptor_b12f1cda86a0f641 = []byte{
-	// 1017 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x55, 0xcf, 0x6f, 0xe3, 0x44,
-	0x14, 0xae, 0xe3, 0x24, 0x8d, 0x5f, 0xba, 0xc5, 0x9a, 0xa5, 0xd4, 0x04, 0x48, 0x4a, 0xb8, 0x74,
-	0x41, 0x75, 0xd4, 0x2e, 0x02, 0xb6, 0x2b, 0x04, 0x49, 0x68, 0x57, 0x95, 0xb6, 0xea, 0xca, 0xe9,
-	0x52, 0x89, 0x4b, 0x34, 0xb1, 0xa7, 0xee, 0x50, 0xdb, 0x63, 0x8d, 0xc7, 0xdd, 0xe6, 0xbf, 0xe0,
-	0x82, 0xf8, 0x0b, 0x90, 0xf8, 0x13, 0xb8, 0x73, 0xe1, 0xb8, 0x37, 0x38, 0x55, 0xd0, 0xde, 0x7a,
-	0x44, 0x42, 0xe2, 0x82, 0x84, 0x66, 0xec, 0xe6, 0x47, 0x37, 0x6d, 0x91, 0xf6, 0x36, 0xf3, 0xe6,
-	0xfb, 0xde, 0x7c, 0xf3, 0xbe, 0xf7, 0x6c, 0xb0, 0xe2, 0x63, 0xbf, 0x85, 0x63, 0x9a, 0xb4, 0x4e,
-	0xd6, 0x5b, 0x2e, 0x0b, 0x43, 0x16, 0xd9, 0x31, 0x67, 0x82, 0xd5, 0x1a, 0x3e, 0x63, 0x7e, 0x40,
-	0x5a, 0x6a, 0x37, 0x48, 0x0f, 0x5b, 0x82, 0x86, 0x24, 0x11, 0x38, 0x8c, 0x73, 0xc0, 0x9a, 0x4f,
-	0xc5, 0x51, 0x3a, 0xb0, 0x5d, 0x16, 0xb6, 0x7c, 0xe6, 0xb3, 0x31, 0x52, 0xee, 0xd4, 0x46, 0xad,
-	0x32, 0x78, 0xf3, 0x37, 0x1d, 0x2a, 0xbb, 0x44, 0x60, 0x0f, 0x0b, 0x8c, 0x10, 0x14, 0x23, 0x1c,
-	0x12, 0x4b, 0x5b, 0xd1, 0x56, 0x0d, 0x47, 0xad, 0x91, 0x09, 0x7a, 0x4a, 0x3d, 0xab, 0xa0, 0x42,
-	0x72, 0x89, 0xde, 0x84, 0x12, 0x7b, 0x11, 0x11, 0x6e, 0xe9, 0x2a, 0x96, 0x6d, 0xd0, 0x12, 0x94,
-	0x19, 0xf7, 0xfb, 0xd4, 0xb3, 0x8a, 0x79, 0x98, 0xfb, 0x3b, 0x1e, 0x7a, 0x0c, 0x55, 0x97, 0x13,
-	0x2c, 0x48, 0x5f, 0x0a, 0xb5, 0x4a, 0x2b, 0xda, 0x6a, 0x75, 0xa3, 0x66, 0x67, 0xaf, 0xb0, 0xaf,
-	0xb4, 0xd9, 0xfb, 0x57, 0xaf, 0x70, 0x20, 0x83, 0xcb, 0x00, 0xfa, 0x0a, 0xcc, 0x00, 0x27, 0xa2,
-	0x9f, 0xc6, 0xde, 0x28, 0x43, 0xf9, 0xce, 0x0c, 0x8b, 0x92, 0xf3, 0x5c, 0x51, 0x54, 0x96, 0x35,
-	0x28, 0x07, 0x78, 0x40, 0x82, 0xc4, 0x9a, 0x5f, 0xd1, 0x57, 0xab, 0x1b, 0x4b, 0xf6, 0xd5, 0x83,
-	0xed, 0xa7, 0x2a, 0xbe, 0x15, 0x09, 0x3e, 0x74, 0x72, 0x10, 0xfa, 0x08, 0xd0, 0x84, 0xe2, 0x3e,
-	0x8d, 0xfa, 0x09, 0x71, 0xad, 0xca, 0x8a, 0xb6, 0xaa, 0x3b, 0x6f, 0x8c, 0xc5, 0xed, 0x44, 0x3d,
-	0xe2, 0xa2, 0x55, 0x30, 0xd4, 0xf3, 0x93, 0x23, 0x1a, 0x5b, 0x86, 0x92, 0x06, 0xf6, 0xde, 0x55,
-	0xc4, 0x19, 0x1f, 0xa2, 0x8f, 0x61, 0xf9, 0xfa, 0x5b, 0xae, 0x72, 0x83, 0xca, 0x7d, 0x7f, 0x5a,
-	0xb6, 0xca, 0x5f, 0x7b, 0x04, 0xd5, 0x09, 0x8d, 0xd2, 0x8c, 0x63, 0x32, 0xcc, 0xfd, 0x91, 0x4b,
-	0x69, 0xc6, 0x09, 0x0e, 0x52, 0x92, 0x1b, 0x94, 0x6d, 0x36, 0x0b, 0x9f, 0x69, 0xcd, 0x5f, 0x34,
-	0x30, 0xf6, 0x83, 0xa4, 0xcb, 0xa2, 0x43, 0xea, 0xa3, 0x4d, 0x30, 0x5c, 0xc2, 0x45, 0xff, 0x90,
-	0x06, 0xb9, 0xbf, 0x9d, 0xf7, 0x2e, 0xcf, 0x1a, 0x15, 0x19, 0x94, 0xb1, 0xbf, 0xce, 0x1a, 0xf7,
-	0x12, 0xe2, 0xa6, 0x9c, 0x6c, 0x36, 0x05, 0x4f, 0x49, 0xd3, 0x51, 0x47, 0xdb, 0x34, 0x20, 0xe8,
-	0x53, 0xa8, 0x1c, 0x93, 0x61, 0x46, 0x55, 0xd7, 0x74, 0xde, 0xbd, 0x3c, 0x6b, 0xcc, 0x1f, 0x93,
-	0xe1, 0x6c, 0xa6, 0x3c, 0x51, 0xc4, 0x36, 0x2c, 0xb8, 0xb8, 0x3f, 0xbe, 0x57, 0x35, 0x4c, 0xa7,
-	0x71, 0x79, 0xd6, 0x00, 0x17, 0xdf, 0x7c, 0x33, 0xb8, 0xb8, 0x9b, 0xdf, 0xdd, 0xfc, 0x57, 0x83,
-	0xc5, 0xae, 0x2a, 0xfa, 0xad, 0x5d, 0x3a, 0xee, 0xbe, 0xc2, 0x64, 0xf7, 0xcd, 0x6e, 0xd5, 0x87,
-	0xa3, 0x86, 0x28, 0xaa, 0x86, 0x78, 0xc7, 0x9e, 0xbe, 0x61, 0x66, 0x5b, 0x4c, 0x39, 0x5d, 0xba,
-	0xcd, 0xe9, 0x7c, 0x62, 0xca, 0xa3, 0x89, 0x79, 0x1d, 0x17, 0x7f, 0x28, 0x40, 0xb5, 0x83, 0xdd,
-	0xe3, 0x34, 0xee, 0x1d, 0x61, 0x4e, 0xd0, 0x3a, 0x94, 0x7d, 0xce, 0xd2, 0x38, 0xb1, 0x0a, 0x4a,
-	0xfb, 0xdb, 0xf6, 0xc4, 0xa9, 0xdd, 0x76, 0x5d, 0x92, 0xe4, 0x96, 0x3b, 0x39, 0x10, 0x7d, 0x01,
-	0xf7, 0x5c, 0x16, 0x04, 0x78, 0xc0, 0x38, 0x16, 0x8c, 0x27, 0x96, 0x7e, 0x17, 0x73, 0x1a, 0x5f,
-	0xdb, 0x83, 0x85, 0xc9, 0x63, 0xb4, 0x08, 0x05, 0xea, 0xe5, 0xf2, 0x0b, 0xd4, 0x43, 0x2d, 0x28,
-	0x63, 0x75, 0xae, 0xe4, 0x2f, 0x6e, 0x2c, 0xcf, 0xc8, 0xbc, 0x3f, 0x8c, 0x89, 0x93, 0xc3, 0x9a,
-	0x5d, 0x80, 0x71, 0x14, 0x55, 0x61, 0x7e, 0x27, 0x3a, 0xc1, 0x01, 0xf5, 0xcc, 0x39, 0x54, 0x81,
-	0xe2, 0xd7, 0x94, 0xbc, 0x30, 0x35, 0xb4, 0x08, 0xe0, 0x90, 0x44, 0x30, 0x8e, 0x07, 0x01, 0x31,
-	0x0b, 0x72, 0xbf, 0x9d, 0x06, 0x41, 0x46, 0x34, 0xf5, 0xe6, 0xf7, 0x3a, 0x18, 0xa3, 0xfa, 0x8f,
-	0x9d, 0xd6, 0x26, 0x9d, 0x6e, 0x5d, 0xab, 0xd6, 0xf2, 0xd8, 0xb1, 0xd9, 0xb5, 0xfa, 0x7c, 0x76,
-	0xad, 0x6e, 0xe4, 0x4d, 0xa3, 0xd1, 0x27, 0x50, 0x8e, 0xd3, 0x41, 0x40, 0x5d, 0xf5, 0x11, 0xac,
-	0x6e, 0xd4, 0x27, 0x78, 0xcf, 0xd4, 0xc1, 0x88, 0x2d, 0x38, 0x0b, 0x9c, 0x1c, 0x5d, 0xdb, 0xbd,
-	0xa3, 0xc2, 0x6b, 0xd7, 0x2a, 0xbc, 0xf4, 0x8a, 0x9e, 0xc9, 0xfa, 0xd6, 0xbe, 0x84, 0xfb, 0x33,
-	0x6e, 0x43, 0x0f, 0xa0, 0x28, 0x86, 0x71, 0x36, 0x38, 0x37, 0xe6, 0x50, 0x90, 0xe6, 0xa3, 0x5b,
-	0x1d, 0x72, 0x08, 0xf6, 0x4c, 0x0d, 0x19, 0x50, 0x3a, 0xe0, 0x54, 0x48, 0x73, 0x0c, 0x28, 0xb5,
-	0xbd, 0x90, 0x46, 0xa6, 0xde, 0x5c, 0x07, 0x63, 0x6f, 0xf0, 0x2d, 0x71, 0x85, 0x43, 0x0e, 0xff,
-	0xdf, 0x1f, 0xa5, 0xf9, 0xb7, 0x06, 0x6f, 0x75, 0xd5, 0x5f, 0x6e, 0x2b, 0x4a, 0x43, 0xc2, 0xb1,
-	0x20, 0x7b, 0xb1, 0xa0, 0x2c, 0x4a, 0xd0, 0xe3, 0xd1, 0xac, 0x6a, 0xca, 0x89, 0x0f, 0xec, 0xd9,
-	0xc0, 0x99, 0x33, 0xdb, 0x80, 0x6a, 0x88, 0x4f, 0xfb, 0x4c, 0xc9, 0xc9, 0x6a, 0x57, 0x74, 0x20,
-	0xc4, 0xa7, 0x99, 0x40, 0x05, 0x90, 0x92, 0xe4, 0xd7, 0x49, 0x8c, 0xbe, 0x12, 0x20, 0x43, 0xdb,
-	0x2a, 0x82, 0xde, 0x87, 0x85, 0x8c, 0xdd, 0xa7, 0x91, 0x47, 0x4e, 0x95, 0xad, 0x45, 0xa7, 0x9a,
-	0xc5, 0x76, 0x64, 0xe8, 0x35, 0x86, 0xfb, 0xc3, 0x1f, 0x35, 0xa8, 0x3e, 0xa5, 0x2e, 0x89, 0x12,
-	0xf2, 0x6a, 0x9d, 0x0d, 0x28, 0xed, 0x73, 0x8a, 0x83, 0x6c, 0x14, 0xb6, 0x22, 0x41, 0x78, 0xcc,
-	0x69, 0x92, 0x8f, 0xc2, 0xf3, 0x04, 0xfb, 0xa4, 0x83, 0x13, 0xe2, 0x99, 0x3a, 0x9a, 0x07, 0x7d,
-	0xa7, 0xb3, 0x6b, 0x16, 0xe5, 0xa2, 0x7d, 0xd0, 0x33, 0x4b, 0x72, 0xf1, 0xa4, 0xfb, 0xcc, 0x2c,
-	0xcb, 0x94, 0x1d, 0x8c, 0x93, 0x9e, 0xf0, 0xcc, 0x79, 0xb4, 0x0c, 0xf7, 0xc7, 0xbc, 0x36, 0xe5,
-	0x4f, 0x70, 0x1c, 0x13, 0xcf, 0xac, 0x20, 0x13, 0x16, 0x3a, 0x18, 0xf7, 0xb6, 0x39, 0x21, 0x21,
-	0x4d, 0x43, 0xd3, 0x90, 0xbc, 0xf6, 0x41, 0xaf, 0x87, 0x71, 0xcf, 0x84, 0xce, 0x83, 0x7f, 0xfe,
-	0xac, 0x6b, 0x3f, 0x9d, 0xd7, 0xb5, 0x9f, 0xcf, 0xeb, 0xda, 0xaf, 0xe7, 0x75, 0xed, 0xe5, 0x79,
-	0x5d, 0xfb, 0xe3, 0xbc, 0xae, 0x7d, 0x77, 0x51, 0x9f, 0x7b, 0x79, 0x51, 0x9f, 0xfb, 0xfd, 0xa2,
-	0x3e, 0xf7, 0x8d, 0x8e, 0x63, 0x3a, 0x28, 0xab, 0x1f, 0xf2, 0xc3, 0xff, 0x02, 0x00, 0x00, 0xff,
-	0xff, 0x0d, 0xc6, 0x22, 0xbd, 0xc2, 0x08, 0x00, 0x00,
+	// 1263 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x56, 0xcf, 0x6f, 0x1b, 0xc5,
+	0x17, 0xcf, 0x7a, 0x6d, 0xc7, 0xfb, 0x36, 0x49, 0xf7, 0x3b, 0xfd, 0xa6, 0x71, 0x5d, 0xb0, 0x83,
+	0xb9, 0xa4, 0x40, 0xd7, 0x6a, 0x0a, 0x94, 0xb6, 0x42, 0x60, 0xbb, 0x4d, 0x15, 0xa9, 0x25, 0xd5,
+	0x3a, 0xa5, 0x12, 0x17, 0x6b, 0xbc, 0x3b, 0xd9, 0x0e, 0xd9, 0xdd, 0x59, 0xcd, 0xce, 0xb6, 0x35,
+	0x12, 0x82, 0x3f, 0x81, 0x0b, 0xe2, 0x2f, 0x40, 0xe2, 0x4f, 0x80, 0x0b, 0x17, 0x2e, 0x9c, 0x50,
+	0x6f, 0x70, 0x8a, 0x20, 0xbd, 0xf5, 0xc8, 0x89, 0x0b, 0x02, 0xcd, 0xec, 0xfa, 0x57, 0xea, 0x24,
+	0x48, 0xdd, 0xd3, 0xcc, 0xfb, 0xfd, 0xde, 0xe7, 0xbd, 0x37, 0x0b, 0xd5, 0x78, 0xdf, 0x6f, 0xe1,
+	0x98, 0x26, 0xad, 0x47, 0x97, 0x5b, 0x2e, 0x0b, 0x43, 0x16, 0xd9, 0x31, 0x67, 0x82, 0xd5, 0x1a,
+	0x3e, 0x63, 0x7e, 0x40, 0x5a, 0xea, 0x36, 0x48, 0xf7, 0x5a, 0x82, 0x86, 0x24, 0x11, 0x38, 0x8c,
+	0x73, 0x81, 0x4b, 0x3e, 0x15, 0x0f, 0xd3, 0x81, 0xed, 0xb2, 0xb0, 0xe5, 0x33, 0x9f, 0x4d, 0x24,
+	0xe5, 0x4d, 0x5d, 0xd4, 0x29, 0x13, 0x6f, 0xfe, 0xaa, 0x43, 0xe5, 0x2e, 0x11, 0xd8, 0xc3, 0x02,
+	0x23, 0x04, 0xc5, 0x08, 0x87, 0xa4, 0xaa, 0xad, 0x6b, 0x1b, 0x86, 0xa3, 0xce, 0xc8, 0x02, 0x3d,
+	0xa5, 0x5e, 0xb5, 0xa0, 0x48, 0xf2, 0x88, 0xfe, 0x0f, 0x25, 0xf6, 0x38, 0x22, 0xbc, 0xaa, 0x2b,
+	0x5a, 0x76, 0x41, 0xab, 0x50, 0x66, 0xdc, 0xef, 0x53, 0xaf, 0x5a, 0xcc, 0xc9, 0xdc, 0xdf, 0xf6,
+	0xd0, 0x0d, 0x30, 0x5d, 0x4e, 0xb0, 0x20, 0x7d, 0x19, 0x68, 0xb5, 0xb4, 0xae, 0x6d, 0x98, 0x9b,
+	0x35, 0x3b, 0xcb, 0xc2, 0x1e, 0xc5, 0x66, 0xef, 0x8e, 0xb2, 0x70, 0x20, 0x13, 0x97, 0x04, 0x74,
+	0x13, 0xac, 0x00, 0x27, 0xa2, 0x9f, 0xc6, 0xde, 0xd8, 0x42, 0xf9, 0x54, 0x0b, 0x2b, 0x52, 0xe7,
+	0xbe, 0x52, 0x51, 0x56, 0x2e, 0x41, 0x39, 0xc0, 0x03, 0x12, 0x24, 0xd5, 0xc5, 0x75, 0x7d, 0xc3,
+	0xdc, 0x5c, 0xb5, 0x47, 0x09, 0xdb, 0x77, 0x14, 0xfd, 0x56, 0x24, 0xf8, 0xd0, 0xc9, 0x85, 0xd0,
+	0x9b, 0x80, 0xa6, 0x22, 0xee, 0xd3, 0xa8, 0x9f, 0x10, 0xb7, 0x5a, 0x59, 0xd7, 0x36, 0x74, 0xe7,
+	0xcc, 0x24, 0xb8, 0xed, 0xa8, 0x47, 0x5c, 0xb4, 0x01, 0x86, 0x4a, 0x3f, 0x79, 0x48, 0xe3, 0xaa,
+	0xa1, 0x42, 0x03, 0x7b, 0x67, 0x44, 0x71, 0x26, 0x4c, 0xf4, 0x36, 0xac, 0x1d, 0xcd, 0x65, 0x64,
+	0x1b, 0x94, 0xed, 0xb3, 0xb3, 0x61, 0x2b, 0xfb, 0xb5, 0x6b, 0x60, 0x4e, 0xc5, 0x28, 0xc1, 0xd8,
+	0x27, 0xc3, 0x1c, 0x1f, 0x79, 0x94, 0x60, 0x3c, 0xc2, 0x41, 0x4a, 0x72, 0x80, 0xb2, 0xcb, 0xf5,
+	0xc2, 0x7b, 0x5a, 0xf3, 0x27, 0x0d, 0x8c, 0xdd, 0x20, 0xe9, 0xb2, 0x68, 0x8f, 0xfa, 0xe8, 0x3a,
+	0x18, 0x2e, 0xe1, 0xa2, 0xbf, 0x47, 0x83, 0x1c, 0xdf, 0xce, 0xab, 0xcf, 0x0f, 0x1a, 0x15, 0x49,
+	0x94, 0xb4, 0x3f, 0x0f, 0x1a, 0xcb, 0x09, 0x71, 0x53, 0x4e, 0xae, 0x37, 0x05, 0x4f, 0x49, 0xd3,
+	0x51, 0xac, 0x2d, 0x1a, 0x10, 0x74, 0x15, 0x2a, 0xfb, 0x64, 0x98, 0xa9, 0x2a, 0x37, 0x9d, 0x57,
+	0x9e, 0x1f, 0x34, 0x16, 0xf7, 0xc9, 0x70, 0xbe, 0xa6, 0xe4, 0x28, 0xc5, 0x36, 0x2c, 0xb9, 0xb8,
+	0x3f, 0xf1, 0xab, 0x1a, 0xa6, 0xd3, 0x78, 0x7e, 0xd0, 0x00, 0x17, 0x1f, 0xef, 0x19, 0x5c, 0xdc,
+	0xcd, 0x7d, 0x37, 0xff, 0xd6, 0x60, 0xa5, 0xab, 0x8a, 0x7e, 0x62, 0x97, 0x4e, 0xba, 0xaf, 0x30,
+	0xdd, 0x7d, 0xf3, 0x5b, 0xf5, 0xca, 0xb8, 0x21, 0x8a, 0xaa, 0x21, 0x2e, 0xd8, 0xb3, 0x1e, 0xe6,
+	0xb6, 0xc5, 0x0c, 0xd2, 0xa5, 0x93, 0x90, 0xce, 0x27, 0xa6, 0x3c, 0x9e, 0x98, 0x97, 0x41, 0xf1,
+	0x9b, 0x02, 0x98, 0x1d, 0xec, 0xee, 0xa7, 0x71, 0xef, 0x21, 0xe6, 0x04, 0x5d, 0x86, 0xb2, 0xcf,
+	0x59, 0x1a, 0x27, 0xd5, 0x82, 0x8a, 0xfd, 0xbc, 0x3d, 0xc5, 0xb5, 0xdb, 0xae, 0x4b, 0x92, 0x1c,
+	0x72, 0x27, 0x17, 0x44, 0x1f, 0xc0, 0xb2, 0xcb, 0x82, 0x00, 0x0f, 0x18, 0xc7, 0x82, 0xf1, 0xa4,
+	0xaa, 0x9f, 0xa6, 0x39, 0x2b, 0x5f, 0xdb, 0x81, 0xa5, 0x69, 0x36, 0x5a, 0x81, 0x02, 0xf5, 0xf2,
+	0xf0, 0x0b, 0xd4, 0x43, 0x2d, 0x28, 0x63, 0xc5, 0x57, 0xe1, 0xaf, 0x6c, 0xae, 0xcd, 0xb1, 0xbc,
+	0x3b, 0x8c, 0x89, 0x93, 0x8b, 0x35, 0xbb, 0x00, 0x13, 0x2a, 0x32, 0x61, 0x71, 0x3b, 0x7a, 0x84,
+	0x03, 0xea, 0x59, 0x0b, 0xa8, 0x02, 0xc5, 0x8f, 0x29, 0x79, 0x6c, 0x69, 0x68, 0x05, 0xc0, 0x21,
+	0x89, 0x60, 0x1c, 0x0f, 0x02, 0x62, 0x15, 0xe4, 0x7d, 0x2b, 0x0d, 0x82, 0x4c, 0xd1, 0xd2, 0x9b,
+	0x5f, 0xeb, 0x60, 0x8c, 0xeb, 0x3f, 0x41, 0x5a, 0x9b, 0x46, 0xba, 0x75, 0xa4, 0x5a, 0x6b, 0x13,
+	0xc4, 0xe6, 0xd7, 0xea, 0xfd, 0xf9, 0xb5, 0x3a, 0x56, 0x6f, 0x56, 0x1a, 0xbd, 0x0b, 0xe5, 0x38,
+	0x1d, 0x04, 0xd4, 0x55, 0x4b, 0xd0, 0xdc, 0xac, 0x4f, 0xe9, 0xdd, 0x53, 0x8c, 0xb1, 0xb6, 0xe0,
+	0x2c, 0x70, 0x72, 0xe9, 0xda, 0xdd, 0x53, 0x2a, 0x7c, 0xe9, 0x48, 0x85, 0x57, 0x5f, 0x88, 0x67,
+	0xba, 0xbe, 0xb5, 0x0f, 0xe1, 0xec, 0x1c, 0x6f, 0xe8, 0x22, 0x14, 0xc5, 0x30, 0xce, 0x06, 0xe7,
+	0x58, 0x1b, 0x4a, 0xa4, 0x79, 0xed, 0x44, 0x84, 0x1c, 0x82, 0x3d, 0x4b, 0x43, 0x06, 0x94, 0x1e,
+	0x70, 0x2a, 0x24, 0x38, 0x06, 0x94, 0xda, 0x5e, 0x48, 0x23, 0x4b, 0x6f, 0x5e, 0x06, 0x63, 0x67,
+	0xf0, 0x29, 0x71, 0x85, 0x43, 0xf6, 0xfe, 0xdb, 0x8b, 0xd2, 0xfc, 0x1c, 0x0c, 0xb9, 0xf2, 0x1c,
+	0x1c, 0xf9, 0x04, 0x5d, 0x03, 0x48, 0x04, 0xe6, 0x22, 0x5b, 0xf7, 0xda, 0xa9, 0xeb, 0xde, 0x50,
+	0xd2, 0x6a, 0xd3, 0xbf, 0x03, 0x15, 0x12, 0x79, 0x99, 0x62, 0xe1, 0x54, 0xc5, 0x45, 0x12, 0x79,
+	0xf2, 0xd6, 0xfc, 0x41, 0x07, 0xe8, 0x31, 0x2e, 0x76, 0x62, 0x41, 0x59, 0x84, 0x6c, 0x28, 0x27,
+	0x8c, 0x8b, 0xce, 0x30, 0x77, 0x7e, 0xce, 0x9e, 0x30, 0xd5, 0xb1, 0x33, 0xcc, 0xaa, 0x9d, 0x49,
+	0xa1, 0xab, 0x60, 0xc8, 0xd3, 0x0e, 0xf7, 0x08, 0xcf, 0xdd, 0x9e, 0x3f, 0xaa, 0xa2, 0x98, 0x4a,
+	0x6b, 0x22, 0x5b, 0xfb, 0x51, 0xcb, 0xfc, 0x66, 0xf6, 0x50, 0x6b, 0x06, 0x9e, 0x0b, 0xf3, 0xbd,
+	0xda, 0x53, 0x20, 0x7d, 0x01, 0xc5, 0x17, 0xe1, 0x59, 0x85, 0xff, 0xa9, 0x6d, 0x46, 0x59, 0x34,
+	0x4e, 0xd5, 0xd2, 0x24, 0x6a, 0x1f, 0xe1, 0x50, 0x42, 0x75, 0x06, 0xcc, 0x6e, 0x90, 0x26, 0x82,
+	0x70, 0x45, 0xd0, 0x25, 0xab, 0x47, 0x3f, 0x23, 0x56, 0x51, 0xea, 0x66, 0x23, 0x47, 0xb2, 0x01,
+	0x56, 0x02, 0x25, 0xb4, 0x06, 0x67, 0xef, 0xcc, 0xbc, 0x4d, 0x99, 0xd1, 0x72, 0xed, 0x4b, 0x0d,
+	0x96, 0x67, 0xb2, 0x43, 0x9b, 0x33, 0x39, 0xd4, 0x8f, 0x2d, 0xc3, 0x74, 0x1a, 0x37, 0xe6, 0xa5,
+	0xb1, 0x0c, 0x46, 0x3b, 0x71, 0x49, 0xe4, 0xd1, 0xc8, 0xb7, 0x34, 0xb4, 0x06, 0x70, 0x93, 0x8c,
+	0xef, 0xff, 0x8c, 0x3e, 0xad, 0xf9, 0x4b, 0x01, 0xce, 0x75, 0xd5, 0x0f, 0xd2, 0xad, 0x28, 0x0d,
+	0x09, 0xc7, 0x82, 0x64, 0xfe, 0x12, 0x74, 0x63, 0xbc, 0xe6, 0x35, 0x35, 0xc4, 0xaf, 0xdb, 0xf3,
+	0x05, 0xe7, 0xae, 0xfb, 0x06, 0x98, 0x21, 0x7e, 0xd2, 0x67, 0xaa, 0x93, 0xb3, 0xb1, 0x2b, 0x3a,
+	0x10, 0xe2, 0x27, 0x59, 0x6f, 0x2b, 0x01, 0xd9, 0xcd, 0xf2, 0x61, 0x13, 0xe3, 0x07, 0x06, 0x24,
+	0x69, 0x4b, 0x51, 0xd0, 0x6b, 0xb0, 0x94, 0x69, 0xf7, 0x69, 0xe4, 0x91, 0x27, 0x6a, 0x23, 0x14,
+	0x1d, 0x33, 0xa3, 0x6d, 0x4b, 0x12, 0x7a, 0x0b, 0x4c, 0xd9, 0x0d, 0x7d, 0xa6, 0x02, 0xc9, 0x5f,
+	0x15, 0x73, 0xaa, 0x68, 0x0e, 0x24, 0x93, 0xbe, 0xbc, 0x08, 0xa0, 0xfe, 0x1a, 0xb8, 0x1c, 0x93,
+	0xfc, 0x3f, 0x08, 0xec, 0xf1, 0xe0, 0x38, 0x86, 0x18, 0x1d, 0x5f, 0xe2, 0xc1, 0x79, 0xe3, 0x5b,
+	0x0d, 0xcc, 0x3b, 0xd4, 0x25, 0x51, 0x42, 0x5e, 0x44, 0xc5, 0x80, 0xd2, 0x2e, 0xa7, 0x38, 0xc8,
+	0xd6, 0xf3, 0xad, 0x48, 0x10, 0x1e, 0x73, 0x9a, 0xe4, 0xeb, 0xf9, 0x7e, 0x82, 0x7d, 0xd2, 0xc1,
+	0x09, 0xf1, 0x2c, 0x1d, 0x2d, 0x82, 0xbe, 0xdd, 0xb9, 0x6b, 0x15, 0xe5, 0xa1, 0xfd, 0xa0, 0x67,
+	0x95, 0xe4, 0xe1, 0x76, 0xf7, 0x9e, 0x55, 0x96, 0x26, 0x3b, 0x18, 0x27, 0x3d, 0xe1, 0x59, 0x8b,
+	0xb2, 0xb9, 0x26, 0x7a, 0x6d, 0xca, 0x6f, 0xe3, 0x38, 0x26, 0x9e, 0x55, 0x41, 0x16, 0x2c, 0x75,
+	0x30, 0xee, 0x6d, 0x71, 0x42, 0x42, 0x9a, 0x86, 0x96, 0x21, 0xf5, 0xda, 0x0f, 0x7a, 0x3d, 0x8c,
+	0x7b, 0x16, 0x74, 0x2e, 0xfe, 0xf5, 0x47, 0x5d, 0xfb, 0xee, 0xb0, 0xae, 0x7d, 0x7f, 0x58, 0xd7,
+	0x7e, 0x3e, 0xac, 0x6b, 0x4f, 0x0f, 0xeb, 0xda, 0xef, 0x87, 0x75, 0xed, 0xab, 0x67, 0xf5, 0x85,
+	0xa7, 0xcf, 0xea, 0x0b, 0xbf, 0x3d, 0xab, 0x2f, 0x7c, 0xa2, 0xe3, 0x98, 0x0e, 0xca, 0x6a, 0xf8,
+	0xaf, 0xfc, 0x1b, 0x00, 0x00, 0xff, 0xff, 0xa8, 0xb6, 0xba, 0xe3, 0x56, 0x0b, 0x00, 0x00,
 }
 
 func (this *Metadata) Equal(that interface{}) bool {
@@ -1276,6 +1580,108 @@ func (this *ObjectRef) Equal(that interface{}) bool {
 	}
 	return true
 }
+func (this *TimeRange) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*TimeRange)
+	if !ok {
+		that2, ok := that.(TimeRange)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.StartTime.Equal(that1.StartTime) {
+		return false
+	}
+	if !this.EndTime.Equal(that1.EndTime) {
+		return false
+	}
+	return true
+}
+func (this *SortOption) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*SortOption)
+	if !ok {
+		that2, ok := that.(SortOption)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.SortBy.Equal(that1.SortBy) {
+		return false
+	}
+	if !this.SortOrder.Equal(that1.SortOrder) {
+		return false
+	}
+	return true
+}
+func (this *SortOption_SortByType) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*SortOption_SortByType)
+	if !ok {
+		that2, ok := that.(SortOption_SortByType)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Type != that1.Type {
+		return false
+	}
+	return true
+}
+func (this *SortOption_SortOrderType) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*SortOption_SortOrderType)
+	if !ok {
+		that2, ok := that.(SortOption_SortOrderType)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Type != that1.Type {
+		return false
+	}
+	return true
+}
 func (this *CommonEnumerateOptions) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
@@ -1310,6 +1716,12 @@ func (this *CommonEnumerateOptions) Equal(that interface{}) bool {
 		return false
 	}
 	if this.ObjectIndex != that1.ObjectIndex {
+		return false
+	}
+	if !this.SortOption.Equal(that1.SortOption) {
+		return false
+	}
+	if !this.TimeRange.Equal(that1.TimeRange) {
 		return false
 	}
 	return true
@@ -1812,6 +2224,156 @@ func (m *ObjectRef) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *TimeRange) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TimeRange) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TimeRange) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.EndTime != nil {
+		{
+			size, err := m.EndTime.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCommon(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.StartTime != nil {
+		{
+			size, err := m.StartTime.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCommon(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *SortOption) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *SortOption) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *SortOption) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.SortOrder != nil {
+		{
+			size, err := m.SortOrder.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCommon(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.SortBy != nil {
+		{
+			size, err := m.SortBy.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCommon(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *SortOption_SortByType) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *SortOption_SortByType) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *SortOption_SortByType) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Type != 0 {
+		i = encodeVarintCommon(dAtA, i, uint64(m.Type))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *SortOption_SortOrderType) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *SortOption_SortOrderType) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *SortOption_SortOrderType) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Type != 0 {
+		i = encodeVarintCommon(dAtA, i, uint64(m.Type))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *CommonEnumerateOptions) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -1832,6 +2394,30 @@ func (m *CommonEnumerateOptions) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 	_ = i
 	var l int
 	_ = l
+	if m.TimeRange != nil {
+		{
+			size, err := m.TimeRange.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCommon(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x32
+	}
+	if m.SortOption != nil {
+		{
+			size, err := m.SortOption.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCommon(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x2a
+	}
 	if m.ObjectIndex != 0 {
 		i = encodeVarintCommon(dAtA, i, uint64(m.ObjectIndex))
 		i--
@@ -2029,6 +2615,48 @@ func NewPopulatedObjectRef(r randyCommon, easy bool) *ObjectRef {
 	return this
 }
 
+func NewPopulatedTimeRange(r randyCommon, easy bool) *TimeRange {
+	this := &TimeRange{}
+	if r.Intn(5) != 0 {
+		this.StartTime = types.NewPopulatedTimestamp(r, easy)
+	}
+	if r.Intn(5) != 0 {
+		this.EndTime = types.NewPopulatedTimestamp(r, easy)
+	}
+	if !easy && r.Intn(10) != 0 {
+	}
+	return this
+}
+
+func NewPopulatedSortOption(r randyCommon, easy bool) *SortOption {
+	this := &SortOption{}
+	if r.Intn(5) != 0 {
+		this.SortBy = NewPopulatedSortOption_SortByType(r, easy)
+	}
+	if r.Intn(5) != 0 {
+		this.SortOrder = NewPopulatedSortOption_SortOrderType(r, easy)
+	}
+	if !easy && r.Intn(10) != 0 {
+	}
+	return this
+}
+
+func NewPopulatedSortOption_SortByType(r randyCommon, easy bool) *SortOption_SortByType {
+	this := &SortOption_SortByType{}
+	this.Type = SortOption_SortByType_Type([]int32{0, 1, 2, 3, 4, 5, 6}[r.Intn(7)])
+	if !easy && r.Intn(10) != 0 {
+	}
+	return this
+}
+
+func NewPopulatedSortOption_SortOrderType(r randyCommon, easy bool) *SortOption_SortOrderType {
+	this := &SortOption_SortOrderType{}
+	this.Type = SortOption_SortOrderType_Type([]int32{0, 1, -1}[r.Intn(3)])
+	if !easy && r.Intn(10) != 0 {
+	}
+	return this
+}
+
 func NewPopulatedCommonEnumerateOptions(r randyCommon, easy bool) *CommonEnumerateOptions {
 	this := &CommonEnumerateOptions{}
 	if r.Intn(5) != 0 {
@@ -2041,6 +2669,12 @@ func NewPopulatedCommonEnumerateOptions(r randyCommon, easy bool) *CommonEnumera
 	this.MaxObjects = uint64(uint64(r.Uint32()))
 	this.NameFilter = string(randStringCommon(r))
 	this.ObjectIndex = uint64(uint64(r.Uint32()))
+	if r.Intn(5) != 0 {
+		this.SortOption = NewPopulatedSortOption(r, easy)
+	}
+	if r.Intn(5) != 0 {
+		this.TimeRange = NewPopulatedTimeRange(r, easy)
+	}
 	if !easy && r.Intn(10) != 0 {
 	}
 	return this
@@ -2338,6 +2972,64 @@ func (m *ObjectRef) Size() (n int) {
 	return n
 }
 
+func (m *TimeRange) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.StartTime != nil {
+		l = m.StartTime.Size()
+		n += 1 + l + sovCommon(uint64(l))
+	}
+	if m.EndTime != nil {
+		l = m.EndTime.Size()
+		n += 1 + l + sovCommon(uint64(l))
+	}
+	return n
+}
+
+func (m *SortOption) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.SortBy != nil {
+		l = m.SortBy.Size()
+		n += 1 + l + sovCommon(uint64(l))
+	}
+	if m.SortOrder != nil {
+		l = m.SortOrder.Size()
+		n += 1 + l + sovCommon(uint64(l))
+	}
+	return n
+}
+
+func (m *SortOption_SortByType) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Type != 0 {
+		n += 1 + sovCommon(uint64(m.Type))
+	}
+	return n
+}
+
+func (m *SortOption_SortOrderType) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Type != 0 {
+		n += 1 + sovCommon(uint64(m.Type))
+	}
+	return n
+}
+
 func (m *CommonEnumerateOptions) Size() (n int) {
 	if m == nil {
 		return 0
@@ -2361,6 +3053,14 @@ func (m *CommonEnumerateOptions) Size() (n int) {
 	}
 	if m.ObjectIndex != 0 {
 		n += 1 + sovCommon(uint64(m.ObjectIndex))
+	}
+	if m.SortOption != nil {
+		l = m.SortOption.Size()
+		n += 1 + l + sovCommon(uint64(l))
+	}
+	if m.TimeRange != nil {
+		l = m.TimeRange.Size()
+		n += 1 + l + sovCommon(uint64(l))
 	}
 	return n
 }
@@ -3998,6 +4698,388 @@ func (m *ObjectRef) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *TimeRange) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCommon
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: TimeRange: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: TimeRange: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StartTime", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCommon
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.StartTime == nil {
+				m.StartTime = &types.Timestamp{}
+			}
+			if err := m.StartTime.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field EndTime", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCommon
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.EndTime == nil {
+				m.EndTime = &types.Timestamp{}
+			}
+			if err := m.EndTime.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCommon(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *SortOption) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCommon
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: SortOption: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: SortOption: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SortBy", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCommon
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.SortBy == nil {
+				m.SortBy = &SortOption_SortByType{}
+			}
+			if err := m.SortBy.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SortOrder", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCommon
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.SortOrder == nil {
+				m.SortOrder = &SortOption_SortOrderType{}
+			}
+			if err := m.SortOrder.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCommon(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *SortOption_SortByType) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCommon
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: SortByType: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: SortByType: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Type", wireType)
+			}
+			m.Type = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Type |= SortOption_SortByType_Type(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCommon(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *SortOption_SortOrderType) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCommon
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: SortOrderType: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: SortOrderType: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Type", wireType)
+			}
+			m.Type = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Type |= SortOption_SortOrderType_Type(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCommon(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *CommonEnumerateOptions) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -4224,6 +5306,78 @@ func (m *CommonEnumerateOptions) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SortOption", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCommon
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.SortOption == nil {
+				m.SortOption = &SortOption{}
+			}
+			if err := m.SortOption.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TimeRange", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCommon
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.TimeRange == nil {
+				m.TimeRange = &TimeRange{}
+			}
+			if err := m.TimeRange.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipCommon(dAtA[iNdEx:])
