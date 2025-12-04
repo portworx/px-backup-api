@@ -9520,20 +9520,20 @@
         "date": {
           "type": "string",
           "format": "int64",
-          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month it'll rollover to the next date of the month.\nFor example if 31 is specified, it'll trigger on either 1st or 2nd March\ndepending on if it is a leap year."
+          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month it'll rollover to the next date of the month.\nFor example if 31 is specified, it'll trigger on either 1st or 2nd March\ndepending on if it is a leap year.\nThis field is deprecated, not to be used."
         },
         "time": {
           "type": "string",
-          "description": "Time, when the policy should be triggered. Expected format is\ntime.Kitchen eg 12:04PM or 12:04pm."
+          "description": "Time, when the policy should be triggered. Expected format is\ntime.Kitchen eg 12:04PM or 12:04pm.\nThis field is deprecated, not to be used."
         },
         "retain": {
           "type": "string",
           "format": "int64",
-          "description": "Number of objects to retain for monthly policy, default value is 12."
+          "description": "Number of objects to retain for monthly policy, default value is 12.\nThis field is deprecated, not to be used."
         },
         "incremental_count": {
           "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
-          "description": "Number of incremental snapshots to take before taking a full snapshot."
+          "description": "Number of incremental snapshots to take before taking a full snapshot.\nThis field is deprecated, not to be used."
         },
         "relative_monthly_policy": {
           "$ref": "#/definitions/MonthlyPolicyRelativeMonthlyPolicy"

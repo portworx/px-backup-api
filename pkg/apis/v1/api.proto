@@ -348,14 +348,18 @@ message SchedulePolicyInfo {
         // doesn't exist in a month it'll rollover to the next date of the month.
         // For example if 31 is specified, it'll trigger on either 1st or 2nd March
         // depending on if it is a leap year.
-        int64 date = 1 [deprecated=true];
+        // This field is deprecated, not to be used.
+        int64 date = 1;
         // Time, when the policy should be triggered. Expected format is
         // time.Kitchen eg 12:04PM or 12:04pm.
-        string time = 2 [deprecated=true];
+        // This field is deprecated, not to be used.
+        string time = 2;
         // Number of objects to retain for monthly policy, default value is 12.
-        int64 retain = 3 [deprecated=true];
+        // This field is deprecated, not to be used.
+        int64 retain = 3;
         // Number of incremental snapshots to take before taking a full snapshot.
-        IncrementalCount incremental_count = 4 [deprecated=true];
+        // This field is deprecated, not to be used.
+        IncrementalCount incremental_count = 4;
 	    oneof monthly_policy {
             RelativeMonthlyPolicy relative_monthly_policy = 100;
             SelectiveMonthlyPolicy selective_monthly_policy = 101;
