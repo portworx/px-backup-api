@@ -7845,6 +7845,58 @@
         }
       }
     },
+    "MonthlyPolicyRelativeMonthlyPolicy": {
+      "type": "object",
+      "properties": {
+        "day": {
+          "type": "string",
+          "title": "Relative day of relative week, Only one day can be specified.\nFor example, sun or mon"
+        },
+        "weekly_index": {
+          "$ref": "#/definitions/RelativeMonthlyPolicyweeklyIndex"
+        },
+        "time": {
+          "type": "string",
+          "description": "Time, when the policy should be triggered. Expected format is\ntime.Kitchen eg 12:04PM or 12:04pm."
+        },
+        "retain": {
+          "type": "string",
+          "format": "int64",
+          "description": "Number of objects to retain for monthly policy, default value is 12."
+        },
+        "incremental_count": {
+          "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
+          "description": "Number of incremental snapshots to take before taking a full snapshot."
+        }
+      }
+    },
+    "MonthlyPolicySelectiveMonthlyPolicy": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "int64",
+          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month it'll rollover to the next date of the month.\nFor example if 31 is specified, it'll trigger on either 1st or 2nd March\ndepending on if it is a leap year."
+        },
+        "time": {
+          "type": "string",
+          "description": "Time, when the policy should be triggered. Expected format is\ntime.Kitchen eg 12:04PM or 12:04pm."
+        },
+        "retain": {
+          "type": "string",
+          "format": "int64",
+          "description": "Number of objects to retain for monthly policy, default value is 12."
+        },
+        "incremental_count": {
+          "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
+          "description": "Number of incremental snapshots to take before taking a full snapshot."
+        },
+        "months": {
+          "type": "string",
+          "title": "months specify the list months on which schedule needs to be taken.\nIf it is empty, the schedule will be taken on every month of the year.\nmonths will take comma seperated multiple month value.\nFor example, jan,feb or Jan,Feb or january,february or January,February"
+        }
+      }
+    },
     "NFSConfig": {
       "type": "object",
       "properties": {
@@ -8473,6 +8525,19 @@
     },
     "RecipientUpdateResponse": {
       "type": "object"
+    },
+    "RelativeMonthlyPolicyweeklyIndex": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "first",
+        "second",
+        "third",
+        "fourth",
+        "last"
+      ],
+      "default": "Invalid",
+      "title": "Usually every weekday is repreated atleast four times in any month and few week days \nare repeated 5 times. Hence we have given both fourth and last as an option. \nIn Nov 2025, fourth sun != last sun, fourth mon = last mon\nIn case of February in a non-leap year, each week day is repeated exactly 4 times.\nSo, both fourth and last option becomes same. fourth sun = last sun"
     },
     "Remark": {
       "type": "object",
@@ -9458,20 +9523,26 @@
         "date": {
           "type": "string",
           "format": "int64",
-          "description": "Date of the month when the policy should be triggered. If a given\ndate\ndoesn't exist in a month it'll rollover to the next date of the\nmonth.\nFor example if 31 is specified, it'll trigger on either 1st or 2nd\nMarch\ndepending on if it is a leap year."
+          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month it'll rollover to the next date of the month.\nFor example if 31 is specified, it'll trigger on either 1st or 2nd March\ndepending on if it is a leap year.\nThis field is deprecated, not to be used."
         },
         "time": {
           "type": "string",
-          "description": "Time, when the policy should be triggered. Expected format is\ntime.Kitchen eg 12:04PM or 12:04pm."
+          "description": "Time, when the policy should be triggered. Expected format is\ntime.Kitchen eg 12:04PM or 12:04pm.\nThis field is deprecated, not to be used."
         },
         "retain": {
           "type": "string",
           "format": "int64",
-          "description": "Number of objects to retain for monthly policy, default value is 10."
+          "description": "Number of objects to retain for monthly policy, default value is 12.\nThis field is deprecated, not to be used."
         },
         "incremental_count": {
           "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
-          "description": "Number of incremental snapshots to take before taking a full\nsnapshot."
+          "description": "Number of incremental snapshots to take before taking a full snapshot.\nThis field is deprecated, not to be used."
+        },
+        "relative_monthly_policy": {
+          "$ref": "#/definitions/MonthlyPolicyRelativeMonthlyPolicy"
+        },
+        "selective_monthly_policy": {
+          "$ref": "#/definitions/MonthlyPolicySelectiveMonthlyPolicy"
         }
       }
     },
@@ -9480,7 +9551,7 @@
       "properties": {
         "day": {
           "type": "string",
-          "title": "Day of the week when the policy should be triggered.\nFor example, sunday or sun"
+          "title": "Day of the week when the policy should be triggered.\nFor example, sunday or sun\nMultiple days can be configured in the weekly policy. Multiple days can be passed in the day string with comma seperated.\nFor example, sunday,monday or sun,mon or Sun,Mon or Sunday,Monday"
         },
         "time": {
           "type": "string",
@@ -9489,11 +9560,15 @@
         "retain": {
           "type": "string",
           "format": "int64",
-          "description": "Number of objects to retain for weekly policy, default value is 10."
+          "description": "Number of objects to retain for weekly policy, default value is 5."
         },
         "incremental_count": {
           "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
           "description": "Number of incremental snapshots to take before taking a full\nsnapshot."
+        },
+        "bi_weekly": {
+          "type": "boolean",
+          "description": "bi_weekly flag need to be enabled, if schedule need to happen on alternate week.\nBy default, it will false. That means the schedule will happen every week."
         }
       }
     },
