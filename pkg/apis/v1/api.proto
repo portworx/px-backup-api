@@ -741,6 +741,10 @@ message BackupInfo {
     SyncStatusInfo resources_sync_status_info = 56;
     // namespace sync status information
     SyncStatusInfo namespace_sync_status_info = 57;
+    // Number of failed resources during backup
+    uint64 failed_resource_count = 58;
+    // Number of failed volumes during backup
+    uint64 failed_vol_count = 59;
     // Message for maintaining status of sync operations
     message SyncStatusInfo {
         Status status = 1;
