@@ -5015,6 +5015,16 @@
         "namespace_sync_status_info": {
           "$ref": "#/definitions/BackupInfoSyncStatusInfo",
           "title": "namespace sync status information"
+        },
+        "failed_resource_count": {
+          "type": "string",
+          "format": "uint64",
+          "title": "Number of failed resources during backup"
+        },
+        "failed_vol_count": {
+          "type": "string",
+          "format": "uint64",
+          "title": "Number of failed volumes during backup"
         }
       }
     },
