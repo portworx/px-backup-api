@@ -37389,7 +37389,7 @@ type BackupClient interface {
 	Delete(ctx context.Context, in *BackupDeleteRequest, opts ...grpc.CallOption) (*BackupDeleteResponse, error)
 	// UpdateBackupShare updates backupshare of existing backup object
 	UpdateBackupShare(ctx context.Context, in *BackupShareUpdateRequest, opts ...grpc.CallOption) (*BackupShareUpdateResponse, error)
-	// For VirtualMachine backup object type, it returns the details of VirtualMachine and its resources mapped under it
+	// GetBackupResourceDetails returns detailed information about resources of a backup
 	GetBackupResourceDetails(ctx context.Context, in *BackupResourceDetailGetRequest, opts ...grpc.CallOption) (*BackupResourceDetailGetResponse, error)
 	// RetryBackupResources retries backup of a failed or partial success backup
 	RetryBackupResources(ctx context.Context, in *BackupRetryRequest, opts ...grpc.CallOption) (*BackupRetryResponse, error)
@@ -37489,7 +37489,7 @@ type BackupServer interface {
 	Delete(context.Context, *BackupDeleteRequest) (*BackupDeleteResponse, error)
 	// UpdateBackupShare updates backupshare of existing backup object
 	UpdateBackupShare(context.Context, *BackupShareUpdateRequest) (*BackupShareUpdateResponse, error)
-	// For VirtualMachine backup object type, it returns the details of VirtualMachine and its resources mapped under it
+	// GetBackupResourceDetails returns detailed information about resources of a backup
 	GetBackupResourceDetails(context.Context, *BackupResourceDetailGetRequest) (*BackupResourceDetailGetResponse, error)
 	// RetryBackupResources retries backup of a failed or partial success backup
 	RetryBackupResources(context.Context, *BackupRetryRequest) (*BackupRetryResponse, error)
