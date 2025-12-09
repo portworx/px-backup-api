@@ -2548,7 +2548,7 @@ service Backup {
             body : "*"
         };
     }
-    // For VirtualMachine backup object type, it returns the details of VirtualMachine and its resources mapped under it
+    // GetBackupResourceDetails returns detailed information about resources of a backup
     rpc GetBackupResourceDetails(BackupResourceDetailGetRequest) returns (BackupResourceDetailGetResponse) {
         option (google.api.http) = {
             post: "/v1/backup/getbackupresourcedetails"

@@ -77,7 +77,7 @@
     },
     "/v1/backup/getbackupresourcedetails": {
       "post": {
-        "summary": "For VirtualMachine backup object type, it returns the details of VirtualMachine and its resources mapped under it",
+        "summary": "GetBackupResourceDetails returns detailed information about resources of a backup",
         "operationId": "Backup_GetBackupResourceDetails",
         "responses": {
           "200": {
