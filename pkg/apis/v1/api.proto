@@ -1113,6 +1113,8 @@ message RestoreInfo {
             VirtualMachineFilter virtual_machine_filter = 2;
         }
     }
+
+    string target_namespace_prefix = 27;
 }
 
 // Message for Restore object which will be stored in Datastore.
