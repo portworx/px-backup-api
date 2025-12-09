@@ -8913,6 +8913,9 @@
         "filter": {
           "$ref": "#/definitions/RestoreInfoFilter",
           "title": "Filter criteria used for this restore (for audit/duplicate restore)"
+        },
+        "target_namespace_prefix": {
+          "type": "string"
         }
       },
       "title": "Message for restore info"
