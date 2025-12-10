@@ -2871,6 +2871,8 @@ message BackupResourceObject {
     // VirtualMachine Detail info List
     message VirtualMachineList {
         repeated VirtualMachineDetailInfo virtual_machines = 1;
+        // List of unique OS names for all VMs in this backup
+        repeated string vm_guest_os_names_in_backup = 2;
     }
 
     // VirtualMachine Detail info with volumes and resources

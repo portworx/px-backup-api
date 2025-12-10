@@ -5802,6 +5802,13 @@
           "items": {
             "$ref": "#/definitions/BackupResourceObjectVirtualMachineDetailInfo"
           }
+        },
+        "vm_guest_os_names_in_backup": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of unique OS names for all VMs in this backup"
         }
       },
       "title": "VirtualMachine Detail info List"
