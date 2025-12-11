@@ -8,6 +8,7 @@ option go_package = "api";
 
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "pkg/apis/v1/common.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
@@ -1134,7 +1135,10 @@ message RestoreFileInfo {
 }
 message RestoreFileStatusInfo {
     RestoreFileInfo restore_file_info = 1 [ (gogoproto.embed) = true ];
-    RestoreInfo.StatusInfo status = 2;
+    // Time taken to complete the copy operation
+    google.protobuf.Duration duration = 2;
+    // Restore status of the file with reason for failure if any
+    RestoreInfo.StatusInfo status = 3;
 }
 
 // Message for Restore object which will be stored in Datastore.
