@@ -8582,8 +8582,13 @@
         "restore_file_info": {
           "$ref": "#/definitions/RestoreFileInfo"
         },
+        "duration": {
+          "type": "string",
+          "title": "Time taken to complete the copy operation"
+        },
         "status": {
-          "$ref": "#/definitions/RestoreInfoStatusInfo"
+          "$ref": "#/definitions/RestoreInfoStatusInfo",
+          "title": "Restore status of the file with reason for failure if any"
         }
       }
     },
