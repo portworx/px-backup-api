@@ -75,9 +75,9 @@
         ]
       }
     },
-    "/v1/backup/getbackupresourcedetails/{org_id}/{name}": {
-      "get": {
-        "summary": "For VirtualMachine backup object type, it returns the details of VirtualMachine and its resources mapped under it",
+    "/v1/backup/getbackupresourcedetails": {
+      "post": {
+        "summary": "GetBackupResourceDetails returns detailed information about resources of a backup",
         "operationId": "Backup_GetBackupResourceDetails",
         "responses": {
           "200": {
@@ -95,24 +95,12 @@
         },
         "parameters": [
           {
-            "name": "org_id",
-            "in": "path",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "description": "Backup name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "uid",
-            "description": "Backup uid.",
-            "in": "query",
-            "required": false,
-            "type": "string"
+            "schema": {
+              "$ref": "#/definitions/BackupResourceDetailGetRequest"
+            }
           }
         ],
         "tags": [
@@ -310,7 +298,8 @@
               "Name",
               "ClusterName",
               "Size",
-              "RestoreBackupName"
+              "RestoreBackupName",
+              "LastUpdateTimestamp"
             ],
             "default": "Invalid"
           },
@@ -326,6 +315,50 @@
               "Descending"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.resource_info.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.group",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.kind",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.version",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.vm_volume_name",
+            "description": "filter VM that matches the resource_info and has volume vm_volume_name attached to it.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.exclude_failed_resource",
+            "description": "filter to exclude failed resources while enumerating object.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -663,6 +696,72 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "enumerate_options.max_objects",
+            "description": "max objects to fetch.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.name_filter",
+            "description": "Filter to use for name of objects. Any object that contains the filter\nwill be returned.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.object_index",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortBy.type",
+            "description": "Name of the field by which sort to be performed.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "CreationTimestamp",
+              "Name",
+              "ClusterName",
+              "Size",
+              "RestoreBackupName",
+              "LastUpdateTimestamp"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortOrder.type",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descending"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.time_range.start_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "enumerate_options.time_range.end_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
           }
         ],
         "tags": [
@@ -974,7 +1073,8 @@
               "Name",
               "ClusterName",
               "Size",
-              "RestoreBackupName"
+              "RestoreBackupName",
+              "LastUpdateTimestamp"
             ],
             "default": "Invalid"
           },
@@ -990,6 +1090,50 @@
               "Descending"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.resource_info.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.group",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.kind",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.version",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.vm_volume_name",
+            "description": "filter VM that matches the resource_info and has volume vm_volume_name attached to it.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.exclude_failed_resource",
+            "description": "filter to exclude failed resources while enumerating object.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -1334,6 +1478,72 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "enumerate_options.max_objects",
+            "description": "max objects to fetch.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.name_filter",
+            "description": "Filter to use for name of objects. Any object that contains the filter\nwill be returned.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.object_index",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortBy.type",
+            "description": "Name of the field by which sort to be performed.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "CreationTimestamp",
+              "Name",
+              "ClusterName",
+              "Size",
+              "RestoreBackupName",
+              "LastUpdateTimestamp"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortOrder.type",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descending"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.time_range.start_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "enumerate_options.time_range.end_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
           }
         ],
         "tags": [
@@ -1683,7 +1893,8 @@
               "Name",
               "ClusterName",
               "Size",
-              "RestoreBackupName"
+              "RestoreBackupName",
+              "LastUpdateTimestamp"
             ],
             "default": "Invalid"
           },
@@ -1699,6 +1910,50 @@
               "Descending"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.resource_info.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.group",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.kind",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.version",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.vm_volume_name",
+            "description": "filter VM that matches the resource_info and has volume vm_volume_name attached to it.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.exclude_failed_resource",
+            "description": "filter to exclude failed resources while enumerating object.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -2997,7 +3252,8 @@
               "Name",
               "ClusterName",
               "Size",
-              "RestoreBackupName"
+              "RestoreBackupName",
+              "LastUpdateTimestamp"
             ],
             "default": "Invalid"
           },
@@ -3013,6 +3269,50 @@
               "Descending"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.resource_info.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.group",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.kind",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.version",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.vm_volume_name",
+            "description": "filter VM that matches the resource_info and has volume vm_volume_name attached to it.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.exclude_failed_resource",
+            "description": "filter to exclude failed resources while enumerating object.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -3415,7 +3715,8 @@
               "Name",
               "ClusterName",
               "Size",
-              "RestoreBackupName"
+              "RestoreBackupName",
+              "LastUpdateTimestamp"
             ],
             "default": "Invalid"
           },
@@ -3431,6 +3732,50 @@
               "Descending"
             ],
             "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.resource_info.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.group",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.kind",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.version",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.vm_volume_name",
+            "description": "filter VM that matches the resource_info and has volume vm_volume_name attached to it.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.exclude_failed_resource",
+            "description": "filter to exclude failed resources while enumerating object.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -4178,6 +4523,106 @@
             "required": false,
             "type": "string",
             "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.generic_enumerate_options.sort_option.sortBy.type",
+            "description": "Name of the field by which sort to be performed.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "CreationTimestamp",
+              "Name",
+              "ClusterName",
+              "Size",
+              "RestoreBackupName",
+              "LastUpdateTimestamp"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.generic_enumerate_options.sort_option.sortOrder.type",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descending"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.generic_enumerate_options.time_range.start_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "enumerate_options.generic_enumerate_options.time_range.end_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "enumerate_options.volume_types",
+            "description": "Add volume type filtering support for VRO list API.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Invalid",
+                "Portworx",
+                "Csi",
+                "Nfs"
+              ]
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "VolumeResourceOnlyPolicy"
+        ]
+      }
+    },
+    "/v1/volumeresourceonlypolicy/{org_id}/enumerate": {
+      "post": {
+        "summary": "Enumerate returns a list of volumeResourceOnly policy",
+        "operationId": "VolumeResourceOnlyPolicy_Enumerate2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyEnumerateRequest"
+            }
           }
         ],
         "tags": [
@@ -4578,7 +5023,7 @@
           "items": {
             "$ref": "#/definitions/ResourceInfo"
           },
-          "title": "resourceInfo for backupObjectType Namespace"
+          "description": "resourceInfo for backupObjectType Namespace\nNOTE: This field will not be used and will be deprecated in future. Use resource_representation instead."
         },
         "volumes": {
           "type": "array",
@@ -4768,7 +5213,7 @@
           "items": {
             "$ref": "#/definitions/VirtualMachineResourceInfo"
           },
-          "title": "resourcesInfo for backupObjectType VirtualMachine"
+          "description": "resourcesInfo for backupObjectType VirtualMachine\nNOTE: Do not use this field as it will be deprecated in future. Use resource_representation instead."
         },
         "missing_namespaces": {
           "type": "array",
@@ -4776,6 +5221,30 @@
             "type": "string"
           },
           "title": "to capture namespaces that were missing when the backup was initiated"
+        },
+        "vm_resources": {
+          "$ref": "#/definitions/BackupInfoVirtualMachineResources"
+        },
+        "namespace_resources": {
+          "$ref": "#/definitions/BackupInfoNamespaceResources"
+        },
+        "resources_sync_status_info": {
+          "$ref": "#/definitions/BackupInfoSyncStatusInfo",
+          "title": "resources sync status information"
+        },
+        "namespace_sync_status_info": {
+          "$ref": "#/definitions/BackupInfoSyncStatusInfo",
+          "title": "namespace sync status information"
+        },
+        "failed_resource_count": {
+          "type": "string",
+          "format": "uint64",
+          "title": "Number of failed resources during backup"
+        },
+        "failed_vol_count": {
+          "type": "string",
+          "format": "uint64",
+          "title": "Number of failed volumes during backup"
         }
       }
     },
@@ -4824,6 +5293,19 @@
       ],
       "default": "Invalid"
     },
+    "BackupInfoNamespaceResources": {
+      "type": "object",
+      "properties": {
+        "namespaces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NamespaceResource"
+          },
+          "title": "List of namespace resources with their status, metrics, and resource type information"
+        }
+      },
+      "title": "Message for Namespace resources"
+    },
     "BackupInfoStage": {
       "type": "string",
       "enum": [
@@ -4866,6 +5348,34 @@
       ],
       "default": "Invalid"
     },
+    "BackupInfoSyncStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/BackupInfoSyncStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "When this status was last updated, this will be used for TTL calculation"
+        }
+      },
+      "title": "Message for maintaining status of sync operations"
+    },
+    "BackupInfoSyncStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Pending",
+        "InProgress",
+        "Completed",
+        "Failed"
+      ],
+      "default": "Invalid"
+    },
     "BackupInfoVirtualMachineInfo": {
       "type": "object",
       "properties": {
@@ -4883,6 +5393,19 @@
         }
       },
       "title": "VirtualMachine Info"
+    },
+    "BackupInfoVirtualMachineResources": {
+      "type": "object",
+      "properties": {
+        "vms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VirtualMachineResourceInfo"
+          },
+          "title": "List of virtual machine resource information"
+        }
+      },
+      "title": "Message for VirtualMachine resources containing list of virtual machines related resource information"
     },
     "BackupInfoVolume": {
       "type": "object",
@@ -4993,6 +5516,13 @@
           "items": {
             "$ref": "#/definitions/BackupLocationObject"
           }
+        },
+        "total_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "complete": {
+          "type": "boolean"
         }
       },
       "title": "Define BackupLocationEnumerateResponse struct"
@@ -5158,6 +5688,9 @@
         },
         "backup_info": {
           "$ref": "#/definitions/BackupInfo"
+        },
+        "_unused": {
+          "type": "boolean"
         }
       },
       "description": "Message for Backup object which will be stored in Datastore."
@@ -5180,6 +5713,64 @@
       ],
       "default": "Invalid",
       "description": " - NS: Represents backup schedules scoped to Kubernetes namespaces (non-VM workloads).\nTypically used for application-level backups.\n - VM: Represents backup schedules scoped to VirtualMachine workloads.\nUsed for VM-based backup scenarios.\n - All: Represents both NS and VM backup schedule types. Used when an operation should apply to all types."
+    },
+    "BackupResourceDetailGetRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "title": "Backup name"
+        },
+        "uid": {
+          "type": "string",
+          "title": "Backup uid"
+        },
+        "filter": {
+          "$ref": "#/definitions/BackupResourceDetailGetRequestFilter",
+          "title": "Filter options"
+        },
+        "force_resync": {
+          "type": "boolean",
+          "title": "force_resync has to be set to resync the failed sync process"
+        },
+        "sync_namespaces_only": {
+          "type": "boolean",
+          "title": "sync_namespaces_only when set to true will sync only the namespaces"
+        }
+      },
+      "title": "Request message to detailed backup resources"
+    },
+    "BackupResourceDetailGetRequestFilter": {
+      "type": "object",
+      "properties": {
+        "namespace_filter": {
+          "$ref": "#/definitions/NamespaceFilter"
+        },
+        "virtual_machine_filter": {
+          "$ref": "#/definitions/VirtualMachineFilter"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "filter based on the status.\nNeed to pass the string value of the status field of resources\nFor example, {\"Success\", \"Failed\"}\ndefault will be {\"Success\"}, when no value is passed"
+        },
+        "max_objects": {
+          "type": "string",
+          "format": "uint64",
+          "title": "max objects to fetch"
+        },
+        "object_index": {
+          "type": "string",
+          "format": "uint64",
+          "title": "object index from which to start fetching"
+        }
+      },
+      "title": "Filter to apply on resources"
     },
     "BackupResourceDetailGetResponse": {
       "type": "object",
@@ -5288,7 +5879,8 @@
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "title": "List of namespaces associated with the backup"
         },
         "volumes": {
           "type": "array",
@@ -5304,8 +5896,43 @@
         },
         "resource_details": {
           "$ref": "#/definitions/BackupResourceObjectResourceContainer"
+        },
+        "total_resource_count": {
+          "type": "string",
+          "format": "uint64",
+          "title": "Total count of resources matching filter"
+        },
+        "filtered_namespaces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupResourceObjectFilteredNamespaceInfo"
+          },
+          "title": "list of filtered namespaces"
+        },
+        "resources_sync_status_info": {
+          "$ref": "#/definitions/BackupResourceObjectSyncStatusInfo",
+          "title": "resources sync status information"
+        },
+        "namespace_sync_status_info": {
+          "$ref": "#/definitions/BackupResourceObjectSyncStatusInfo",
+          "title": "namespace sync status information"
         }
       }
+    },
+    "BackupResourceObjectFilteredNamespaceInfo": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string"
+        },
+        "resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "Filtered Namespaces along with associated resource types"
     },
     "BackupResourceObjectResourceContainer": {
       "type": "object",
@@ -5338,6 +5965,34 @@
       },
       "title": "Resource Info details"
     },
+    "BackupResourceObjectSyncStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/BackupResourceObjectSyncStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "When this status was last updated, this will be used for TTL calculation"
+        }
+      },
+      "title": "Message for maintaining status of sync operations"
+    },
+    "BackupResourceObjectSyncStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Pending",
+        "InProgress",
+        "Completed",
+        "Failed"
+      ],
+      "default": "Invalid"
+    },
     "BackupResourceObjectVirtualMachineDetailInfo": {
       "type": "object",
       "properties": {
@@ -5367,6 +6022,13 @@
           "items": {
             "$ref": "#/definitions/BackupResourceObjectVirtualMachineDetailInfo"
           }
+        },
+        "vm_guest_os_names_in_backup": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of unique OS names for all VMs in this backup"
         }
       },
       "title": "VirtualMachine Detail info List"
@@ -6244,6 +6906,13 @@
           "items": {
             "$ref": "#/definitions/CloudCredentialObject"
           }
+        },
+        "total_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "complete": {
+          "type": "boolean"
         }
       },
       "title": "Define CloudCredentialEnumerateResponse struct"
@@ -6680,6 +7349,14 @@
         "object_index": {
           "type": "string",
           "format": "uint64"
+        },
+        "sort_option": {
+          "$ref": "#/definitions/SortOption",
+          "title": "Add sorting support for VRO list API"
+        },
+        "time_range": {
+          "$ref": "#/definitions/TimeRange",
+          "title": "Time range for which to return objects"
         }
       }
     },
@@ -6831,6 +7508,62 @@
         "sort_option": {
           "$ref": "#/definitions/SortOption",
           "title": "Sorting backup objects based on the field and order\nIf the field is not set, default value will be \"CreationTimestamp\"\nIf the order is not set, default value will be \"descending\""
+        },
+        "volume_resource_only_policy_ref": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "filter to use volumeResourceOnly policy name and uid. Any object that contains the filter will be returned."
+        },
+        "resource_info": {
+          "$ref": "#/definitions/ResourceInfo",
+          "title": "filter to use resource name and namespace. Any backup that contains the resource will be returned"
+        },
+        "vm_volume_name": {
+          "type": "string",
+          "title": "filter VM that matches the resource_info and has volume vm_volume_name attached to it"
+        },
+        "exclude_failed_resource": {
+          "type": "boolean",
+          "title": "filter to exclude failed resources while enumerating object"
+        }
+      }
+    },
+    "FileLevelRestoreInfo": {
+      "type": "object",
+      "properties": {
+        "virtual_machine_name": {
+          "type": "string",
+          "title": "Name of the virtualMachine to which file level restore needs to be performed"
+        },
+        "volume_name": {
+          "type": "string",
+          "title": "PersistentVolumeClaim name. The Source volume from which files needs to be restored"
+        },
+        "restore_files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RestoreFileInfo"
+          },
+          "title": "List of files to be restored from the virtualMachine volume"
+        }
+      }
+    },
+    "FileLevelRestoreStatusInfo": {
+      "type": "object",
+      "properties": {
+        "virtual_machine_name": {
+          "type": "string"
+        },
+        "volume_name": {
+          "type": "string"
+        },
+        "restore_files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RestoreFileStatusInfo"
+          }
         }
       }
     },
@@ -7324,6 +8057,11 @@
         "ownership": {
           "$ref": "#/definitions/Ownership",
           "title": "ownership of the object"
+        },
+        "last_update_time_in_sec": {
+          "type": "string",
+          "format": "int64",
+          "title": "last update time in sec"
         }
       }
     },
@@ -7408,6 +8146,58 @@
         }
       }
     },
+    "MonthlyPolicyRelativeMonthlyPolicy": {
+      "type": "object",
+      "properties": {
+        "day": {
+          "type": "string",
+          "title": "Relative day of relative week, Only one day can be specified.\nFor example, sun or mon"
+        },
+        "weekly_index": {
+          "$ref": "#/definitions/RelativeMonthlyPolicyweeklyIndex"
+        },
+        "time": {
+          "type": "string",
+          "description": "Time, when the policy should be triggered. Expected format is\ntime.Kitchen eg 12:04PM or 12:04pm."
+        },
+        "retain": {
+          "type": "string",
+          "format": "int64",
+          "description": "Number of objects to retain for monthly policy, default value is 12."
+        },
+        "incremental_count": {
+          "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
+          "description": "Number of incremental snapshots to take before taking a full snapshot."
+        }
+      }
+    },
+    "MonthlyPolicySelectiveMonthlyPolicy": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "int64",
+          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month it'll rollover to the next date of the month.\nFor example if 31 is specified, it'll trigger on either 1st or 2nd March\ndepending on if it is a leap year."
+        },
+        "time": {
+          "type": "string",
+          "description": "Time, when the policy should be triggered. Expected format is\ntime.Kitchen eg 12:04PM or 12:04pm."
+        },
+        "retain": {
+          "type": "string",
+          "format": "int64",
+          "description": "Number of objects to retain for monthly policy, default value is 12."
+        },
+        "incremental_count": {
+          "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
+          "description": "Number of incremental snapshots to take before taking a full snapshot."
+        },
+        "months": {
+          "type": "string",
+          "title": "months specify the list months on which schedule needs to be taken.\nIf it is empty, the schedule will be taken on every month of the year.\nmonths will take comma seperated multiple month value.\nFor example, jan,feb or Jan,Feb or january,february or January,February"
+        }
+      }
+    },
     "NFSConfig": {
       "type": "object",
       "properties": {
@@ -7421,6 +8211,213 @@
           "type": "string"
         }
       }
+    },
+    "NamespaceFilter": {
+      "type": "object",
+      "properties": {
+        "namespace_name_pattern": {
+          "type": "string",
+          "title": "Substring or regex pattern to match namespace name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        },
+        "include_namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of namespace names to include for filtering"
+        },
+        "exclude_namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Filter by exclude namespaces for filtering"
+        },
+        "include_resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceInfo"
+          },
+          "title": "List of resources to include for filtering"
+        },
+        "exclude_resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceInfo"
+          },
+          "title": "List of resources to exclude for filtering"
+        },
+        "gvks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "gvks represents a list of Kubernetes Group/Version/Kind (GVK) identifiers.\nEach GVK follows the format \"group/version/kind\" (e.g., \"apps/v1/Deployment\").\nThis field is used to filter resources based on their GVK."
+        },
+        "resource_name_pattern": {
+          "type": "string",
+          "title": "Substring or regex pattern to match resource name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        }
+      }
+    },
+    "NamespaceResource": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Namespace name"
+        },
+        "status": {
+          "$ref": "#/definitions/NamespaceResourceStatusInfo",
+          "title": "Status information for this namespace"
+        },
+        "resource_types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NamespaceResourceResourceTypeInfo"
+          },
+          "title": "List of resource types in this namespace, grouped by resource type"
+        },
+        "metrics": {
+          "$ref": "#/definitions/NamespaceResourceMetrics",
+          "title": "Statistics for this namespace"
+        }
+      },
+      "title": "Message representing resources within a namespace with status, metrics, and resource type breakdown"
+    },
+    "NamespaceResourceChunkInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status": {
+          "$ref": "#/definitions/NamespaceResourceChunkInfoStatusInfo",
+          "title": "Processing status of this specific chunk"
+        },
+        "resource_names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of resource names contained in this chunk"
+        },
+        "total_resources": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of resources in this chunk"
+        }
+      },
+      "title": "ChunkInfo represents a processing unit containing a subset of resources of the same type in a namespace"
+    },
+    "NamespaceResourceChunkInfoStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/NamespaceResourceChunkInfoStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "title": "Status information for chunk-level operations"
+    },
+    "NamespaceResourceChunkInfoStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "InProgress",
+        "Success",
+        "Failed"
+      ],
+      "default": "Invalid"
+    },
+    "NamespaceResourceMetrics": {
+      "type": "object",
+      "properties": {
+        "total_resources": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of resources in this namespace"
+        },
+        "total_volumes": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of volumes in this namespace"
+        },
+        "total_failed_resources": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of resources that failed in this namespace"
+        },
+        "total_failed_volumes": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of volumes that failed in this namespace"
+        }
+      },
+      "title": "Metrics containing namespace-level statistics for resources and volumes"
+    },
+    "NamespaceResourceResourceTypeInfo": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "The Kubernetes resource type in the format group/version/kind (e.g., \"apps/v1/Deployment\")"
+        },
+        "chunks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NamespaceResourceChunkInfo"
+          },
+          "title": "List of chunks containing resources of this type"
+        },
+        "metrics": {
+          "$ref": "#/definitions/NamespaceResourceResourceTypeInfoMetrics",
+          "title": "Statistics for this resource type"
+        }
+      },
+      "title": "ResourceTypeInfo groups resources by their resource type and organizes them into chunks"
+    },
+    "NamespaceResourceResourceTypeInfoMetrics": {
+      "type": "object",
+      "properties": {
+        "total_resources": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of resources of this type"
+        },
+        "total_failed_resources": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of resources of this type that failed"
+        }
+      },
+      "title": "Metrics containing resource type-level statistics"
+    },
+    "NamespaceResourceStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/NamespaceResourceStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "title": "Status information for namespace-level operations"
+    },
+    "NamespaceResourceStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "InProgress",
+        "Success",
+        "Failed",
+        "PartialSuccess"
+      ],
+      "default": "Invalid"
     },
     "ObjectRef": {
       "type": "object",
@@ -7830,6 +8827,19 @@
     "RecipientUpdateResponse": {
       "type": "object"
     },
+    "RelativeMonthlyPolicyweeklyIndex": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "first",
+        "second",
+        "third",
+        "fourth",
+        "last"
+      ],
+      "default": "Invalid",
+      "title": "Usually every weekday is repreated atleast four times in any month and few week days \nare repeated 5 times. Hence we have given both fourth and last as an option. \nIn Nov 2025, fourth sun != last sun, fourth mon = last mon\nIn case of February in a non-leap year, each week day is repeated exactly 4 times.\nSo, both fourth and last option becomes same. fourth sun = last sun"
+    },
     "Remark": {
       "type": "object",
       "properties": {
@@ -7908,7 +8918,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "title": "mapping of the namespaces from the backup to which restore should be done"
+          "title": "mapping of the namespaces from the backup to which restore should be done\nshould be used only when restore is done without using filter\nset namespace_mapping key = value if is_sfr is set to true"
         },
         "replace_policy": {
           "$ref": "#/definitions/ReplacePolicyType",
@@ -7959,6 +8969,33 @@
         "backup_object_type": {
           "$ref": "#/definitions/RestoreCreateRequestBackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
+        },
+        "exclude_resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceInfo"
+          },
+          "description": "List of resources to exclude from restore."
+        },
+        "filter": {
+          "$ref": "#/definitions/RestoreCreateRequestFilter",
+          "title": "Filter options"
+        },
+        "virtual_machine_restore_options": {
+          "$ref": "#/definitions/RestoreCreateRequestVirtualMachineRestoreOptions",
+          "title": "VirtualMachine Restore Options"
+        },
+        "is_sfr": {
+          "type": "boolean",
+          "title": "Set it to true if restore is for virtualMachine file level restore"
+        },
+        "file_level_restore_info": {
+          "$ref": "#/definitions/FileLevelRestoreInfo",
+          "title": "File level restore info details if is_sfr is set to true"
+        },
+        "target_namespace_prefix": {
+          "type": "string",
+          "title": "target_namespace_prefix will be used to prefix all the target namespaces created during restore using filter\nThis will be ignored when restore is done without using filter"
         }
       },
       "title": "Define RestoreCreateRequest struct"
@@ -7979,6 +9016,31 @@
         "VirtualMachine"
       ],
       "default": "Invalid"
+    },
+    "RestoreCreateRequestFilter": {
+      "type": "object",
+      "properties": {
+        "namespace_filter": {
+          "$ref": "#/definitions/NamespaceFilter"
+        },
+        "virtual_machine_filter": {
+          "$ref": "#/definitions/VirtualMachineFilter"
+        }
+      },
+      "title": "Filter to apply on resources"
+    },
+    "RestoreCreateRequestVirtualMachineRestoreOptions": {
+      "type": "object",
+      "properties": {
+        "skip_mac_masking": {
+          "type": "boolean",
+          "title": "Skip mac address masking while restoring VirtualMachines"
+        },
+        "skip_vm_restart": {
+          "type": "boolean",
+          "title": "Skip VM restart during virtualMachine restore"
+        }
+      }
     },
     "RestoreCreateResponse": {
       "type": "object",
@@ -8011,6 +9073,43 @@
         }
       },
       "title": "Define RestoreEnumerateResponse struct"
+    },
+    "RestoreFileInfo": {
+      "type": "object",
+      "properties": {
+        "source_path": {
+          "type": "string",
+          "title": "Source file path. Relative path to the file with in the selected volume"
+        },
+        "destination_path": {
+          "type": "string",
+          "title": "Destination File path. Absolute file path where the source file needs to be restored.\nEmpty if restore to the same path as that of the source path"
+        },
+        "is_dir": {
+          "type": "boolean",
+          "title": "True if source path is a directory path"
+        },
+        "partition_info": {
+          "type": "string",
+          "title": "Partition info of the volume where the source file exists, if  the volume is partitioned \nFor eg: vda1 or sda14"
+        }
+      }
+    },
+    "RestoreFileStatusInfo": {
+      "type": "object",
+      "properties": {
+        "restore_file_info": {
+          "$ref": "#/definitions/RestoreFileInfo"
+        },
+        "duration": {
+          "type": "string",
+          "title": "Time taken to complete the copy operation"
+        },
+        "status": {
+          "$ref": "#/definitions/RestoreInfoStatusInfo",
+          "title": "Restore status of the file with reason for failure if any"
+        }
+      }
     },
     "RestoreInfo": {
       "type": "object",
@@ -8130,6 +9229,25 @@
         "backup_object_type": {
           "$ref": "#/definitions/RestoreInfoBackupObjectType",
           "title": "backup object type is all namespace or virtualMachine specific backup"
+        },
+        "virtual_machine_restore_options": {
+          "$ref": "#/definitions/RestoreInfoVirtualMachineRestoreOptions",
+          "title": "VirtualMachine Restore Options"
+        },
+        "is_sfr": {
+          "type": "boolean",
+          "title": "Is true if restore is VirtualMachine file level restore"
+        },
+        "file_level_restore_info": {
+          "$ref": "#/definitions/FileLevelRestoreStatusInfo",
+          "title": "File level restore info"
+        },
+        "filter": {
+          "$ref": "#/definitions/RestoreInfoFilter",
+          "title": "Filter criteria used for this restore (for audit/duplicate restore)"
+        },
+        "target_namespace_prefix": {
+          "type": "string"
         }
       },
       "title": "Message for restore info"
@@ -8150,6 +9268,17 @@
         "VirtualMachine"
       ],
       "default": "Invalid"
+    },
+    "RestoreInfoFilter": {
+      "type": "object",
+      "properties": {
+        "namespace_filter": {
+          "$ref": "#/definitions/NamespaceFilter"
+        },
+        "virtual_machine_filter": {
+          "$ref": "#/definitions/VirtualMachineFilter"
+        }
+      }
     },
     "RestoreInfoRestoreResourceState": {
       "type": "object",
@@ -8208,6 +9337,19 @@
         "PartialSuccess"
       ],
       "default": "Invalid"
+    },
+    "RestoreInfoVirtualMachineRestoreOptions": {
+      "type": "object",
+      "properties": {
+        "skip_mac_masking": {
+          "type": "boolean",
+          "title": "Skip mac address masking while restoring VirtualMachines"
+        },
+        "skip_vm_restart": {
+          "type": "boolean",
+          "title": "Skip VM restart during virtualMachine restore"
+        }
+      }
     },
     "RestoreInfoVolume": {
       "type": "object",
@@ -8740,20 +9882,26 @@
         "date": {
           "type": "string",
           "format": "int64",
-          "description": "Date of the month when the policy should be triggered. If a given\ndate\ndoesn't exist in a month it'll rollover to the next date of the\nmonth.\nFor example if 31 is specified, it'll trigger on either 1st or 2nd\nMarch\ndepending on if it is a leap year."
+          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month it'll rollover to the next date of the month.\nFor example if 31 is specified, it'll trigger on either 1st or 2nd March\ndepending on if it is a leap year.\nThis field is deprecated, not to be used."
         },
         "time": {
           "type": "string",
-          "description": "Time, when the policy should be triggered. Expected format is\ntime.Kitchen eg 12:04PM or 12:04pm."
+          "description": "Time, when the policy should be triggered. Expected format is\ntime.Kitchen eg 12:04PM or 12:04pm.\nThis field is deprecated, not to be used."
         },
         "retain": {
           "type": "string",
           "format": "int64",
-          "description": "Number of objects to retain for monthly policy, default value is 10."
+          "description": "Number of objects to retain for monthly policy, default value is 12.\nThis field is deprecated, not to be used."
         },
         "incremental_count": {
           "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
-          "description": "Number of incremental snapshots to take before taking a full\nsnapshot."
+          "description": "Number of incremental snapshots to take before taking a full snapshot.\nThis field is deprecated, not to be used."
+        },
+        "relative_monthly_policy": {
+          "$ref": "#/definitions/MonthlyPolicyRelativeMonthlyPolicy"
+        },
+        "selective_monthly_policy": {
+          "$ref": "#/definitions/MonthlyPolicySelectiveMonthlyPolicy"
         }
       }
     },
@@ -8762,7 +9910,7 @@
       "properties": {
         "day": {
           "type": "string",
-          "title": "Day of the week when the policy should be triggered.\nFor example, sunday or sun"
+          "title": "Day of the week when the policy should be triggered.\nFor example, sunday or sun\nMultiple days can be configured in the weekly policy. Multiple days can be passed in the day string with comma seperated.\nFor example, sunday,monday or sun,mon or Sun,Mon or Sunday,Monday"
         },
         "time": {
           "type": "string",
@@ -8771,11 +9919,15 @@
         "retain": {
           "type": "string",
           "format": "int64",
-          "description": "Number of objects to retain for weekly policy, default value is 10."
+          "description": "Number of objects to retain for weekly policy, default value is 5."
         },
         "incremental_count": {
           "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
           "description": "Number of incremental snapshots to take before taking a full\nsnapshot."
+        },
+        "bi_weekly": {
+          "type": "boolean",
+          "description": "bi_weekly flag need to be enabled, if schedule need to happen on alternate week.\nBy default, it will false. That means the schedule will happen every week."
         }
       }
     },
@@ -8896,7 +10048,8 @@
         "Name",
         "ClusterName",
         "Size",
-        "RestoreBackupName"
+        "RestoreBackupName",
+        "LastUpdateTimestamp"
       ],
       "default": "Invalid"
     },
@@ -9019,6 +10172,36 @@
         }
       }
     },
+    "VirtualMachineFilter": {
+      "type": "object",
+      "properties": {
+        "vm_name_pattern": {
+          "type": "string",
+          "title": "Substring or regex pattern to match virtual machine name and include (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        },
+        "os_name": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of os names to include for filtering"
+        },
+        "include_vms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupInfoVirtualMachineInfo"
+          },
+          "title": "List of vms to include for filtering"
+        },
+        "exclude_vms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupInfoVirtualMachineInfo"
+          },
+          "title": "List of vms to exclude for filtering"
+        }
+      }
+    },
     "VirtualMachineResourceInfo": {
       "type": "object",
       "properties": {
@@ -9095,9 +10278,37 @@
       "type": "object",
       "properties": {
         "generic_enumerate_options": {
-          "$ref": "#/definitions/CommonEnumerateOptions"
+          "$ref": "#/definitions/CommonEnumerateOptions",
+          "title": "Optional arguments for enumeration"
+        },
+        "volume_types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VolumeResourceOnlyPolicyInfoVolumeType"
+          },
+          "title": "Add volume type filtering support for VRO list API"
         }
       }
+    },
+    "VolumeResourceOnlyPolicyEnumerateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "label selectors for the object for filtering"
+        },
+        "enumerate_options": {
+          "$ref": "#/definitions/VolumeResourceOnlyPolicyEnumerateOptions",
+          "title": "Optional arguments for enumeration"
+        }
+      },
+      "title": "Define VolumeResourceOnlyPolicyEnumerateRequest struct"
     },
     "VolumeResourceOnlyPolicyEnumerateResponse": {
       "type": "object",
