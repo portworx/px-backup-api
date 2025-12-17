@@ -299,8 +299,10 @@ message SchedulePolicyInfo {
     // auto-delete - this option is to indicate, whether the backup
     // should be deleted after the retention of the backup object is expired
     bool auto_delete = 7;
+    // supports_advanced_features - this option is to indicate, whether the policy is created with advanced feature support multiday, biweekly, relative and selective monthly
+    bool supports_advanced_features = 8;
 
-    message IncrementalCount {
+    message IncrementalCount {  
         uint64 count = 1 [ (gogoproto.jsontag) = "count" ];
     }
 
@@ -346,9 +348,8 @@ message SchedulePolicyInfo {
 
     message MonthlyPolicy {
         // Date of the month when the policy should be triggered. If a given date
-        // doesn't exist in a month it'll rollover to the next date of the month.
-        // For example if 31 is specified, it'll trigger on either 1st or 2nd March
-        // depending on if it is a leap year.
+	    // doesn't exist in a month, it will be skipped. For example, if 30 is specified,
+	    // it'll be skipped in February.
         // This field is deprecated, not to be used.
         int64 date = 1;
         // Time, when the policy should be triggered. Expected format is
@@ -368,9 +369,8 @@ message SchedulePolicyInfo {
 
 	    message SelectiveMonthlyPolicy {
 		    // Date of the month when the policy should be triggered. If a given date
-		    // doesn't exist in a month it'll rollover to the next date of the month.
-		    // For example if 31 is specified, it'll trigger on either 1st or 2nd March
-		    // depending on if it is a leap year.
+	        // doesn't exist in a month, it will be skipped. For example, if 30 is specified,
+	        // it'll be skipped in February.
 		    int64 date = 1;
 		    // Time, when the policy should be triggered. Expected format is
 		    // time.Kitchen eg 12:04PM or 12:04pm.
