@@ -8177,7 +8177,7 @@
         "date": {
           "type": "string",
           "format": "int64",
-          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month it'll rollover to the next date of the month.\nFor example if 31 is specified, it'll trigger on either 1st or 2nd March\ndepending on if it is a leap year."
+          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month, it will be skipped. For example, if 30 is specified,\nit'll be skipped in February."
         },
         "time": {
           "type": "string",
@@ -9827,6 +9827,10 @@
         "auto_delete": {
           "type": "boolean",
           "title": "auto-delete - this option is to indicate, whether the backup\nshould be deleted after the retention of the backup object is expired"
+        },
+        "supports_advanced_features": {
+          "type": "boolean",
+          "title": "supports_advanced_features - this option is to indicate, whether the policy is created with advanced feature support multiday, biweekly, relative and selective monthly"
         }
       }
     },
@@ -9882,7 +9886,7 @@
         "date": {
           "type": "string",
           "format": "int64",
-          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month it'll rollover to the next date of the month.\nFor example if 31 is specified, it'll trigger on either 1st or 2nd March\ndepending on if it is a leap year.\nThis field is deprecated, not to be used."
+          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month, it will be skipped. For example, if 30 is specified,\nit'll be skipped in February.\nThis field is deprecated, not to be used."
         },
         "time": {
           "type": "string",
