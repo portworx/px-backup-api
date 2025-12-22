@@ -9248,6 +9248,13 @@
         },
         "target_namespace_prefix": {
           "type": "string"
+        },
+        "failed_namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of failedNamespaces during restore"
         }
       },
       "title": "Message for restore info"

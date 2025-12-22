@@ -1045,6 +1045,8 @@ message RestoreInfo {
     // Filter criteria used for this restore (for audit/duplicate restore)
     Filter filter = 29;
     string target_namespace_prefix = 30;
+    // List of failedNamespaces during restore
+    repeated string failed_namespaces = 31;
 
     message RestoreResourceState {
         ResourceStatus restore_status = 1;
