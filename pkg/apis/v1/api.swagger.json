@@ -4776,6 +4776,12 @@
             "type": "string"
           },
           "title": "to capture namespaces that were missing when the backup was initiated"
+        },
+        "parentbackupRef": {
+          "type": "string"
+        },
+        "childObjectRef": {
+          "type": "string"
         }
       }
     },

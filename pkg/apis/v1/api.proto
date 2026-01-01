@@ -659,6 +659,8 @@ message BackupInfo {
     repeated VirtualMachineResourceInfo virtual_machine_resources = 52;
    // to capture namespaces that were missing when the backup was initiated
     repeated string missing_namespaces = 53;
+    string parentbackupRef = 54;
+    string childObjectRef = 55;
     message BackupType {
         Type type = 1;
 
