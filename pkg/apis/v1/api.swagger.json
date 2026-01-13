@@ -2073,6 +2073,138 @@
         ]
       }
     },
+    "/v1/containerorchestrator/getbearertoken": {
+      "post": {
+        "summary": "Get Kubernetes ServiceAccount bearer token\nNote: Not used by PX-Backup, but required for CCM-Go compatibility",
+        "operationId": "ContainerOrchestrator_GetBearerToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetBearerTokenResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetBearerTokenRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ContainerOrchestrator"
+        ]
+      }
+    },
+    "/v1/containerorchestrator/kvdelete": {
+      "post": {
+        "summary": "Delete certificate data from Kubernetes Secret",
+        "operationId": "ContainerOrchestrator_KVDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/KVDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/KVDeleteRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ContainerOrchestrator"
+        ]
+      }
+    },
+    "/v1/containerorchestrator/kvget": {
+      "post": {
+        "summary": "Get certificate data from Kubernetes Secret",
+        "operationId": "ContainerOrchestrator_KVGet",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/KVGetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/KVGetRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ContainerOrchestrator"
+        ]
+      }
+    },
+    "/v1/containerorchestrator/kvset": {
+      "post": {
+        "summary": "Store certificate data in Kubernetes Secret",
+        "operationId": "ContainerOrchestrator_KVSet",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/KVSetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/KVSetRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ContainerOrchestrator"
+        ]
+      }
+    },
     "/v1/health": {
       "get": {
         "summary": "Status checks the health of the server",
@@ -7567,6 +7699,27 @@
         }
       }
     },
+    "GetBearerTokenRequest": {
+      "type": "object",
+      "properties": {
+        "refresh_token": {
+          "type": "string"
+        },
+        "exp": {
+          "type": "string"
+        }
+      },
+      "title": "GetBearerTokenRequest - Request to get Kubernetes ServiceAccount token\nNote: Not used by PX-Backup, but required for CCM-Go compatibility"
+    },
+    "GetBearerTokenResponse": {
+      "type": "object",
+      "properties": {
+        "bearer_token": {
+          "type": "string"
+        }
+      },
+      "title": "GetBearerTokenResponse - Response containing bearer token"
+    },
     "GoogleConfig": {
       "type": "object",
       "properties": {
@@ -7588,6 +7741,59 @@
           "type": "string"
         }
       }
+    },
+    "KVDeleteRequest": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        }
+      },
+      "title": "KVDeleteRequest - Request to delete certificate data from Kubernetes Secret"
+    },
+    "KVDeleteResponse": {
+      "type": "object",
+      "title": "KVDeleteResponse - Response after deleting certificate data"
+    },
+    "KVGetRequest": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "KVGetRequest - Request to retrieve certificate data from Kubernetes Secret"
+    },
+    "KVGetResponse": {
+      "type": "object",
+      "properties": {
+        "pair": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ValuePair"
+          }
+        }
+      },
+      "title": "KVGetResponse - Response containing certificate data"
+    },
+    "KVSetRequest": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": "KVSetRequest - Request to store certificate data in Kubernetes Secret"
+    },
+    "KVSetResponse": {
+      "type": "object",
+      "title": "KVSetResponse - Response after storing certificate data"
     },
     "LicenseActivateRequest": {
       "type": "object",
@@ -10143,6 +10349,18 @@
     },
     "UnShareClusterResponse": {
       "type": "object"
+    },
+    "ValuePair": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": "ValuePair - Key-value pair for certificate data"
     },
     "VersionGetResponse": {
       "type": "object",

@@ -3909,3 +3909,89 @@ message LogLevelSetRequest {
 message LogLevelSetResponse {
     string message = 1;  // e.g., "Log level changed from INFO to DEBUG"
 }
+
+// This service provides a KV store interface for CCM-Go (telemetry registration)
+// to store Pure1 certificates in Kubernetes Secrets.
+service ContainerOrchestrator {
+  // Get certificate data from Kubernetes Secret
+  rpc KVGet(KVGetRequest) returns (KVGetResponse) {
+    option (google.api.http) = {
+      post : "/v1/containerorchestrator/kvget"
+      body : "*"
+    };
+  }
+
+  // Store certificate data in Kubernetes Secret
+  rpc KVSet(KVSetRequest) returns (KVSetResponse) {
+    option (google.api.http) = {
+      post : "/v1/containerorchestrator/kvset"
+      body : "*"
+    };
+  }
+
+  // Delete certificate data from Kubernetes Secret
+  rpc KVDelete(KVDeleteRequest) returns (KVDeleteResponse) {
+    option (google.api.http) = {
+      post : "/v1/containerorchestrator/kvdelete"
+      body : "*"
+    };
+  }
+
+  // Get Kubernetes ServiceAccount bearer token
+  // Note: Not used by PX-Backup, but required for CCM-Go compatibility
+  rpc GetBearerToken(GetBearerTokenRequest) returns (GetBearerTokenResponse) {
+    option (google.api.http) = {
+      post : "/v1/containerorchestrator/getbearertoken"
+      body : "*"
+    };
+  }
+}
+
+// KVGetRequest - Request to retrieve certificate data from Kubernetes Secret
+message KVGetRequest {
+  repeated string key = 1;
+}
+
+// ValuePair - Key-value pair for certificate data
+message ValuePair {
+  string key = 1;
+  string value = 2;
+}
+
+// KVGetResponse - Response containing certificate data
+message KVGetResponse {
+  repeated ValuePair pair = 1;
+}
+
+// KVSetRequest - Request to store certificate data in Kubernetes Secret
+message KVSetRequest {
+  string key = 1;   // Key name (e.g., "arcus/v3/certdata")
+  string value = 2; // JSON-encoded certificate data
+}
+
+// KVSetResponse - Response after storing certificate data
+message KVSetResponse {
+  // Empty response - operation success indicated by no error
+}
+
+// KVDeleteRequest - Request to delete certificate data from Kubernetes Secret
+message KVDeleteRequest {
+  string key = 1;
+}
+
+// KVDeleteResponse - Response after deleting certificate data
+message KVDeleteResponse {
+  // Empty response - operation success indicated by no error
+}
+
+// GetBearerTokenRequest - Request to get Kubernetes ServiceAccount token
+// Note: Not used by PX-Backup, but required for CCM-Go compatibility
+message GetBearerTokenRequest {
+  string refresh_token = 1;
+  string exp = 2;
+}
+
+// GetBearerTokenResponse - Response containing bearer token
+message GetBearerTokenResponse {
+  string bearer_token = 1;
+}
