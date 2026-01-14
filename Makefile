@@ -9,6 +9,7 @@ endif
 ifndef PROTOC_FILES
 PROTOC_FILES := pkg/apis/v1/api.proto
 PROTOC_FILES += pkg/apis/v1/common.proto
+PROTOC_FILES += pkg/apis/v1/container_orchestrator.proto
 endif
 
 PROTOC_ZIP := protoc-3.14.0-linux-x86_64.zip
