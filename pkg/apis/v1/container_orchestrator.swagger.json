@@ -1,0 +1,276 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "pkg/apis/v1/container_orchestrator.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/containerorchestrator/getbearertoken": {
+      "post": {
+        "summary": "Get bearer token for authentication (required by CCM-Go)",
+        "operationId": "ContainerOrchestrator_GetBearerToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/emsGetBearerTokenResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/emsGetBearerTokenRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ContainerOrchestrator"
+        ]
+      }
+    },
+    "/v1/containerorchestrator/kvdelete": {
+      "post": {
+        "summary": "Delete certificate data from Kubernetes Secret",
+        "operationId": "ContainerOrchestrator_KVDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/emsKVDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/emsKVDeleteRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ContainerOrchestrator"
+        ]
+      }
+    },
+    "/v1/containerorchestrator/kvget": {
+      "post": {
+        "summary": "Get certificate data from Kubernetes Secret",
+        "operationId": "ContainerOrchestrator_KVGet",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/emsKVGetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/emsKVGetRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ContainerOrchestrator"
+        ]
+      }
+    },
+    "/v1/containerorchestrator/kvset": {
+      "post": {
+        "summary": "Store certificate data in Kubernetes Secret",
+        "operationId": "ContainerOrchestrator_KVSet",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/emsKVSetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/emsKVSetRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ContainerOrchestrator"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "emsGetBearerTokenRequest": {
+      "type": "object",
+      "properties": {
+        "refresh_token": {
+          "type": "string",
+          "title": "Refresh token for authentication"
+        },
+        "exp": {
+          "type": "string",
+          "title": "Token expiration (e.g., \"1m\" for 1 minute, \"1h\" for 1 hour, \"1d\" for 1 day)\nMaximum is 1d, minimum is 1s. Invalid or empty exp will resolve to 1d"
+        }
+      },
+      "title": "GetBearerTokenRequest is used to request a bearer token"
+    },
+    "emsGetBearerTokenResponse": {
+      "type": "object",
+      "properties": {
+        "bearer_token": {
+          "type": "string",
+          "title": "Bearer token for authentication"
+        }
+      },
+      "title": "GetBearerTokenResponse contains the bearer token"
+    },
+    "emsKVDeleteRequest": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "title": "Key name to delete"
+        }
+      },
+      "title": "KVDeleteRequest contains the key to delete"
+    },
+    "emsKVDeleteResponse": {
+      "type": "object",
+      "title": "KVDeleteResponse is returned after successfully deleting data"
+    },
+    "emsKVGetRequest": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of keys to retrieve (e.g., [\"arcus/v3/certdata\"])"
+        }
+      },
+      "title": "KVGetRequest contains the keys to retrieve from the KV store"
+    },
+    "emsKVGetResponse": {
+      "type": "object",
+      "properties": {
+        "pair": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/emsValuePair"
+          },
+          "title": "List of key-value pairs"
+        }
+      },
+      "title": "KVGetResponse contains the retrieved key-value pairs"
+    },
+    "emsKVSetRequest": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "title": "Key name (e.g., \"arcus/v3/certdata\")"
+        },
+        "value": {
+          "type": "string",
+          "title": "JSON-encoded certificate data"
+        }
+      },
+      "title": "KVSetRequest contains the key-value pair to store"
+    },
+    "emsKVSetResponse": {
+      "type": "object",
+      "title": "KVSetResponse is returned after successfully storing data"
+    },
+    "emsValuePair": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": "ValuePair represents a key-value pair"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

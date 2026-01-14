@@ -1,0 +1,106 @@
+/// Please use the following editor setup for this file:
+
+// Tab size=4; Tabs as spaces; Clean up trailing whitepsace
+// 'make proto' will run clang-format to fix formatiing
+syntax = "proto3";
+
+package com.purestorage.ems;
+
+option go_package = "api";
+
+import "google/api/annotations.proto";
+
+// ContainerOrchestrator service provides KV store interface for certificate management
+// This service is used by CCM-Go (Pure1 registration library) to store and retrieve
+// certificates in Kubernetes Secrets.
+service ContainerOrchestrator {
+  // Get certificate data from Kubernetes Secret
+  rpc KVGet(KVGetRequest) returns (KVGetResponse) {
+    option (google.api.http) = {
+      post: "/v1/containerorchestrator/kvget"
+      body: "*"
+    };
+  }
+
+  // Store certificate data in Kubernetes Secret
+  rpc KVSet(KVSetRequest) returns (KVSetResponse) {
+    option (google.api.http) = {
+      post: "/v1/containerorchestrator/kvset"
+      body: "*"
+    };
+  }
+
+  // Delete certificate data from Kubernetes Secret
+  rpc KVDelete(KVDeleteRequest) returns (KVDeleteResponse) {
+    option (google.api.http) = {
+      post: "/v1/containerorchestrator/kvdelete"
+      body: "*"
+    };
+  }
+
+  // Get bearer token for authentication (required by CCM-Go)
+  rpc GetBearerToken(GetBearerTokenRequest) returns (GetBearerTokenResponse) {
+    option (google.api.http) = {
+      post: "/v1/containerorchestrator/getbearertoken"
+      body: "*"
+    };
+  }
+}
+
+// KVGetRequest contains the keys to retrieve from the KV store
+message KVGetRequest {
+  // List of keys to retrieve (e.g., ["arcus/v3/certdata"])
+  repeated string key = 1;
+}
+
+// ValuePair represents a key-value pair
+message ValuePair {
+  string key = 1;
+  string value = 2;
+}
+
+// KVGetResponse contains the retrieved key-value pairs
+message KVGetResponse {
+  // List of key-value pairs
+  repeated ValuePair pair = 1;
+}
+
+// KVSetRequest contains the key-value pair to store
+message KVSetRequest {
+  // Key name (e.g., "arcus/v3/certdata")
+  string key = 1;
+  // JSON-encoded certificate data
+  string value = 2;
+}
+
+// KVSetResponse is returned after successfully storing data
+message KVSetResponse {
+  // Empty response - success indicated by no error
+}
+
+// KVDeleteRequest contains the key to delete
+message KVDeleteRequest {
+  // Key name to delete
+  string key = 1;
+}
+
+// KVDeleteResponse is returned after successfully deleting data
+message KVDeleteResponse {
+  // Empty response - success indicated by no error
+}
+
+// GetBearerTokenRequest is used to request a bearer token
+message GetBearerTokenRequest {
+  // Refresh token for authentication
+  string refresh_token = 1;
+  // Token expiration (e.g., "1m" for 1 minute, "1h" for 1 hour, "1d" for 1 day)
+  // Maximum is 1d, minimum is 1s. Invalid or empty exp will resolve to 1d
+  string exp = 2;
+}
+
+// GetBearerTokenResponse contains the bearer token
+message GetBearerTokenResponse {
+  // Bearer token for authentication
+  string bearer_token = 1;
+}
+
