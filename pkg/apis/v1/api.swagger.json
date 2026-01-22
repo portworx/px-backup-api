@@ -3354,6 +3354,29 @@
         ]
       }
     },
+    "/v1/reporting/data": {
+      "get": {
+        "summary": "GetData returns current reporting data for telemetry",
+        "operationId": "Reporting_GetData",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReportingDataResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "tags": [
+          "Reporting"
+        ]
+      }
+    },
     "/v1/resourceType/{org_id}": {
       "get": {
         "summary": "ResourceTypes api will return the list of ResourceTypes are support by px-backup for backup.",
@@ -9595,6 +9618,23 @@
         "Delete"
       ],
       "default": "Invalid"
+    },
+    "ReportingDataResponse": {
+      "type": "object",
+      "properties": {
+        "json_data": {
+          "type": "string",
+          "title": "JSON-encoded reporting data"
+        },
+        "timestamp": {
+          "type": "string",
+          "title": "Timestamp when data was collected"
+        },
+        "version": {
+          "type": "string",
+          "title": "PX-Backup version"
+        }
+      }
     },
     "ResourceInfo": {
       "type": "object",

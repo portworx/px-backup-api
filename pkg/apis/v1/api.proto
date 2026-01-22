@@ -4423,3 +4423,26 @@ message ClusterDiscoveryConfigDiscoverClustersResponse {
     // Message providing additional context (e.g., "Discovery started" or error details).
     string message = 2;
 }
+
+// Reporting service for telemetry data collection
+service Reporting {
+    // GetData returns current reporting data for telemetry
+    rpc GetData(ReportingDataRequest) returns (ReportingDataResponse) {
+        option (google.api.http) = {
+            get : "/v1/reporting/data"
+        };
+    }
+}
+
+message ReportingDataRequest {
+    // No parameters needed - returns data for all orgs
+}
+
+message ReportingDataResponse {
+    // JSON-encoded reporting data
+    string json_data = 1;
+    // Timestamp when data was collected
+    string timestamp = 2;
+    // PX-Backup version
+    string version = 3;
+}
