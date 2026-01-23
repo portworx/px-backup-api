@@ -10016,6 +10016,13 @@
         },
         "target_namespace_prefix": {
           "type": "string"
+        },
+        "failed_namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of failedNamespaces during restore"
         }
       },
       "title": "Message for restore info"
@@ -10603,6 +10610,10 @@
         "auto_delete": {
           "type": "boolean",
           "title": "auto-delete - this option is to indicate, whether the backup\nshould be deleted after the retention of the backup object is expired"
+        },
+        "supports_advanced_features": {
+          "type": "boolean",
+          "title": "supports_advanced_features - this option is to indicate, whether the policy is created with advanced feature support multiday, biweekly, relative and selective monthly"
         }
       }
     },

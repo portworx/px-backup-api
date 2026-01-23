@@ -379,6 +379,8 @@ message SchedulePolicyInfo {
     // auto-delete - this option is to indicate, whether the backup
     // should be deleted after the retention of the backup object is expired
     bool auto_delete = 7;
+    // supports_advanced_features - this option is to indicate, whether the policy is created with advanced feature support multiday, biweekly, relative and selective monthly
+    bool supports_advanced_features = 8;
 
     message IncrementalCount {
         uint64 count = 1 [ (gogoproto.jsontag) = "count" ];
@@ -1213,6 +1215,8 @@ message RestoreInfo {
     // Filter criteria used for this restore (for audit/duplicate restore)
     Filter filter = 29;
     string target_namespace_prefix = 30;
+    // List of failedNamespaces during restore
+    repeated string failed_namespaces = 31;
 
     message RestoreResourceState {
         ResourceStatus restore_status = 1;
