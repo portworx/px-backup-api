@@ -359,6 +359,13 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "enumerate_options.exclude_synced_backups",
+            "description": "filter to exclude backups that were synced from other clusters.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -1131,6 +1138,13 @@
           {
             "name": "enumerate_options.exclude_failed_resource",
             "description": "filter to exclude failed resources while enumerating object.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "enumerate_options.exclude_synced_backups",
+            "description": "filter to exclude backups that were synced from other clusters.",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -1951,6 +1965,13 @@
           {
             "name": "enumerate_options.exclude_failed_resource",
             "description": "filter to exclude failed resources while enumerating object.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "enumerate_options.exclude_synced_backups",
+            "description": "filter to exclude backups that were synced from other clusters.",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -3313,6 +3334,13 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "enumerate_options.exclude_synced_backups",
+            "description": "filter to exclude backups that were synced from other clusters.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -3773,6 +3801,13 @@
           {
             "name": "enumerate_options.exclude_failed_resource",
             "description": "filter to exclude failed resources while enumerating object.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "enumerate_options.exclude_synced_backups",
+            "description": "filter to exclude backups that were synced from other clusters.",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -7527,6 +7562,10 @@
         "exclude_failed_resource": {
           "type": "boolean",
           "title": "filter to exclude failed resources while enumerating object"
+        },
+        "exclude_synced_backups": {
+          "type": "boolean",
+          "description": "filter to exclude backups that were synced from other clusters."
         }
       }
     },
