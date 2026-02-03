@@ -1231,8 +1231,10 @@ message EnumerateOptions {
     ResourceInfo resource_info = 16;
     // filter VM that matches the resource_info and has volume vm_volume_name attached to it
     string vm_volume_name = 17;
-     // filter to exclude failed resources while enumerating object
+    // filter to exclude failed resources while enumerating object
     bool exclude_failed_resource = 18;
+    // filter to exclude backups that were synced from other clusters.
+    bool exclude_synced_backups = 19;
 }
 
 service VolumeResourceOnlyPolicy {
