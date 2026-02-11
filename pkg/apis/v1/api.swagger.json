@@ -9294,6 +9294,11 @@
         "restore_resources": {
           "$ref": "#/definitions/RestoreInfoResources",
           "title": "Message for restore resources"
+        },
+        "retention_period": {
+          "type": "string",
+          "format": "int64",
+          "title": "retention_period stores the object-lock retention period in days for the restore\nThis is only set when the backup location has object lock enabled"
         }
       },
       "title": "Message for restore info"

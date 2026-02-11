@@ -1122,6 +1122,9 @@ message RestoreInfo {
 
     // Message for restore resources
     Resources restore_resources = 31;
+    // retention_period stores the object-lock retention period in days for the restore
+    // This is only set when the backup location has object lock enabled
+    int64 retention_period = 32;
 
     // Message for restore resources containing list of restore resource information
     message Resources {
