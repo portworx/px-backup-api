@@ -3998,3 +3998,16 @@ message LogLevelSetRequest {
 message LogLevelSetResponse {
     string message = 1;  // e.g., "Log level changed from INFO to DEBUG"
 }
+
+// RestoreCRCleanupObject stores information needed to delete restore CR files
+// from backup locations. This is used for background cleanup of restore CR files
+// for failed or partial success restores.
+// The metadata.name field stores the restore CR file name (e.g., "restore-name-abc1234")
+message RestoreCRCleanupObject {
+    Metadata metadata = 1 [ (gogoproto.embed) = true ];
+    // Reference to the backup location where the restore CR file is stored
+    ObjectRef backup_location_ref = 2;
+    // Timestamp when the retention period expires (only for object lock enabled backup locations)
+    // If not set or zero, the file can be deleted immediately
+    google.protobuf.Timestamp retention_expiry_time = 3;
+}
