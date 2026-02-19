@@ -81,8 +81,19 @@ message ClusterInfo {
     bool delete_all_cluster_backups = 22;
     // time_zone is the time zone of the cluster
     string time_zone = 23;
+    // Provider-specific cluster information for clusters discovered or managed
+    // by external providers (e.g., Gardener).
+    // This field is populated based on how the cluster was discovered/added.
+    ClusterProviderInfo provider_info = 24;
 
-
+    // ClusterProviderInfo is a polymorphic wrapper for provider-specific cluster information.
+    // Use the oneof to determine which provider type is set.
+    message ClusterProviderInfo {
+        oneof info {
+            // Gardener Shoot cluster information for clusters discovered from Gardener.
+            GardenerShootInfo gardener_shoot_info = 1;
+        }
+    }
 
     // Message for maintaining status of the cluster.
     message StatusInfo {
@@ -133,7 +144,34 @@ message ClusterInfo {
         IBM = 4;
         Rancher = 5;
     }
-    
+
+    // GardenerShootInfo contains Gardener-specific information for clusters
+    // discovered from Gardener Shoot clusters.
+    message GardenerShootInfo {
+        // Name of the Gardener project this Shoot belongs to.
+        string project_name = 1;
+        // Name of the Shoot cluster in Gardener.
+        string shoot_name = 2;
+        // Name of the Seed cluster that hosts this Shoot's control plane.
+        string seed_name = 3;
+        // Labels from the Shoot custom resource in Gardener.
+        map<string, string> labels = 4;
+        // Cloud provider type where the Shoot cluster is running.
+        // Extracted from the Shoot CR's spec.provider.type field.
+        // Examples: "aws", "gcp", "azure"
+        string cloud_provider_type = 5;
+        // References to the ClusterDiscoveryConfigs that discovered this cluster.
+        // This is empty if the cluster was added directly (not via discovery).
+        // A cluster can be discovered by multiple ClusterDiscoveryConfigs if their
+        // label selectors overlap.
+        repeated ObjectRef cluster_discovery_config_refs = 6;
+        // Expiration timestamp of the Shoot kubeconfig.
+        // The kubeconfig needs to be refreshed before this time.
+        google.protobuf.Timestamp expiration_timestamp = 7;
+        // Pre-calculated timestamp for when kubeconfig refresh should be triggered.
+        google.protobuf.Timestamp refresh_at = 8;
+    }
+
 }
 
 message ClusterObject {
@@ -344,7 +382,7 @@ message SchedulePolicyInfo {
     // supports_advanced_features - this option is to indicate, whether the policy is created with advanced feature support multiday, biweekly, relative and selective monthly
     bool supports_advanced_features = 8;
 
-    message IncrementalCount {  
+    message IncrementalCount {
         uint64 count = 1 [ (gogoproto.jsontag) = "count" ];
     }
 
@@ -429,8 +467,8 @@ message SchedulePolicyInfo {
 	    }
 
 	    message RelativeMonthlyPolicy {
-            // Usually every weekday is repreated atleast four times in any month and few week days 
-            // are repeated 5 times. Hence we have given both fourth and last as an option. 
+            // Usually every weekday is repreated atleast four times in any month and few week days
+            // are repeated 5 times. Hence we have given both fourth and last as an option.
             // In Nov 2025, fourth sun != last sun, fourth mon = last mon
             // In case of February in a non-leap year, each week day is repeated exactly 4 times.
             // So, both fourth and last option becomes same. fourth sun = last sun
@@ -505,7 +543,7 @@ message BackupScheduleInfo {
     bool skip_vm_auto_exec_rules = 27;
     // volume snapshot class mapping for csi based backup <provisioner(string), volumesnapshotclass(string)> (optional)
     map<string, string> volume_snapshot_class_mapping = 28;
-    // option to take backup as direct kdmp 
+    // option to take backup as direct kdmp
     bool direct_kdmp = 29;
     repeated string exclude_resource_types = 30;
     // option to enable parallel schedule backups.
@@ -777,7 +815,7 @@ message BackupInfo {
     bool skip_vm_auto_exec_rules = 36;
     // volume snapshot class mapping for csi based backup <provisioner(string), volumesnapshotclass(string)> (optional)
     map<string, string> volume_snapshot_class_mapping = 37;
-    // option to take backup as direct kdmp 
+    // option to take backup as direct kdmp
     bool direct_kdmp = 38;
     // this will store the timestamp, when the retention period of locked backup will be expired
     google.protobuf.Timestamp retention_time = 39;
@@ -856,7 +894,7 @@ message BackupInfo {
             Failed = 4;
         }
     }
-    
+
     message BackupType {
         Type type = 1;
 
@@ -1329,7 +1367,7 @@ message RestoreFileInfo {
     string destination_path = 2;
     // True if source path is a directory path
     bool is_dir = 3;
-    // Partition info of the volume where the source file exists, if  the volume is partitioned 
+    // Partition info of the volume where the source file exists, if  the volume is partitioned
     // For eg: vda1 or sda14
     string partition_info = 4;
 }
@@ -1734,7 +1772,7 @@ message BackupScheduleCreateRequest {
     bool skip_vm_auto_exec_rules = 21;
     // volume snapshot class mapping for csi based backup <provisioner(string), volumesnapshotclass(string)> (optional)
     map<string, string> volume_snapshot_class_mapping = 22;
-    // option to take backup as direct kdmp 
+    // option to take backup as direct kdmp
     bool direct_kdmp = 23;
     repeated string exclude_resource_types = 24;
     // option to enable parallel schedule backups.
@@ -1816,7 +1854,7 @@ message BackupScheduleUpdateRequest {
     // Cannot be used with exclude_objects.
     string exclude_filter = 26;
     // option to provide clusterRef to suspend/resume the backupschedule from cluster
-    ClusterScope cluster_scope = 27; 
+    ClusterScope cluster_scope = 27;
     // reference to volumeResourceOnly policy object
     ObjectRef volume_resource_only_policy_ref = 28;
     // User remarks for this update operation
@@ -2235,7 +2273,7 @@ message CloudCredentialOwnershipUpdateResponse {}
 
 service Receiver {
     // Create new alert manager receiver
-    rpc Create(ReceiverCreateRequest) 
+    rpc Create(ReceiverCreateRequest)
         returns (ReceiverCreateResponse) {
             option (google.api.http) = {
                 post : "/v1/receiver"
@@ -2334,7 +2372,7 @@ message ReceiverCreateRequest {
 }
 
 message ReceiverCreateResponse {
-    ReceiverObject receiver = 1; 
+    ReceiverObject receiver = 1;
 }
 
 
@@ -2387,7 +2425,7 @@ message ReceiverValidateSMTPRequest {
 message ReceiverValidateSMTPResponse {}
 
 service Recipient {
-    rpc Create(RecipientCreateRequest) 
+    rpc Create(RecipientCreateRequest)
         returns (RecipientCreateResponse) {
             option (google.api.http) = {
                 post : "/v1/recipient"
@@ -2699,8 +2737,8 @@ message MetricsCreateRequest {
 
 message MetricsInfo {
     Type type = 1;
-    
-    // Check with charts/px-central/templates/px-backup/pxcentral-prometheus.yaml before 
+
+    // Check with charts/px-central/templates/px-backup/pxcentral-prometheus.yaml before
     // adding Type here, few metrics are ignored.
     enum Type {
         Invalid = 0;
@@ -2710,11 +2748,11 @@ message MetricsInfo {
         ClusterStatus = 4;
         RestoreStatus = 5;
     }
-    
+
     oneof MetricData {
         BackupObject  backup = 100;
     }
-    
+
 }
 
 message MetricsCreateResponse {}
@@ -2840,7 +2878,7 @@ message BackupCreateRequest {
     bool skip_vm_auto_exec_rules = 18;
     // volume snapshot class mapping for csi based backup <provisioner(string), volumesnapshotclass(string)> (optional)
     map<string, string> volume_snapshot_class_mapping = 19;
-    // option to take backup as direct kdmp 
+    // option to take backup as direct kdmp
     bool direct_kdmp = 20;
     repeated string exclude_resource_types = 21;
     // option to enable to keep the CR status of the resources in the backup.
@@ -2951,7 +2989,7 @@ message BackupRetryRequest {
     string uid = 3;
     // List of failed VirtualMachine resource only. If not passed, will retry all Failed VMs from Backup object.
     repeated ResourceInfo include_resources = 4;
-    // skip_vm_auto_exec_rules when set to true will take crash-consistent backup for retry 
+    // skip_vm_auto_exec_rules when set to true will take crash-consistent backup for retry
     bool skip_vm_auto_exec_rules = 5;
 }
 
@@ -4112,4 +4150,241 @@ message RestoreCRCleanupObject {
     // Timestamp when the retention period expires (only for object lock enabled backup locations)
     // If not set or zero, the file can be deleted immediately
     google.protobuf.Timestamp retention_expiry_time = 3;
+}
+
+
+
+// ClusterDiscoveryConfigType identifies the type of discovery configuration.
+// This enum enables polymorphic handling of different discovery implementations.
+enum ClusterDiscoveryConfigType {
+    // Invalid or unspecified discovery config type.
+    ClusterDiscoveryConfigTypeInvalid = 0;
+    // Shoot discovery configuration for Gardener Shoot clusters.
+    ClusterDiscoveryConfigTypeShoot = 1;
+    // Future types can be added here, e.g.:
+    // ClusterDiscoveryConfigTypeVM = 2;
+}
+
+// ShootDiscoveryConfigInfo contains Gardener-specific configuration for discovering Shoot clusters.
+message ShootDiscoveryConfigInfo {
+    // Gardener API server kubeconfig for authenticating with Gardener.
+    string gardener_kubeconfig = 1 [ (gogoproto.moretags) = "secure:\"true\"" ];
+    // Gardener project name to discover Shoot clusters from.
+    string project_name = 2;
+    // Label selector string to filter Shoot clusters during discovery.
+    // Supports Kubernetes label selector syntax, e.g.:
+    // "environment in (production, staging),team=platform,!deprecated"
+    string label_selector = 3;
+}
+
+// ClusterDiscoverySettings contains common settings that apply to all discovery types.
+// This message is embedded in ClusterDiscoveryConfigInfo to provide reusable lifecycle
+// and polling configuration for any discovery provider.
+message ClusterDiscoverySettings {
+    // Enable or disable automatic discovery.
+    bool auto_discover = 1;
+    // Frequency of automatic discovery when auto_discover is enabled.
+    // Discovery is executed based on the creation time plus this interval.
+    AutoDiscoverFrequency auto_discover_frequency = 2;
+
+    // AutoDiscoverFrequency specifies the interval for automatic discovery
+    // using days, hours, and minutes. The total interval is calculated as:
+    // (days * 24 * 60) + (hours * 60) + minutes
+    // Minimum allowed interval is 15 minutes.
+    message AutoDiscoverFrequency {
+        // Number of days between discovery runs (0-365).
+        uint32 days = 1;
+        // Number of hours between discovery runs (0-23).
+        uint32 hours = 2;
+        // Number of minutes between discovery runs (0-59).
+        // Note: The total interval must be at least 15 minutes.
+        uint32 minutes = 3;
+    }
+}
+
+// ClusterDiscoveryConfigInfo is a polymorphic wrapper for different discovery configuration types.
+// Use the type field to determine which config variant is set.
+// Common discovery settings are provided via the settings field.
+message ClusterDiscoveryConfigInfo {
+    // Type of discovery configuration.
+    ClusterDiscoveryConfigType type = 1;
+    // Type-specific configuration. Only one should be set based on the type field.
+    oneof config {
+        // Configuration for Gardener Shoot cluster discovery.
+        ShootDiscoveryConfigInfo shoot_config = 2;
+        // Future discovery config types can be added here, e.g.:
+        // VMDiscoveryConfigInfo vm_config = 3;
+    }
+    // Common discovery settings (polling frequency, auto-discover toggle) that apply to all discovery types.
+    ClusterDiscoverySettings settings = 4;
+    // Timestamp of the last discovery run.
+    google.protobuf.Timestamp last_discovery_time = 5;
+    // Statistics from the last discovery run.
+    DiscoveryStats discovery_stats = 6;
+    // Status information for the discovery configuration.
+    StatusInfo status = 7;
+
+    // Statistics from the last discovery run.
+    message DiscoveryStats {
+        // Number of clusters discovered in the last discovery run.
+        uint32 last_discovered_clusters_count = 1;
+        // Number of clusters deleted/de-boarded in the last discovery run.
+        uint32 last_deleted_clusters_count = 2;
+        // Current number of active clusters managed by this discovery configuration.
+        uint32 current_active_clusters_count = 3;
+    }
+
+    // Message for maintaining status of the discovery configuration.
+    message StatusInfo {
+        Status status = 1;
+        string reason = 2;
+
+        enum Status {
+            Invalid = 0;
+            Inprogress = 1;
+            Success = 2;
+            Failed = 3;
+            Deleting = 4;
+        }
+    }
+}
+
+// ClusterDiscoveryConfigObject represents a discovery configuration with metadata.
+message ClusterDiscoveryConfigObject {
+    Metadata metadata = 1
+        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    ClusterDiscoveryConfigInfo cluster_discovery_config_info = 2;
+}
+
+// ClusterDiscoveryConfig service provides CRUD operations for discovery configurations.
+// This is a generic service that supports multiple cluster discovery types
+service ClusterDiscoveryConfig {
+    // Create creates a new cluster discovery configuration.
+    rpc Create(ClusterDiscoveryConfigCreateRequest)
+        returns (ClusterDiscoveryConfigCreateResponse) {
+        option (google.api.http) = {
+            post : "/v1/clusterdiscoveryconfig"
+            body : "*"
+        };
+    }
+
+    // Update updates an existing cluster discovery configuration.
+    rpc Update(ClusterDiscoveryConfigUpdateRequest)
+        returns (ClusterDiscoveryConfigUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/clusterdiscoveryconfig"
+            body : "*"
+        };
+    }
+
+    // Enumerate returns a list of cluster discovery configurations.
+    rpc Enumerate(ClusterDiscoveryConfigEnumerateRequest)
+        returns (ClusterDiscoveryConfigEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/clusterdiscoveryconfig/{org_id}"
+        };
+    }
+
+    // Inspect returns details of a specific cluster discovery configuration.
+    rpc Inspect(ClusterDiscoveryConfigInspectRequest)
+        returns (ClusterDiscoveryConfigInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/clusterdiscoveryconfig/{org_id}/{name}"
+        };
+    }
+
+    // Delete removes a cluster discovery configuration.
+    rpc Delete(ClusterDiscoveryConfigDeleteRequest)
+        returns (ClusterDiscoveryConfigDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/clusterdiscoveryconfig/{org_id}/{name}"
+        };
+    }
+
+    // DiscoverClusters manually initiates discovery for the specified configuration.
+    // The discovery runs asynchronously; use Inspect to check progress via StatusInfo.
+    rpc DiscoverClusters(ClusterDiscoveryConfigDiscoverClustersRequest)
+        returns (ClusterDiscoveryConfigDiscoverClustersResponse) {
+        option (google.api.http) = {
+            post : "/v1/clusterdiscoveryconfig/{org_id}/{name}/discover"
+            body : "*"
+        };
+    }
+}
+
+message ClusterDiscoveryConfigCreateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    ClusterDiscoveryConfigInfo cluster_discovery_config_info = 2;
+}
+
+message ClusterDiscoveryConfigCreateResponse {
+    ClusterDiscoveryConfigObject cluster_discovery_config = 1;
+}
+
+message ClusterDiscoveryConfigUpdateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    ClusterDiscoveryConfigInfo cluster_discovery_config_info = 2;
+    // Confirmation flag required to proceed with the update.
+    // Must be set to true explicitly; otherwise the update will be rejected.
+    bool confirm_update = 3;
+}
+
+message ClusterDiscoveryConfigUpdateResponse {}
+
+message ClusterDiscoveryConfigEnumerateRequest {
+    string org_id = 1;
+    // Filter by cluster discovery config type (optional). If not set, returns all types.
+    ClusterDiscoveryConfigType type = 2;
+    // Include sensitive fields like kubeconfigs in the response.
+    bool include_secrets = 3;
+    CommonEnumerateOptions options = 4;
+}
+
+message ClusterDiscoveryConfigEnumerateResponse {
+    repeated ClusterDiscoveryConfigObject cluster_discovery_configs = 1;
+    // total_count is the total number of cluster discovery configs.
+    uint64 total_count = 2;
+    // complete indicates if the result set is complete.
+    bool complete = 3;
+}
+
+message ClusterDiscoveryConfigInspectRequest {
+    string org_id = 1;
+    // Name of the cluster discovery config to inspect.
+    string name = 2;
+    // Include sensitive fields like kubeconfigs in the response.
+    bool include_secrets = 3;
+    // uid of the cluster discovery config (optional).
+    string uid = 4;
+}
+
+message ClusterDiscoveryConfigInspectResponse {
+    ClusterDiscoveryConfigObject cluster_discovery_config = 1;
+}
+
+message ClusterDiscoveryConfigDeleteRequest {
+    string org_id = 1;
+    // Name of the cluster discovery config to delete.
+    string name = 2;
+    // uid of the cluster discovery config (optional).
+    string uid = 3;
+}
+
+message ClusterDiscoveryConfigDeleteResponse {}
+
+// Request to manually discover clusters for a specific cluster discovery config.
+message ClusterDiscoveryConfigDiscoverClustersRequest {
+    string org_id = 1;
+    // Name of the ClusterDiscoveryConfig to discover clusters for.
+    string name = 2;
+    // UID of the ClusterDiscoveryConfig (optional but recommended for validation).
+    string uid = 3;
+}
+
+// Response for manual cluster discovery.
+message ClusterDiscoveryConfigDiscoverClustersResponse {
+    // Indicates whether the discovery was successfully triggered.
+    bool triggered = 1;
+    // Message providing additional context (e.g., "Discovery started" or error details).
+    string message = 2;
 }
