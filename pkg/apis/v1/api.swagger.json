@@ -2085,6 +2085,327 @@
         ]
       }
     },
+    "/v1/clusterdiscoveryconfig": {
+      "post": {
+        "summary": "Create creates a new cluster discovery configuration.",
+        "operationId": "ClusterDiscoveryConfig_Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ClusterDiscoveryConfigCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ClusterDiscoveryConfigCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ClusterDiscoveryConfig"
+        ]
+      },
+      "put": {
+        "summary": "Update updates an existing cluster discovery configuration.",
+        "operationId": "ClusterDiscoveryConfig_Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ClusterDiscoveryConfigUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ClusterDiscoveryConfigUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ClusterDiscoveryConfig"
+        ]
+      }
+    },
+    "/v1/clusterdiscoveryconfig/{org_id}": {
+      "get": {
+        "summary": "Enumerate returns a list of cluster discovery configurations.",
+        "operationId": "ClusterDiscoveryConfig_Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ClusterDiscoveryConfigEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "description": "Filter by cluster discovery config type (optional). If not set, returns all types.\n\n - ClusterDiscoveryConfigTypeInvalid: Invalid or unspecified discovery config type.\n - ClusterDiscoveryConfigTypeShoot: Shoot discovery configuration for Gardener Shoot clusters.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "ClusterDiscoveryConfigTypeInvalid",
+              "ClusterDiscoveryConfigTypeShoot"
+            ],
+            "default": "ClusterDiscoveryConfigTypeInvalid"
+          },
+          {
+            "name": "include_secrets",
+            "description": "Include sensitive fields like kubeconfigs in the response.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "options.max_objects",
+            "description": "max objects to fetch.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "options.name_filter",
+            "description": "Filter to use for name of objects. Any object that contains the filter\nwill be returned.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "options.object_index",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "options.sort_option.sortBy.type",
+            "description": "Name of the field by which sort to be performed.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "CreationTimestamp",
+              "Name",
+              "ClusterName",
+              "Size",
+              "RestoreBackupName",
+              "LastUpdateTimestamp"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "options.sort_option.sortOrder.type",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descending"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "options.time_range.start_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "options.time_range.end_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "tags": [
+          "ClusterDiscoveryConfig"
+        ]
+      }
+    },
+    "/v1/clusterdiscoveryconfig/{org_id}/{name}": {
+      "get": {
+        "summary": "Inspect returns details of a specific cluster discovery configuration.",
+        "operationId": "ClusterDiscoveryConfig_Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ClusterDiscoveryConfigInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "description": "Name of the cluster discovery config to inspect.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "include_secrets",
+            "description": "Include sensitive fields like kubeconfigs in the response.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "uid",
+            "description": "uid of the cluster discovery config (optional).",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ClusterDiscoveryConfig"
+        ]
+      },
+      "delete": {
+        "summary": "Delete removes a cluster discovery configuration.",
+        "operationId": "ClusterDiscoveryConfig_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ClusterDiscoveryConfigDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "description": "Name of the cluster discovery config to delete.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "description": "uid of the cluster discovery config (optional).",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ClusterDiscoveryConfig"
+        ]
+      }
+    },
+    "/v1/clusterdiscoveryconfig/{org_id}/{name}/discover": {
+      "post": {
+        "summary": "DiscoverClusters manually initiates discovery for the specified configuration.\nThe discovery runs asynchronously; use Inspect to check progress via StatusInfo.",
+        "operationId": "ClusterDiscoveryConfig_DiscoverClusters",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ClusterDiscoveryConfigDiscoverClustersResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "description": "Name of the ClusterDiscoveryConfig to discover clusters for.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ClusterDiscoveryConfigDiscoverClustersRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ClusterDiscoveryConfig"
+        ]
+      }
+    },
     "/v1/health": {
       "get": {
         "summary": "Status checks the health of the server",
@@ -7154,6 +7475,236 @@
       "type": "object",
       "title": "Define ClusterInspectResponse struct"
     },
+    "ClusterDiscoveryConfigCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "cluster_discovery_config_info": {
+          "$ref": "#/definitions/ClusterDiscoveryConfigInfo"
+        }
+      }
+    },
+    "ClusterDiscoveryConfigCreateResponse": {
+      "type": "object",
+      "properties": {
+        "cluster_discovery_config": {
+          "$ref": "#/definitions/ClusterDiscoveryConfigObject"
+        }
+      }
+    },
+    "ClusterDiscoveryConfigDeleteResponse": {
+      "type": "object"
+    },
+    "ClusterDiscoveryConfigDiscoverClustersRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the ClusterDiscoveryConfig to discover clusters for."
+        },
+        "uid": {
+          "type": "string",
+          "description": "UID of the ClusterDiscoveryConfig (optional but recommended for validation)."
+        }
+      },
+      "description": "Request to manually discover clusters for a specific cluster discovery config."
+    },
+    "ClusterDiscoveryConfigDiscoverClustersResponse": {
+      "type": "object",
+      "properties": {
+        "triggered": {
+          "type": "boolean",
+          "description": "Indicates whether the discovery was successfully triggered."
+        },
+        "message": {
+          "type": "string",
+          "description": "Message providing additional context (e.g., \"Discovery started\" or error details)."
+        }
+      },
+      "description": "Response for manual cluster discovery."
+    },
+    "ClusterDiscoveryConfigEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "cluster_discovery_configs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ClusterDiscoveryConfigObject"
+          }
+        },
+        "total_count": {
+          "type": "string",
+          "format": "uint64",
+          "description": "total_count is the total number of cluster discovery configs."
+        },
+        "complete": {
+          "type": "boolean",
+          "description": "complete indicates if the result set is complete."
+        }
+      }
+    },
+    "ClusterDiscoveryConfigInfo": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/ClusterDiscoveryConfigType",
+          "description": "Type of discovery configuration."
+        },
+        "shoot_config": {
+          "$ref": "#/definitions/ShootDiscoveryConfigInfo",
+          "description": "Configuration for Gardener Shoot cluster discovery."
+        },
+        "settings": {
+          "$ref": "#/definitions/ClusterDiscoverySettings",
+          "description": "Common discovery settings (polling frequency, auto-discover toggle) that apply to all discovery types."
+        },
+        "last_discovery_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of the last discovery run."
+        },
+        "discovery_stats": {
+          "$ref": "#/definitions/ClusterDiscoveryConfigInfoDiscoveryStats",
+          "description": "Statistics from the last discovery run."
+        },
+        "status": {
+          "$ref": "#/definitions/ClusterDiscoveryConfigInfoStatusInfo",
+          "description": "Status information for the discovery configuration."
+        }
+      },
+      "description": "ClusterDiscoveryConfigInfo is a polymorphic wrapper for different discovery configuration types.\nUse the type field to determine which config variant is set.\nCommon discovery settings are provided via the settings field."
+    },
+    "ClusterDiscoveryConfigInfoDiscoveryStats": {
+      "type": "object",
+      "properties": {
+        "last_discovered_clusters_count": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of clusters discovered in the last discovery run."
+        },
+        "last_deleted_clusters_count": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of clusters deleted/de-boarded in the last discovery run."
+        },
+        "current_active_clusters_count": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Current number of active clusters managed by this discovery configuration."
+        }
+      },
+      "description": "Statistics from the last discovery run."
+    },
+    "ClusterDiscoveryConfigInfoStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/ClusterDiscoveryConfigInfoStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "description": "Message for maintaining status of the discovery configuration."
+    },
+    "ClusterDiscoveryConfigInfoStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Inprogress",
+        "Success",
+        "Failed",
+        "Deleting"
+      ],
+      "default": "Invalid"
+    },
+    "ClusterDiscoveryConfigInspectResponse": {
+      "type": "object",
+      "properties": {
+        "cluster_discovery_config": {
+          "$ref": "#/definitions/ClusterDiscoveryConfigObject"
+        }
+      }
+    },
+    "ClusterDiscoveryConfigObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "cluster_discovery_config_info": {
+          "$ref": "#/definitions/ClusterDiscoveryConfigInfo"
+        }
+      },
+      "description": "ClusterDiscoveryConfigObject represents a discovery configuration with metadata."
+    },
+    "ClusterDiscoveryConfigType": {
+      "type": "string",
+      "enum": [
+        "ClusterDiscoveryConfigTypeInvalid",
+        "ClusterDiscoveryConfigTypeShoot"
+      ],
+      "default": "ClusterDiscoveryConfigTypeInvalid",
+      "description": "ClusterDiscoveryConfigType identifies the type of discovery configuration.\nThis enum enables polymorphic handling of different discovery implementations.\n\n - ClusterDiscoveryConfigTypeInvalid: Invalid or unspecified discovery config type.\n - ClusterDiscoveryConfigTypeShoot: Shoot discovery configuration for Gardener Shoot clusters."
+    },
+    "ClusterDiscoveryConfigUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "cluster_discovery_config_info": {
+          "$ref": "#/definitions/ClusterDiscoveryConfigInfo"
+        },
+        "confirm_update": {
+          "type": "boolean",
+          "description": "Confirmation flag required to proceed with the update.\nMust be set to true explicitly; otherwise the update will be rejected."
+        }
+      }
+    },
+    "ClusterDiscoveryConfigUpdateResponse": {
+      "type": "object"
+    },
+    "ClusterDiscoverySettings": {
+      "type": "object",
+      "properties": {
+        "auto_discover": {
+          "type": "boolean",
+          "description": "Enable or disable automatic discovery."
+        },
+        "auto_discover_frequency": {
+          "$ref": "#/definitions/ClusterDiscoverySettingsAutoDiscoverFrequency",
+          "description": "Frequency of automatic discovery when auto_discover is enabled.\nDiscovery is executed based on the creation time plus this interval."
+        }
+      },
+      "description": "ClusterDiscoverySettings contains common settings that apply to all discovery types.\nThis message is embedded in ClusterDiscoveryConfigInfo to provide reusable lifecycle\nand polling configuration for any discovery provider."
+    },
+    "ClusterDiscoverySettingsAutoDiscoverFrequency": {
+      "type": "object",
+      "properties": {
+        "days": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of days between discovery runs (0-365)."
+        },
+        "hours": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of hours between discovery runs (0-23)."
+        },
+        "minutes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of minutes between discovery runs (0-59).\nNote: The total interval must be at least 15 minutes."
+        }
+      },
+      "description": "AutoDiscoverFrequency specifies the interval for automatic discovery\nusing days, hours, and minutes. The total interval is calculated as:\n(days * 24 * 60) + (hours * 60) + minutes\nMinimum allowed interval is 15 minutes."
+    },
     "ClusterEnumerateResponse": {
       "type": "object",
       "properties": {
@@ -7256,6 +7807,10 @@
         "time_zone": {
           "type": "string",
           "title": "time_zone is the time zone of the cluster"
+        },
+        "provider_info": {
+          "$ref": "#/definitions/ClusterInfoClusterProviderInfo",
+          "description": "Provider-specific cluster information for clusters discovered or managed\nby external providers (e.g., Gardener).\nThis field is populated based on how the cluster was discovered/added."
         }
       }
     },
@@ -7282,6 +7837,62 @@
       ],
       "default": "Invalid",
       "description": " - InProgress: InProgress if backupshare is going on for backups belonging to\nthe cluster\n - Failed: Failed if backupshare fails for some backups belonging to the\ncluster\n - Success: Success if backupshare is successful for all current backups\nbelonging to the cluster\n - PartialSuccess: Parital Success if backupshare is successful for only few\nbackups."
+    },
+    "ClusterInfoClusterProviderInfo": {
+      "type": "object",
+      "properties": {
+        "gardener_shoot_info": {
+          "$ref": "#/definitions/ClusterInfoGardenerShootInfo",
+          "description": "Gardener Shoot cluster information for clusters discovered from Gardener."
+        }
+      },
+      "description": "ClusterProviderInfo is a polymorphic wrapper for provider-specific cluster information.\nUse the oneof to determine which provider type is set."
+    },
+    "ClusterInfoGardenerShootInfo": {
+      "type": "object",
+      "properties": {
+        "project_name": {
+          "type": "string",
+          "description": "Name of the Gardener project this Shoot belongs to."
+        },
+        "shoot_name": {
+          "type": "string",
+          "description": "Name of the Shoot cluster in Gardener."
+        },
+        "seed_name": {
+          "type": "string",
+          "description": "Name of the Seed cluster that hosts this Shoot's control plane."
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Labels from the Shoot custom resource in Gardener."
+        },
+        "cloud_provider_type": {
+          "type": "string",
+          "title": "Cloud provider type where the Shoot cluster is running.\nExtracted from the Shoot CR's spec.provider.type field.\nExamples: \"aws\", \"gcp\", \"azure\""
+        },
+        "cluster_discovery_config_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "References to the ClusterDiscoveryConfigs that discovered this cluster.\nThis is empty if the cluster was added directly (not via discovery).\nA cluster can be discovered by multiple ClusterDiscoveryConfigs if their\nlabel selectors overlap."
+        },
+        "expiration_timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Expiration timestamp of the Shoot kubeconfig.\nThe kubeconfig needs to be refreshed before this time."
+        },
+        "refresh_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Pre-calculated timestamp for when kubeconfig refresh should be triggered."
+        }
+      },
+      "description": "GardenerShootInfo contains Gardener-specific information for clusters\ndiscovered from Gardener Shoot clusters."
     },
     "ClusterInfoProvider": {
       "type": "string",
@@ -8189,7 +8800,7 @@
         "RestoreStatus"
       ],
       "default": "Invalid",
-      "description": "Check with charts/px-central/templates/px-backup/pxcentral-prometheus.yaml before \nadding Type here, few metrics are ignored."
+      "description": "Check with charts/px-central/templates/px-backup/pxcentral-prometheus.yaml before\nadding Type here, few metrics are ignored."
     },
     "MetricsInspectResponse": {
       "type": "object",
@@ -8926,7 +9537,7 @@
         "last"
       ],
       "default": "Invalid",
-      "title": "Usually every weekday is repreated atleast four times in any month and few week days \nare repeated 5 times. Hence we have given both fourth and last as an option. \nIn Nov 2025, fourth sun != last sun, fourth mon = last mon\nIn case of February in a non-leap year, each week day is repeated exactly 4 times.\nSo, both fourth and last option becomes same. fourth sun = last sun"
+      "title": "Usually every weekday is repreated atleast four times in any month and few week days\nare repeated 5 times. Hence we have given both fourth and last as an option.\nIn Nov 2025, fourth sun != last sun, fourth mon = last mon\nIn case of February in a non-leap year, each week day is repeated exactly 4 times.\nSo, both fourth and last option becomes same. fourth sun = last sun"
     },
     "Remark": {
       "type": "object",
@@ -9211,7 +9822,7 @@
         },
         "partition_info": {
           "type": "string",
-          "title": "Partition info of the volume where the source file exists, if  the volume is partitioned \nFor eg: vda1 or sda14"
+          "title": "Partition info of the volume where the source file exists, if  the volume is partitioned\nFor eg: vda1 or sda14"
         }
       }
     },
@@ -10290,6 +10901,24 @@
     },
     "ShareClusterResponse": {
       "type": "object"
+    },
+    "ShootDiscoveryConfigInfo": {
+      "type": "object",
+      "properties": {
+        "gardener_kubeconfig": {
+          "type": "string",
+          "description": "Gardener API server kubeconfig for authenticating with Gardener."
+        },
+        "project_name": {
+          "type": "string",
+          "description": "Gardener project name to discover Shoot clusters from."
+        },
+        "label_selector": {
+          "type": "string",
+          "title": "Label selector string to filter Shoot clusters during discovery.\nSupports Kubernetes label selector syntax, e.g.:\n\"environment in (production, staging),team=platform,!deprecated\""
+        }
+      },
+      "description": "ShootDiscoveryConfigInfo contains Gardener-specific configuration for discovering Shoot clusters."
     },
     "SortOption": {
       "type": "object",
