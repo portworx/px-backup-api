@@ -183,6 +183,28 @@ message S3Config {
     AzureEnvironmentType azure_environment = 7;
     // Azure resource group name. This is needed in the case of azure immutable bucket to get the retention period (optional)
     string azure_resource_group_name = 8;
+
+    // Azure storage account name.
+    // For Federated Identity (Workload Identity): Provide the account name here in the backup location.
+    //   - When using federated identity authentication, the account name must be specified in the backup location
+    //     because the AzureConfig credential object only contains client_id, tenant_id.
+    // For Non-Federated Identity: Provide the account name in the AzureConfig credential object.
+    //   - When using traditional authentication with client secret, the account name should be
+    //     specified in the AzureConfig cloud credential object along with account_key or client_secret.
+    string azure_account_name = 9 [
+        (gogoproto.jsontag) = "azureaccountname",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
+    // Azure subscription ID.
+    // For Federated Identity (Workload Identity): Provide the subscription ID here in the backup location.
+    //   - When using federated identity authentication, the subscription ID must be specified in the backup location.
+    // For Non-Federated Identity: Provide the subscription ID in the AzureConfig credential object.
+    //   - When using traditional authentication, the subscription ID should be specified in the
+    //     AzureConfig cloud credential object.
+    string azure_subscription_id = 10 [
+        (gogoproto.jsontag) = "azuresubscriptionid",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
     message AzureEnvironmentType {
         Type type = 1;
         enum Type {
@@ -202,25 +224,45 @@ message S3Config {
     }
 }
 
+// AzureConfig defines the Azure cloud credential configuration.
+// This supports both Federated Identity (Workload Identity) and Non-Federated Identity authentication.
 message AzureConfig {
+    // Azure storage account name.
+    // For Non-Federated Identity: Required. Provide the account name here.
+    //   - When using traditional with account_key or client_secret,
+    //     the account name must be specified in this credential object.
     string account_name = 1;
+    // Azure storage account key.
+    // For Non-Federated Identity (Storage Account Key authentication): Required when using account key authentication.
+    //   - Provide the storage account key for direct storage account access.
     string account_key = 2 [
         (gogoproto.jsontag) = "accountkey",
         (gogoproto.moretags) = "secure:\"true\""
     ];
+    // Azure client secret.
+    // For Non-Federated Identity: Required when using service principal authentication.
+    //   - Provide the client secret along with client_id and tenant_id.
     string client_secret = 3 [
         (gogoproto.jsontag) = "clientsecret",
         (gogoproto.moretags) = "secure:\"true\""
     ];
+    // Azure client ID (Application ID).
+    // For Non-Federated Identity: Required when using service principal.
+    //   - This is the Application (client) ID from Azure AD app registration.
     string client_id = 4 [
         (gogoproto.jsontag) = "clientid",
         (gogoproto.moretags) = "secure:\"true\""
     ];
+    // Azure tenant ID (Directory ID).
+    // For Non-Federated Identity: Required when using service principal.
+    //   - This is the Directory (tenant) ID from Azure AD.
     string tenant_id = 5 [
         (gogoproto.jsontag) = "tenantid",
         (gogoproto.moretags) = "secure:\"true\""
     ];
-    // TODO: Need to see if this has to be here or in the backup object.
+    // Azure subscription ID.
+    // For Non-Federated Identity: Provide the subscription ID here.
+    //   - When using traditional authentication, specify the subscription ID in this credential object.
     string subscription_id = 6 [
         (gogoproto.jsontag) = "subscriptionid",
         (gogoproto.moretags) = "secure:\"true\""
@@ -559,7 +601,31 @@ message completionTimeInfo {
     google.protobuf.Timestamp total_completion_time = 3;
 }
 
+message ClusterValidationStatus {
+    // Cluster name (for display)
+    string cluster_name = 1;                           
+    // Cluster validation status 
+    ClusterValidationState status = 2;                 
+    google.protobuf.Timestamp last_validation_time = 3;
+    // reason for the backuplocation validation failure on the given cluster.
+    string reason = 4;                                 
+
+    // Canonical status values - consistent with Stork CR status and UI
+    enum ClusterValidationState {
+        INVALID = 0;    // Invalid Value
+        PENDING = 1;    // Validation Pending
+        INPROGRESS = 2; // Validation Inprogress  
+        VALID = 3;      // Validation Successful 
+        FAILED = 4;     // Validation Failed
+    }
+}
+
 message BackupLocationInfo {
+    // Cloud provider type for the backup location.
+    // For Both Federated and Non-Federated Identity: Required.
+    //   - Specifies the type of cloud provider (S3, Azure, Google, NFS).
+    //   - In Federated Identity mode, this field is used to identify the cloud provider type
+    //     even though no cloud credential object is referenced.
     Type type = 1;
     string path = 2;
     string encryption_key = 3 [
@@ -571,8 +637,37 @@ message BackupLocationInfo {
     StatusInfo status = 5;
     bool delete_backups = 6;
     bool validate_cloud_credential = 7;
+    // Reference to the cloud credential object.
+    // For Non-Federated Identity: Required for Non NFS provider.
+    //   - Must reference a valid CloudCredentialObject that contains the authentication credentials
+    //     (e.g., AzureConfig with account_name, account_key/client_secret, client_id, tenant_id, subscription_id).
+    //   - The cloud credential object provides the necessary authentication information to access the backup location.
+    // For Federated Identity (Workload Identity): Not required, leave empty.
+    //   - In federated identity mode, authentication is handled via workload identity/OIDC tokens,
+    //     so no cloud credential object is needed.
+    //   - The 'type' field is still required to specify the cloud provider type (e.g., Azure, AWS, Google).
+    //   - Cloud-specific configuration (e.g., azure_account_name, azure_subscription_id) should be
+    //     provided directly in the backup location's config (e.g., S3Config).
     ObjectRef cloud_credential_ref = 8;
     bool object_lock_enabled = 9;
+    // Federated identity flag to identify if the backup location is federated-enabled.
+    // When set to true:
+    //   - Indicates that this backup location uses Federated Identity (Workload Identity/OIDC) for authentication.
+    //   - This flag is passed to the BackupLocation CR in Stork to inform it that federated identity is enabled.
+    //   - Stork uses this flag to determine where to read credentials from:
+    //     * If federated=true: Stork reads cloud-specific configuration (e.g., azure_account_name, azure_subscription_id)
+    //       from the backup location's config (e.g., S3Config) and uses workload identity for authentication.
+    //     * If federated=false: Stork reads credentials from the referenced cloud credential object secret (cloud_credential_ref).
+    //   - When federated=true, cloud_credential_ref should be empty or not set.
+    // When set to false (default):
+    //   - Indicates traditional authentication using cloud credentials stored in a CloudCredentialObject.
+    //   - Stork reads authentication credentials from the cloud credential object referenced by cloud_credential_ref.
+    bool federated = 10;
+    // List of clusters associated with this BackupLocation
+    // User provides this as INPUT when creating/updating
+    repeated ObjectRef cluster_refs = 11;
+    // Per-cluster validation status map (key: cluster_uid)
+    map<string, ClusterValidationStatus> cluster_status = 12;
 
     // Message for maintaining status of the object.
     message StatusInfo {
@@ -2514,6 +2609,9 @@ message BackupLocationEnumerateRequest {
     bool include_validation_state = 6;
     // Optional arguments for enumeration
     CommonEnumerateOptions enumerate_options = 7;
+    // Filter to use with cluster objects. Any object that contains the
+    // filter will be returned
+    ObjectRef cluster_ref = 8;
 
 }
 
@@ -2555,6 +2653,10 @@ message BackupLocationValidateRequest {
     string org_id = 1;
     string name = 2;
     string uid = 3;
+    // Optional list of clusters to validate
+    // If empty, validate ALL clusters in cluster_status map
+    // If provided, validate ONLY the specified clusters
+    repeated ObjectRef cluster_refs = 4;
 }
 
 // Define BackupLocationValidateResponse struct
