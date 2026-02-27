@@ -762,6 +762,18 @@
             "required": false,
             "type": "string",
             "format": "date-time"
+          },
+          {
+            "name": "cluster_ref.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cluster_ref.uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -4785,25 +4797,31 @@
       "type": "object",
       "properties": {
         "account_name": {
-          "type": "string"
+          "type": "string",
+          "description": "Azure storage account name.\nFor Non-Federated Identity: Required. Provide the account name here.\n  - When using traditional with account_key or client_secret,\n    the account name must be specified in this credential object."
         },
         "account_key": {
-          "type": "string"
+          "type": "string",
+          "description": "Azure storage account key.\nFor Non-Federated Identity (Storage Account Key authentication): Required when using account key authentication.\n  - Provide the storage account key for direct storage account access."
         },
         "client_secret": {
-          "type": "string"
+          "type": "string",
+          "description": "Azure client secret.\nFor Non-Federated Identity: Required when using service principal authentication.\n  - Provide the client secret along with client_id and tenant_id."
         },
         "client_id": {
-          "type": "string"
+          "type": "string",
+          "description": "Azure client ID (Application ID).\nFor Non-Federated Identity: Required when using service principal.\n  - This is the Application (client) ID from Azure AD app registration."
         },
         "tenant_id": {
-          "type": "string"
+          "type": "string",
+          "description": "Azure tenant ID (Directory ID).\nFor Non-Federated Identity: Required when using service principal.\n  - This is the Directory (tenant) ID from Azure AD."
         },
         "subscription_id": {
           "type": "string",
-          "description": "TODO: Need to see if this has to be here or in the backup object."
+          "description": "Azure subscription ID.\nFor Non-Federated Identity: Provide the subscription ID here.\n  - When using traditional authentication, specify the subscription ID in this credential object."
         }
-      }
+      },
+      "description": "AzureConfig defines the Azure cloud credential configuration.\nThis supports both Federated Identity (Workload Identity) and Non-Federated Identity authentication."
     },
     "BackupCreateRequest": {
       "type": "object",
@@ -5531,7 +5549,8 @@
       "type": "object",
       "properties": {
         "type": {
-          "$ref": "#/definitions/BackupLocationInfoType"
+          "$ref": "#/definitions/BackupLocationInfoType",
+          "description": "Cloud provider type for the backup location.\nFor Both Federated and Non-Federated Identity: Required.\n  - Specifies the type of cloud provider (S3, Azure, Google, NFS).\n  - In Federated Identity mode, this field is used to identify the cloud provider type\n    even though no cloud credential object is referenced."
         },
         "path": {
           "type": "string"
@@ -5553,10 +5572,29 @@
           "type": "boolean"
         },
         "cloud_credential_ref": {
-          "$ref": "#/definitions/ObjectRef"
+          "$ref": "#/definitions/ObjectRef",
+          "description": "Reference to the cloud credential object.\nFor Non-Federated Identity: Required for Non NFS provider.\n  - Must reference a valid CloudCredentialObject that contains the authentication credentials\n    (e.g., AzureConfig with account_name, account_key/client_secret, client_id, tenant_id, subscription_id).\n  - The cloud credential object provides the necessary authentication information to access the backup location.\nFor Federated Identity (Workload Identity): Not required, leave empty.\n  - In federated identity mode, authentication is handled via workload identity/OIDC tokens,\n    so no cloud credential object is needed.\n  - The 'type' field is still required to specify the cloud provider type (e.g., Azure, AWS, Google).\n  - Cloud-specific configuration (e.g., azure_account_name, azure_subscription_id) should be\n    provided directly in the backup location's config (e.g., S3Config)."
         },
         "object_lock_enabled": {
           "type": "boolean"
+        },
+        "federated": {
+          "type": "boolean",
+          "description": "Federated identity flag to identify if the backup location is federated-enabled.\nWhen set to true:\n  - Indicates that this backup location uses Federated Identity (Workload Identity/OIDC) for authentication.\n  - This flag is passed to the BackupLocation CR in Stork to inform it that federated identity is enabled.\n  - Stork uses this flag to determine where to read credentials from:\n    * If federated=true: Stork reads cloud-specific configuration (e.g., azure_account_name, azure_subscription_id)\n      from the backup location's config (e.g., S3Config) and uses workload identity for authentication.\n    * If federated=false: Stork reads credentials from the referenced cloud credential object secret (cloud_credential_ref).\n  - When federated=true, cloud_credential_ref should be empty or not set.\nWhen set to false (default):\n  - Indicates traditional authentication using cloud credentials stored in a CloudCredentialObject.\n  - Stork reads authentication credentials from the cloud credential object referenced by cloud_credential_ref."
+        },
+        "cluster_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "title": "List of clusters associated with this BackupLocation\nUser provides this as INPUT when creating/updating"
+        },
+        "cluster_status": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ClusterValidationStatus"
+          },
+          "title": "Per-cluster validation status map (key: cluster_uid)"
         },
         "s3_config": {
           "$ref": "#/definitions/S3Config"
@@ -5672,6 +5710,13 @@
         },
         "uid": {
           "type": "string"
+        },
+        "cluster_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "title": "Optional list of clusters to validate\nIf empty, validate ALL clusters in cluster_status map\nIf provided, validate ONLY the specified clusters"
         }
       },
       "title": "Define BackupLocationValidateRequest struct"
@@ -7336,6 +7381,39 @@
     "ClusterUpdateResponse": {
       "type": "object",
       "title": "Define ClusterUpdateResponse struct"
+    },
+    "ClusterValidationStatus": {
+      "type": "object",
+      "properties": {
+        "cluster_name": {
+          "type": "string",
+          "title": "Cluster name (for display)"
+        },
+        "status": {
+          "$ref": "#/definitions/ClusterValidationStatusClusterValidationState",
+          "title": "Cluster validation status"
+        },
+        "last_validation_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reason": {
+          "type": "string",
+          "description": "reason for the backuplocation validation failure on the given cluster."
+        }
+      }
+    },
+    "ClusterValidationStatusClusterValidationState": {
+      "type": "string",
+      "enum": [
+        "INVALID",
+        "PENDING",
+        "INPROGRESS",
+        "VALID",
+        "FAILED"
+      ],
+      "default": "INVALID",
+      "title": "Canonical status values - consistent with Stork CR status and UI"
     },
     "CommonEnumerateOptions": {
       "type": "object",
@@ -9913,6 +9991,14 @@
         "azure_resource_group_name": {
           "type": "string",
           "title": "Azure resource group name. This is needed in the case of azure immutable bucket to get the retention period (optional)"
+        },
+        "azure_account_name": {
+          "type": "string",
+          "description": "Azure storage account name.\nFor Federated Identity (Workload Identity): Provide the account name here in the backup location.\n  - When using federated identity authentication, the account name must be specified in the backup location\n    because the AzureConfig credential object only contains client_id, tenant_id.\nFor Non-Federated Identity: Provide the account name in the AzureConfig credential object.\n  - When using traditional authentication with client secret, the account name should be\n    specified in the AzureConfig cloud credential object along with account_key or client_secret."
+        },
+        "azure_subscription_id": {
+          "type": "string",
+          "description": "Azure subscription ID.\nFor Federated Identity (Workload Identity): Provide the subscription ID here in the backup location.\n  - When using federated identity authentication, the subscription ID must be specified in the backup location.\nFor Non-Federated Identity: Provide the subscription ID in the AzureConfig credential object.\n  - When using traditional authentication, the subscription ID should be specified in the\n    AzureConfig cloud credential object."
         }
       }
     },
