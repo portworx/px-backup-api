@@ -5917,6 +5917,14 @@
           },
           "title": "Per-cluster validation status map (key: cluster_uid)"
         },
+        "sync": {
+          "type": "boolean",
+          "description": "sync and the sync_info are valid only in Federated PXB deployment mode.\nsync is used to trigger backup sync from the object store.\nIt is an on-demand sync, not automatic or periodic.\nNote: The sync flag will be reset by the server once the backup sync operation\nis completed for this BackupLocation. Parallel sync triggers by updating sync\nflag while another sync is in progress are not allowed."
+        },
+        "sync_info": {
+          "$ref": "#/definitions/BackupLocationInfoSyncInfo",
+          "description": "sync_info provides information about the sync operation including status, timing, and stats."
+        },
         "s3_config": {
           "$ref": "#/definitions/S3Config"
         },
@@ -5949,6 +5957,37 @@
       ],
       "default": "Invalid",
       "description": " - LimitedAvailability: If a BL is being used for partial backup, mark it as LimitedAvailability."
+    },
+    "BackupLocationInfoSyncInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/BackupLocationInfoSyncInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "cluster_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "Reference to the cluster used for executing the backup sync operation"
+        },
+        "sync_stats": {
+          "$ref": "#/definitions/SyncInfoSyncStats",
+          "title": "Statistics about the sync operation (timing, counts, etc.)"
+        }
+      },
+      "title": "Message for maintaining information about sync operations"
+    },
+    "BackupLocationInfoSyncInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Pending",
+        "InProgress",
+        "Completed",
+        "Failed"
+      ],
+      "default": "Invalid"
     },
     "BackupLocationInfoType": {
       "type": "string",
@@ -8017,13 +8056,13 @@
     "ClusterValidationStatusClusterValidationState": {
       "type": "string",
       "enum": [
-        "INVALID",
-        "PENDING",
-        "INPROGRESS",
-        "VALID",
-        "FAILED"
+        "Invalid",
+        "Pending",
+        "InProgress",
+        "Valid",
+        "Failed"
       ],
-      "default": "INVALID",
+      "default": "Invalid",
       "title": "Canonical status values - consistent with Stork CR status and UI"
     },
     "CommonEnumerateOptions": {
@@ -10982,6 +11021,22 @@
         "LicenseCheck"
       ],
       "default": "Invalid"
+    },
+    "SyncInfoSyncStats": {
+      "type": "object",
+      "properties": {
+        "start_time": {
+          "type": "string",
+          "format": "date-time",
+          "title": "When the backup location sync operation started"
+        },
+        "end_time": {
+          "type": "string",
+          "format": "date-time",
+          "title": "When the backup location sync operation ended"
+        }
+      },
+      "title": "Statistics about the sync operation"
     },
     "TimeRange": {
       "type": "object",
