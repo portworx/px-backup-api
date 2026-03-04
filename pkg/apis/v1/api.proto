@@ -650,11 +650,11 @@ message ClusterValidationStatus {
 
     // Canonical status values - consistent with Stork CR status and UI
     enum ClusterValidationState {
-        INVALID = 0;    // Invalid Value
-        PENDING = 1;    // Validation Pending
-        INPROGRESS = 2; // Validation Inprogress  
-        VALID = 3;      // Validation Successful 
-        FAILED = 4;     // Validation Failed
+        Invalid = 0;      // Invalid Value
+        Pending = 1;      // Validation Pending
+        InProgress = 2;   // Validation Inprogress
+        Valid = 3;        // Validation Successful
+        Failed = 4;       // Validation Failed
     }
 }
 
@@ -706,6 +706,15 @@ message BackupLocationInfo {
     repeated ObjectRef cluster_refs = 11;
     // Per-cluster validation status map (key: cluster_uid)
     map<string, ClusterValidationStatus> cluster_status = 12;
+    // sync and the sync_info are valid only in Federated PXB deployment mode.
+    // sync is used to trigger backup sync from the object store.
+    // It is an on-demand sync, not automatic or periodic.
+    // Note: The sync flag will be reset by the server once the backup sync operation
+    // is completed for this BackupLocation. Parallel sync triggers by updating sync
+    // flag while another sync is in progress are not allowed.
+    bool sync = 13;
+    // sync_info provides information about the sync operation including status, timing, and stats.
+    SyncInfo sync_info = 14;
 
     // Message for maintaining status of the object.
     message StatusInfo {
@@ -720,6 +729,32 @@ message BackupLocationInfo {
             ValidationFailed = 4;
             // If a BL is being used for partial backup, mark it as LimitedAvailability.
             LimitedAvailability = 5;
+        }
+    }
+
+    // Message for maintaining information about sync operations
+    message SyncInfo {
+        Status status = 1;
+        string reason = 2;
+        // Reference to the cluster used for executing the backup sync operation
+        ObjectRef cluster_ref = 3;
+        // Statistics about the sync operation (timing, counts, etc.)
+        SyncStats sync_stats = 4;
+
+        enum Status {
+            Invalid = 0;
+            Pending = 1;
+            InProgress = 2;
+            Completed = 3;
+            Failed = 4;
+        }
+
+        // Statistics about the sync operation
+        message SyncStats {
+            // When the backup location sync operation started
+            google.protobuf.Timestamp start_time = 1;
+            // When the backup location sync operation ended
+            google.protobuf.Timestamp end_time = 2;
         }
     }
 
