@@ -1112,11 +1112,100 @@ message RestoreInfo {
         bool skip_vm_restart = 2;
     }
 
-    
+
     message Filter {
         oneof resource_filter {
             NamespaceFilter namespace_filter = 1;
             VirtualMachineFilter virtual_machine_filter = 2;
+        }
+    }
+
+    // Message for restore resources
+    Resources restore_resources = 31;
+    // retention_period stores the object-lock retention period in days for the restore
+    // This is only set when the backup location has object lock enabled
+    int64 retention_period = 32;
+
+    // Message for restore resources containing list of restore resource information
+    message Resources {
+        // List of restore resources with their status, metrics, and resource type information
+        repeated Resource resources = 1;
+        // Lookup table for reasons - index into this list is used in ResourceWithReason
+        repeated string reasons = 2;
+    }
+
+    // Message representing restored resources grouped by GVK
+    message Resource {
+        // Namespace name
+        string namespace = 1;
+        // Overall status information
+        StatusInfo status = 2;
+        // List of resource types (grouped by GVK)
+        repeated ResourceTypeInfo resource_types = 3;
+        // Statistics
+        Metrics metrics = 4;
+
+        // ResourceTypeInfo groups resources by their resource type (GVK)
+        message ResourceTypeInfo {
+            // The Kubernetes resource type in the format group/version/kind (e.g., "apps/v1/Deployment")
+            string name = 1;
+            // Chunks containing resources of this type
+            repeated ChunkInfo chunks = 2;
+            // Statistics for this resource type
+            Metrics metrics = 3;
+
+            // Metrics containing resource type-level statistics
+            message Metrics {
+                // Total number of resources of this type
+                int32 total_resources = 1;
+                // Total number of failed resources of this type
+                int32 total_failed_resources = 2;
+            }
+        }
+
+        // ChunkInfo represents a processing unit containing resources from the same backup chunk
+        message ChunkInfo {
+            // Chunk ID from backup
+            int32 id = 1;
+            // Resources grouped by status within this chunk
+            repeated ResourceInfo resource_infos = 2;
+            // Total number of resources in this chunk
+            int32 total_resources = 3;
+
+            // Resources grouped by status
+            message ResourceInfo {
+                // Status of the resources in this group
+                Status status = 1;
+                // List of resources with this status
+                repeated Resource resources = 2;
+
+                enum Status {
+                    Invalid = 0;
+                    Success = 1;
+                    Failed = 2;
+                    Retained = 3;
+                }
+            }
+
+            // Resource with name and reason index
+            message Resource {
+                // Name of the resource
+                string name = 1;
+                // Index into the reasons table in RestoreResources (0 means no reason)
+                int32 reason_index = 2;
+            }
+        }
+
+        // Metrics containing statistics for restored resources and volumes
+        message Metrics {
+            // Total number of resources
+            int32 total_resources = 1;
+            // Total number of volumes
+            int32 total_volumes = 2;
+            // Total number of resources that failed
+            int32 total_failed_resources = 3;
+            // Total number of volumes that failed
+            int32 total_failed_volumes = 4;
         }
     }
 
@@ -3908,4 +3997,17 @@ message LogLevelSetRequest {
 
 message LogLevelSetResponse {
     string message = 1;  // e.g., "Log level changed from INFO to DEBUG"
+}
+
+// RestoreCRCleanupObject stores information needed to delete restore CR files
+// from backup locations. This is used for background cleanup of restore CR files
+// for failed or partial success restores.
+// The metadata.name field stores the restore CR file name (e.g., "restore-name-abc1234")
+message RestoreCRCleanupObject {
+    Metadata metadata = 1 [ (gogoproto.embed) = true ];
+    // Reference to the backup location where the restore CR file is stored
+    ObjectRef backup_location_ref = 2;
+    // Timestamp when the retention period expires (only for object lock enabled backup locations)
+    // If not set or zero, the file can be deleted immediately
+    google.protobuf.Timestamp retention_expiry_time = 3;
 }

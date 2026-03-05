@@ -6873,6 +6873,16 @@
       "type": "object",
       "title": "Define BackupUpdateResponse struct"
     },
+    "ChunkInfoResourceInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Success",
+        "Failed",
+        "Retained"
+      ],
+      "default": "Invalid"
+    },
     "CloudCredentialCreateRequest": {
       "type": "object",
       "properties": {
@@ -8868,6 +8878,38 @@
       ],
       "default": "Invalid"
     },
+    "ResourceChunkInfoResource": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name of the resource"
+        },
+        "reason_index": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Index into the reasons table in RestoreResources (0 means no reason)"
+        }
+      },
+      "title": "Resource with name and reason index"
+    },
+    "ResourceChunkInfoResourceInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/ChunkInfoResourceInfoStatus",
+          "title": "Status of the resources in this group"
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceChunkInfoResource"
+          },
+          "title": "List of resources with this status"
+        }
+      },
+      "title": "Resources grouped by status"
+    },
     "ResourceInfo": {
       "type": "object",
       "properties": {
@@ -9248,6 +9290,15 @@
         },
         "target_namespace_prefix": {
           "type": "string"
+        },
+        "restore_resources": {
+          "$ref": "#/definitions/RestoreInfoResources",
+          "title": "Message for restore resources"
+        },
+        "retention_period": {
+          "type": "string",
+          "format": "int64",
+          "title": "retention_period stores the object-lock retention period in days for the restore\nThis is only set when the backup location has object lock enabled"
         }
       },
       "title": "Message for restore info"
@@ -9279,6 +9330,137 @@
           "$ref": "#/definitions/VirtualMachineFilter"
         }
       }
+    },
+    "RestoreInfoResource": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string",
+          "title": "Namespace name"
+        },
+        "status": {
+          "$ref": "#/definitions/RestoreInfoStatusInfo",
+          "title": "Overall status information"
+        },
+        "resource_types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RestoreInfoResourceResourceTypeInfo"
+          },
+          "title": "List of resource types (grouped by GVK)"
+        },
+        "metrics": {
+          "$ref": "#/definitions/RestoreInfoResourceMetrics",
+          "title": "Statistics"
+        }
+      },
+      "title": "Message representing restored resources grouped by GVK"
+    },
+    "RestoreInfoResourceChunkInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Chunk ID from backup"
+        },
+        "resource_infos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceChunkInfoResourceInfo"
+          },
+          "title": "Resources grouped by status within this chunk"
+        },
+        "total_resources": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of resources in this chunk"
+        }
+      },
+      "title": "ChunkInfo represents a processing unit containing resources from the same backup chunk"
+    },
+    "RestoreInfoResourceMetrics": {
+      "type": "object",
+      "properties": {
+        "total_resources": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of resources"
+        },
+        "total_volumes": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of volumes"
+        },
+        "total_failed_resources": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of resources that failed"
+        },
+        "total_failed_volumes": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of volumes that failed"
+        }
+      },
+      "title": "Metrics containing statistics for restored resources and volumes"
+    },
+    "RestoreInfoResourceResourceTypeInfo": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "The Kubernetes resource type in the format group/version/kind (e.g., \"apps/v1/Deployment\")"
+        },
+        "chunks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RestoreInfoResourceChunkInfo"
+          },
+          "title": "Chunks containing resources of this type"
+        },
+        "metrics": {
+          "$ref": "#/definitions/RestoreInfoResourceResourceTypeInfoMetrics",
+          "title": "Statistics for this resource type"
+        }
+      },
+      "title": "ResourceTypeInfo groups resources by their resource type (GVK)"
+    },
+    "RestoreInfoResourceResourceTypeInfoMetrics": {
+      "type": "object",
+      "properties": {
+        "total_resources": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of resources of this type"
+        },
+        "total_failed_resources": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Total number of failed resources of this type"
+        }
+      },
+      "title": "Metrics containing resource type-level statistics"
+    },
+    "RestoreInfoResources": {
+      "type": "object",
+      "properties": {
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RestoreInfoResource"
+          },
+          "title": "List of restore resources with their status, metrics, and resource type information"
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Lookup table for reasons - index into this list is used in ResourceWithReason"
+        }
+      },
+      "title": "Message for restore resources containing list of restore resource information"
     },
     "RestoreInfoRestoreResourceState": {
       "type": "object",

@@ -4223,6 +4223,454 @@ func TestRestoreInfo_FilterMarshalTo(t *testing.T) {
 	}
 }
 
+func TestRestoreInfo_ResourcesProto(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resources(popr, false)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resources{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	littlefuzz := make([]byte, len(dAtA))
+	copy(littlefuzz, dAtA)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+	if len(littlefuzz) > 0 {
+		fuzzamount := 100
+		for i := 0; i < fuzzamount; i++ {
+			littlefuzz[popr.Intn(len(littlefuzz))] = byte(popr.Intn(256))
+			littlefuzz = append(littlefuzz, byte(popr.Intn(256)))
+		}
+		// shouldn't panic
+		_ = github_com_gogo_protobuf_proto.Unmarshal(littlefuzz, msg)
+	}
+}
+
+func TestRestoreInfo_ResourcesMarshalTo(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resources(popr, false)
+	size := p.Size()
+	dAtA := make([]byte, size)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	_, err := p.MarshalTo(dAtA)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resources{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_ResourceProto(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource(popr, false)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	littlefuzz := make([]byte, len(dAtA))
+	copy(littlefuzz, dAtA)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+	if len(littlefuzz) > 0 {
+		fuzzamount := 100
+		for i := 0; i < fuzzamount; i++ {
+			littlefuzz[popr.Intn(len(littlefuzz))] = byte(popr.Intn(256))
+			littlefuzz = append(littlefuzz, byte(popr.Intn(256)))
+		}
+		// shouldn't panic
+		_ = github_com_gogo_protobuf_proto.Unmarshal(littlefuzz, msg)
+	}
+}
+
+func TestRestoreInfo_ResourceMarshalTo(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource(popr, false)
+	size := p.Size()
+	dAtA := make([]byte, size)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	_, err := p.MarshalTo(dAtA)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_Resource_ResourceTypeInfoProto(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ResourceTypeInfo(popr, false)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource_ResourceTypeInfo{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	littlefuzz := make([]byte, len(dAtA))
+	copy(littlefuzz, dAtA)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+	if len(littlefuzz) > 0 {
+		fuzzamount := 100
+		for i := 0; i < fuzzamount; i++ {
+			littlefuzz[popr.Intn(len(littlefuzz))] = byte(popr.Intn(256))
+			littlefuzz = append(littlefuzz, byte(popr.Intn(256)))
+		}
+		// shouldn't panic
+		_ = github_com_gogo_protobuf_proto.Unmarshal(littlefuzz, msg)
+	}
+}
+
+func TestRestoreInfo_Resource_ResourceTypeInfoMarshalTo(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ResourceTypeInfo(popr, false)
+	size := p.Size()
+	dAtA := make([]byte, size)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	_, err := p.MarshalTo(dAtA)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource_ResourceTypeInfo{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_Resource_ResourceTypeInfo_MetricsProto(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ResourceTypeInfo_Metrics(popr, false)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource_ResourceTypeInfo_Metrics{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	littlefuzz := make([]byte, len(dAtA))
+	copy(littlefuzz, dAtA)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+	if len(littlefuzz) > 0 {
+		fuzzamount := 100
+		for i := 0; i < fuzzamount; i++ {
+			littlefuzz[popr.Intn(len(littlefuzz))] = byte(popr.Intn(256))
+			littlefuzz = append(littlefuzz, byte(popr.Intn(256)))
+		}
+		// shouldn't panic
+		_ = github_com_gogo_protobuf_proto.Unmarshal(littlefuzz, msg)
+	}
+}
+
+func TestRestoreInfo_Resource_ResourceTypeInfo_MetricsMarshalTo(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ResourceTypeInfo_Metrics(popr, false)
+	size := p.Size()
+	dAtA := make([]byte, size)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	_, err := p.MarshalTo(dAtA)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource_ResourceTypeInfo_Metrics{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_Resource_ChunkInfoProto(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ChunkInfo(popr, false)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource_ChunkInfo{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	littlefuzz := make([]byte, len(dAtA))
+	copy(littlefuzz, dAtA)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+	if len(littlefuzz) > 0 {
+		fuzzamount := 100
+		for i := 0; i < fuzzamount; i++ {
+			littlefuzz[popr.Intn(len(littlefuzz))] = byte(popr.Intn(256))
+			littlefuzz = append(littlefuzz, byte(popr.Intn(256)))
+		}
+		// shouldn't panic
+		_ = github_com_gogo_protobuf_proto.Unmarshal(littlefuzz, msg)
+	}
+}
+
+func TestRestoreInfo_Resource_ChunkInfoMarshalTo(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ChunkInfo(popr, false)
+	size := p.Size()
+	dAtA := make([]byte, size)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	_, err := p.MarshalTo(dAtA)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource_ChunkInfo{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_Resource_ChunkInfo_ResourceInfoProto(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ChunkInfo_ResourceInfo(popr, false)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource_ChunkInfo_ResourceInfo{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	littlefuzz := make([]byte, len(dAtA))
+	copy(littlefuzz, dAtA)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+	if len(littlefuzz) > 0 {
+		fuzzamount := 100
+		for i := 0; i < fuzzamount; i++ {
+			littlefuzz[popr.Intn(len(littlefuzz))] = byte(popr.Intn(256))
+			littlefuzz = append(littlefuzz, byte(popr.Intn(256)))
+		}
+		// shouldn't panic
+		_ = github_com_gogo_protobuf_proto.Unmarshal(littlefuzz, msg)
+	}
+}
+
+func TestRestoreInfo_Resource_ChunkInfo_ResourceInfoMarshalTo(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ChunkInfo_ResourceInfo(popr, false)
+	size := p.Size()
+	dAtA := make([]byte, size)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	_, err := p.MarshalTo(dAtA)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource_ChunkInfo_ResourceInfo{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_Resource_ChunkInfo_ResourceProto(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ChunkInfo_Resource(popr, false)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource_ChunkInfo_Resource{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	littlefuzz := make([]byte, len(dAtA))
+	copy(littlefuzz, dAtA)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+	if len(littlefuzz) > 0 {
+		fuzzamount := 100
+		for i := 0; i < fuzzamount; i++ {
+			littlefuzz[popr.Intn(len(littlefuzz))] = byte(popr.Intn(256))
+			littlefuzz = append(littlefuzz, byte(popr.Intn(256)))
+		}
+		// shouldn't panic
+		_ = github_com_gogo_protobuf_proto.Unmarshal(littlefuzz, msg)
+	}
+}
+
+func TestRestoreInfo_Resource_ChunkInfo_ResourceMarshalTo(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ChunkInfo_Resource(popr, false)
+	size := p.Size()
+	dAtA := make([]byte, size)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	_, err := p.MarshalTo(dAtA)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource_ChunkInfo_Resource{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_Resource_MetricsProto(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_Metrics(popr, false)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource_Metrics{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	littlefuzz := make([]byte, len(dAtA))
+	copy(littlefuzz, dAtA)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+	if len(littlefuzz) > 0 {
+		fuzzamount := 100
+		for i := 0; i < fuzzamount; i++ {
+			littlefuzz[popr.Intn(len(littlefuzz))] = byte(popr.Intn(256))
+			littlefuzz = append(littlefuzz, byte(popr.Intn(256)))
+		}
+		// shouldn't panic
+		_ = github_com_gogo_protobuf_proto.Unmarshal(littlefuzz, msg)
+	}
+}
+
+func TestRestoreInfo_Resource_MetricsMarshalTo(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_Metrics(popr, false)
+	size := p.Size()
+	dAtA := make([]byte, size)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	_, err := p.MarshalTo(dAtA)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource_Metrics{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
 func TestFileLevelRestoreInfoProto(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
@@ -17943,6 +18391,62 @@ func TestLogLevelSetResponseMarshalTo(t *testing.T) {
 	}
 }
 
+func TestRestoreCRCleanupObjectProto(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreCRCleanupObject(popr, false)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreCRCleanupObject{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	littlefuzz := make([]byte, len(dAtA))
+	copy(littlefuzz, dAtA)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+	if len(littlefuzz) > 0 {
+		fuzzamount := 100
+		for i := 0; i < fuzzamount; i++ {
+			littlefuzz[popr.Intn(len(littlefuzz))] = byte(popr.Intn(256))
+			littlefuzz = append(littlefuzz, byte(popr.Intn(256)))
+		}
+		// shouldn't panic
+		_ = github_com_gogo_protobuf_proto.Unmarshal(littlefuzz, msg)
+	}
+}
+
+func TestRestoreCRCleanupObjectMarshalTo(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreCRCleanupObject(popr, false)
+	size := p.Size()
+	dAtA := make([]byte, size)
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	_, err := p.MarshalTo(dAtA)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreCRCleanupObject{}
+	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	for i := range dAtA {
+		dAtA[i] = byte(popr.Intn(256))
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
 func TestOrganizationObjectJSON(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
@@ -19285,6 +19789,150 @@ func TestRestoreInfo_FilterJSON(t *testing.T) {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
 	msg := &RestoreInfo_Filter{}
+	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
+	}
+}
+func TestRestoreInfo_ResourcesJSON(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resources(popr, true)
+	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
+	jsondata, err := marshaler.MarshalToString(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resources{}
+	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
+	}
+}
+func TestRestoreInfo_ResourceJSON(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource(popr, true)
+	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
+	jsondata, err := marshaler.MarshalToString(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource{}
+	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
+	}
+}
+func TestRestoreInfo_Resource_ResourceTypeInfoJSON(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ResourceTypeInfo(popr, true)
+	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
+	jsondata, err := marshaler.MarshalToString(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource_ResourceTypeInfo{}
+	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
+	}
+}
+func TestRestoreInfo_Resource_ResourceTypeInfo_MetricsJSON(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ResourceTypeInfo_Metrics(popr, true)
+	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
+	jsondata, err := marshaler.MarshalToString(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource_ResourceTypeInfo_Metrics{}
+	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
+	}
+}
+func TestRestoreInfo_Resource_ChunkInfoJSON(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ChunkInfo(popr, true)
+	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
+	jsondata, err := marshaler.MarshalToString(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource_ChunkInfo{}
+	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
+	}
+}
+func TestRestoreInfo_Resource_ChunkInfo_ResourceInfoJSON(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ChunkInfo_ResourceInfo(popr, true)
+	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
+	jsondata, err := marshaler.MarshalToString(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource_ChunkInfo_ResourceInfo{}
+	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
+	}
+}
+func TestRestoreInfo_Resource_ChunkInfo_ResourceJSON(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ChunkInfo_Resource(popr, true)
+	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
+	jsondata, err := marshaler.MarshalToString(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource_ChunkInfo_Resource{}
+	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
+	}
+}
+func TestRestoreInfo_Resource_MetricsJSON(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_Metrics(popr, true)
+	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
+	jsondata, err := marshaler.MarshalToString(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreInfo_Resource_Metrics{}
 	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
@@ -23703,6 +24351,24 @@ func TestLogLevelSetResponseJSON(t *testing.T) {
 		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
 	}
 }
+func TestRestoreCRCleanupObjectJSON(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreCRCleanupObject(popr, true)
+	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
+	jsondata, err := marshaler.MarshalToString(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	msg := &RestoreCRCleanupObject{}
+	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
+	}
+}
 func TestOrganizationObjectProtoText(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
@@ -25795,6 +26461,230 @@ func TestRestoreInfo_FilterProtoCompactText(t *testing.T) {
 	p := NewPopulatedRestoreInfo_Filter(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
 	msg := &RestoreInfo_Filter{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_ResourcesProtoText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resources(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
+	msg := &RestoreInfo_Resources{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_ResourcesProtoCompactText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resources(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
+	msg := &RestoreInfo_Resources{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_ResourceProtoText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
+	msg := &RestoreInfo_Resource{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_ResourceProtoCompactText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
+	msg := &RestoreInfo_Resource{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_Resource_ResourceTypeInfoProtoText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ResourceTypeInfo(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
+	msg := &RestoreInfo_Resource_ResourceTypeInfo{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_Resource_ResourceTypeInfoProtoCompactText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ResourceTypeInfo(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
+	msg := &RestoreInfo_Resource_ResourceTypeInfo{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_Resource_ResourceTypeInfo_MetricsProtoText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ResourceTypeInfo_Metrics(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
+	msg := &RestoreInfo_Resource_ResourceTypeInfo_Metrics{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_Resource_ResourceTypeInfo_MetricsProtoCompactText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ResourceTypeInfo_Metrics(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
+	msg := &RestoreInfo_Resource_ResourceTypeInfo_Metrics{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_Resource_ChunkInfoProtoText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ChunkInfo(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
+	msg := &RestoreInfo_Resource_ChunkInfo{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_Resource_ChunkInfoProtoCompactText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ChunkInfo(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
+	msg := &RestoreInfo_Resource_ChunkInfo{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_Resource_ChunkInfo_ResourceInfoProtoText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ChunkInfo_ResourceInfo(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
+	msg := &RestoreInfo_Resource_ChunkInfo_ResourceInfo{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_Resource_ChunkInfo_ResourceInfoProtoCompactText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ChunkInfo_ResourceInfo(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
+	msg := &RestoreInfo_Resource_ChunkInfo_ResourceInfo{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_Resource_ChunkInfo_ResourceProtoText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ChunkInfo_Resource(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
+	msg := &RestoreInfo_Resource_ChunkInfo_Resource{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_Resource_ChunkInfo_ResourceProtoCompactText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ChunkInfo_Resource(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
+	msg := &RestoreInfo_Resource_ChunkInfo_Resource{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_Resource_MetricsProtoText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_Metrics(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
+	msg := &RestoreInfo_Resource_Metrics{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreInfo_Resource_MetricsProtoCompactText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_Metrics(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
+	msg := &RestoreInfo_Resource_Metrics{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -32663,6 +33553,34 @@ func TestLogLevelSetResponseProtoCompactText(t *testing.T) {
 	}
 }
 
+func TestRestoreCRCleanupObjectProtoText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreCRCleanupObject(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
+	msg := &RestoreCRCleanupObject{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
+func TestRestoreCRCleanupObjectProtoCompactText(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreCRCleanupObject(popr, true)
+	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
+	msg := &RestoreCRCleanupObject{}
+	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	if !p.Equal(msg) {
+		t.Fatalf("seed = %d, %#v !Proto %#v", seed, msg, p)
+	}
+}
+
 func TestOrganizationObjectSize(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
@@ -34295,6 +35213,182 @@ func TestRestoreInfo_FilterSize(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
 	p := NewPopulatedRestoreInfo_Filter(popr, true)
+	size2 := github_com_gogo_protobuf_proto.Size(p)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	size := p.Size()
+	if len(dAtA) != size {
+		t.Errorf("seed = %d, size %v != marshalled size %v", seed, size, len(dAtA))
+	}
+	if size2 != size {
+		t.Errorf("seed = %d, size %v != before marshal proto.Size %v", seed, size, size2)
+	}
+	size3 := github_com_gogo_protobuf_proto.Size(p)
+	if size3 != size {
+		t.Errorf("seed = %d, size %v != after marshal proto.Size %v", seed, size, size3)
+	}
+}
+
+func TestRestoreInfo_ResourcesSize(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resources(popr, true)
+	size2 := github_com_gogo_protobuf_proto.Size(p)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	size := p.Size()
+	if len(dAtA) != size {
+		t.Errorf("seed = %d, size %v != marshalled size %v", seed, size, len(dAtA))
+	}
+	if size2 != size {
+		t.Errorf("seed = %d, size %v != before marshal proto.Size %v", seed, size, size2)
+	}
+	size3 := github_com_gogo_protobuf_proto.Size(p)
+	if size3 != size {
+		t.Errorf("seed = %d, size %v != after marshal proto.Size %v", seed, size, size3)
+	}
+}
+
+func TestRestoreInfo_ResourceSize(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource(popr, true)
+	size2 := github_com_gogo_protobuf_proto.Size(p)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	size := p.Size()
+	if len(dAtA) != size {
+		t.Errorf("seed = %d, size %v != marshalled size %v", seed, size, len(dAtA))
+	}
+	if size2 != size {
+		t.Errorf("seed = %d, size %v != before marshal proto.Size %v", seed, size, size2)
+	}
+	size3 := github_com_gogo_protobuf_proto.Size(p)
+	if size3 != size {
+		t.Errorf("seed = %d, size %v != after marshal proto.Size %v", seed, size, size3)
+	}
+}
+
+func TestRestoreInfo_Resource_ResourceTypeInfoSize(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ResourceTypeInfo(popr, true)
+	size2 := github_com_gogo_protobuf_proto.Size(p)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	size := p.Size()
+	if len(dAtA) != size {
+		t.Errorf("seed = %d, size %v != marshalled size %v", seed, size, len(dAtA))
+	}
+	if size2 != size {
+		t.Errorf("seed = %d, size %v != before marshal proto.Size %v", seed, size, size2)
+	}
+	size3 := github_com_gogo_protobuf_proto.Size(p)
+	if size3 != size {
+		t.Errorf("seed = %d, size %v != after marshal proto.Size %v", seed, size, size3)
+	}
+}
+
+func TestRestoreInfo_Resource_ResourceTypeInfo_MetricsSize(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ResourceTypeInfo_Metrics(popr, true)
+	size2 := github_com_gogo_protobuf_proto.Size(p)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	size := p.Size()
+	if len(dAtA) != size {
+		t.Errorf("seed = %d, size %v != marshalled size %v", seed, size, len(dAtA))
+	}
+	if size2 != size {
+		t.Errorf("seed = %d, size %v != before marshal proto.Size %v", seed, size, size2)
+	}
+	size3 := github_com_gogo_protobuf_proto.Size(p)
+	if size3 != size {
+		t.Errorf("seed = %d, size %v != after marshal proto.Size %v", seed, size, size3)
+	}
+}
+
+func TestRestoreInfo_Resource_ChunkInfoSize(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ChunkInfo(popr, true)
+	size2 := github_com_gogo_protobuf_proto.Size(p)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	size := p.Size()
+	if len(dAtA) != size {
+		t.Errorf("seed = %d, size %v != marshalled size %v", seed, size, len(dAtA))
+	}
+	if size2 != size {
+		t.Errorf("seed = %d, size %v != before marshal proto.Size %v", seed, size, size2)
+	}
+	size3 := github_com_gogo_protobuf_proto.Size(p)
+	if size3 != size {
+		t.Errorf("seed = %d, size %v != after marshal proto.Size %v", seed, size, size3)
+	}
+}
+
+func TestRestoreInfo_Resource_ChunkInfo_ResourceInfoSize(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ChunkInfo_ResourceInfo(popr, true)
+	size2 := github_com_gogo_protobuf_proto.Size(p)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	size := p.Size()
+	if len(dAtA) != size {
+		t.Errorf("seed = %d, size %v != marshalled size %v", seed, size, len(dAtA))
+	}
+	if size2 != size {
+		t.Errorf("seed = %d, size %v != before marshal proto.Size %v", seed, size, size2)
+	}
+	size3 := github_com_gogo_protobuf_proto.Size(p)
+	if size3 != size {
+		t.Errorf("seed = %d, size %v != after marshal proto.Size %v", seed, size, size3)
+	}
+}
+
+func TestRestoreInfo_Resource_ChunkInfo_ResourceSize(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_ChunkInfo_Resource(popr, true)
+	size2 := github_com_gogo_protobuf_proto.Size(p)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	size := p.Size()
+	if len(dAtA) != size {
+		t.Errorf("seed = %d, size %v != marshalled size %v", seed, size, len(dAtA))
+	}
+	if size2 != size {
+		t.Errorf("seed = %d, size %v != before marshal proto.Size %v", seed, size, size2)
+	}
+	size3 := github_com_gogo_protobuf_proto.Size(p)
+	if size3 != size {
+		t.Errorf("seed = %d, size %v != after marshal proto.Size %v", seed, size, size3)
+	}
+}
+
+func TestRestoreInfo_Resource_MetricsSize(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreInfo_Resource_Metrics(popr, true)
 	size2 := github_com_gogo_protobuf_proto.Size(p)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {
@@ -39685,6 +40779,28 @@ func TestLogLevelSetResponseSize(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
 	p := NewPopulatedLogLevelSetResponse(popr, true)
+	size2 := github_com_gogo_protobuf_proto.Size(p)
+	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
+	if err != nil {
+		t.Fatalf("seed = %d, err = %v", seed, err)
+	}
+	size := p.Size()
+	if len(dAtA) != size {
+		t.Errorf("seed = %d, size %v != marshalled size %v", seed, size, len(dAtA))
+	}
+	if size2 != size {
+		t.Errorf("seed = %d, size %v != before marshal proto.Size %v", seed, size, size2)
+	}
+	size3 := github_com_gogo_protobuf_proto.Size(p)
+	if size3 != size {
+		t.Errorf("seed = %d, size %v != after marshal proto.Size %v", seed, size, size3)
+	}
+}
+
+func TestRestoreCRCleanupObjectSize(t *testing.T) {
+	seed := time.Now().UnixNano()
+	popr := math_rand.New(math_rand.NewSource(seed))
+	p := NewPopulatedRestoreCRCleanupObject(popr, true)
 	size2 := github_com_gogo_protobuf_proto.Size(p)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {
