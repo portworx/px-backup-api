@@ -3021,6 +3021,29 @@
         ]
       }
     },
+    "/v1/reporting/data": {
+      "get": {
+        "summary": "GetData returns current reporting data for telemetry",
+        "operationId": "Reporting_GetData",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReportingDataResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "tags": [
+          "Reporting"
+        ]
+      }
+    },
     "/v1/resourceType/{org_id}": {
       "get": {
         "summary": "ResourceTypes api will return the list of ResourceTypes are support by px-backup for backup.",
@@ -8187,7 +8210,7 @@
         "date": {
           "type": "string",
           "format": "int64",
-          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month, it will be skipped. For example, if 30 is specified,\nit'll be skipped in February."
+          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month it'll rollover to the next date of the month.\nFor example if 31 is specified, it'll trigger on either 1st or 2nd March\ndepending on if it is a leap year."
         },
         "time": {
           "type": "string",
@@ -8877,6 +8900,23 @@
         "Delete"
       ],
       "default": "Invalid"
+    },
+    "ReportingDataResponse": {
+      "type": "object",
+      "properties": {
+        "json_data": {
+          "type": "string",
+          "title": "JSON-encoded reporting data"
+        },
+        "timestamp": {
+          "type": "string",
+          "title": "Timestamp when data was collected"
+        },
+        "version": {
+          "type": "string",
+          "title": "PX-Backup version"
+        }
+      }
     },
     "ResourceChunkInfoResource": {
       "type": "object",
@@ -10068,7 +10108,7 @@
         "date": {
           "type": "string",
           "format": "int64",
-          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month, it will be skipped. For example, if 30 is specified,\nit'll be skipped in February.\nThis field is deprecated, not to be used."
+          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month it'll rollover to the next date of the month.\nFor example if 31 is specified, it'll trigger on either 1st or 2nd March\ndepending on if it is a leap year.\nThis field is deprecated, not to be used."
         },
         "time": {
           "type": "string",
