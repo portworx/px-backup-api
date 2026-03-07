@@ -9634,15 +9634,7 @@
       "properties": {
         "json_data": {
           "type": "string",
-          "title": "JSON-encoded reporting data"
-        },
-        "timestamp": {
-          "type": "string",
-          "title": "Timestamp when data was collected"
-        },
-        "version": {
-          "type": "string",
-          "title": "PX-Backup version"
+          "description": "JSON-encoded reporting data is a map of orgID to orgData containing many fields,\nhence using string here to avoid defining a large message."
         }
       }
     },

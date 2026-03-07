@@ -4441,10 +4441,7 @@ message ReportingDataRequest {
 }
 
 message ReportingDataResponse {
-    // JSON-encoded reporting data
+    // JSON-encoded reporting data is a map of orgID to orgData containing many fields,
+    // hence using string here to avoid defining a large message.
     string json_data = 1;
-    // Timestamp when data was collected
-    string timestamp = 2;
-    // PX-Backup version
-    string version = 3;
 }
