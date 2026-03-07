@@ -168,8 +168,6 @@ message ClusterInfo {
         // Expiration timestamp of the Shoot kubeconfig.
         // The kubeconfig needs to be refreshed before this time.
         google.protobuf.Timestamp expiration_timestamp = 7;
-        // Pre-calculated timestamp for when kubeconfig refresh should be triggered.
-        google.protobuf.Timestamp refresh_at = 8;
     }
 
 }
