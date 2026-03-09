@@ -7924,6 +7924,11 @@
           "type": "string",
           "format": "date-time",
           "description": "Expiration timestamp of the Shoot kubeconfig.\nThe kubeconfig needs to be refreshed before this time."
+        },
+        "kubeconfig_obtained_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the kubeconfig was obtained from Gardener.\nUsed to track kubeconfig freshness and determine refresh timing."
         }
       },
       "description": "GardenerShootInfo contains Gardener-specific information for clusters\ndiscovered from Gardener Shoot clusters."
