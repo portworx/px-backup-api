@@ -168,6 +168,9 @@ message ClusterInfo {
         // Expiration timestamp of the Shoot kubeconfig.
         // The kubeconfig needs to be refreshed before this time.
         google.protobuf.Timestamp expiration_timestamp = 7;
+        // Timestamp when the kubeconfig was obtained from Gardener.
+        // Used to track kubeconfig freshness and determine refresh timing.
+        google.protobuf.Timestamp kubeconfig_obtained_at = 8;
     }
 
 }
