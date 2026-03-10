@@ -8262,6 +8262,10 @@
             "$ref": "#/definitions/BackupLocationRefStatus"
           },
           "description": "Map of BackupLocations that reference this cluster with their validation status.\nKey format: \"blName/blUID\" — matches the ObjectRef used in BackupLocationInfo.cluster_refs\nThis enables bidirectional reference: Cluster → BackupLocation\nSystem-managed field (not user input) - populated during validation."
+        },
+        "application_cluster_uuid": {
+          "type": "string",
+          "description": "Unique identifier of the storage cluster (e.g., Portworx ClusterUID) running on the onboarded cluster.\nThis is populated during cluster onboarding if a storage cluster is found."
         }
       }
     },
@@ -9343,7 +9347,7 @@
         "date": {
           "type": "string",
           "format": "int64",
-          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month it'll rollover to the next date of the month.\nFor example if 31 is specified, it'll trigger on either 1st or 2nd March\ndepending on if it is a leap year."
+          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month, it will be skipped. For example, if 30 is specified,\nit'll be skipped in February."
         },
         "time": {
           "type": "string",
@@ -11251,7 +11255,7 @@
         "date": {
           "type": "string",
           "format": "int64",
-          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month it'll rollover to the next date of the month.\nFor example if 31 is specified, it'll trigger on either 1st or 2nd March\ndepending on if it is a leap year.\nThis field is deprecated, not to be used."
+          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month, it will be skipped. For example, if 30 is specified,\nit'll be skipped in February.\nThis field is deprecated, not to be used."
         },
         "time": {
           "type": "string",
