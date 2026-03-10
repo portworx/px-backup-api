@@ -85,6 +85,9 @@ message ClusterInfo {
     // by external providers (e.g., Gardener).
     // This field is populated based on how the cluster was discovered/added.
     ClusterProviderInfo provider_info = 24;
+    // Unique identifier of the storage cluster (e.g., Portworx ClusterUID) running on the onboarded cluster.
+    // This is populated during cluster onboarding if a storage cluster is found.
+    string application_cluster_uuid = 25;
 
     // ClusterProviderInfo is a polymorphic wrapper for provider-specific cluster information.
     // Use the oneof to determine which provider type is set.

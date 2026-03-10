@@ -7873,6 +7873,10 @@
         "provider_info": {
           "$ref": "#/definitions/ClusterInfoClusterProviderInfo",
           "description": "Provider-specific cluster information for clusters discovered or managed\nby external providers (e.g., Gardener).\nThis field is populated based on how the cluster was discovered/added."
+        },
+        "application_cluster_uuid": {
+          "type": "string",
+          "description": "Unique identifier of the storage cluster (e.g., Portworx ClusterUID) running on the onboarded cluster.\nThis is populated during cluster onboarding if a storage cluster is found."
         }
       }
     },
