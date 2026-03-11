@@ -85,6 +85,11 @@ message ClusterInfo {
     // by external providers (e.g., Gardener).
     // This field is populated based on how the cluster was discovered/added.
     ClusterProviderInfo provider_info = 24;
+    // List of BackupLocations that reference this cluster with their validation status.
+    // This enables bidirectional reference: Cluster → BackupLocation
+    // System-managed field (not user input) - populated when BackupLocations are created/updated
+    // with this cluster in their cluster_refs list.
+    repeated BackupLocationRefStatus backup_location_ref_status = 25;
 
     // ClusterProviderInfo is a polymorphic wrapper for provider-specific cluster information.
     // Use the oneof to determine which provider type is set.
@@ -640,14 +645,21 @@ message completionTimeInfo {
     google.protobuf.Timestamp total_completion_time = 3;
 }
 
+// ClusterValidationStatus is the value in BackupLocationInfo.cluster_status map
+// Key is "name-uid" or "name", so no need for cluster_name field
 message ClusterValidationStatus {
-    // Cluster name (for display)
-    string cluster_name = 1;                           
-    // Cluster validation status 
-    ClusterValidationState status = 2;                 
-    google.protobuf.Timestamp last_validation_time = 3;
-    // reason for the backuplocation validation failure on the given cluster.
-    string reason = 4;                                 
+    // Validation status information
+    StatusInfo status_info = 1;
+
+    // StatusInfo contains validation status details
+    message StatusInfo {
+        // Cluster validation status
+        ClusterValidationState status = 1;
+        // Last time validation was performed
+        google.protobuf.Timestamp last_validation_time = 2;
+        // Reason for the backuplocation validation failure on the given cluster
+        string reason = 3;
+    }
 
     // Canonical status values - consistent with Stork CR status and UI
     enum ClusterValidationState {
@@ -656,6 +668,37 @@ message ClusterValidationStatus {
         InProgress = 2; // Validation Inprogress
         Valid = 3; // Validation Successful
         Failed = 4; // Validation Failed
+    }
+}
+
+// BackupLocationRefStatus tracks validation status of a BackupLocation on a cluster.
+// Used in ClusterInfo to enable bidirectional reference: Cluster → BackupLocation
+// Query by: backup_location_ref.name or backup_location_ref.uid
+message BackupLocationRefStatus {
+    // Reference to the BackupLocation (contains name and uid)
+    // Used for querying/filtering - create MongoDB indexes on name and uid
+    ObjectRef backup_location_ref = 1;
+
+    // Validation status information
+    StatusInfo status_info = 2;
+
+    // StatusInfo contains validation status details
+    message StatusInfo {
+        // Validation status of the BackupLocation on this cluster
+        BackupLocationValidationState status = 1;
+        // Last time validation was performed
+        google.protobuf.Timestamp last_validation_time = 2;
+        // Reason for the status (especially for failures)
+        string reason = 3;
+    }
+
+    // Canonical status values - consistent with ClusterValidationStatus enum
+    enum BackupLocationValidationState {
+        Invalid = 0;      // Invalid Value
+        Pending = 1;      // Validation Pending
+        InProgress = 2;   // Validation Inprogress
+        Valid = 3;        // Validation Successful
+        Failed = 4;       // Validation Failed
     }
 }
 
@@ -689,23 +732,32 @@ message BackupLocationInfo {
     //     provided directly in the backup location's config (e.g., S3Config).
     ObjectRef cloud_credential_ref = 8;
     bool object_lock_enabled = 9;
-    // Federated identity flag to identify if the backup location is federated-enabled.
+    // Workload Identity flag to identify if the backup location uses workload identity authentication.
+    // Named to match Stork BackupLocation CR field: azureConfig.useWorkloadIdentity, s3Config.useWorkloadIdentity
     // When set to true:
-    //   - Indicates that this backup location uses Federated Identity (Workload Identity/OIDC) for authentication.
-    //   - This flag is passed to the BackupLocation CR in Stork to inform it that federated identity is enabled.
+    //   - Indicates that this backup location uses Workload Identity (OIDC) for authentication.
+    //   - This flag is passed to the BackupLocation CR in Stork to inform it that workload identity is enabled.
     //   - Stork uses this flag to determine where to read credentials from:
-    //     * If federated=true: Stork reads cloud-specific configuration (e.g., azure_account_name, azure_subscription_id)
+    //     * If use_workload_identity=true: Stork reads cloud-specific configuration (e.g., azure_account_name, azure_subscription_id)
     //       from the backup location's config (e.g., S3Config) and uses workload identity for authentication.
-    //     * If federated=false: Stork reads credentials from the referenced cloud credential object secret (cloud_credential_ref).
-    //   - When federated=true, cloud_credential_ref should be empty or not set.
+    //     * If use_workload_identity=false: Stork reads credentials from the referenced cloud credential object secret (cloud_credential_ref).
+    //   - When use_workload_identity=true, cloud_credential_ref should be empty or not set.
     // When set to false (default):
     //   - Indicates traditional authentication using cloud credentials stored in a CloudCredentialObject.
     //   - Stork reads authentication credentials from the cloud credential object referenced by cloud_credential_ref.
-    bool federated = 10;
-    // List of clusters associated with this BackupLocation
-    // User provides this as INPUT when creating/updating
+    bool use_workload_identity = 10;
+    // List of clusters associated with this BackupLocation.
+    // Only used when use_workload_identity=true (Workload Identity mode).
+    // User provides this as INPUT when creating/updating.
+    // In non-WLI mode, this field is ignored.
     repeated ObjectRef cluster_refs = 11;
-    // Per-cluster validation status map (key: cluster_uid)
+    // Per-cluster validation status map.
+    // Only used when use_workload_identity=true (Workload Identity mode).
+    // Key format: "name-uid" if both name and uid provided in cluster_refs ObjectRef,
+    //             "name" if only name provided (uid is optional in ObjectRef)
+    // Example keys: "cluster-1-abc123" or "cluster-1"
+    // Value: ClusterValidationStatus with status, reason, last_validation_time
+    // System-managed field (OUTPUT) - populated by validation results.
     map<string, ClusterValidationStatus> cluster_status = 12;
     // sync and the sync_info are valid only in Federated PXB deployment mode.
     // sync is used to trigger backup sync from the object store.
@@ -2126,6 +2178,11 @@ message ClusterEnumerateRequest {
     bool only_backup_share = 6;
     // Optional arguments for enumeration
     EnumerateOptions enumerate_options = 7;
+    // Optional filter to return only clusters that are referenced by the specified BackupLocation.
+    // If not provided, return ALL clusters (existing behavior).
+    // If provided, return ONLY clusters that have this BackupLocation in their backup_location_ref_status.
+    // This enables bidirectional querying: "Show me all clusters that can access this BackupLocation"
+    ObjectRef backup_location_ref = 8;
 }
 
 // Define ClusterEnumerateResponse struct
