@@ -502,6 +502,13 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "force",
+            "description": "force allows the removal of backup metadata when the underlying cluster is gone.\nWARNING: This only deletes the record from MongoDB and skips physical cleanup\nof the backup location. To ensure full data deletion, prefer registering a\ntemporary cluster with the same backup location. Use this flag only for\norphaned metadata where the actual backup data is no longer needed.\nNOTE: This option is only valid in federated mode and will return an error\nin non-federated mode.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
