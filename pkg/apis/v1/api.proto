@@ -651,11 +651,11 @@ message ClusterValidationStatus {
 
     // Canonical status values - consistent with Stork CR status and UI
     enum ClusterValidationState {
-        Invalid = 0;      // Invalid Value
-        Pending = 1;      // Validation Pending
-        InProgress = 2;   // Validation Inprogress
-        Valid = 3;        // Validation Successful
-        Failed = 4;       // Validation Failed
+        Invalid = 0; // Invalid Value
+        Pending = 1; // Validation Pending
+        InProgress = 2; // Validation Inprogress
+        Valid = 3; // Validation Successful
+        Failed = 4; // Validation Failed
     }
 }
 
@@ -3001,6 +3001,14 @@ message BackupDeleteRequest {
     string cluster = 3;
     string uid = 4;
     ObjectRef cluster_ref = 5;
+    // force allows the removal of backup metadata when the underlying cluster is gone.
+    // WARNING: This only deletes the record from MongoDB and skips physical cleanup
+    // of the backup location. To ensure full data deletion, prefer registering a
+    // temporary cluster with the same backup location. Use this flag only for
+    // orphaned metadata where the actual backup data is no longer needed.
+    // NOTE: This option is only valid in federated mode and will return an error
+    // in non-federated mode.
+    bool force = 6;
 }
 
 // Response message structure for object delete
@@ -4172,7 +4180,7 @@ message LogLevelSetRequest {
 }
 
 message LogLevelSetResponse {
-    string message = 1;  // e.g., "Log level changed from INFO to DEBUG"
+    string message = 1; // e.g., "Log level changed from INFO to DEBUG"
 }
 
 // RestoreCRCleanupObject stores information needed to delete restore CR files
