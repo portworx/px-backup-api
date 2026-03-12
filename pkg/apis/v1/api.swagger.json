@@ -1973,6 +1973,18 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "backup_location_ref.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "backup_location_ref.uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -5906,23 +5918,23 @@
         "object_lock_enabled": {
           "type": "boolean"
         },
-        "federated": {
+        "use_workload_identity": {
           "type": "boolean",
-          "description": "Federated identity flag to identify if the backup location is federated-enabled.\nWhen set to true:\n  - Indicates that this backup location uses Federated Identity (Workload Identity/OIDC) for authentication.\n  - This flag is passed to the BackupLocation CR in Stork to inform it that federated identity is enabled.\n  - Stork uses this flag to determine where to read credentials from:\n    * If federated=true: Stork reads cloud-specific configuration (e.g., azure_account_name, azure_subscription_id)\n      from the backup location's config (e.g., S3Config) and uses workload identity for authentication.\n    * If federated=false: Stork reads credentials from the referenced cloud credential object secret (cloud_credential_ref).\n  - When federated=true, cloud_credential_ref should be empty or not set.\nWhen set to false (default):\n  - Indicates traditional authentication using cloud credentials stored in a CloudCredentialObject.\n  - Stork reads authentication credentials from the cloud credential object referenced by cloud_credential_ref."
+          "description": "Workload Identity flag to identify if the backup location uses workload identity authentication.\nNamed to match Stork BackupLocation CR field: azureConfig.useWorkloadIdentity, s3Config.useWorkloadIdentity\nWhen set to true:\n  - Indicates that this backup location uses Workload Identity (OIDC) for authentication.\n  - This flag is passed to the BackupLocation CR in Stork to inform it that workload identity is enabled.\n  - Stork uses this flag to determine where to read credentials from:\n    * If use_workload_identity=true: Stork reads cloud-specific configuration (e.g., azure_account_name, azure_subscription_id)\n      from the backup location's config (e.g., S3Config) and uses workload identity for authentication.\n    * If use_workload_identity=false: Stork reads credentials from the referenced cloud credential object secret (cloud_credential_ref).\n  - When use_workload_identity=true, cloud_credential_ref should be empty or not set.\nWhen set to false (default):\n  - Indicates traditional authentication using cloud credentials stored in a CloudCredentialObject.\n  - Stork reads authentication credentials from the cloud credential object referenced by cloud_credential_ref."
         },
         "cluster_refs": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ObjectRef"
           },
-          "title": "List of clusters associated with this BackupLocation\nUser provides this as INPUT when creating/updating"
+          "description": "List of clusters associated with this BackupLocation.\nOnly used when use_workload_identity=true (Workload Identity mode).\nUser provides this as INPUT when creating/updating.\nIn non-WLI mode, this field is ignored."
         },
         "cluster_status": {
           "type": "object",
           "additionalProperties": {
             "$ref": "#/definitions/ClusterValidationStatus"
           },
-          "title": "Per-cluster validation status map (key: cluster_uid)"
+          "description": "Per-cluster validation status map.\nOnly used when use_workload_identity=true (Workload Identity mode).\nKey format: \"name-uid\" if both name and uid provided in cluster_refs ObjectRef,\n            \"name\" if only name provided (uid is optional in ObjectRef)\nExample keys: \"cluster-1-abc123\" or \"cluster-1\"\nValue: ClusterValidationStatus with status, reason, last_validation_time\nSystem-managed field (OUTPUT) - populated by validation results."
         },
         "sync": {
           "type": "boolean",
@@ -6049,6 +6061,51 @@
     "BackupLocationOwnershipUpdateResponse": {
       "type": "object",
       "title": "Define BackupLocationOwnershipUpdateResponse struct"
+    },
+    "BackupLocationRefStatus": {
+      "type": "object",
+      "properties": {
+        "backup_location_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "Reference to the BackupLocation (contains name and uid)\nUsed for querying/filtering - create MongoDB indexes on name and uid"
+        },
+        "status_info": {
+          "$ref": "#/definitions/BackupLocationRefStatusStatusInfo",
+          "title": "Validation status information"
+        }
+      },
+      "title": "BackupLocationRefStatus tracks validation status of a BackupLocation on a cluster.\nUsed in ClusterInfo to enable bidirectional reference: Cluster → BackupLocation\nQuery by: backup_location_ref.name or backup_location_ref.uid"
+    },
+    "BackupLocationRefStatusBackupLocationValidationState": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Pending",
+        "InProgress",
+        "Valid",
+        "Failed"
+      ],
+      "default": "Invalid",
+      "title": "Canonical status values - consistent with ClusterValidationStatus enum"
+    },
+    "BackupLocationRefStatusStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/BackupLocationRefStatusBackupLocationValidationState",
+          "title": "Validation status of the BackupLocation on this cluster"
+        },
+        "last_validation_time": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Last time validation was performed"
+        },
+        "reason": {
+          "type": "string",
+          "title": "Reason for the status (especially for failures)"
+        }
+      },
+      "title": "StatusInfo contains validation status details"
     },
     "BackupLocationUpdateRequest": {
       "type": "object",
@@ -7857,6 +7914,13 @@
         "provider_info": {
           "$ref": "#/definitions/ClusterInfoClusterProviderInfo",
           "description": "Provider-specific cluster information for clusters discovered or managed\nby external providers (e.g., Gardener).\nThis field is populated based on how the cluster was discovered/added."
+        },
+        "backup_location_ref_status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupLocationRefStatus"
+          },
+          "description": "List of BackupLocations that reference this cluster with their validation status.\nThis enables bidirectional reference: Cluster → BackupLocation\nSystem-managed field (not user input) - populated when BackupLocations are created/updated\nwith this cluster in their cluster_refs list."
         }
       }
     },
@@ -8042,23 +8106,12 @@
     "ClusterValidationStatus": {
       "type": "object",
       "properties": {
-        "cluster_name": {
-          "type": "string",
-          "title": "Cluster name (for display)"
-        },
-        "status": {
-          "$ref": "#/definitions/ClusterValidationStatusClusterValidationState",
-          "title": "Cluster validation status"
-        },
-        "last_validation_time": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "reason": {
-          "type": "string",
-          "description": "reason for the backuplocation validation failure on the given cluster."
+        "status_info": {
+          "$ref": "#/definitions/ClusterValidationStatusStatusInfo",
+          "title": "Validation status information"
         }
-      }
+      },
+      "title": "ClusterValidationStatus is the value in BackupLocationInfo.cluster_status map\nKey is \"name-uid\" or \"name\", so no need for cluster_name field"
     },
     "ClusterValidationStatusClusterValidationState": {
       "type": "string",
@@ -8071,6 +8124,25 @@
       ],
       "default": "Invalid",
       "title": "Canonical status values - consistent with Stork CR status and UI"
+    },
+    "ClusterValidationStatusStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/ClusterValidationStatusClusterValidationState",
+          "title": "Cluster validation status"
+        },
+        "last_validation_time": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Last time validation was performed"
+        },
+        "reason": {
+          "type": "string",
+          "title": "Reason for the backuplocation validation failure on the given cluster"
+        }
+      },
+      "title": "StatusInfo contains validation status details"
     },
     "CommonEnumerateOptions": {
       "type": "object",
