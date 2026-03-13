@@ -8109,6 +8109,10 @@
         "status_info": {
           "$ref": "#/definitions/ClusterValidationStatusStatusInfo",
           "title": "Validation status information"
+        },
+        "cloud_provider_type": {
+          "type": "string",
+          "title": "Cloud provider type where the wli enabled cluster is running.\nExamples: \"aws\", \"gcp\", \"azure\""
         }
       },
       "title": "ClusterValidationStatus is the value in BackupLocationInfo.cluster_status map\nKey is \"name-uid\" or \"name\", so no need for cluster_name field"
