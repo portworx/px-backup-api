@@ -651,6 +651,10 @@ message ClusterValidationStatus {
     // Validation status information
     StatusInfo status_info = 1;
 
+    // Cloud provider type where the wli enabled cluster is running.
+    // Examples: "aws", "gcp", "azure"
+    string cloud_provider_type = 2;
+
     // StatusInfo contains validation status details
     message StatusInfo {
         // Cluster validation status
