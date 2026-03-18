@@ -2195,12 +2195,13 @@
           },
           {
             "name": "type",
-            "description": "Filter by cluster discovery config type (optional). If not set, returns all types.\n\n - ClusterDiscoveryConfigTypeInvalid: Invalid or unspecified discovery config type.\n - ClusterDiscoveryConfigTypeShoot: Shoot discovery configuration for Gardener Shoot clusters.",
+            "description": "Filter by cluster discovery config type (optional). If not set, returns all types.\n\n - ClusterDiscoveryConfigTypeInvalid: Invalid or unspecified discovery config type.\n - ClusterDiscoveryConfigTypeAll: Represents all discovery config types. Used in enumerate/filter requests\nto return configs of all types.\n - ClusterDiscoveryConfigTypeShoot: Shoot discovery configuration for Gardener Shoot clusters.",
             "in": "query",
             "required": false,
             "type": "string",
             "enum": [
               "ClusterDiscoveryConfigTypeInvalid",
+              "ClusterDiscoveryConfigTypeAll",
               "ClusterDiscoveryConfigTypeShoot"
             ],
             "default": "ClusterDiscoveryConfigTypeInvalid"
@@ -7722,7 +7723,8 @@
         "Inprogress",
         "Success",
         "Failed",
-        "Deleting"
+        "Deleting",
+        "DeletePending"
       ],
       "default": "Invalid"
     },
@@ -7750,10 +7752,11 @@
       "type": "string",
       "enum": [
         "ClusterDiscoveryConfigTypeInvalid",
+        "ClusterDiscoveryConfigTypeAll",
         "ClusterDiscoveryConfigTypeShoot"
       ],
       "default": "ClusterDiscoveryConfigTypeInvalid",
-      "description": "ClusterDiscoveryConfigType identifies the type of discovery configuration.\nThis enum enables polymorphic handling of different discovery implementations.\n\n - ClusterDiscoveryConfigTypeInvalid: Invalid or unspecified discovery config type.\n - ClusterDiscoveryConfigTypeShoot: Shoot discovery configuration for Gardener Shoot clusters."
+      "description": "ClusterDiscoveryConfigType identifies the type of discovery configuration.\nThis enum enables polymorphic handling of different discovery implementations.\n\n - ClusterDiscoveryConfigTypeInvalid: Invalid or unspecified discovery config type.\n - ClusterDiscoveryConfigTypeAll: Represents all discovery config types. Used in enumerate/filter requests\nto return configs of all types.\n - ClusterDiscoveryConfigTypeShoot: Shoot discovery configuration for Gardener Shoot clusters."
     },
     "ClusterDiscoveryConfigUpdateRequest": {
       "type": "object",

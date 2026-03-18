@@ -4264,10 +4264,11 @@ message RestoreCRCleanupObject {
 enum ClusterDiscoveryConfigType {
     // Invalid or unspecified discovery config type.
     ClusterDiscoveryConfigTypeInvalid = 0;
+    // Represents all discovery config types. Used in enumerate/filter requests
+    // to return configs of all types.
+    ClusterDiscoveryConfigTypeAll = 1;
     // Shoot discovery configuration for Gardener Shoot clusters.
-    ClusterDiscoveryConfigTypeShoot = 1;
-    // Future types can be added here, e.g.:
-    // ClusterDiscoveryConfigTypeVM = 2;
+    ClusterDiscoveryConfigTypeShoot = 2;
 }
 
 // ShootDiscoveryConfigInfo contains Gardener-specific configuration for discovering Shoot clusters.
@@ -4350,6 +4351,7 @@ message ClusterDiscoveryConfigInfo {
             Success = 2;
             Failed = 3;
             Deleting = 4;
+            DeletePending = 5;
         }
     }
 }
