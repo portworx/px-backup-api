@@ -11038,6 +11038,11 @@
           "type": "string",
           "description": "Gardener project name to discover Shoot clusters from."
         },
+        "project_id": {
+          "type": "string",
+          "description": "Output only. Gardener project ID resolved from project_name during\nAPI processing. This field is ignored in create/update requests.",
+          "readOnly": true
+        },
         "label_selector": {
           "type": "string",
           "title": "Label selector string to filter Shoot clusters during discovery.\nSupports Kubernetes label selector syntax, e.g.:\n\"environment in (production, staging),team=platform,!deprecated\""
