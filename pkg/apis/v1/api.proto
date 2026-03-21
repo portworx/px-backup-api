@@ -4277,10 +4277,13 @@ message ShootDiscoveryConfigInfo {
     string gardener_kubeconfig = 1 [ (gogoproto.moretags) = "secure:\"true\"" ];
     // Gardener project name to discover Shoot clusters from.
     string project_name = 2;
+    // Output only. Gardener project ID resolved from project_name during
+    // API processing. This field is ignored in create/update requests.
+    string project_id = 3;
     // Label selector string to filter Shoot clusters during discovery.
     // Supports Kubernetes label selector syntax, e.g.:
     // "environment in (production, staging),team=platform,!deprecated"
-    string label_selector = 3;
+    string label_selector = 4;
 }
 
 // ClusterDiscoverySettings contains common settings that apply to all discovery types.
