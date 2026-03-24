@@ -2174,6 +2174,8 @@ message ClusterEnumerateOptions {
     repeated ObjectRef cluster_discovery_config_refs = 2;
     // Matches against GardenerShootInfo.labels.
     string shoot_label_selector = 3;
+    // Filter by cluster status. Only return clusters matching any of the specified statuses.
+    repeated ClusterInfo.StatusInfo.Status cluster_status = 4;
 }
 
 // Define ClusterEnumerateRequest struct
