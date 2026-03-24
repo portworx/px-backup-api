@@ -2,6 +2,12 @@ ifndef PROTOC
 PROTOC = protoc
 endif
 
+# On macOS, force linux/amd64 platform for Docker since the protoc binary is x86_64
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+DOCKER_PLATFORM := --platform linux/amd64
+endif
+
 ifndef PKGS
 PKGS := $(shell go list ./... 2>&1 | grep -v 'github.com/portworx/px-backup-api/vendor' | grep -v versioned | grep -v 'pkg/apis/v1')
 endif
@@ -20,11 +26,11 @@ GO111MODULE := on
 all: docker-build-proto
 
 docker-build-proto:
-	docker build . -t px-backup-api-build
-	docker run  --rm  -v ${PWD}:/go/portworx/px-backup-api  px-backup-api-build /bin/bash -c "make proto pretest"
+	docker build $(DOCKER_PLATFORM) . -t px-backup-api-build
+	docker run $(DOCKER_PLATFORM) --rm  -v ${PWD}:/go/portworx/px-backup-api  px-backup-api-build /bin/bash -c "make proto pretest"
 
 start-build-container:
-	docker run --rm -it -v ${PWD}:/go/portworx/px-backup-api px-backup-api-build /bin/bash
+	docker run $(DOCKER_PLATFORM) --rm -it -v ${PWD}:/go/portworx/px-backup-api px-backup-api-build /bin/bash
 
 proto:
 	$(PROTOC) -I/usr/local/include -I. \

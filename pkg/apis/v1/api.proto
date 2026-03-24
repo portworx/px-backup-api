@@ -2166,6 +2166,18 @@ message ClusterUpdateRequest {
 // Define ClusterUpdateResponse struct
 message ClusterUpdateResponse {}
 
+// Advanced filter options for cluster enumeration.
+message ClusterEnumerateOptions {
+    // Filter by Gardener project name(s). Matches against GardenerShootInfo.project_name.
+    repeated string project_names = 1;
+    // Filter by ClusterDiscoveryConfig(s). Matches against GardenerShootInfo.cluster_discovery_config_refs.
+    repeated ObjectRef cluster_discovery_config_refs = 2;
+    // Matches against GardenerShootInfo.labels.
+    string shoot_label_selector = 3;
+    // Filter by cluster status. Only return clusters matching any of the specified statuses.
+    repeated ClusterInfo.StatusInfo.Status cluster_status = 4;
+}
+
 // Define ClusterEnumerateRequest struct
 message ClusterEnumerateRequest {
     string org_id = 1;
@@ -2187,6 +2199,8 @@ message ClusterEnumerateRequest {
     // If provided, return ONLY clusters that have "blName/blUID" as a key in their backup_location_ref_status map.
     // This enables bidirectional querying: "Show me all clusters that can access this BackupLocation"
     ObjectRef backup_location_ref = 8;
+    // Advanced filter options for cluster enumeration.
+    ClusterEnumerateOptions cluster_enumerate_options = 9;
 }
 
 // Define ClusterEnumerateResponse struct
