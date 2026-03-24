@@ -1985,6 +1985,44 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "cluster_enumerate_options.project_names",
+            "description": "Filter by Gardener project name(s). Matches against GardenerShootInfo.project_name.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "cluster_enumerate_options.shoot_label_selector",
+            "description": "Matches against GardenerShootInfo.labels.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cluster_enumerate_options.cluster_status",
+            "description": "Filter by cluster status. Only return clusters matching any of the specified statuses.\n\n - Pending: Pending If a cluster addition is in pending state\n - Failed: Failed If a cluster failed to be added\n - Success: Success If cluster was successfully added but not Online yet",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Invalid",
+                "Online",
+                "Offline",
+                "DeletePending",
+                "Pending",
+                "Failed",
+                "Success"
+              ]
+            },
+            "collectionFormat": "multi"
           }
         ],
         "tags": [
@@ -7801,6 +7839,37 @@
         }
       },
       "description": "AutoDiscoverFrequency specifies the interval for automatic discovery\nusing days, hours, and minutes. The total interval is calculated as:\n(days * 24 * 60) + (hours * 60) + minutes\nMinimum allowed interval is 15 minutes."
+    },
+    "ClusterEnumerateOptions": {
+      "type": "object",
+      "properties": {
+        "project_names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Filter by Gardener project name(s). Matches against GardenerShootInfo.project_name."
+        },
+        "cluster_discovery_config_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "Filter by ClusterDiscoveryConfig(s). Matches against GardenerShootInfo.cluster_discovery_config_refs."
+        },
+        "shoot_label_selector": {
+          "type": "string",
+          "description": "Matches against GardenerShootInfo.labels."
+        },
+        "cluster_status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ClusterInfoStatusInfoStatus"
+          },
+          "description": "Filter by cluster status. Only return clusters matching any of the specified statuses."
+        }
+      },
+      "description": "Advanced filter options for cluster enumeration."
     },
     "ClusterEnumerateResponse": {
       "type": "object",
