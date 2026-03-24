@@ -5935,7 +5935,12 @@
           "additionalProperties": {
             "$ref": "#/definitions/ClusterValidationStatus"
           },
-          "description": "Per-cluster validation status map.\nOnly used when use_workload_identity=true (Workload Identity mode).\nKey format: \"name-uid\" if both name and uid provided in cluster_refs ObjectRef,\n            \"name\" if only name provided (uid is optional in ObjectRef)\nExample keys: \"cluster-1-abc123\" or \"cluster-1\"\nValue: ClusterValidationStatus with status, reason, last_validation_time\nSystem-managed field (OUTPUT) - populated by validation results."
+          "description": "Per-cluster validation status map.\nOnly used when use_workload_identity=true (Workload Identity mode).\nKey format: \"name/uid\" if both name and uid provided in cluster_refs ObjectRef,\n            \"name\" if only name provided (uid is optional in ObjectRef)\nExample keys: \"cluster-1/abc123\" or \"cluster-1\"\nValue: ClusterValidationStatus with status, reason, last_validation_time\nSystem-managed field (OUTPUT) - populated by validation results."
+        },
+        "validation_started_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the validation was triggered.\nUsed to implement validation timeout — if validation has been in progress\nfor longer than the configured timeout, remaining InProgress clusters are marked as Failed.\nSystem-managed field (OUTPUT) - set when validation is triggered."
         },
         "sync": {
           "type": "boolean",
@@ -6066,32 +6071,6 @@
     "BackupLocationRefStatus": {
       "type": "object",
       "properties": {
-        "backup_location_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "title": "Reference to the BackupLocation (contains name and uid)\nUsed for querying/filtering - create MongoDB indexes on name and uid"
-        },
-        "status_info": {
-          "$ref": "#/definitions/BackupLocationRefStatusStatusInfo",
-          "title": "Validation status information"
-        }
-      },
-      "title": "BackupLocationRefStatus tracks validation status of a BackupLocation on a cluster.\nUsed in ClusterInfo to enable bidirectional reference: Cluster → BackupLocation\nQuery by: backup_location_ref.name or backup_location_ref.uid"
-    },
-    "BackupLocationRefStatusBackupLocationValidationState": {
-      "type": "string",
-      "enum": [
-        "Invalid",
-        "Pending",
-        "InProgress",
-        "Valid",
-        "Failed"
-      ],
-      "default": "Invalid",
-      "title": "Canonical status values - consistent with ClusterValidationStatus enum"
-    },
-    "BackupLocationRefStatusStatusInfo": {
-      "type": "object",
-      "properties": {
         "status": {
           "$ref": "#/definitions/BackupLocationRefStatusBackupLocationValidationState",
           "title": "Validation status of the BackupLocation on this cluster"
@@ -6106,7 +6085,19 @@
           "title": "Reason for the status (especially for failures)"
         }
       },
-      "title": "StatusInfo contains validation status details"
+      "description": "BackupLocationRefStatus tracks validation status of a BackupLocation on a cluster.\nUsed in ClusterInfo.backup_location_ref_status map.\nKey: \"blName/blUID\" — the ObjectRef is encoded in the map key, so no separate field needed."
+    },
+    "BackupLocationRefStatusBackupLocationValidationState": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Pending",
+        "InProgress",
+        "Valid",
+        "Failed"
+      ],
+      "default": "Invalid",
+      "title": "Canonical status values - consistent with ClusterValidationStatus enum"
     },
     "BackupLocationUpdateRequest": {
       "type": "object",
@@ -7919,11 +7910,11 @@
           "description": "Provider-specific cluster information for clusters discovered or managed\nby external providers (e.g., Gardener).\nThis field is populated based on how the cluster was discovered/added."
         },
         "backup_location_ref_status": {
-          "type": "array",
-          "items": {
+          "type": "object",
+          "additionalProperties": {
             "$ref": "#/definitions/BackupLocationRefStatus"
           },
-          "description": "List of BackupLocations that reference this cluster with their validation status.\nThis enables bidirectional reference: Cluster → BackupLocation\nSystem-managed field (not user input) - populated when BackupLocations are created/updated\nwith this cluster in their cluster_refs list."
+          "description": "Map of BackupLocations that reference this cluster with their validation status.\nKey format: \"blName/blUID\" — matches the ObjectRef used in BackupLocationInfo.cluster_refs\nThis enables bidirectional reference: Cluster → BackupLocation\nSystem-managed field (not user input) - populated during validation."
         }
       }
     },
@@ -8118,7 +8109,7 @@
           "title": "Cloud provider type where the wli enabled cluster is running.\nExamples: \"aws\", \"gcp\", \"azure\""
         }
       },
-      "title": "ClusterValidationStatus is the value in BackupLocationInfo.cluster_status map\nKey is \"name-uid\" or \"name\", so no need for cluster_name field"
+      "description": "Per-cluster validation status map.\nOnly used when use_workload_identity=true (Workload Identity mode).\nKey format: \"name/uid\" if both name and uid provided in cluster_refs ObjectRef,\n            \"name\" if only name provided (uid is optional in ObjectRef)\nExample keys: \"cluster-1/abc123\" or \"cluster-1\"\nValue: ClusterValidationStatus with status, reason, last_validation_time\nSystem-managed field (OUTPUT) - populated by validation results."
     },
     "ClusterValidationStatusClusterValidationState": {
       "type": "string",
