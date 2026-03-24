@@ -2023,6 +2023,13 @@
               ]
             },
             "collectionFormat": "multi"
+          },
+          {
+            "name": "cluster_enumerate_options.managed",
+            "description": "Filter by managed state. When set, only returns clusters where\nGardenerShootInfo.managed matches this value.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -7926,7 +7933,7 @@
       "properties": {
         "auto_discover": {
           "type": "boolean",
-          "description": "Enable or disable automatic discovery."
+          "description": "Enable or disable automatic discovery.\nUses BoolValue wrapper to distinguish between \"not provided\" (nil) and\n\"explicitly set to false\" during update operations."
         },
         "auto_discover_frequency": {
           "$ref": "#/definitions/ClusterDiscoverySettingsAutoDiscoverFrequency",
@@ -7983,6 +7990,10 @@
             "$ref": "#/definitions/ClusterInfoStatusInfoStatus"
           },
           "description": "Filter by cluster status. Only return clusters matching any of the specified statuses."
+        },
+        "managed": {
+          "type": "boolean",
+          "description": "Filter by managed state. When set, only returns clusters where\nGardenerShootInfo.managed matches this value."
         }
       },
       "description": "Advanced filter options for cluster enumeration."
@@ -8230,6 +8241,10 @@
           "type": "string",
           "format": "date-time",
           "description": "Timestamp when the kubeconfig was obtained from Gardener.\nUsed to track kubeconfig freshness and determine refresh timing."
+        },
+        "managed": {
+          "type": "boolean",
+          "description": "Indicates whether the Gardener Shoot cluster is actively managed by PX-Backup.\nSet to true if the required label used to onboard this cluster still exists\non the Shoot CR. Set to false if the cluster is managed by PX-Backup but\nthe required label is missing (e.g., removed externally)."
         }
       },
       "description": "GardenerShootInfo contains Gardener-specific information for clusters\ndiscovered from Gardener Shoot clusters."
