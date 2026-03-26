@@ -2054,6 +2054,10 @@ service Cluster {
     rpc Enumerate(ClusterEnumerateRequest) returns (ClusterEnumerateResponse) {
         option (google.api.http) = {
             get : "/v1/cluster/{org_id}"
+            additional_bindings {
+                post: "/v1/cluster/{org_id}/enumerate"
+                body: "*"
+            }
         };
     }
 
@@ -2192,7 +2196,7 @@ message ClusterEnumerateRequest {
     ObjectRef cloud_credential_ref = 5;
     // Set this to true, to get the backupshare enabled cluster list
     bool only_backup_share = 6;
-    // Optional arguments for enumeration
+    // Optional arguments for enumeration - Sorting, Pagination
     EnumerateOptions enumerate_options = 7;
     // Optional filter to return only clusters that are referenced by the specified BackupLocation.
     // If not provided, return ALL clusters (existing behavior).
@@ -2204,7 +2208,13 @@ message ClusterEnumerateRequest {
 }
 
 // Define ClusterEnumerateResponse struct
-message ClusterEnumerateResponse { repeated ClusterObject clusters = 1; }
+message ClusterEnumerateResponse {
+    repeated ClusterObject clusters = 1;
+    // Total count of clusters matching the filter
+    uint64 total_count = 2;
+    // Indicates if the result set is complete
+    bool complete = 3;
+}
 
 // Define ClusterInspectRequest struct
 message ClusterInspectRequest {
