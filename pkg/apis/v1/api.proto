@@ -4444,6 +4444,20 @@ service ClusterDiscoveryConfig {
             body : "*"
         };
     }
+
+    // RefreshClusters manually triggers an on-demand credential refresh for all
+    // clusters associated with the specified ClusterDiscoveryConfig.
+    // For Gardener Shoot clusters, this refreshes the kubeconfig for each cluster.
+    // For now this only supports Gardener Shoot clusters.
+    // The refresh runs asynchronously; use Cluster Inspect to check updated
+    // credential timestamps (e.g., expiration_timestamp, kubeconfig_obtained_at).
+    rpc RefreshClusters(ClusterDiscoveryConfigRefreshClustersRequest)
+        returns (ClusterDiscoveryConfigRefreshClustersResponse) {
+        option (google.api.http) = {
+            post : "/v1/clusterdiscoveryconfig/{org_id}/{name}/refresh"
+            body : "*"
+        };
+    }
 }
 
 message ClusterDiscoveryConfigCreateRequest {
@@ -4520,5 +4534,25 @@ message ClusterDiscoveryConfigDiscoverClustersResponse {
     // Indicates whether the discovery was successfully triggered.
     bool triggered = 1;
     // Message providing additional context (e.g., "Discovery started" or error details).
+    string message = 2;
+}
+
+// Request to manually trigger an on-demand credential refresh for all clusters
+// associated with a specific ClusterDiscoveryConfig.
+// For Gardener Shoot clusters, this refreshes the kubeconfig using the Gardener API
+// credentials stored in the discovery configuration.
+message ClusterDiscoveryConfigRefreshClustersRequest {
+    string org_id = 1;
+    // Name of the ClusterDiscoveryConfig whose clusters need credential refresh.
+    string name = 2;
+    // UID of the ClusterDiscoveryConfig (optional but recommended for validation).
+    string uid = 3;
+}
+
+// Response for manual cluster credential refresh.
+message ClusterDiscoveryConfigRefreshClustersResponse {
+    // Indicates whether the refresh was successfully triggered.
+    bool triggered = 1;
+    // Message providing additional context (e.g., "Refresh started" or error details).
     string message = 2;
 }

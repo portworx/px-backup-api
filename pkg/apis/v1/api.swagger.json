@@ -2503,6 +2503,52 @@
         ]
       }
     },
+    "/v1/clusterdiscoveryconfig/{org_id}/{name}/refresh": {
+      "post": {
+        "summary": "RefreshClusters manually triggers an on-demand credential refresh for all\nclusters associated with the specified ClusterDiscoveryConfig.\nFor Gardener Shoot clusters, this refreshes the kubeconfig for each cluster.\nFor now this only supports Gardener Shoot clusters.\nThe refresh runs asynchronously; use Cluster Inspect to check updated\ncredential timestamps (e.g., expiration_timestamp, kubeconfig_obtained_at).",
+        "operationId": "ClusterDiscoveryConfig_RefreshClusters",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ClusterDiscoveryConfigRefreshClustersResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "description": "Name of the ClusterDiscoveryConfig whose clusters need credential refresh.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ClusterDiscoveryConfigRefreshClustersRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ClusterDiscoveryConfig"
+        ]
+      }
+    },
     "/v1/health": {
       "get": {
         "summary": "Status checks the health of the server",
@@ -7815,6 +7861,37 @@
         }
       },
       "description": "ClusterDiscoveryConfigObject represents a discovery configuration with metadata."
+    },
+    "ClusterDiscoveryConfigRefreshClustersRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the ClusterDiscoveryConfig whose clusters need credential refresh."
+        },
+        "uid": {
+          "type": "string",
+          "description": "UID of the ClusterDiscoveryConfig (optional but recommended for validation)."
+        }
+      },
+      "description": "Request to manually trigger an on-demand credential refresh for all clusters\nassociated with a specific ClusterDiscoveryConfig.\nFor Gardener Shoot clusters, this refreshes the kubeconfig using the Gardener API\ncredentials stored in the discovery configuration."
+    },
+    "ClusterDiscoveryConfigRefreshClustersResponse": {
+      "type": "object",
+      "properties": {
+        "triggered": {
+          "type": "boolean",
+          "description": "Indicates whether the refresh was successfully triggered."
+        },
+        "message": {
+          "type": "string",
+          "description": "Message providing additional context (e.g., \"Refresh started\" or error details)."
+        }
+      },
+      "description": "Response for manual cluster credential refresh."
     },
     "ClusterDiscoveryConfigType": {
       "type": "string",
