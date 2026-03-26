@@ -2030,6 +2030,45 @@
         ]
       }
     },
+    "/v1/cluster/{org_id}/enumerate": {
+      "post": {
+        "summary": "Enumerate returns a list of clusters",
+        "operationId": "Cluster_Enumerate2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ClusterEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ClusterEnumerateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Cluster"
+        ]
+      }
+    },
     "/v1/cluster/{org_id}/{name}": {
       "get": {
         "summary": "Inspect returns detail information about a specified cluster",
@@ -7871,6 +7910,48 @@
       },
       "description": "Advanced filter options for cluster enumeration."
     },
+    "ClusterEnumerateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "label selectors for the object for filtering"
+        },
+        "include_secrets": {
+          "type": "boolean"
+        },
+        "cloud_credential": {
+          "type": "string",
+          "description": "cloud credential name.\nEnumerate will return list of cluster that\nuses this cloud credential\ncloud_credential is deprecated, not to be used."
+        },
+        "cloud_credential_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "only_backup_share": {
+          "type": "boolean",
+          "title": "Set this to true, to get the backupshare enabled cluster list"
+        },
+        "enumerate_options": {
+          "$ref": "#/definitions/EnumerateOptions",
+          "title": "Optional arguments for enumeration - Sorting, Pagination"
+        },
+        "backup_location_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "Optional filter to return only clusters that are referenced by the specified BackupLocation.\nIf not provided, return ALL clusters (existing behavior).\nIf provided, return ONLY clusters that have \"blName/blUID\" as a key in their backup_location_ref_status map.\nThis enables bidirectional querying: \"Show me all clusters that can access this BackupLocation\""
+        },
+        "cluster_enumerate_options": {
+          "$ref": "#/definitions/ClusterEnumerateOptions",
+          "description": "Advanced filter options for cluster enumeration."
+        }
+      },
+      "title": "Define ClusterEnumerateRequest struct"
+    },
     "ClusterEnumerateResponse": {
       "type": "object",
       "properties": {
@@ -7879,6 +7960,15 @@
           "items": {
             "$ref": "#/definitions/ClusterObject"
           }
+        },
+        "total_count": {
+          "type": "string",
+          "format": "uint64",
+          "title": "Total count of clusters matching the filter"
+        },
+        "complete": {
+          "type": "boolean",
+          "title": "Indicates if the result set is complete"
         }
       },
       "title": "Define ClusterEnumerateResponse struct"
