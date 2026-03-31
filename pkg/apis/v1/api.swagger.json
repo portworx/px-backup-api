@@ -2220,8 +2220,8 @@
           "ClusterDiscoveryConfig"
         ]
       },
-      "put": {
-        "summary": "Update updates an existing cluster discovery configuration.",
+      "patch": {
+        "summary": "Update patches an existing cluster discovery configuration.",
         "operationId": "ClusterDiscoveryConfig_Update",
         "responses": {
           "200": {
@@ -7913,11 +7913,32 @@
     "ClusterDiscoveryConfigUpdateRequest": {
       "type": "object",
       "properties": {
-        "metadata": {
-          "$ref": "#/definitions/CreateMetadata"
+        "org_id": {
+          "type": "string",
+          "description": "Organization ID of the cluster discovery config to update."
         },
-        "cluster_discovery_config_info": {
-          "$ref": "#/definitions/ClusterDiscoveryConfigInfo"
+        "config_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "Reference to the cluster discovery config to update (name is required, uid is optional for exact match)."
+        },
+        "gardener_kubeconfig": {
+          "type": "string",
+          "description": "Updated Gardener kubeconfig containing the token, certificate, and other\nauth credentials for the Gardener API server. The server/API endpoint\nwithin the kubeconfig cannot be changed via update."
+        },
+        "auto_discover": {
+          "type": "boolean",
+          "description": "Toggle automatic discovery on or off.\nUses BoolValue wrapper to distinguish between \"not provided\" (nil) and \"explicitly set to false\"."
+        },
+        "auto_discover_frequency": {
+          "$ref": "#/definitions/ClusterDiscoverySettingsAutoDiscoverFrequency",
+          "description": "Updated frequency of automatic discovery when auto_discover is enabled."
+        },
+        "metadata_labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Metadata labels to apply on the ClusterDiscoveryConfig object itself.\nThese are NOT the Shoot cluster label selectors used for discovery filtering\n(see ShootDiscoveryConfigInfo.label_selector for that)."
         },
         "confirm_update": {
           "type": "boolean",

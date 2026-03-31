@@ -8781,7 +8781,7 @@ func RegisterClusterDiscoveryConfigHandlerServer(ctx context.Context, mux *runti
 
 	})
 
-	mux.Handle("PUT", pattern_ClusterDiscoveryConfig_Update_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("PATCH", pattern_ClusterDiscoveryConfig_Update_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -12277,7 +12277,7 @@ func RegisterClusterDiscoveryConfigHandlerClient(ctx context.Context, mux *runti
 
 	})
 
-	mux.Handle("PUT", pattern_ClusterDiscoveryConfig_Update_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("PATCH", pattern_ClusterDiscoveryConfig_Update_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
