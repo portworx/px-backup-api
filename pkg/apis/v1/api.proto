@@ -4413,11 +4413,11 @@ service ClusterDiscoveryConfig {
         };
     }
 
-    // Update updates an existing cluster discovery configuration.
+    // Update patches an existing cluster discovery configuration.
     rpc Update(ClusterDiscoveryConfigUpdateRequest)
         returns (ClusterDiscoveryConfigUpdateResponse) {
         option (google.api.http) = {
-            put : "/v1/clusterdiscoveryconfig"
+            patch : "/v1/clusterdiscoveryconfig"
             body : "*"
         };
     }
@@ -4481,11 +4481,26 @@ message ClusterDiscoveryConfigCreateResponse {
 }
 
 message ClusterDiscoveryConfigUpdateRequest {
-    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
-    ClusterDiscoveryConfigInfo cluster_discovery_config_info = 2;
+    // Organization ID of the cluster discovery config to update.
+    string org_id = 1;
+    // Reference to the cluster discovery config to update (name is required, uid is optional for exact match).
+    ObjectRef config_ref = 2;
+    // Updated Gardener kubeconfig containing the token, certificate, and other
+    // auth credentials for the Gardener API server. The server/API endpoint
+    // within the kubeconfig cannot be changed via update.
+    string gardener_kubeconfig = 3 [ (gogoproto.moretags) = "secure:\"true\"" ];
+    // Toggle automatic discovery on or off.
+    // Uses BoolValue wrapper to distinguish between "not provided" (nil) and "explicitly set to false".
+    google.protobuf.BoolValue auto_discover = 4;
+    // Updated frequency of automatic discovery when auto_discover is enabled.
+    ClusterDiscoverySettings.AutoDiscoverFrequency auto_discover_frequency = 5;
+    // Metadata labels to apply on the ClusterDiscoveryConfig object itself.
+    // These are NOT the Shoot cluster label selectors used for discovery filtering
+    // (see ShootDiscoveryConfigInfo.label_selector for that).
+    map<string, string> metadata_labels = 6;
     // Confirmation flag required to proceed with the update.
     // Must be set to true explicitly; otherwise the update will be rejected.
-    bool confirm_update = 3;
+    bool confirm_update = 7;
 }
 
 message ClusterDiscoveryConfigUpdateResponse {}
