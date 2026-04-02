@@ -4361,25 +4361,38 @@ message ClusterDiscoveryConfigInfo {
     }
     // Common discovery settings (polling frequency, auto-discover toggle) that apply to all discovery types.
     ClusterDiscoverySettings settings = 4;
-    // Timestamp of the last discovery run.
-    google.protobuf.Timestamp last_discovery_time = 5;
+    // Timestamp of the last automatic discovery run.
+    google.protobuf.Timestamp last_auto_discovery_time = 5;
+    // Timestamp of the last manually triggered discovery run.
+    google.protobuf.Timestamp last_manual_discovery_time = 6;
     // Statistics from the last discovery run.
-    DiscoveryStats discovery_stats = 6;
+    DiscoveryStats discovery_stats = 7;
     // Status information for the discovery configuration.
-    StatusInfo status = 7;
+    StatusInfo status = 8;
     // Status information for the manual refresh operation.
     // This is separate from the main status to allow both operations — discovery and refresh —
     // to run and be tracked independently.
-    RefreshStatusInfo refresh_status = 8;
+    RefreshStatusInfo refresh_status = 9;
 
-    // Statistics from the last discovery run.
+    // Statistics from discovery runs.
     message DiscoveryStats {
         // Number of clusters discovered in the last discovery run.
         uint32 last_discovered_clusters_count = 1;
         // Number of clusters deleted/de-boarded in the last discovery run.
         uint32 last_deleted_clusters_count = 2;
-        // Current number of active clusters managed by this discovery configuration.
-        uint32 current_active_clusters_count = 3;
+        // Number of clusters that fell out of the label selector match (labels removed/changed on the cluster side, so they no longer match the discovery config's label_selector).
+        uint32 last_unmanaged_clusters_count = 3;
+        // Number of clusters that came back into the label selector match (labels added/restored so they match again) in last discovery run.
+        uint32 last_remanaged_clusters_count = 4;
+        // Number of clusters skipped in the last discovery run.
+        uint32 last_skipped_clusters_count = 5;
+        // Number of clusters that failed in the last discovery run.
+        uint32 last_failed_clusters_count = 6;
+
+        // Total number of clusters associated with this discovery configuration.
+        uint32 current_associated_clusters_count = 7;
+        // Total number of unmanaged clusters for this discovery configuration.
+        uint32 current_unmanaged_clusters_count = 8;
     }
 
     // Message for maintaining status of the discovery configuration.
