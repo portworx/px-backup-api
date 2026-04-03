@@ -4367,6 +4367,10 @@ message ClusterDiscoveryConfigInfo {
     DiscoveryStats discovery_stats = 6;
     // Status information for the discovery configuration.
     StatusInfo status = 7;
+    // Status information for the manual refresh operation.
+    // This is separate from the main status to allow both operations — discovery and refresh —
+    // to run and be tracked independently.
+    RefreshStatusInfo refresh_status = 8;
 
     // Statistics from the last discovery run.
     message DiscoveryStats {
@@ -4390,6 +4394,23 @@ message ClusterDiscoveryConfigInfo {
             Failed = 3;
             Deleting = 4;
             DeletePending = 5;
+        }
+    }
+
+    // Message for maintaining status of the manual refresh operation.
+    message RefreshStatusInfo {
+        RefreshStatus status = 1;
+        string reason = 2;
+        // Number of clusters that have been processed (refreshed) so far.
+        uint32 processed = 3;
+        // Total number of clusters that need to be refreshed.
+        uint32 total = 4;
+
+        enum RefreshStatus {
+            Invalid = 0;
+            Inprogress = 1;
+            Success = 2;
+            Failed = 3;
         }
     }
 }

@@ -7800,6 +7800,10 @@
         "status": {
           "$ref": "#/definitions/ClusterDiscoveryConfigInfoStatusInfo",
           "description": "Status information for the discovery configuration."
+        },
+        "refresh_status": {
+          "$ref": "#/definitions/ClusterDiscoveryConfigInfoRefreshStatusInfo",
+          "description": "Status information for the manual refresh operation.\nThis is separate from the main status to allow both operations — discovery and refresh —\nto run and be tracked independently."
         }
       },
       "description": "ClusterDiscoveryConfigInfo is a polymorphic wrapper for different discovery configuration types.\nUse the type field to determine which config variant is set.\nCommon discovery settings are provided via the settings field."
@@ -7824,6 +7828,28 @@
         }
       },
       "description": "Statistics from the last discovery run."
+    },
+    "ClusterDiscoveryConfigInfoRefreshStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/RefreshStatusInfoRefreshStatus"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "processed": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of clusters that have been processed (refreshed) so far."
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Total number of clusters that need to be refreshed."
+        }
+      },
+      "description": "Message for maintaining status of the manual refresh operation."
     },
     "ClusterDiscoveryConfigInfoStatusInfo": {
       "type": "object",
@@ -9913,6 +9939,16 @@
     },
     "RecipientUpdateResponse": {
       "type": "object"
+    },
+    "RefreshStatusInfoRefreshStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Inprogress",
+        "Success",
+        "Failed"
+      ],
+      "default": "Invalid"
     },
     "RelativeMonthlyPolicyweeklyIndex": {
       "type": "string",
