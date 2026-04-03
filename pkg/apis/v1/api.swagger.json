@@ -7788,10 +7788,15 @@
           "$ref": "#/definitions/ClusterDiscoverySettings",
           "description": "Common discovery settings (polling frequency, auto-discover toggle) that apply to all discovery types."
         },
-        "last_discovery_time": {
+        "last_auto_discovery_time": {
           "type": "string",
           "format": "date-time",
-          "description": "Timestamp of the last discovery run."
+          "description": "Timestamp of the last automatic discovery run."
+        },
+        "last_manual_discovery_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of the last manually triggered discovery run."
         },
         "discovery_stats": {
           "$ref": "#/definitions/ClusterDiscoveryConfigInfoDiscoveryStats",
@@ -7821,13 +7826,38 @@
           "format": "int64",
           "description": "Number of clusters deleted/de-boarded in the last discovery run."
         },
-        "current_active_clusters_count": {
+        "last_unmanaged_clusters_count": {
           "type": "integer",
           "format": "int64",
-          "description": "Current number of active clusters managed by this discovery configuration."
+          "description": "Number of clusters that fell out of the label selector match (labels removed/changed on the cluster side, so they no longer match the discovery config's label_selector)."
+        },
+        "last_remanaged_clusters_count": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of clusters that came back into the label selector match (labels added/restored so they match again) in last discovery run."
+        },
+        "last_skipped_clusters_count": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of clusters skipped in the last discovery run."
+        },
+        "last_failed_clusters_count": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of clusters that failed in the last discovery run."
+        },
+        "current_associated_clusters_count": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Total number of clusters associated with this discovery configuration."
+        },
+        "current_unmanaged_clusters_count": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Total number of unmanaged clusters for this discovery configuration."
         }
       },
-      "description": "Statistics from the last discovery run."
+      "description": "Statistics from discovery runs."
     },
     "ClusterDiscoveryConfigInfoRefreshStatusInfo": {
       "type": "object",
