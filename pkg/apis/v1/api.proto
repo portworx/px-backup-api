@@ -91,6 +91,9 @@ message ClusterInfo {
     // This enables bidirectional reference: Cluster → BackupLocation
     // System-managed field (not user input) - populated during validation.
     map<string, BackupLocationRefStatus> backup_location_ref_status = 25;
+    // Unique identifier of the storage cluster (e.g., Portworx ClusterUID) running on the onboarded cluster.
+    // This is populated during cluster onboarding if a storage cluster is found.
+    string application_cluster_uuid = 26;
 
     // ClusterProviderInfo is a polymorphic wrapper for provider-specific cluster information.
     // Use the oneof to determine which provider type is set.

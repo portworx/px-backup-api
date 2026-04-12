@@ -8239,6 +8239,10 @@
             "$ref": "#/definitions/BackupLocationRefStatus"
           },
           "description": "Map of BackupLocations that reference this cluster with their validation status.\nKey format: \"blName/blUID\" — matches the ObjectRef used in BackupLocationInfo.cluster_refs\nThis enables bidirectional reference: Cluster → BackupLocation\nSystem-managed field (not user input) - populated during validation."
+        },
+        "application_cluster_uuid": {
+          "type": "string",
+          "description": "Unique identifier of the storage cluster (e.g., Portworx ClusterUID) running on the onboarded cluster.\nThis is populated during cluster onboarding if a storage cluster is found."
         }
       }
     },
