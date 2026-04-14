@@ -366,6 +366,45 @@
         ]
       }
     },
+    "/v1/backup/{org_id}/delete": {
+      "post": {
+        "summary": "Delete triggers delete of a backup",
+        "operationId": "Backup_Delete2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupDeleteRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
     "/v1/backup/{org_id}/enumerate": {
       "post": {
         "summary": "Enumerate returns a list of objects",
@@ -506,6 +545,26 @@
           {
             "name": "force",
             "description": "force allows the removal of backup metadata when the underlying cluster is gone.\nWARNING: This only deletes the record from MongoDB and skips physical cleanup\nof the backup location. To ensure full data deletion, prefer registering a\ntemporary cluster with the same backup location. Use this flag only for\norphaned metadata where the actual backup data is no longer needed.\nNOTE: This option is only valid in federated mode and will return an error\nin non-federated mode.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "include_filter",
+            "description": "Substring or regex pattern to match backups and include.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "exclude_filter",
+            "description": "Substring or regex pattern to match backups and exclude.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cluster_scope.all_clusters",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -5441,6 +5500,65 @@
         }
       },
       "title": "Response message structure for backup create"
+    },
+    "BackupDeleteRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "org_id": {
+          "type": "string"
+        },
+        "cluster": {
+          "type": "string",
+          "title": "cluster name or uid to perform delete through"
+        },
+        "uid": {
+          "type": "string"
+        },
+        "cluster_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "force": {
+          "type": "boolean",
+          "description": "force allows the removal of backup metadata when the underlying cluster is gone.\nWARNING: This only deletes the record from MongoDB and skips physical cleanup\nof the backup location. To ensure full data deletion, prefer registering a\ntemporary cluster with the same backup location. Use this flag only for\norphaned metadata where the actual backup data is no longer needed.\nNOTE: This option is only valid in federated mode and will return an error\nin non-federated mode."
+        },
+        "include_objects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "title": "Bulk delete fields (following BackupScheduleDeleteRequest pattern)\nList of exact backups to include (name + UID required)"
+        },
+        "exclude_objects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "title": "List of exact backups to exclude (name + UID required)"
+        },
+        "include_filter": {
+          "type": "string",
+          "title": "Substring or regex pattern to match backups and include"
+        },
+        "exclude_filter": {
+          "type": "string",
+          "title": "Substring or regex pattern to match backups and exclude"
+        },
+        "backup_location_ref": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "title": "Filter by backup location reference"
+        },
+        "cluster_scope": {
+          "$ref": "#/definitions/ClusterScope",
+          "title": "Filter by cluster reference"
+        }
+      },
+      "title": "Request message structure for object delete"
     },
     "BackupDeleteResponse": {
       "type": "object",

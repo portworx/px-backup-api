@@ -2945,6 +2945,10 @@ service Backup {
     rpc Delete(BackupDeleteRequest) returns (BackupDeleteResponse) {
         option (google.api.http) = {
             delete : "/v1/backup/{org_id}/{name}"
+            additional_bindings {
+                post: "/v1/backup/{org_id}/delete" // for bulk delete
+                body: "*"
+            }
         };
     }
 
@@ -3106,6 +3110,19 @@ message BackupDeleteRequest {
     // NOTE: This option is only valid in federated mode and will return an error
     // in non-federated mode.
     bool force = 6;
+    // Bulk delete fields (following BackupScheduleDeleteRequest pattern)
+    // List of exact backups to include (name + UID required)
+    repeated ObjectRef include_objects = 7;
+    // List of exact backups to exclude (name + UID required)
+    repeated ObjectRef exclude_objects = 8;
+    // Substring or regex pattern to match backups and include
+    string include_filter = 9;
+    // Substring or regex pattern to match backups and exclude
+    string exclude_filter = 10;
+    // Filter by backup location reference
+    repeated ObjectRef backup_location_ref = 11;
+    // Filter by cluster reference
+    ClusterScope cluster_scope = 12;
 }
 
 // Response message structure for object delete
