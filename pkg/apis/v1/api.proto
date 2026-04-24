@@ -1033,7 +1033,9 @@ message BackupInfo {
         string virtual_machine_name = 16;
         // Indicate backup mode - full/incr (for pxd volumes) or not supported (for other volume drivers)
         BackupMode backup_mode = 17;
-
+        // cleanup_details carries per-volume GC state. Absent on volumes that
+        // have not yet been picked up by the deletion sweeper.
+        CleanupDetails cleanup_details = 18;
         message JobSecurityContext {
             int64 runAsUser = 1;
             int64 runAsGroup = 2;
@@ -1092,6 +1094,27 @@ message BackupInfo {
             All = 1; // for All application backup
             VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
         }
+    }
+
+    // CleanupDetails captures per-volume garbage-collection state for the unified
+    // deletion pipeline. All fields are optional.
+    message CleanupDetails {
+        // dependent_snapshot_id is set while this volume is blocked by a newer
+        // incremental
+        string dependent_snapshot_id = 1;
+
+        // retry_count is bumped by the worker defer block on panic/error. Informational
+        // only
+        int32 retry_count = 2;
+
+        // error_reason captures the last failure message. Updated on every retry.
+        string error_reason = 3;
+
+        // UID of backup owning the blocker snapshot
+        string dependent_backup_uid = 4;
+
+        // Name of backup owning the blocker snapshot (for indexed lookup)
+        string dependent_backup_name = 5;
     }
 
 }
