@@ -2188,6 +2188,7 @@ message ClusterEnumerateOptions {
     // Matches against GardenerShootInfo.labels.
     string shoot_label_selector = 3;
     // Filter by cluster status. Only return clusters matching any of the specified statuses.
+    // Supported statuses: Success, Failed, DeletePending, Pending.
     repeated ClusterInfo.StatusInfo.Status cluster_status = 4;
     // Filter by managed state. When set, only returns clusters where
     // GardenerShootInfo.managed matches this value.
