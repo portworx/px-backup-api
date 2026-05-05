@@ -2006,7 +2006,7 @@
           },
           {
             "name": "cluster_enumerate_options.cluster_status",
-            "description": "Filter by cluster status. Only return clusters matching any of the specified statuses.\n\n - Pending: Pending If a cluster addition is in pending state\n - Failed: Failed If a cluster failed to be added\n - Success: Success If cluster was successfully added but not Online yet",
+            "description": "Filter by cluster status. Only return clusters matching any of the specified statuses.\nSupported statuses: Success, Failed, DeletePending, Pending.\n\n - Pending: Pending If a cluster addition is in pending state\n - Failed: Failed If a cluster failed to be added\n - Success: Success If cluster was successfully added but not Online yet",
             "in": "query",
             "required": false,
             "type": "array",
@@ -8066,7 +8066,7 @@
           "items": {
             "$ref": "#/definitions/ClusterInfoStatusInfoStatus"
           },
-          "description": "Filter by cluster status. Only return clusters matching any of the specified statuses."
+          "description": "Filter by cluster status. Only return clusters matching any of the specified statuses.\nSupported statuses: Success, Failed, DeletePending, Pending."
         },
         "managed": {
           "type": "boolean",
