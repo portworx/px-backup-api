@@ -5782,6 +5782,33 @@
       ],
       "default": "Invalid"
     },
+    "BackupInfoCleanupDetails": {
+      "type": "object",
+      "properties": {
+        "dependent_snapshot_id": {
+          "type": "string",
+          "title": "dependent_snapshot_id is set while this volume is blocked by a newer\nincremental"
+        },
+        "retry_count": {
+          "type": "integer",
+          "format": "int32",
+          "title": "retry_count is bumped by the worker defer block on panic/error. Informational\nonly"
+        },
+        "error_reason": {
+          "type": "string",
+          "description": "error_reason captures the last failure message. Updated on every retry."
+        },
+        "dependent_backup_uid": {
+          "type": "string",
+          "title": "UID of backup owning the blocker snapshot"
+        },
+        "dependent_backup_name": {
+          "type": "string",
+          "title": "Name of backup owning the blocker snapshot (for indexed lookup)"
+        }
+      },
+      "description": "CleanupDetails captures per-volume garbage-collection state for the unified\ndeletion pipeline. All fields are optional."
+    },
     "BackupInfoNamespaceResources": {
       "type": "object",
       "properties": {
@@ -5960,6 +5987,10 @@
         "backup_mode": {
           "$ref": "#/definitions/VolumeBackupMode",
           "title": "Indicate backup mode - full/incr (for pxd volumes) or not supported (for other volume drivers)"
+        },
+        "cleanup_details": {
+          "$ref": "#/definitions/BackupInfoCleanupDetails",
+          "description": "cleanup_details carries per-volume GC state. Absent on volumes that\nhave not yet been picked up by the deletion sweeper."
         }
       }
     },
