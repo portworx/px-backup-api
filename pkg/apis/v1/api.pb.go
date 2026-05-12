@@ -12412,6 +12412,7 @@ type ClusterEnumerateOptions struct {
 	// Matches against GardenerShootInfo.labels.
 	ShootLabelSelector string `protobuf:"bytes,3,opt,name=shoot_label_selector,json=shootLabelSelector,proto3" json:"shoot_label_selector,omitempty"`
 	// Filter by cluster status. Only return clusters matching any of the specified statuses.
+	// Supported statuses: Success, Failed, DeletePending, Pending.
 	ClusterStatus []ClusterInfo_StatusInfo_Status `protobuf:"varint,4,rep,packed,name=cluster_status,json=clusterStatus,proto3,enum=ClusterInfo_StatusInfo_Status" json:"cluster_status,omitempty"`
 	// Filter by managed state. When set, only returns clusters where
 	// GardenerShootInfo.managed matches this value.
