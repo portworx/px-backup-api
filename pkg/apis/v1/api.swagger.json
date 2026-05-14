@@ -11035,13 +11035,16 @@
       "type": "object",
       "properties": {
         "endpoint": {
-          "type": "string"
+          "type": "string",
+          "description": "S3 endpoint URL.\nFor AWS Workload Identity (use_workload_identity=true on AWS): ignored;\n the AWS SDK derives the regional endpoint from the region."
         },
         "region": {
-          "type": "string"
+          "type": "string",
+          "description": "S3 region.\nFor AWS Workload Identity (use_workload_identity=true on AWS): optional.\n If set, this value is used; otherwise the region is sourced from the\n stork pod env (AWS_REGION, then AWS_DEFAULT_REGION)."
         },
         "disable_ssl": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "Disable TLS for S3 traffic (used with HTTP-only S3-compatible stores).\nFor AWS Workload Identity (use_workload_identity=true on AWS): ignored;\n TLS is always enforced."
         },
         "disable_path_style": {
           "type": "boolean"
@@ -11068,6 +11071,10 @@
         "azure_subscription_id": {
           "type": "string",
           "description": "Azure subscription ID.\nFor Federated Identity (Workload Identity): Provide the subscription ID here in the backup location.\n  - When using federated identity authentication, the subscription ID must be specified in the backup location.\nFor Non-Federated Identity: Provide the subscription ID in the AzureConfig credential object.\n  - When using traditional authentication, the subscription ID should be specified in the\n    AzureConfig cloud credential object."
+        },
+        "google_project_id": {
+          "type": "string",
+          "description": "Google Cloud project ID.\nFor Federated Identity (Workload Identity): Required. Provide the project ID here in the backup location\n  because no GoogleConfig cloud credential object is referenced.\nFor Non-Federated Identity: Not required. The project ID is automatically extracted from the\n  JSON key in the GoogleConfig cloud credential object."
         }
       }
     },

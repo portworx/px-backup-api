@@ -223,8 +223,18 @@ message RancherConfig {
 }
 
 message S3Config {
+    // S3 endpoint URL.
+    // For AWS Workload Identity (use_workload_identity=true on AWS): ignored;
+    // the AWS SDK derives the regional endpoint from the region.
     string endpoint = 1;
+    // S3 region.
+    // For AWS Workload Identity (use_workload_identity=true on AWS): optional.
+    // If set, this value is used; otherwise the region is sourced from the
+    // stork pod env (AWS_REGION, then AWS_DEFAULT_REGION).
     string region = 2;
+    // Disable TLS for S3 traffic (used with HTTP-only S3-compatible stores).
+    // For AWS Workload Identity (use_workload_identity=true on AWS): ignored;
+    // TLS is always enforced.
     bool disable_ssl = 3;
     bool disable_path_style = 4;
     string storage_class = 5;
@@ -256,6 +266,15 @@ message S3Config {
     //     AzureConfig cloud credential object.
     string azure_subscription_id = 10 [
         (gogoproto.jsontag) = "azuresubscriptionid",
+        (gogoproto.moretags) = "secure:\"true\""
+    ];
+    // Google Cloud project ID.
+    // For Federated Identity (Workload Identity): Required. Provide the project ID here in the backup location
+    //   because no GoogleConfig cloud credential object is referenced.
+    // For Non-Federated Identity: Not required. The project ID is automatically extracted from the
+    //   JSON key in the GoogleConfig cloud credential object.
+    string google_project_id = 11 [
+        (gogoproto.jsontag) = "googleprojectid",
         (gogoproto.moretags) = "secure:\"true\""
     ];
     message AzureEnvironmentType {
