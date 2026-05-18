@@ -2803,7 +2803,13 @@ message BackupLocationEnumerateRequest {
     // Filter to use with cluster objects. Any object that contains the
     // filter will be returned
     ObjectRef cluster_ref = 8;
-
+    // Optional. Filter by one or more cloud provider types (S3, Azure, Google, NFS).
+    // Empty list = no provider-type filter.
+    repeated BackupLocationInfo.Type provider_types = 9;
+    // Optional. Filter by one or more BackupLocation StatusInfo.Status values.
+    // Empty list = no status filter. When non-empty, this filter takes precedence
+    // over include_validation_state.
+    repeated BackupLocationInfo.StatusInfo.Status statuses = 10;
 }
 
 // Define BackupLocationEnumerateResponse struct
