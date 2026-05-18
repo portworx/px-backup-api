@@ -781,6 +781,43 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "provider_types",
+            "description": "Optional. Filter by one or more cloud provider types (S3, Azure, Google, NFS).\nEmpty list = no provider-type filter.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Invalid",
+                "S3",
+                "Azure",
+                "Google",
+                "NFS"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "statuses",
+            "description": "Optional. Filter by one or more BackupLocation StatusInfo.Status values.\nEmpty list = no status filter. When non-empty, this filter takes precedence\nover include_validation_state.\n\n - LimitedAvailability: If a BL is being used for partial backup, mark it as LimitedAvailability.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Invalid",
+                "Valid",
+                "DeletePending",
+                "ValidationInProgress",
+                "ValidationFailed",
+                "LimitedAvailability"
+              ]
+            },
+            "collectionFormat": "multi"
           }
         ],
         "tags": [
