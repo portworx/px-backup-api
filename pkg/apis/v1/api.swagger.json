@@ -781,6 +781,43 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "backup_location_enumerate_options.provider_types",
+            "description": "Filter by one or more cloud provider types (S3, Azure, Google, NFS).\nEmpty list = no provider-type filter.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Invalid",
+                "S3",
+                "Azure",
+                "Google",
+                "NFS"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "backup_location_enumerate_options.statuses",
+            "description": "Filter by one or more BackupLocation StatusInfo.Status values.\nEmpty list = no status filter. When non-empty, this filter takes precedence\nover include_validation_state.\n\n - LimitedAvailability: If a BL is being used for partial backup, mark it as LimitedAvailability.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Invalid",
+                "Valid",
+                "DeletePending",
+                "ValidationInProgress",
+                "ValidationFailed",
+                "LimitedAvailability"
+              ]
+            },
+            "collectionFormat": "multi"
           }
         ],
         "tags": [
@@ -6016,6 +6053,26 @@
     "BackupLocationDeleteResponse": {
       "type": "object",
       "title": "Define BackupLocationDeleteResponse struct"
+    },
+    "BackupLocationEnumerateOptions": {
+      "type": "object",
+      "properties": {
+        "provider_types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupLocationInfoType"
+          },
+          "description": "Filter by one or more cloud provider types (S3, Azure, Google, NFS).\nEmpty list = no provider-type filter."
+        },
+        "statuses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupLocationInfoStatusInfoStatus"
+          },
+          "description": "Filter by one or more BackupLocation StatusInfo.Status values.\nEmpty list = no status filter. When non-empty, this filter takes precedence\nover include_validation_state."
+        }
+      },
+      "description": "Advanced filter options for backup location enumeration."
     },
     "BackupLocationEnumerateResponse": {
       "type": "object",
