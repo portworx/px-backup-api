@@ -75,6 +75,6 @@ staticcheck:
 	staticcheck $(PKGS)
 
 errcheck:
-	go install github.com/kisielk/errcheck@latest
+	go install github.com/kisielk/errcheck@v1.10.0
 	errcheck -ignoregenerated -verbose -blank $(PKGS)
 
