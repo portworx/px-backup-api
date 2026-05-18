@@ -2786,6 +2786,17 @@ message BackupLocationUpdateRequest {
 // Define BackupLocationUpdateResponse struct
 message BackupLocationUpdateResponse {}
 
+// Advanced filter options for backup location enumeration.
+message BackupLocationEnumerateOptions {
+    // Filter by one or more cloud provider types (S3, Azure, Google, NFS).
+    // Empty list = no provider-type filter.
+    repeated BackupLocationInfo.Type provider_types = 1;
+    // Filter by one or more BackupLocation StatusInfo.Status values.
+    // Empty list = no status filter. When non-empty, this filter takes precedence
+    // over include_validation_state.
+    repeated BackupLocationInfo.StatusInfo.Status statuses = 2;
+}
+
 // Define BackupLocationEnumerateRequest struct
 message BackupLocationEnumerateRequest {
     string org_id = 1;
@@ -2807,7 +2818,8 @@ message BackupLocationEnumerateRequest {
     // Filter to use with cluster objects. Any object that contains the
     // filter will be returned
     ObjectRef cluster_ref = 8;
-
+    // Advanced filter options for backup location enumeration.
+    BackupLocationEnumerateOptions backup_location_enumerate_options = 9;
 }
 
 // Define BackupLocationEnumerateResponse struct
