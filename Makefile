@@ -71,7 +71,7 @@ vet:
 	go vet $(PKGS)
 
 staticcheck:
-	GOFLAGS="" go install honnef.co/go/tools/cmd/staticcheck@v0.5.1
+	GOFLAGS="" go install honnef.co/go/tools/cmd/staticcheck@v0.6.0
 	staticcheck $(PKGS)
 
 errcheck:
