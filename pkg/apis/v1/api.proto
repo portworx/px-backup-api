@@ -152,6 +152,7 @@ message ClusterInfo {
         Google = 3;
         IBM = 4;
         Rancher = 5;
+        Other = 999;
     }
 
     // GardenerShootInfo contains Gardener-specific information for clusters

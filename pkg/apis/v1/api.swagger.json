@@ -8338,7 +8338,8 @@
         "Azure",
         "Google",
         "IBM",
-        "Rancher"
+        "Rancher",
+        "Other"
       ],
       "default": "Invalid",
       "title": "Cloud provider type"
