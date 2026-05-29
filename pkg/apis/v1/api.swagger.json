@@ -2030,6 +2030,26 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "cluster_enumerate_options.cluster_providers",
+            "description": "Filter by cluster cloud provider. Only return clusters matching any of\nthe specified providers (AWS, Azure, Google, IBM, Rancher, Other).",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Invalid",
+                "AWS",
+                "Azure",
+                "Google",
+                "IBM",
+                "Rancher",
+                "Other"
+              ]
+            },
+            "collectionFormat": "multi"
           }
         ],
         "tags": [
@@ -8071,6 +8091,13 @@
         "managed": {
           "type": "boolean",
           "description": "Filter by managed state. When set, only returns clusters where\nGardenerShootInfo.managed matches this value."
+        },
+        "cluster_providers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ClusterInfoProvider"
+          },
+          "description": "Filter by cluster cloud provider. Only return clusters matching any of\nthe specified providers (AWS, Azure, Google, IBM, Rancher, Other)."
         }
       },
       "description": "Advanced filter options for cluster enumeration."
@@ -8338,7 +8365,8 @@
         "Azure",
         "Google",
         "IBM",
-        "Rancher"
+        "Rancher",
+        "Other"
       ],
       "default": "Invalid",
       "title": "Cloud provider type"
