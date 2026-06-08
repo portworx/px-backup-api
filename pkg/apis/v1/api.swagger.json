@@ -5734,6 +5734,10 @@
           "type": "string",
           "format": "uint64",
           "title": "Number of failed volumes during backup"
+        },
+        "time_zone": {
+          "type": "string",
+          "description": "Timezone of the cluster at backup creation time (IANA format, e.g. \"America/New_York\"). Defaults to UTC."
         }
       }
     },

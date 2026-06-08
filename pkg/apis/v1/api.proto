@@ -980,6 +980,8 @@ message BackupInfo {
     uint64 failed_resource_count = 58;
     // Number of failed volumes during backup
     uint64 failed_vol_count = 59;
+    // Timezone of the cluster at backup creation time (IANA format, e.g. "America/New_York"). Defaults to UTC.
+    string time_zone = 60;
     // Message for maintaining status of sync operations
     message SyncStatusInfo {
         Status status = 1;
