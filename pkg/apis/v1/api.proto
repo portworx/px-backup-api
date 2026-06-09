@@ -2981,6 +2981,10 @@ service Backup {
     rpc Delete(BackupDeleteRequest) returns (BackupDeleteResponse) {
         option (google.api.http) = {
             delete : "/v1/backup/{org_id}/{name}"
+            additional_bindings {
+                post: "/v1/backup/{org_id}/delete" // for bulk delete
+                body: "*"
+            }
         };
     }
 
@@ -3130,7 +3134,8 @@ message BackupInspectResponse { BackupObject backup = 1; }
 message BackupDeleteRequest {
     string name = 1;
     string org_id = 2;
-    // cluster name or uid to perform delete through
+    // cluster name or uid to perform delete through (single delete only;
+    // bulk delete selects clusters via cluster_scope below)
     string cluster = 3;
     string uid = 4;
     ObjectRef cluster_ref = 5;
@@ -3142,6 +3147,25 @@ message BackupDeleteRequest {
     // NOTE: This option is only valid in federated mode and will return an error
     // in non-federated mode.
     bool force = 6;
+    // Bulk delete fields. Set at least one of these instead of name/uid above.
+    // Only include_objects runs synchronously (all-or-nothing); the other shapes
+    // return immediately and delete in the background.
+
+    // Backups to include. UID is optional - a name alone works, but if the name
+    // matches more than one backup the request is rejected and you must pass the UID.
+    // Can't be used with include_filter or exclude_objects.
+    repeated ObjectRef include_objects = 7;
+    // Backups to exclude. UID is optional, and an ambiguous name is fine here -
+    // excluding too much only keeps extra backups, which is safe. Can't be used with exclude_filter.
+    repeated ObjectRef exclude_objects = 8;
+    // Regex/substring on backup name to include. Can't be used with include_objects.
+    string include_filter = 9;
+    // Regex/substring on backup name to exclude. Can't be used with exclude_objects.
+    string exclude_filter = 10;
+    // Only delete backups in these backup locations. Name is required, UID optional.
+    repeated ObjectRef backup_location_ref = 11;
+    // Only delete backups from these clusters, or all clusters. Names are required, UIDs optional.
+    ClusterScope cluster_scope = 12;
 }
 
 // Response message structure for object delete
