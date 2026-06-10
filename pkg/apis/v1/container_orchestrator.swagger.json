@@ -145,6 +145,28 @@
     }
   },
   "definitions": {
+    "emsCustomerProxySettings": {
+      "type": "object",
+      "properties": {
+        "hostname": {
+          "type": "string",
+          "title": "The hostname of the customer proxy"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32",
+          "title": "The port of the customer proxy"
+        },
+        "auth": {
+          "type": "string",
+          "title": "Base64 encoded username:password, which will be appended to the Authorization header"
+        },
+        "protocol": {
+          "type": "string",
+          "title": "The protocol of the customer proxy. http or https"
+        }
+      }
+    },
     "emsGetBearerTokenRequest": {
       "type": "object",
       "properties": {
@@ -168,6 +190,19 @@
         }
       },
       "title": "GetBearerTokenResponse contains the bearer token"
+    },
+    "emsGetCustomerProxySettingsResponse": {
+      "type": "object",
+      "properties": {
+        "customer_proxy_settings": {
+          "$ref": "#/definitions/emsCustomerProxySettings",
+          "title": "The customer proxy settings"
+        },
+        "empty": {
+          "properties": {},
+          "title": "Empty response if the customer proxy is not configured"
+        }
+      }
     },
     "emsKVDeleteRequest": {
       "type": "object",
