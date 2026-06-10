@@ -9,6 +9,7 @@ package com.purestorage.ems;
 option go_package = "api";
 
 import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
 
 // ContainerOrchestrator service provides KV store interface for certificate management
 // This service is used by CCM-Go (Pure1 registration library) to store and retrieve
@@ -102,5 +103,47 @@ message GetBearerTokenRequest {
 message GetBearerTokenResponse {
   // Bearer token for authentication
   string bearer_token = 1;
+}
+
+// PlatformInfoProvider supplies platform-level configuration to edge-envoy at runtime
+// (PB-15800). edge-envoy calls GetCustomerProxySettings to learn the customer proxy so
+// it can reach Pure1 through it; without this service edge-envoy connects to Pure1
+// directly, which fails on proxied / air-gapped clusters.
+//
+// SOURCE: this service and its messages (GetCustomerProxySettings{Request,Response},
+// CustomerProxySettings) are copied from the upstream EMS contract:
+//   repo: github.com/pure-pure1/edge-shared-protofiles
+//   file: ems-protobuf/proto/com/purestorage/ems/container_orchestrator.proto
+// Like the ContainerOrchestrator service above, this is trimmed to only what px-backup
+// serves: edge-envoy needs GetCustomerProxySettings for proxied / air-gapped telemetry.
+// The upstream GetEmbeddedPatchablePackages / GetNetworkSettings RPCs are intentionally
+// omitted (Agent-Provisioner features px-backup does not implement). Diff against the
+// upstream file to check for drift.
+service PlatformInfoProvider {
+  // Returns the customer proxy settings, such as hostname, port, and auth string.
+  // In case the customer proxy is not configured, the response will be of type Empty.
+  rpc GetCustomerProxySettings(GetCustomerProxySettingsRequest) returns (GetCustomerProxySettingsResponse);
+}
+
+message GetCustomerProxySettingsRequest {}
+
+message GetCustomerProxySettingsResponse {
+  oneof content {
+    // The customer proxy settings
+    CustomerProxySettings customer_proxy_settings = 1;
+    // Empty response if the customer proxy is not configured
+    google.protobuf.Empty empty = 2;
+  }
+}
+
+message CustomerProxySettings {
+  // The hostname of the customer proxy
+  string hostname = 1;
+  // The port of the customer proxy
+  int32 port = 2;
+  // Base64 encoded username:password, which will be appended to the Authorization header
+  string auth = 3;
+  // The protocol of the customer proxy. http or https
+  string protocol = 4;
 }
 
