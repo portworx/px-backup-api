@@ -8,6 +8,7 @@ import (
 	fmt "fmt"
 	_ "github.com/gogo/googleapis/google/api"
 	proto "github.com/gogo/protobuf/proto"
+	types "github.com/gogo/protobuf/types"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -449,6 +450,200 @@ func (m *GetBearerTokenResponse) GetBearerToken() string {
 	return ""
 }
 
+type GetCustomerProxySettingsRequest struct {
+}
+
+func (m *GetCustomerProxySettingsRequest) Reset()         { *m = GetCustomerProxySettingsRequest{} }
+func (m *GetCustomerProxySettingsRequest) String() string { return proto.CompactTextString(m) }
+func (*GetCustomerProxySettingsRequest) ProtoMessage()    {}
+func (*GetCustomerProxySettingsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f0e617317b2838d9, []int{9}
+}
+func (m *GetCustomerProxySettingsRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetCustomerProxySettingsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetCustomerProxySettingsRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetCustomerProxySettingsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetCustomerProxySettingsRequest.Merge(m, src)
+}
+func (m *GetCustomerProxySettingsRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetCustomerProxySettingsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetCustomerProxySettingsRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetCustomerProxySettingsRequest proto.InternalMessageInfo
+
+type GetCustomerProxySettingsResponse struct {
+	// Types that are valid to be assigned to Content:
+	//	*GetCustomerProxySettingsResponse_CustomerProxySettings
+	//	*GetCustomerProxySettingsResponse_Empty
+	Content isGetCustomerProxySettingsResponse_Content `protobuf_oneof:"content"`
+}
+
+func (m *GetCustomerProxySettingsResponse) Reset()         { *m = GetCustomerProxySettingsResponse{} }
+func (m *GetCustomerProxySettingsResponse) String() string { return proto.CompactTextString(m) }
+func (*GetCustomerProxySettingsResponse) ProtoMessage()    {}
+func (*GetCustomerProxySettingsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f0e617317b2838d9, []int{10}
+}
+func (m *GetCustomerProxySettingsResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetCustomerProxySettingsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetCustomerProxySettingsResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetCustomerProxySettingsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetCustomerProxySettingsResponse.Merge(m, src)
+}
+func (m *GetCustomerProxySettingsResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetCustomerProxySettingsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetCustomerProxySettingsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetCustomerProxySettingsResponse proto.InternalMessageInfo
+
+type isGetCustomerProxySettingsResponse_Content interface {
+	isGetCustomerProxySettingsResponse_Content()
+	MarshalTo([]byte) (int, error)
+	Size() int
+}
+
+type GetCustomerProxySettingsResponse_CustomerProxySettings struct {
+	CustomerProxySettings *CustomerProxySettings `protobuf:"bytes,1,opt,name=customer_proxy_settings,json=customerProxySettings,proto3,oneof" json:"customer_proxy_settings,omitempty"`
+}
+type GetCustomerProxySettingsResponse_Empty struct {
+	Empty *types.Empty `protobuf:"bytes,2,opt,name=empty,proto3,oneof" json:"empty,omitempty"`
+}
+
+func (*GetCustomerProxySettingsResponse_CustomerProxySettings) isGetCustomerProxySettingsResponse_Content() {
+}
+func (*GetCustomerProxySettingsResponse_Empty) isGetCustomerProxySettingsResponse_Content() {}
+
+func (m *GetCustomerProxySettingsResponse) GetContent() isGetCustomerProxySettingsResponse_Content {
+	if m != nil {
+		return m.Content
+	}
+	return nil
+}
+
+func (m *GetCustomerProxySettingsResponse) GetCustomerProxySettings() *CustomerProxySettings {
+	if x, ok := m.GetContent().(*GetCustomerProxySettingsResponse_CustomerProxySettings); ok {
+		return x.CustomerProxySettings
+	}
+	return nil
+}
+
+func (m *GetCustomerProxySettingsResponse) GetEmpty() *types.Empty {
+	if x, ok := m.GetContent().(*GetCustomerProxySettingsResponse_Empty); ok {
+		return x.Empty
+	}
+	return nil
+}
+
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*GetCustomerProxySettingsResponse) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
+		(*GetCustomerProxySettingsResponse_CustomerProxySettings)(nil),
+		(*GetCustomerProxySettingsResponse_Empty)(nil),
+	}
+}
+
+type CustomerProxySettings struct {
+	// The hostname of the customer proxy
+	Hostname string `protobuf:"bytes,1,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	// The port of the customer proxy
+	Port int32 `protobuf:"varint,2,opt,name=port,proto3" json:"port,omitempty"`
+	// Base64 encoded username:password, which will be appended to the Authorization header
+	Auth string `protobuf:"bytes,3,opt,name=auth,proto3" json:"auth,omitempty"`
+	// The protocol of the customer proxy. http or https
+	Protocol string `protobuf:"bytes,4,opt,name=protocol,proto3" json:"protocol,omitempty"`
+}
+
+func (m *CustomerProxySettings) Reset()         { *m = CustomerProxySettings{} }
+func (m *CustomerProxySettings) String() string { return proto.CompactTextString(m) }
+func (*CustomerProxySettings) ProtoMessage()    {}
+func (*CustomerProxySettings) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f0e617317b2838d9, []int{11}
+}
+func (m *CustomerProxySettings) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CustomerProxySettings) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CustomerProxySettings.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *CustomerProxySettings) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CustomerProxySettings.Merge(m, src)
+}
+func (m *CustomerProxySettings) XXX_Size() int {
+	return m.Size()
+}
+func (m *CustomerProxySettings) XXX_DiscardUnknown() {
+	xxx_messageInfo_CustomerProxySettings.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CustomerProxySettings proto.InternalMessageInfo
+
+func (m *CustomerProxySettings) GetHostname() string {
+	if m != nil {
+		return m.Hostname
+	}
+	return ""
+}
+
+func (m *CustomerProxySettings) GetPort() int32 {
+	if m != nil {
+		return m.Port
+	}
+	return 0
+}
+
+func (m *CustomerProxySettings) GetAuth() string {
+	if m != nil {
+		return m.Auth
+	}
+	return ""
+}
+
+func (m *CustomerProxySettings) GetProtocol() string {
+	if m != nil {
+		return m.Protocol
+	}
+	return ""
+}
+
 func init() {
 	proto.RegisterType((*KVGetRequest)(nil), "com.purestorage.ems.KVGetRequest")
 	proto.RegisterType((*ValuePair)(nil), "com.purestorage.ems.ValuePair")
@@ -459,6 +654,9 @@ func init() {
 	proto.RegisterType((*KVDeleteResponse)(nil), "com.purestorage.ems.KVDeleteResponse")
 	proto.RegisterType((*GetBearerTokenRequest)(nil), "com.purestorage.ems.GetBearerTokenRequest")
 	proto.RegisterType((*GetBearerTokenResponse)(nil), "com.purestorage.ems.GetBearerTokenResponse")
+	proto.RegisterType((*GetCustomerProxySettingsRequest)(nil), "com.purestorage.ems.GetCustomerProxySettingsRequest")
+	proto.RegisterType((*GetCustomerProxySettingsResponse)(nil), "com.purestorage.ems.GetCustomerProxySettingsResponse")
+	proto.RegisterType((*CustomerProxySettings)(nil), "com.purestorage.ems.CustomerProxySettings")
 }
 
 func init() {
@@ -466,38 +664,50 @@ func init() {
 }
 
 var fileDescriptor_f0e617317b2838d9 = []byte{
-	// 488 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x54, 0x41, 0x6b, 0x13, 0x41,
-	0x14, 0xce, 0x34, 0xad, 0xd8, 0xd7, 0xd4, 0x96, 0xd1, 0x4a, 0x09, 0xba, 0xb6, 0xd3, 0x8a, 0x21,
-	0xd2, 0x5d, 0x4c, 0xc0, 0x43, 0xbd, 0xb5, 0x42, 0x0f, 0x05, 0x95, 0xac, 0xe4, 0xe0, 0xa5, 0x4c,
-	0xe2, 0x73, 0xbb, 0x24, 0xdd, 0x59, 0x67, 0x26, 0x41, 0x3d, 0x7a, 0xf0, 0x2c, 0x78, 0xf7, 0x7f,
-	0xf8, 0x0f, 0x3c, 0x16, 0xbc, 0x78, 0x94, 0xc4, 0x1f, 0x22, 0x33, 0x3b, 0x31, 0x89, 0x6c, 0x12,
-	0x7b, 0x9b, 0xbc, 0xf7, 0xbd, 0xef, 0xfb, 0xf2, 0xbe, 0xc7, 0x42, 0x25, 0xed, 0x44, 0x01, 0x4f,
-	0x63, 0x15, 0xf4, 0x1f, 0x05, 0x6d, 0x91, 0x68, 0x1e, 0x27, 0x28, 0xcf, 0x84, 0x6c, 0x9f, 0xa3,
-	0xd2, 0x92, 0x6b, 0x21, 0xfd, 0x54, 0x0a, 0x2d, 0xe8, 0xcd, 0xb6, 0xb8, 0xf0, 0xd3, 0x9e, 0x44,
-	0xa5, 0x85, 0xe4, 0x11, 0xfa, 0x78, 0xa1, 0xca, 0x77, 0x22, 0x21, 0xa2, 0x2e, 0x1a, 0x86, 0x80,
-	0x27, 0x89, 0xd0, 0x5c, 0xc7, 0x22, 0x51, 0xd9, 0x08, 0xdb, 0x81, 0xd2, 0x69, 0xf3, 0x04, 0x75,
-	0x03, 0xdf, 0xf6, 0x50, 0x69, 0xba, 0x09, 0xc5, 0x0e, 0xbe, 0xdf, 0x26, 0x3b, 0xc5, 0xca, 0x6a,
-	0xc3, 0x3c, 0x59, 0x1d, 0x56, 0x9b, 0xbc, 0xdb, 0xc3, 0x17, 0x3c, 0x96, 0xe3, 0x36, 0x71, 0x6d,
-	0x7a, 0x0b, 0x56, 0xfa, 0xa6, 0xbd, 0xbd, 0x64, 0x6b, 0xd9, 0x0f, 0x76, 0x0c, 0xeb, 0x8e, 0x56,
-	0xa5, 0x22, 0x51, 0x48, 0x6b, 0xb0, 0x9c, 0xf2, 0x58, 0x5a, 0xe2, 0xb5, 0x9a, 0xe7, 0xe7, 0x38,
-	0xf5, 0xff, 0xca, 0x34, 0x2c, 0x96, 0x3d, 0x36, 0xde, 0xc2, 0x1c, 0x6f, 0x0b, 0xc4, 0x37, 0x8c,
-	0x78, 0x38, 0x16, 0x67, 0x7b, 0xb0, 0x71, 0xda, 0x7c, 0x8a, 0x5d, 0xd4, 0x38, 0x93, 0x8b, 0x51,
-	0xd8, 0x1c, 0x83, 0xdc, 0xe0, 0x33, 0xd8, 0x3a, 0x41, 0x7d, 0x84, 0x5c, 0xa2, 0x7c, 0x29, 0x3a,
-	0x98, 0x8c, 0xc6, 0xf7, 0x60, 0x5d, 0xe2, 0x1b, 0x89, 0xea, 0xfc, 0x4c, 0x9b, 0xba, 0x23, 0x2a,
-	0xb9, 0xa2, 0xc5, 0x1a, 0x0d, 0x7c, 0x97, 0x3a, 0x6f, 0xe6, 0xc9, 0x9e, 0xc0, 0xed, 0x7f, 0xf9,
-	0xdc, 0x7e, 0x76, 0xa1, 0xd4, 0xb2, 0xe5, 0x29, 0xbe, 0xb5, 0xd6, 0x18, 0x5a, 0xfb, 0xb6, 0x0c,
-	0x5b, 0xc7, 0xa3, 0xf8, 0x9f, 0x4f, 0xa4, 0x4f, 0x3f, 0xc0, 0x8a, 0xdd, 0x36, 0xdd, 0xcd, 0xdd,
-	0xeb, 0x64, 0xc0, 0x65, 0x36, 0x0f, 0xe2, 0xfe, 0x76, 0xf5, 0xe3, 0x8f, 0xdf, 0x5f, 0x96, 0xf6,
-	0xd9, 0xbd, 0xa9, 0x8b, 0x9b, 0x3c, 0xb8, 0xa0, 0xd3, 0x8f, 0x50, 0x1f, 0x92, 0x6a, 0xa6, 0x1d,
-	0xce, 0xd1, 0x0e, 0x17, 0x6b, 0x87, 0x57, 0xd5, 0x56, 0x99, 0xf6, 0x27, 0x02, 0xd7, 0x47, 0x99,
-	0xd1, 0xfd, 0x19, 0xe4, 0x53, 0xb9, 0x97, 0xef, 0x2f, 0x40, 0x39, 0x17, 0x07, 0xd6, 0xc5, 0x03,
-	0xc6, 0xe6, 0xb9, 0x78, 0x6d, 0x67, 0x8c, 0x91, 0xaf, 0x04, 0x6e, 0x4c, 0x07, 0x4b, 0xab, 0xb9,
-	0x42, 0xb9, 0xd7, 0x54, 0x7e, 0xf8, 0x5f, 0x58, 0x67, 0xad, 0x6e, 0xad, 0x1d, 0xb0, 0xca, 0x6c,
-	0x6b, 0x11, 0xea, 0xec, 0x70, 0xec, 0x2d, 0x1d, 0x92, 0xea, 0xd1, 0xdd, 0xef, 0x03, 0x8f, 0x5c,
-	0x0e, 0x3c, 0xf2, 0x6b, 0xe0, 0x91, 0xcf, 0x43, 0xaf, 0x70, 0x39, 0xf4, 0x0a, 0x3f, 0x87, 0x5e,
-	0xe1, 0x55, 0x91, 0xa7, 0x71, 0xeb, 0x9a, 0xfd, 0x18, 0xd4, 0xff, 0x04, 0x00, 0x00, 0xff, 0xff,
-	0xe7, 0x78, 0x84, 0x91, 0x6b, 0x04, 0x00, 0x00,
+	// 683 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x53, 0xc1, 0x4f, 0x13, 0x4f,
+	0x14, 0xee, 0xd2, 0xf6, 0xf7, 0x83, 0x29, 0x08, 0x19, 0x29, 0x36, 0xab, 0x2e, 0x30, 0x60, 0x24,
+	0x35, 0x6c, 0x63, 0x51, 0x0f, 0x78, 0x03, 0x0d, 0x18, 0x12, 0x6d, 0x5a, 0xc3, 0xc1, 0x4b, 0x33,
+	0x2d, 0xaf, 0xdb, 0x4d, 0xdb, 0x9d, 0x75, 0x66, 0x5a, 0xc1, 0xa3, 0x07, 0xbd, 0x9a, 0x78, 0x37,
+	0xfe, 0x1b, 0x9e, 0xbd, 0x78, 0x24, 0xf1, 0xe2, 0xd1, 0x80, 0x7f, 0x88, 0x99, 0xd9, 0x29, 0xa5,
+	0x66, 0xdb, 0xca, 0x6d, 0xe6, 0xbd, 0xef, 0x7d, 0xdf, 0xb7, 0xb3, 0xef, 0x43, 0x1b, 0x61, 0xcb,
+	0x2b, 0xd0, 0xd0, 0x17, 0x85, 0xde, 0xfd, 0x42, 0x9d, 0x05, 0x92, 0xfa, 0x01, 0xf0, 0x2a, 0xe3,
+	0xf5, 0x26, 0x08, 0xc9, 0xa9, 0x64, 0xdc, 0x0d, 0x39, 0x93, 0x0c, 0x5f, 0xaf, 0xb3, 0x8e, 0x1b,
+	0x76, 0x39, 0x08, 0xc9, 0x38, 0xf5, 0xc0, 0x85, 0x8e, 0xb0, 0x6f, 0x79, 0x8c, 0x79, 0x6d, 0x50,
+	0x0c, 0x05, 0x1a, 0x04, 0x4c, 0x52, 0xe9, 0xb3, 0x40, 0x44, 0x23, 0xf6, 0x4d, 0xd3, 0xd5, 0xb7,
+	0x5a, 0xb7, 0x51, 0x80, 0x4e, 0x28, 0x4f, 0xa2, 0x26, 0x59, 0x41, 0xb3, 0x07, 0x87, 0x7b, 0x20,
+	0xcb, 0xf0, 0xba, 0x0b, 0x42, 0xe2, 0x05, 0x94, 0x6c, 0xc1, 0x49, 0xce, 0x5a, 0x49, 0x6e, 0xcc,
+	0x94, 0xd5, 0x91, 0x6c, 0xa1, 0x99, 0x43, 0xda, 0xee, 0x42, 0x89, 0xfa, 0x7c, 0xd0, 0xb6, 0x4c,
+	0x1b, 0x2f, 0xa2, 0x74, 0x4f, 0xb5, 0x73, 0x53, 0xba, 0x16, 0x5d, 0xc8, 0x2e, 0x9a, 0x33, 0xb4,
+	0x22, 0x64, 0x81, 0x00, 0x5c, 0x44, 0xa9, 0x90, 0xfa, 0x5c, 0x13, 0x67, 0x8a, 0x8e, 0x1b, 0xf3,
+	0x19, 0xee, 0x85, 0x4c, 0x59, 0x63, 0xc9, 0x23, 0xe5, 0xad, 0x12, 0xe3, 0x6d, 0x82, 0xf8, 0xbc,
+	0x12, 0xaf, 0x0c, 0xc4, 0xc9, 0x1a, 0x9a, 0x3f, 0x38, 0x7c, 0x02, 0x6d, 0x90, 0x30, 0x92, 0x8b,
+	0x60, 0xb4, 0x30, 0x00, 0x99, 0xc1, 0xe7, 0x28, 0xbb, 0x07, 0x72, 0x07, 0x28, 0x07, 0xfe, 0x92,
+	0xb5, 0x20, 0xe8, 0x8f, 0xaf, 0xa1, 0x39, 0x0e, 0x0d, 0x0e, 0xa2, 0x59, 0x95, 0xaa, 0x6e, 0x88,
+	0x66, 0x4d, 0x51, 0x63, 0x95, 0x06, 0x1c, 0x87, 0xc6, 0x9b, 0x3a, 0x92, 0xc7, 0x68, 0xe9, 0x6f,
+	0x3e, 0xf3, 0x3e, 0xab, 0x68, 0xb6, 0xa6, 0xcb, 0x43, 0x7c, 0x99, 0xda, 0x00, 0x4a, 0x56, 0xd1,
+	0xf2, 0x1e, 0xc8, 0xdd, 0xae, 0x90, 0xac, 0x03, 0xbc, 0xc4, 0xd9, 0xf1, 0x49, 0x05, 0xa4, 0xf4,
+	0x03, 0x4f, 0x18, 0x5b, 0xe4, 0x9b, 0x85, 0x56, 0x46, 0x63, 0x8c, 0xd4, 0x11, 0xba, 0x51, 0x37,
+	0x80, 0x6a, 0xa8, 0x10, 0x55, 0x61, 0x20, 0x5a, 0x35, 0x53, 0xcc, 0xc7, 0xfe, 0x9d, 0x58, 0xd2,
+	0xfd, 0x44, 0x39, 0x5b, 0x8f, 0x6b, 0x60, 0x17, 0xa5, 0xf5, 0x9e, 0xe9, 0xcf, 0xcf, 0x14, 0x97,
+	0xdc, 0x68, 0x0b, 0xdd, 0xfe, 0x16, 0xba, 0x4f, 0x55, 0x77, 0x3f, 0x51, 0x8e, 0x60, 0x3b, 0x33,
+	0xe8, 0x7f, 0xb5, 0xf8, 0x10, 0x48, 0xf2, 0x06, 0x65, 0x63, 0xc5, 0xb0, 0x8d, 0xa6, 0x9b, 0x4c,
+	0xc8, 0x80, 0x76, 0xc0, 0x3c, 0xd0, 0xc5, 0x1d, 0x63, 0x94, 0x0a, 0x19, 0x97, 0x5a, 0x2e, 0x5d,
+	0xd6, 0x67, 0x55, 0xa3, 0x5d, 0xd9, 0xcc, 0x25, 0x35, 0x56, 0x9f, 0x15, 0x87, 0xb6, 0x50, 0x67,
+	0xed, 0x5c, 0x2a, 0xe2, 0xe8, 0xdf, 0x8b, 0x5f, 0x53, 0x28, 0xbb, 0xdb, 0x4f, 0xdf, 0x8b, 0x4b,
+	0xe1, 0xc3, 0x6f, 0x51, 0x5a, 0xef, 0x33, 0x5e, 0x8d, 0x7d, 0x9b, 0xcb, 0x11, 0xb2, 0xc9, 0x38,
+	0x88, 0x59, 0xac, 0xfc, 0xbb, 0x1f, 0xbf, 0x3f, 0x4d, 0xad, 0x93, 0xe5, 0xa1, 0xc0, 0x5f, 0xce,
+	0x7b, 0xa1, 0xd5, 0xf3, 0x40, 0x6e, 0x5b, 0xf9, 0x48, 0xbb, 0x32, 0x46, 0xbb, 0x32, 0x59, 0xbb,
+	0x72, 0x55, 0x6d, 0x11, 0x69, 0xbf, 0xb7, 0xd0, 0x74, 0x3f, 0x15, 0x78, 0x7d, 0x04, 0xf9, 0x50,
+	0xb2, 0xec, 0x3b, 0x13, 0x50, 0xc6, 0xc5, 0xa6, 0x76, 0x71, 0x97, 0x90, 0x71, 0x2e, 0x8e, 0xf4,
+	0x8c, 0x32, 0xf2, 0xd9, 0x42, 0xd7, 0x86, 0xa3, 0x83, 0xe3, 0xd7, 0x34, 0x36, 0xaf, 0xf6, 0xbd,
+	0x7f, 0xc2, 0x1a, 0x6b, 0x5b, 0xda, 0xda, 0x26, 0xd9, 0x18, 0x6d, 0xcd, 0x03, 0x19, 0x45, 0x53,
+	0xa7, 0x75, 0xdb, 0xca, 0x17, 0xbf, 0x58, 0x68, 0xb1, 0xd4, 0xa6, 0xb2, 0xc1, 0x78, 0xe7, 0x59,
+	0xd0, 0x60, 0x25, 0xce, 0x7a, 0xfe, 0x11, 0x70, 0xfc, 0xc1, 0x42, 0xb9, 0x51, 0x99, 0xc4, 0x0f,
+	0x46, 0xf9, 0x1a, 0x17, 0x73, 0xfb, 0xe1, 0x15, 0xa7, 0xa2, 0xef, 0xda, 0xb9, 0xfd, 0xfd, 0xcc,
+	0xb1, 0x4e, 0xcf, 0x1c, 0xeb, 0xd7, 0x99, 0x63, 0x7d, 0x3c, 0x77, 0x12, 0xa7, 0xe7, 0x4e, 0xe2,
+	0xe7, 0xb9, 0x93, 0x78, 0x95, 0xa4, 0xa1, 0x5f, 0xfb, 0x4f, 0xe7, 0x60, 0xeb, 0x4f, 0x00, 0x00,
+	0x00, 0xff, 0xff, 0x88, 0x50, 0x15, 0xfc, 0x8d, 0x06, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -690,6 +900,82 @@ var _ContainerOrchestrator_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBearerToken",
 			Handler:    _ContainerOrchestrator_GetBearerToken_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "pkg/apis/v1/container_orchestrator.proto",
+}
+
+// PlatformInfoProviderClient is the client API for PlatformInfoProvider service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type PlatformInfoProviderClient interface {
+	// Returns the customer proxy settings, such as hostname, port, and auth string.
+	// In case the customer proxy is not configured, the response will be of type Empty.
+	GetCustomerProxySettings(ctx context.Context, in *GetCustomerProxySettingsRequest, opts ...grpc.CallOption) (*GetCustomerProxySettingsResponse, error)
+}
+
+type platformInfoProviderClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewPlatformInfoProviderClient(cc *grpc.ClientConn) PlatformInfoProviderClient {
+	return &platformInfoProviderClient{cc}
+}
+
+func (c *platformInfoProviderClient) GetCustomerProxySettings(ctx context.Context, in *GetCustomerProxySettingsRequest, opts ...grpc.CallOption) (*GetCustomerProxySettingsResponse, error) {
+	out := new(GetCustomerProxySettingsResponse)
+	err := c.cc.Invoke(ctx, "/com.purestorage.ems.PlatformInfoProvider/GetCustomerProxySettings", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// PlatformInfoProviderServer is the server API for PlatformInfoProvider service.
+type PlatformInfoProviderServer interface {
+	// Returns the customer proxy settings, such as hostname, port, and auth string.
+	// In case the customer proxy is not configured, the response will be of type Empty.
+	GetCustomerProxySettings(context.Context, *GetCustomerProxySettingsRequest) (*GetCustomerProxySettingsResponse, error)
+}
+
+// UnimplementedPlatformInfoProviderServer can be embedded to have forward compatible implementations.
+type UnimplementedPlatformInfoProviderServer struct {
+}
+
+func (*UnimplementedPlatformInfoProviderServer) GetCustomerProxySettings(ctx context.Context, req *GetCustomerProxySettingsRequest) (*GetCustomerProxySettingsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCustomerProxySettings not implemented")
+}
+
+func RegisterPlatformInfoProviderServer(s *grpc.Server, srv PlatformInfoProviderServer) {
+	s.RegisterService(&_PlatformInfoProvider_serviceDesc, srv)
+}
+
+func _PlatformInfoProvider_GetCustomerProxySettings_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCustomerProxySettingsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PlatformInfoProviderServer).GetCustomerProxySettings(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/com.purestorage.ems.PlatformInfoProvider/GetCustomerProxySettings",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PlatformInfoProviderServer).GetCustomerProxySettings(ctx, req.(*GetCustomerProxySettingsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _PlatformInfoProvider_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "com.purestorage.ems.PlatformInfoProvider",
+	HandlerType: (*PlatformInfoProviderServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetCustomerProxySettings",
+			Handler:    _PlatformInfoProvider_GetCustomerProxySettings_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -982,6 +1268,152 @@ func (m *GetBearerTokenResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 	return len(dAtA) - i, nil
 }
 
+func (m *GetCustomerProxySettingsRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetCustomerProxySettingsRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetCustomerProxySettingsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *GetCustomerProxySettingsResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetCustomerProxySettingsResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetCustomerProxySettingsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Content != nil {
+		{
+			size := m.Content.Size()
+			i -= size
+			if _, err := m.Content.MarshalTo(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GetCustomerProxySettingsResponse_CustomerProxySettings) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetCustomerProxySettingsResponse_CustomerProxySettings) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.CustomerProxySettings != nil {
+		{
+			size, err := m.CustomerProxySettings.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintContainerOrchestrator(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+func (m *GetCustomerProxySettingsResponse_Empty) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetCustomerProxySettingsResponse_Empty) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.Empty != nil {
+		{
+			size, err := m.Empty.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintContainerOrchestrator(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	return len(dAtA) - i, nil
+}
+func (m *CustomerProxySettings) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CustomerProxySettings) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CustomerProxySettings) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Protocol) > 0 {
+		i -= len(m.Protocol)
+		copy(dAtA[i:], m.Protocol)
+		i = encodeVarintContainerOrchestrator(dAtA, i, uint64(len(m.Protocol)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.Auth) > 0 {
+		i -= len(m.Auth)
+		copy(dAtA[i:], m.Auth)
+		i = encodeVarintContainerOrchestrator(dAtA, i, uint64(len(m.Auth)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if m.Port != 0 {
+		i = encodeVarintContainerOrchestrator(dAtA, i, uint64(m.Port))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Hostname) > 0 {
+		i -= len(m.Hostname)
+		copy(dAtA[i:], m.Hostname)
+		i = encodeVarintContainerOrchestrator(dAtA, i, uint64(len(m.Hostname)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintContainerOrchestrator(dAtA []byte, offset int, v uint64) int {
 	offset -= sovContainerOrchestrator(v)
 	base := offset
@@ -1112,6 +1544,75 @@ func (m *GetBearerTokenResponse) Size() (n int) {
 	var l int
 	_ = l
 	l = len(m.BearerToken)
+	if l > 0 {
+		n += 1 + l + sovContainerOrchestrator(uint64(l))
+	}
+	return n
+}
+
+func (m *GetCustomerProxySettingsRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *GetCustomerProxySettingsResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Content != nil {
+		n += m.Content.Size()
+	}
+	return n
+}
+
+func (m *GetCustomerProxySettingsResponse_CustomerProxySettings) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.CustomerProxySettings != nil {
+		l = m.CustomerProxySettings.Size()
+		n += 1 + l + sovContainerOrchestrator(uint64(l))
+	}
+	return n
+}
+func (m *GetCustomerProxySettingsResponse_Empty) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Empty != nil {
+		l = m.Empty.Size()
+		n += 1 + l + sovContainerOrchestrator(uint64(l))
+	}
+	return n
+}
+func (m *CustomerProxySettings) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Hostname)
+	if l > 0 {
+		n += 1 + l + sovContainerOrchestrator(uint64(l))
+	}
+	if m.Port != 0 {
+		n += 1 + sovContainerOrchestrator(uint64(m.Port))
+	}
+	l = len(m.Auth)
+	if l > 0 {
+		n += 1 + l + sovContainerOrchestrator(uint64(l))
+	}
+	l = len(m.Protocol)
 	if l > 0 {
 		n += 1 + l + sovContainerOrchestrator(uint64(l))
 	}
@@ -1874,6 +2375,341 @@ func (m *GetBearerTokenResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.BearerToken = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipContainerOrchestrator(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthContainerOrchestrator
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetCustomerProxySettingsRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowContainerOrchestrator
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetCustomerProxySettingsRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetCustomerProxySettingsRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipContainerOrchestrator(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthContainerOrchestrator
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetCustomerProxySettingsResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowContainerOrchestrator
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetCustomerProxySettingsResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetCustomerProxySettingsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CustomerProxySettings", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowContainerOrchestrator
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthContainerOrchestrator
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthContainerOrchestrator
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &CustomerProxySettings{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Content = &GetCustomerProxySettingsResponse_CustomerProxySettings{v}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Empty", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowContainerOrchestrator
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthContainerOrchestrator
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthContainerOrchestrator
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &types.Empty{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Content = &GetCustomerProxySettingsResponse_Empty{v}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipContainerOrchestrator(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthContainerOrchestrator
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CustomerProxySettings) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowContainerOrchestrator
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CustomerProxySettings: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CustomerProxySettings: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Hostname", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowContainerOrchestrator
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthContainerOrchestrator
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthContainerOrchestrator
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Hostname = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Port", wireType)
+			}
+			m.Port = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowContainerOrchestrator
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Port |= int32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Auth", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowContainerOrchestrator
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthContainerOrchestrator
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthContainerOrchestrator
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Auth = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Protocol", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowContainerOrchestrator
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthContainerOrchestrator
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthContainerOrchestrator
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Protocol = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
