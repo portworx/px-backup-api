@@ -17180,12 +17180,11 @@ type BackupDeleteRequest struct {
 	// matches more than one backup the request is rejected and you must pass the UID.
 	// Can't be used with include_filter or exclude_objects.
 	IncludeObjects []*ObjectRef `protobuf:"bytes,7,rep,name=include_objects,json=includeObjects,proto3" json:"include_objects,omitempty"`
-	// Backups to exclude. UID is optional, and an ambiguous name is fine here -
-	// excluding too much only keeps extra backups, which is safe. Can't be used with exclude_filter.
+	// Backups to exclude. UID is optional. Can't be used with exclude_filter.
 	ExcludeObjects []*ObjectRef `protobuf:"bytes,8,rep,name=exclude_objects,json=excludeObjects,proto3" json:"exclude_objects,omitempty"`
-	// Regex/substring on backup name to include. Can't be used with include_objects.
+	// Regex/substring matched against backup names to include. Can't be used with include_objects.
 	IncludeFilter string `protobuf:"bytes,9,opt,name=include_filter,json=includeFilter,proto3" json:"include_filter,omitempty"`
-	// Regex/substring on backup name to exclude. Can't be used with exclude_objects.
+	// Regex/substring matched against backup names to exclude. Can't be used with exclude_objects.
 	ExcludeFilter string `protobuf:"bytes,10,opt,name=exclude_filter,json=excludeFilter,proto3" json:"exclude_filter,omitempty"`
 	// Only delete backups in these backup locations. Name is required, UID optional.
 	BackupLocationRef []*ObjectRef `protobuf:"bytes,11,rep,name=backup_location_ref,json=backupLocationRef,proto3" json:"backup_location_ref,omitempty"`

@@ -551,14 +551,14 @@
           },
           {
             "name": "include_filter",
-            "description": "Regex/substring on backup name to include. Can't be used with include_objects.",
+            "description": "Regex/substring matched against backup names to include. Can't be used with include_objects.",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
             "name": "exclude_filter",
-            "description": "Regex/substring on backup name to exclude. Can't be used with exclude_objects.",
+            "description": "Regex/substring matched against backup names to exclude. Can't be used with exclude_objects.",
             "in": "query",
             "required": false,
             "type": "string"
@@ -5593,15 +5593,15 @@
           "items": {
             "$ref": "#/definitions/ObjectRef"
           },
-          "description": "Backups to exclude. UID is optional, and an ambiguous name is fine here -\nexcluding too much only keeps extra backups, which is safe. Can't be used with exclude_filter."
+          "description": "Backups to exclude. UID is optional. Can't be used with exclude_filter."
         },
         "include_filter": {
           "type": "string",
-          "description": "Regex/substring on backup name to include. Can't be used with include_objects."
+          "description": "Regex/substring matched against backup names to include. Can't be used with include_objects."
         },
         "exclude_filter": {
           "type": "string",
-          "description": "Regex/substring on backup name to exclude. Can't be used with exclude_objects."
+          "description": "Regex/substring matched against backup names to exclude. Can't be used with exclude_objects."
         },
         "backup_location_ref": {
           "type": "array",
