@@ -3361,6 +3361,40 @@ service Restore {
             delete : "/v1/restore/{org_id}/{name}"
         };
     }
+
+    // PB-15155 POC ONLY — server-streaming gRPC experiment. Streams chunks
+    // of a server-side local file to the client to validate the streaming
+    // primitive (chunk ordering, cancellation, size-cap enforcement,
+    // mid-stream error injection). To be replaced by the production
+    // DownloadRestoreCR RPC during implementation. No HTTP/REST mapping
+    // (gRPC-only; the middleware HTTP proxy is part of the production
+    // path that follows the POC).
+    rpc DownloadRestoreCRPoc(RestoreCRDownloadPocRequest)
+        returns (stream RestoreCRDownloadPocChunk);
+}
+
+// PB-15155 POC ONLY — request for the streaming experiment.
+message RestoreCRDownloadPocRequest {
+    // Server-side local file path the POC handler reads chunks from.
+    // POC only — no S3, no BL credentials, no MongoDB.
+    string file_path = 1;
+    // Optional override of the per-chunk size on the gRPC wire.
+    // 0 → default 64 KiB.
+    uint64 chunk_size = 2;
+    // Optional override of the maximum bytes streamed before the server
+    // returns ResourceExhausted. 0 → default 25 MiB.
+    uint64 size_limit_bytes = 3;
+    // POC error-injection knob. Accepted values: "" (none),
+    // "after_chunk_10" (close stream with Unavailable after 10 chunks).
+    string inject_error = 4;
+}
+
+// PB-15155 POC ONLY — one chunk of the streamed file.
+message RestoreCRDownloadPocChunk {
+    // Up to chunk_size bytes of the source file, in source-byte order.
+    bytes data = 1;
+    // 1-based sequence number for ordering verification.
+    uint32 sequence = 2;
 }
 
 // Define RestoreCreateRequest struct

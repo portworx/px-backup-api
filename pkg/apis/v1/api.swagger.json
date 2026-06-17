@@ -10088,6 +10088,22 @@
         }
       }
     },
+    "RestoreCRDownloadPocChunk": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string",
+          "format": "byte",
+          "description": "Up to chunk_size bytes of the source file, in source-byte order."
+        },
+        "sequence": {
+          "type": "integer",
+          "format": "int64",
+          "description": "1-based sequence number for ordering verification."
+        }
+      },
+      "description": "PB-15155 POC ONLY — one chunk of the streamed file."
+    },
     "RestoreCreateRequest": {
       "type": "object",
       "properties": {
@@ -11844,6 +11860,31 @@
           "format": "int32"
         },
         "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "runtimeStreamError": {
+      "type": "object",
+      "properties": {
+        "grpc_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "http_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "http_status": {
           "type": "string"
         },
         "details": {
