@@ -71,10 +71,10 @@ vet:
 	go vet $(PKGS)
 
 staticcheck:
-	GOFLAGS="" go install honnef.co/go/tools/cmd/staticcheck@v0.5.1
+	GOFLAGS="" go install honnef.co/go/tools/cmd/staticcheck@v0.6.0
 	staticcheck $(PKGS)
 
 errcheck:
-	go install github.com/kisielk/errcheck@latest
+	go install github.com/kisielk/errcheck@v1.10.0
 	errcheck -ignoregenerated -verbose -blank $(PKGS)
 
