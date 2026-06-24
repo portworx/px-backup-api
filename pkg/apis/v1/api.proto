@@ -883,6 +883,54 @@ message VirtualMachineResourceInfo {
     repeated string virtual_machine_names = 2;
 }
 
+// VirtualMachine identifies a KubeVirt VM by name + namespace.
+// Reusable across per-VM status, per-VM detail, and future NS-mode wrappers.
+message VirtualMachine {
+    string name      = 1;
+    string namespace = 2;
+}
+
+// ResourceDetail describes one owned entity (volume or non-volume resource)
+// of a VM in the GetRestoreResourceDetails response. Volumes and non-volume
+// resources are unified into one list, differentiated by gvk.
+// For PVCs, gvk = "PersistentVolumeClaim/v1".
+message ResourceDetail {
+    string                 name   = 1;
+    string                 gvk    = 2;  // "Kind/Group/Version"; empty group = core
+    RestoreInfo.StatusInfo status = 3;  // status enum + resolved reason string
+}
+
+// Counts of items (volumes, resources, etc.) grouped by their status.
+message StatusCounts {
+    // Total number of items.
+    int32 total    = 1;
+    // Number of failed items.
+    int32 failed   = 2;
+    // Number of skipped items.
+    int32 skipped  = 3;
+    // Number of retained items.
+    int32 retained = 4;
+    // Number of deleted items.
+    int32 deleted  = 5;
+}
+
+// Restore statistics broken down by volumes and resources.
+message RestoreStats {
+    StatusCounts volumes   = 1;
+    StatusCounts resources = 2;
+}
+
+// VirtualMachineDetail is the per-VM rich view returned by GetRestoreResourceDetails.
+// Identity + status fully resolved; resources is the unified list of owned entities;
+// stats is the computed count breakdown. The status filter on the request
+// controls which entries appear in resources.
+message VirtualMachineDetail {
+    VirtualMachine          vm        = 1 [ (gogoproto.embed) = true ];
+    RestoreInfo.StatusInfo  status    = 2;  // status enum + resolved reason
+    repeated ResourceDetail resources = 3;
+    RestoreStats            stats     = 4;
+}
+
 message BackupInfo {
     // Name of BackupLocation, deprecated. Not to be used.
     string backup_location = 1;
@@ -1254,6 +1302,21 @@ message ReplacePolicy {
 }
 
 // Message for restore info
+// For internal use only; not returned in API responses. References an item's
+// entries within a restore's reasons, volumes and resources.
+message IndexInfo {
+    int32          reason_index   = 1;
+    repeated int32 volume_index   = 2;
+    repeated int32 resource_index = 3;
+}
+
+// For internal use only; not returned in API responses. Links each virtual
+// machine to its status, reason, volumes and resources.
+message VirtualMachineStatusIndexInfo {
+    int32     vmstatusinfo_index = 1;
+    IndexInfo index_info         = 2;
+}
+
 message RestoreInfo {
     // backup is deprecated, not to be used.
     string backup = 1;
@@ -1350,6 +1413,13 @@ message RestoreInfo {
             Success = 6;
             Retained = 7;
             PartialSuccess = 8;
+            // Skipped applies only to volume and resource entries, not to the
+            // overall restore status: the entry was intentionally not restored.
+            Skipped = 9;
+            // Deleted applies only to volume and resource entries, not to the
+            // overall restore status: an entry that was restored and later
+            // removed during cleanup because its owning object ultimately failed.
+            Deleted = 10;
         }
 
         Status status = 1;
@@ -1371,6 +1441,11 @@ message RestoreInfo {
         bool skip_vm_restart = 2;
     }
 
+    // Per-VM restore status: the virtual machine and its restore status.
+    message VirtualMachineStatusInfo {
+        VirtualMachine vm     = 1 [ (gogoproto.embed) = true ];
+        StatusInfo     status = 2;
+    }
 
     message Filter {
         oneof resource_filter {
@@ -1384,6 +1459,15 @@ message RestoreInfo {
     // retention_period stores the object-lock retention period in days for the restore
     // This is only set when the backup location has object lock enabled
     int64 retention_period = 32;
+    // Total number of virtual machines in a virtual machine restore; 0 for
+    // namespace-scoped restores.
+    int64 virtual_machines_total_count = 33;
+    // Count of VMs that failed; non-zero indicates partial success.
+    int64 virtual_machines_failed_count = 34;
+    // Per-VM restore status. Empty for namespace-scoped restores, or restores
+    // created before per-VM status was supported; treat absence as "no per-VM
+    // status available".
+    repeated VirtualMachineStatusInfo virtual_machine_statuses = 35;
 
     // Message for restore resources containing list of restore resource information
     message Resources {
@@ -1509,6 +1593,10 @@ message RestoreFileStatusInfo {
 message RestoreObject {
     Metadata metadata = 1 [ (gogoproto.embed) = true ];
     RestoreInfo restore_info = 2 [ (gogoproto.embed) = true ];
+    // For internal use only; not returned in API responses.
+    repeated VirtualMachineStatusIndexInfo vm_status_index = 3;
+    // For internal use only; not returned in API responses.
+    repeated string reasons = 4;
 }
 
 message HealthStatusRequest {}
@@ -3237,6 +3325,20 @@ message VirtualMachineFilter {
     repeated BackupInfo.VirtualMachineInfo exclude_vms = 4;
 }
 
+// VirtualMachineRestoreFilter — restore-side analogue of VirtualMachineFilter.
+// include_vms / exclude_vms identify VMs by name + namespace using the shared
+// VirtualMachine message.
+message VirtualMachineRestoreFilter {
+    // Substring or regex pattern to match VM name (e.g. "*" for All, "pxb-" or any valid regex)
+    string vm_name_pattern = 1;
+    // List of os names to include for filtering
+    repeated string os_name = 2;
+    // List of VMs to include for filtering
+    repeated VirtualMachine include_vms = 3;
+    // List of VMs to exclude for filtering
+    repeated VirtualMachine exclude_vms = 4;
+}
+
 // Request message to detailed backup resources
 message BackupResourceDetailGetRequest {
     string org_id = 1;
@@ -3385,6 +3487,77 @@ message BackupResourceObject {
     }
 }
 
+// RestoreResourceObject is the response object for GetRestoreResourceDetails.
+// Each entry in virtual_machines is a VirtualMachineDetail carrying the virtual
+// machine identity, its restore status, its list of volumes and resources, and
+// the computed restore statistics.
+message RestoreResourceObject {
+    Metadata metadata = 1
+    [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    string cluster = 2;
+    map<string, string> namespace_mapping = 3;
+    map<string, string> storage_class_mapping = 4;
+    ReplacePolicy.Type replace_policy = 5;
+    RestoreInfo.StatusInfo status = 6;
+    uint64 total_size = 7;
+    ObjectRef backup_location_ref = 8;
+    ObjectRef cluster_ref = 9;
+    ObjectRef backup_ref = 10;
+    BackupObjectType backup_object_type = 11;
+
+    // Aggregate per-VM counts for a virtual machine restore.
+    int64 virtual_machines_total_count  = 12;
+    int64 virtual_machines_failed_count = 13;
+    // Per-VM detail. Empty for namespace-scoped restores, or restores that do
+    // not provide per-VM detail.
+    repeated VirtualMachineDetail virtual_machines = 14;
+
+    // Filtered/paginated detail arrays.
+    repeated RestoreInfo.Volume volumes = 15;
+    repeated RestoreInfo.RestoredResource resources = 16;
+    // Total count of resources matching the filter (for pagination).
+    uint64 total_resource_count = 17;
+    // Namespaces filtered for this restore.
+    repeated FilteredNamespaceInfo filtered_namespaces = 18;
+
+    // Nested for parity with BackupResourceObject.FilteredNamespaceInfo.
+    message FilteredNamespaceInfo {
+        string namespace = 1;
+        repeated string resource_types = 2;
+    }
+}
+
+// Request message for paginated/filtered restore resource details.
+message RestoreResourceDetailGetRequest {
+    string org_id = 1;
+    // Restore name
+    string name = 2;
+    // Restore uid
+    string uid = 3;
+    // Filter options
+    Filter filter = 4;
+
+    // Filter to apply on resources
+    message Filter {
+        // Resource filter — either by namespace or by virtual machine, not both.
+        oneof resource_filter {
+            NamespaceFilter namespace_filter = 1;
+            VirtualMachineRestoreFilter virtual_machine_filter = 2;
+        }
+        // Status filter, e.g. {"Failed"} to fetch only failed entries.
+        // Default is {"Success"} when empty.
+        repeated string status = 3;
+        // Maximum number of entries to return.
+        uint64 max_objects = 4;
+        // Pagination cursor.
+        uint64 object_index = 5;
+    }
+}
+
+message RestoreResourceDetailGetResponse {
+    RestoreResourceObject restore = 1;
+}
+
 service Restore {
     // Creates new restore object in datastore
     // It will also trigger a restore operation on the target cluster
@@ -3414,6 +3587,16 @@ service Restore {
     rpc Inspect(RestoreInspectRequest) returns (RestoreInspectResponse) {
         option (google.api.http) = {
             get : "/v1/restore/{org_id}/{name}"
+        };
+    }
+
+    // GetRestoreResourceDetails returns paginated/filtered restore resource
+    // details (parallel to Backup.GetBackupResourceDetails). Old servers
+    // respond UNIMPLEMENTED; UI should fall back to Inspect for those.
+    rpc GetRestoreResourceDetails(RestoreResourceDetailGetRequest) returns (RestoreResourceDetailGetResponse) {
+        option (google.api.http) = {
+            post : "/v1/restore/getrestoreresourcedetails"
+            body : "*"
         };
     }
 
