@@ -3727,6 +3727,39 @@
         ]
       }
     },
+    "/v1/restore/getrestoreresourcedetails": {
+      "post": {
+        "summary": "GetRestoreResourceDetails returns paginated/filtered restore resource\ndetails (parallel to Backup.GetBackupResourceDetails). Old servers\nrespond UNIMPLEMENTED; UI should fall back to Inspect for those.",
+        "operationId": "Restore_GetRestoreResourceDetails",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RestoreResourceDetailGetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RestoreResourceDetailGetRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Restore"
+        ]
+      }
+    },
     "/v1/restore/{org_id}": {
       "get": {
         "summary": "Enumerate returns a list of restore objects",
@@ -10260,6 +10293,21 @@
       },
       "title": "Resources grouped by status"
     },
+    "ResourceDetail": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "gvk": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/RestoreInfoStatusInfo"
+        }
+      },
+      "description": "ResourceDetail describes one owned entity (volume or non-volume resource)\nof a VM in the GetRestoreResourceDetails response. Volumes and non-volume\nresources are unified into one list, differentiated by gvk.\nFor PVCs, gvk = \"PersistentVolumeClaim/v1\"."
+    },
     "ResourceInfo": {
       "type": "object",
       "properties": {
@@ -10649,6 +10697,30 @@
           "type": "string",
           "format": "int64",
           "title": "retention_period stores the object-lock retention period in days for the restore\nThis is only set when the backup location has object lock enabled"
+        },
+        "virtual_machines_total_count": {
+          "type": "string",
+          "format": "int64",
+          "description": "Total VM count for VirtualMachine-typed restores; 0 for namespace-mode."
+        },
+        "virtual_machines_failed_count": {
+          "type": "string",
+          "format": "int64",
+          "description": "Count of VMs that failed; non-zero indicates partial success."
+        },
+        "virtual_machine_statuses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RestoreInfoVirtualMachineStatus"
+          },
+          "description": "Per-VM persistent shape mirrored from stork CR. Empty for namespace-mode\nrestores or pre-feature restores; new clients should treat absence as\n\"no per-VM data available\"."
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Reasons dedup table. 0-based; used by VirtualMachineStatus.reason_index\n(and any future *_index fields on this message that need to share a\nsingle dedup table)."
         }
       },
       "title": "Message for restore info"
@@ -10866,9 +10938,12 @@
         "Deleting",
         "Success",
         "Retained",
-        "PartialSuccess"
+        "PartialSuccess",
+        "Skipped",
+        "Deleted"
       ],
-      "default": "Invalid"
+      "default": "Invalid",
+      "description": " - Deleted: Deleted indicates a successfully restored volume or resource\nentry that was later removed during cleanup because its owning\nobject ultimately failed."
     },
     "RestoreInfoVirtualMachineRestoreOptions": {
       "type": "object",
@@ -10882,6 +10957,36 @@
           "title": "Skip VM restart during virtualMachine restore"
         }
       }
+    },
+    "RestoreInfoVirtualMachineStatus": {
+      "type": "object",
+      "properties": {
+        "vm": {
+          "$ref": "#/definitions/VirtualMachine"
+        },
+        "status": {
+          "$ref": "#/definitions/RestoreInfoStatusInfoStatus"
+        },
+        "reason_index": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "vol_index": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "resource_index": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "description": "Per-VM persistent shape mirrored from stork CR.\nReturned by Restore.Inspect; matches mongo storage shape.\nreason_index is a 0-based position into RestoreInfo.reasons[].\nvol_index / resource_index are 0-based positions into Status.Volumes[] /\nStatus.Resources[] (append-only — those arrays must never reorder)."
     },
     "RestoreInfoVolume": {
       "type": "object",
@@ -10943,6 +11048,170 @@
       },
       "description": "Message for Restore object which will be stored in Datastore."
     },
+    "RestoreResourceDetailGetRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "title": "Restore name"
+        },
+        "uid": {
+          "type": "string",
+          "title": "Restore uid"
+        },
+        "filter": {
+          "$ref": "#/definitions/RestoreResourceDetailGetRequestFilter",
+          "title": "Filter options"
+        },
+        "include_successful": {
+          "type": "boolean",
+          "description": "Controls whether Successful entries are included in each per-VM\nVirtualMachineDetail.resources list. Default false → focused view\n(only Failed / Skipped / Retained / Deleted entries per VM). True →\nfull view including derived Successful entries (for \"View JSON\" /\ndetail-inspect use cases)."
+        }
+      },
+      "description": "Request message for paginated/filtered restore resource details."
+    },
+    "RestoreResourceDetailGetRequestFilter": {
+      "type": "object",
+      "properties": {
+        "namespace_filter": {
+          "$ref": "#/definitions/NamespaceFilter"
+        },
+        "virtual_machine_filter": {
+          "$ref": "#/definitions/VirtualMachineRestoreFilter"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Status filter, e.g. {\"Failed\"} to fetch only failed entries.\nDefault is {\"Success\"} when empty."
+        },
+        "max_objects": {
+          "type": "string",
+          "format": "uint64",
+          "description": "Maximum number of entries to return."
+        },
+        "object_index": {
+          "type": "string",
+          "format": "uint64",
+          "description": "Pagination cursor."
+        }
+      },
+      "title": "Filter to apply on resources"
+    },
+    "RestoreResourceDetailGetResponse": {
+      "type": "object",
+      "properties": {
+        "restore": {
+          "$ref": "#/definitions/RestoreResourceObject"
+        }
+      }
+    },
+    "RestoreResourceObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "cluster": {
+          "type": "string"
+        },
+        "namespace_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "storage_class_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "replace_policy": {
+          "$ref": "#/definitions/ReplacePolicyType"
+        },
+        "status": {
+          "$ref": "#/definitions/RestoreInfoStatusInfo"
+        },
+        "total_size": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "backup_location_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "cluster_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "backup_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "backup_object_type": {
+          "$ref": "#/definitions/BackupObjectType"
+        },
+        "virtual_machines_total_count": {
+          "type": "string",
+          "format": "int64",
+          "description": "Aggregate VM-mode counters retained for backward compatibility with\nrestores taken on older stork (pre-partial-success), where the per-VM\nvirtual_machines[] array below is absent — these counters still allow\nconsumers to surface total/failed numbers without iterating the array.\nFor new restores, these are derivable from virtual_machines[] but kept\nfor self-contained response semantics."
+        },
+        "virtual_machines_failed_count": {
+          "type": "string",
+          "format": "int64"
+        },
+        "virtual_machines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VirtualMachineDetail"
+          },
+          "description": "Per-VM rich detail for VM-mode restores. Empty for namespace-mode or\npre-feature restores."
+        },
+        "volumes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RestoreInfoVolume"
+          },
+          "description": "Filtered/paginated detail arrays."
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RestoreInfoRestoredResource"
+          }
+        },
+        "total_resource_count": {
+          "type": "string",
+          "format": "uint64",
+          "description": "Total count of resources matching the filter (for pagination)."
+        },
+        "filtered_namespaces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RestoreResourceObjectFilteredNamespaceInfo"
+          },
+          "description": "Namespaces filtered for this restore."
+        }
+      },
+      "description": "RestoreResourceObject is the response object for GetRestoreResourceDetails.\nEach per-VM entry in virtual_machines is a fully-resolved VirtualMachineDetail\n— identity strings, status, owned-entity list, and computed RestoreStats —\nwith all dedup indices resolved server-side."
+    },
+    "RestoreResourceObjectFilteredNamespaceInfo": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string"
+        },
+        "resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Nested for parity with BackupResourceObject.FilteredNamespaceInfo."
+    },
     "RestoreResourceStateResourceStatus": {
       "type": "string",
       "enum": [
@@ -10952,6 +11221,18 @@
         "Applying"
       ],
       "default": "Preparing"
+    },
+    "RestoreStats": {
+      "type": "object",
+      "properties": {
+        "volumes": {
+          "$ref": "#/definitions/StatusCounts"
+        },
+        "resources": {
+          "$ref": "#/definitions/StatusCounts"
+        }
+      },
+      "description": "Restore statistics broken down by volumes and resources."
     },
     "RestoreUpdateRequest": {
       "type": "object",
@@ -11647,6 +11928,37 @@
       "default": "Invalid",
       "title": "Sorting order type"
     },
+    "StatusCounts": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of items."
+        },
+        "failed": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of failed items."
+        },
+        "skipped": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of skipped items."
+        },
+        "retained": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of retained items."
+        },
+        "deleted": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of deleted items."
+        }
+      },
+      "description": "Counts of items (volumes, resources, etc.) grouped by their status."
+    },
     "SuspendedBySource": {
       "type": "string",
       "enum": [
@@ -11762,6 +12074,39 @@
         }
       }
     },
+    "VirtualMachine": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        }
+      },
+      "description": "VirtualMachine identifies a KubeVirt VM by name + namespace.\nReusable across per-VM status, per-VM detail, and future NS-mode wrappers."
+    },
+    "VirtualMachineDetail": {
+      "type": "object",
+      "properties": {
+        "vm": {
+          "$ref": "#/definitions/VirtualMachine"
+        },
+        "status": {
+          "$ref": "#/definitions/RestoreInfoStatusInfo"
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceDetail"
+          }
+        },
+        "stats": {
+          "$ref": "#/definitions/RestoreStats"
+        }
+      },
+      "description": "VirtualMachineDetail is the per-VM rich view returned by GetRestoreResourceDetails.\nIdentity + status fully resolved; resources is the unified list of owned entities;\nstats is the computed count breakdown. include_successful on the request controls\nwhether Successful entries appear in resources."
+    },
     "VirtualMachineFilter": {
       "type": "object",
       "properties": {
@@ -11806,6 +12151,37 @@
         }
       },
       "title": "ResourcesInfo used for VM backups"
+    },
+    "VirtualMachineRestoreFilter": {
+      "type": "object",
+      "properties": {
+        "vm_name_pattern": {
+          "type": "string",
+          "title": "Substring or regex pattern to match VM name (e.g. \"*\" for All, \"pxb-\" or any valid regex)"
+        },
+        "os_name": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of os names to include for filtering"
+        },
+        "include_vms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VirtualMachine"
+          },
+          "title": "List of VMs to include for filtering"
+        },
+        "exclude_vms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VirtualMachine"
+          },
+          "title": "List of VMs to exclude for filtering"
+        }
+      },
+      "description": "VirtualMachineRestoreFilter — restore-side analogue of VirtualMachineFilter.\ninclude_vms / exclude_vms identify VMs by name + namespace using the shared\nVirtualMachine message."
     },
     "VolumeBackupMode": {
       "type": "object",
