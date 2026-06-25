@@ -6124,7 +6124,8 @@
           "description": "Reference to the cloud credential object.\nFor Non-Federated Identity: Required for Non NFS provider.\n  - Must reference a valid CloudCredentialObject that contains the authentication credentials\n    (e.g., AzureConfig with account_name, account_key/client_secret, client_id, tenant_id, subscription_id).\n  - The cloud credential object provides the necessary authentication information to access the backup location.\nFor Federated Identity (Workload Identity): Not required, leave empty.\n  - In federated identity mode, authentication is handled via workload identity/OIDC tokens,\n    so no cloud credential object is needed.\n  - The 'type' field is still required to specify the cloud provider type (e.g., Azure, AWS, Google).\n  - Cloud-specific configuration (e.g., azure_account_name, azure_subscription_id) should be\n    provided directly in the backup location's config (e.g., S3Config)."
         },
         "object_lock_enabled": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "Whether object lock is enabled on the backup location's bucket.\nThis is a property of the bucket, not a user choice: it is filled in by the\nbackend (derived from the bucket directly in non-federated mode, or from\nStork's validation result in federated mode). Any value set in the request is\nignored. Clients should treat this as read-only / output-only."
         },
         "use_workload_identity": {
           "type": "boolean",
