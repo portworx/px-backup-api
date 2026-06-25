@@ -5041,7 +5041,12 @@ type BackupLocationInfo struct {
 	//   - Cloud-specific configuration (e.g., azure_account_name, azure_subscription_id) should be
 	//     provided directly in the backup location's config (e.g., S3Config).
 	CloudCredentialRef *ObjectRef `protobuf:"bytes,8,opt,name=cloud_credential_ref,json=cloudCredentialRef,proto3" json:"cloud_credential_ref,omitempty"`
-	ObjectLockEnabled  bool       `protobuf:"varint,9,opt,name=object_lock_enabled,json=objectLockEnabled,proto3" json:"object_lock_enabled,omitempty"`
+	// Whether object lock is enabled on the backup location's bucket.
+	// This is a property of the bucket, not a user choice: it is filled in by the
+	// backend (derived from the bucket directly in non-federated mode, or from
+	// Stork's validation result in federated mode). Any value set in the request is
+	// ignored. Clients should treat this as read-only / output-only.
+	ObjectLockEnabled bool `protobuf:"varint,9,opt,name=object_lock_enabled,json=objectLockEnabled,proto3" json:"object_lock_enabled,omitempty"`
 	// Workload Identity flag to identify if the backup location uses workload identity authentication.
 	// Named to match Stork BackupLocation CR field: azureConfig.useWorkloadIdentity, s3Config.useWorkloadIdentity
 	// When set to true:
