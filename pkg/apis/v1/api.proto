@@ -1419,17 +1419,35 @@ message RestoreInfo {
         bool skip_vm_restart = 2;
     }
 
-    // Per-VM persistent shape mirrored from stork CR.
-    // Returned by Restore.Inspect; matches mongo storage shape.
-    // reason_index is a 0-based position into RestoreInfo.reasons[].
-    // vol_index / resource_index are 0-based positions into Status.Volumes[] /
-    // Status.Resources[] (append-only — those arrays must never reorder).
-    message VirtualMachineStatus {
-        VirtualMachine    vm             = 1;
-        StatusInfo.Status status         = 2;
-        int32             reason_index   = 3;
-        repeated int32    vol_index      = 4;
-        repeated int32    resource_index = 5;
+    // Clean per-VM status returned on the wire (Restore.Inspect, via
+    // ResponseRestoreObject). Reason is resolved inline as a string and there
+    // are no dedup indices — this is the only per-VM status shape API consumers
+    // and the generated swagger ever see.
+    message VirtualMachineStatusInfo {
+        VirtualMachine vm     = 1;
+        StatusInfo     status = 2; // status enum + resolved reason string
+    }
+
+    // Dedup indices only. Reused by index-carrying storage messages so the
+    // index layout lives in one place. reason_index is a 0-based position into
+    // RestoreObject.reasons[]. vol_index / resource_index are 0-based positions
+    // into Volumes[] / Resources[] (append-only — those arrays must never
+    // reorder).
+    message IndexInfo {
+        int32          reason_index   = 1;
+        repeated int32 vol_index      = 2;
+        repeated int32 resource_index = 3;
+    }
+
+    // Internal, storage-only per-VM status: the clean VirtualMachineStatusInfo
+    // plus its dedup indices (IndexInfo). status_info.status.reason is left
+    // empty in storage; the reason is deduped via index_info.reason_index and
+    // resolved to a string only when building the wire response. Persisted on
+    // RestoreObject.vm_status_index and never returned by any RPC, so it is
+    // excluded from the generated swagger.
+    message VirtualMachineStatusIndexInfo {
+        VirtualMachineStatusInfo status_info = 1;
+        IndexInfo                index_info  = 2;
     }
 
     message Filter {
@@ -1448,14 +1466,11 @@ message RestoreInfo {
     int64 virtual_machines_total_count = 35;
     // Count of VMs that failed; non-zero indicates partial success.
     int64 virtual_machines_failed_count = 36;
-    // Per-VM persistent shape mirrored from stork CR. Empty for namespace-mode
-    // restores or pre-feature restores; new clients should treat absence as
-    // "no per-VM data available".
-    repeated VirtualMachineStatus virtual_machine_statuses = 37;
-    // Reasons dedup table. 0-based; used by VirtualMachineStatus.reason_index
-    // (and any future *_index fields on this message that need to share a
-    // single dedup table).
-    repeated string reasons = 38;
+    // Clean per-VM status for the wire. Empty for namespace-mode restores or
+    // pre-feature restores; new clients should treat absence as "no per-VM data
+    // available". The indexed/compact form used for storage lives on
+    // RestoreObject.vm_status_index and is never returned by any RPC.
+    repeated VirtualMachineStatusInfo virtual_machine_statuses = 37;
 
     // Message for restore resources containing list of restore resource information
     message Resources {
@@ -1578,7 +1593,28 @@ message RestoreFileStatusInfo {
 }
 
 // Message for Restore object which will be stored in Datastore.
+// STORAGE-ONLY: persisted in the "restoreobjects" collection and NOT returned
+// by any RPC — the wire uses ResponseRestoreObject instead. Because no service
+// method references RestoreObject, it (and its storage-only vm_status_index /
+// VirtualMachineStatusIndexInfo / reasons) is excluded from the generated
+// swagger, so dedup indices never leak to API consumers.
 message RestoreObject {
+    Metadata metadata = 1 [ (gogoproto.embed) = true ];
+    RestoreInfo restore_info = 2 [ (gogoproto.embed) = true ];
+    // Internal indexed per-VM status. Resolved server-side into
+    // RestoreInfo.virtual_machine_statuses (Inspect) and VirtualMachineDetail
+    // (GetRestoreResourceDetails). Never leaves the server.
+    repeated RestoreInfo.VirtualMachineStatusIndexInfo vm_status_index = 3;
+    // Reasons dedup table shared by vm_status_index[].index_info.reason_index
+    // (and any future index_info-carrying fields). 0-based. Storage-only.
+    repeated string reasons = 4;
+}
+
+// Wire-facing restore object returned by Restore Create/Enumerate/Inspect.
+// Mirrors RestoreObject minus the storage-only index fields, so API consumers
+// and the generated swagger never see dedup indices. restore_info is the same
+// shared RestoreInfo type, so building this from RestoreObject is a shallow copy.
+message ResponseRestoreObject {
     Metadata metadata = 1 [ (gogoproto.embed) = true ];
     RestoreInfo restore_info = 2 [ (gogoproto.embed) = true ];
 }
@@ -3674,7 +3710,7 @@ message RestoreCreateRequest {
 
 // Define RestoreCreateResponse struct
 message RestoreCreateResponse {
-    RestoreObject restore = 1;
+    ResponseRestoreObject restore = 1;
 }
 
 // Define RestoreUpdateRequest struct
@@ -3695,7 +3731,7 @@ message RestoreEnumerateRequest {
 
 // Define RestoreEnumerateResponse struct
 message RestoreEnumerateResponse {
-    repeated RestoreObject restores = 1;
+    repeated ResponseRestoreObject restores = 1;
     uint64 total_count = 2;
     bool complete = 3;
 }
@@ -3709,7 +3745,7 @@ message RestoreInspectRequest {
 }
 
 // Define RestoreInspectResponse struct
-message RestoreInspectResponse { RestoreObject restore = 1; }
+message RestoreInspectResponse { ResponseRestoreObject restore = 1; }
 
 // Define RestoreDeleteRequest struct
 message RestoreDeleteRequest {
