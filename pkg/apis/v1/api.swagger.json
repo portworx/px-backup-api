@@ -12274,6 +12274,10 @@
         },
         "stats": {
           "$ref": "#/definitions/RestoreStats"
+        },
+        "os_name": {
+          "type": "string",
+          "description": "Guest OS name of the VM (e.g. \"linux\", \"windows\"). Empty when\nthe source backup did not capture guest OS metadata."
         }
       },
       "description": "VirtualMachineDetail is the per-VM rich view returned by GetRestoreResourceDetails.\nIdentity + status fully resolved; resources is the unified list of owned entities;\nstats is the computed count breakdown. The status filter on the request\ncontrols which entries appear in resources."
