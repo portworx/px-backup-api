@@ -929,6 +929,9 @@ message VirtualMachineDetail {
     RestoreInfo.StatusInfo  status    = 2;  // status enum + resolved reason
     repeated ResourceDetail resources = 3;
     RestoreStats            stats     = 4;
+    // Guest OS name of the VM (e.g. "linux", "windows"). Empty when
+    // the source backup did not capture guest OS metadata.
+    string                  os_name   = 5;
 }
 
 message BackupInfo {
