@@ -3606,6 +3606,62 @@ service Restore {
             delete : "/v1/restore/{org_id}/{name}"
         };
     }
+
+    // PB-15155 POC: Issue a short-lived signed URL for downloading a
+    // server-side accessible object stored in an S3-compatible backup
+    // location. POC-scope simplifications vs the production RPC:
+    //   - Takes BL name+uid + object key directly in the request instead
+    //     of deriving from a restore uid.
+    //   - Skips RBAC + eligibility (restore-inspect check, terminal-state
+    //     check, `failed_resource_exists`) — these gate the production
+    //     RPC but not the POC.
+    //   - Only S3-compatible backends verified for POC (Azure/GCS/NFS
+    //     land in production; see `specs/002-restore-cr-presigned-url/`).
+    //
+    // The core call — `bucket.SignedURL(...)` — is identical between POC
+    // and production. The POC exists to prove the end-to-end wire shape
+    // (client → RPC → SignedURL → bucket) works against real cluster BLs.
+    //
+    // To be deleted when the production RPC `GetRestoreCRDownloadURL`
+    // ships.
+    rpc GetRestoreCRDownloadURLPoc(RestoreCRDownloadURLPocRequest)
+        returns (RestoreCRDownloadURLPocResponse) {
+        option (google.api.http) = {
+            post : "/poc/restore/downloadURL"
+            body : "*"
+        };
+    }
+}
+
+// PB-15155 POC: request for GetRestoreCRDownloadURLPoc.
+message RestoreCRDownloadURLPocRequest {
+    // Org scope (matches every other px-backup RPC).
+    string org_id = 1;
+
+    // Backup location identification. POC bypasses restore lookup and
+    // reads the BL + credential directly by name+uid. Production
+    // derives these from the restore record.
+    string backup_location_name = 2;
+    string backup_location_uid  = 3;
+
+    // Object key within the BL bucket (e.g., "restore-crs/foo-uid.json").
+    string key = 4;
+
+    // Signed URL lifetime in seconds. Server clamps to [60, 604800]
+    // (1 min to 7 days). Zero or unset → default 1800 (30 minutes).
+    uint64 expiry_seconds = 5;
+}
+
+// PB-15155 POC: response for GetRestoreCRDownloadURLPoc.
+message RestoreCRDownloadURLPocResponse {
+    // The signed URL. Client fetches it directly from the storage
+    // backend — px-backup is not in the data path.
+    string url = 1;
+
+    // Wall-clock expiry timestamp of the URL. Client SHOULD use this to
+    // display "expires in Xm" UI hints; MUST NOT rely on it for
+    // enforcement (the backend enforces via the embedded signature).
+    google.protobuf.Timestamp expires_at = 2;
 }
 
 // Define RestoreCreateRequest struct

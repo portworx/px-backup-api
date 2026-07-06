@@ -11,6 +11,40 @@
     "application/json"
   ],
   "paths": {
+    "/poc/restore/downloadURL": {
+      "post": {
+        "summary": "PB-15155 POC: Issue a short-lived signed URL for downloading a\nserver-side accessible object stored in an S3-compatible backup\nlocation. POC-scope simplifications vs the production RPC:\n  - Takes BL name+uid + object key directly in the request instead\n    of deriving from a restore uid.\n  - Skips RBAC + eligibility (restore-inspect check, terminal-state\n    check, `failed_resource_exists`) — these gate the production\n    RPC but not the POC.\n  - Only S3-compatible backends verified for POC (Azure/GCS/NFS\n    land in production; see `specs/002-restore-cr-presigned-url/`).",
+        "description": "The core call — `bucket.SignedURL(...)` — is identical between POC\nand production. The POC exists to prove the end-to-end wire shape\n(client → RPC → SignedURL → bucket) works against real cluster BLs.\n\nTo be deleted when the production RPC `GetRestoreCRDownloadURL`\nships.",
+        "operationId": "Restore_GetRestoreCRDownloadURLPoc",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RestoreCRDownloadURLPocResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RestoreCRDownloadURLPocRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Restore"
+        ]
+      }
+    },
     "/v1/backup": {
       "post": {
         "summary": "Creates a new backup object",
@@ -10363,6 +10397,47 @@
           }
         }
       }
+    },
+    "RestoreCRDownloadURLPocRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string",
+          "description": "Org scope (matches every other px-backup RPC)."
+        },
+        "backup_location_name": {
+          "type": "string",
+          "description": "Backup location identification. POC bypasses restore lookup and\nreads the BL + credential directly by name+uid. Production\nderives these from the restore record."
+        },
+        "backup_location_uid": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string",
+          "description": "Object key within the BL bucket (e.g., \"restore-crs/foo-uid.json\")."
+        },
+        "expiry_seconds": {
+          "type": "string",
+          "format": "uint64",
+          "description": "Signed URL lifetime in seconds. Server clamps to [60, 604800]\n(1 min to 7 days). Zero or unset → default 1800 (30 minutes)."
+        }
+      },
+      "description": "PB-15155 POC: request for GetRestoreCRDownloadURLPoc."
+    },
+    "RestoreCRDownloadURLPocResponse": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "The signed URL. Client fetches it directly from the storage\nbackend — px-backup is not in the data path."
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Wall-clock expiry timestamp of the URL. Client SHOULD use this to\ndisplay \"expires in Xm\" UI hints; MUST NOT rely on it for\nenforcement (the backend enforces via the embedded signature)."
+        }
+      },
+      "description": "PB-15155 POC: response for GetRestoreCRDownloadURLPoc."
     },
     "RestoreCreateRequest": {
       "type": "object",
