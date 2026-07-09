@@ -568,6 +568,13 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "acknowledge",
+            "description": "acknowledge must be set to true for a bulk delete request to proceed.\nIt acts as an explicit confirmation that the caller intends to delete\nmultiple backups. If it is not set to true, the bulk delete is rejected.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -5646,6 +5653,10 @@
         "cluster_scope": {
           "$ref": "#/definitions/ClusterScope",
           "description": "Only delete backups from these clusters, or all clusters. Names are required, UIDs optional."
+        },
+        "acknowledge": {
+          "type": "boolean",
+          "description": "acknowledge must be set to true for a bulk delete request to proceed.\nIt acts as an explicit confirmation that the caller intends to delete\nmultiple backups. If it is not set to true, the bulk delete is rejected."
         }
       },
       "title": "Request message structure for object delete"
