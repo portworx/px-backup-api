@@ -3257,6 +3257,10 @@ message BackupDeleteRequest {
     repeated ObjectRef backup_location_ref = 11;
     // Only delete backups from these clusters, or all clusters. Names are required, UIDs optional.
     ClusterScope cluster_scope = 12;
+    // acknowledge must be set to true for a bulk delete request to proceed.
+    // It acts as an explicit confirmation that the caller intends to delete
+    // multiple backups. If it is not set to true, the bulk delete is rejected.
+    bool acknowledge = 13;
 }
 
 // Response message structure for object delete
