@@ -4138,6 +4138,61 @@
         ]
       }
     },
+    "/v1/restore/{org_id}/{name}/crDownloadLocation": {
+      "get": {
+        "summary": "Return the access details for a restore CR file.",
+        "description": "For S3 / Azure / Google backends: a short-lived signed URL. Client\nfetches bytes directly from the storage backend.\n\nFor NFS backends: the NFS server address + export + file path.\nClient mounts the NFS export using its own tools (mount / scp /\nrsync) and reads the file. Client's NFS connectivity is the\nclient's responsibility -- px-backup does NOT provision any\nin-cluster infrastructure for NFS downloads.\n\nThe CR file name is derived server-side from the restore record --\none restore has exactly one CR file (Stork naming convention:\n\"restore-crs/\u003crestore-name\u003e-\u003cshort-uid\u003e.json\"). The client does\nNOT pass a file-name / object-key field.",
+        "operationId": "Restore_GetRestoreCRDownloadLocation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RestoreCRDownloadLocationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "description": "Org scope (matches every other Restore RPC).",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "description": "Restore name.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "description": "Restore uid.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "expiry_seconds",
+            "description": "Signed URL lifetime in seconds. Applies ONLY to S3 / Azure /\nGoogle backends. Server clamps to [60, 604800] (1 min to 7 days).\nZero or unset -\u003e default 1800 (30 minutes). Ignored for NFS.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Restore"
+        ]
+      }
+    },
     "/v1/role": {
       "get": {
         "summary": "Permission returns list of service,apis permission for given user",
@@ -9631,6 +9686,28 @@
         }
       }
     },
+    "NFSLocation": {
+      "type": "object",
+      "properties": {
+        "server": {
+          "type": "string",
+          "description": "NFS server address as configured on the BackupLocation.\nExample: \"10.38.42.100\" or \"nfs.customer.com\"."
+        },
+        "export_path": {
+          "type": "string",
+          "description": "NFS export path on the server -- the client mounts server:export_path.\nSourced from BackupLocationInfo.path.\nExample: \"/exports\"."
+        },
+        "file_path": {
+          "type": "string",
+          "description": "Path to the CR file relative to the mount point. Server derives:\n  \u003cNFSConfig.sub_path\u003e/restore-crs/\u003crestore-name\u003e-\u003cshort-uid\u003e.json\nThe sub_path prefix is folded in server-side so the client only sees\none path to concatenate: \u003cmount\u003e/\u003cfile_path\u003e."
+        },
+        "mount_options": {
+          "type": "string",
+          "description": "Suggested NFS mount options (matches the BL's own configuration).\nExample: \"vers=4,rsize=1048576,wsize=1048576\".\nOptional -- empty string means \"use client defaults\"."
+        }
+      },
+      "description": "NFS access details returned when the BackupLocation is NFS-backed.\nClient is responsible for NFS connectivity -- px-backup does not\nprovision any in-cluster download infrastructure."
+    },
     "NamespaceFilter": {
       "type": "object",
       "properties": {
@@ -10374,6 +10451,24 @@
           }
         }
       }
+    },
+    "RestoreCRDownloadLocationResponse": {
+      "type": "object",
+      "properties": {
+        "backend_type": {
+          "$ref": "#/definitions/BackupLocationInfoType",
+          "description": "Backend type -- reuses the existing BackupLocationInfo.Type enum\n(Invalid / S3 / Azure / Google / NFS). Client uses this to pick\nthe right access method AND to know which `location` oneof field\nto read."
+        },
+        "signed_url": {
+          "$ref": "#/definitions/SignedURLLocation",
+          "description": "S3 / Azure / Google -- pre-signed URL + expiry bundle."
+        },
+        "nfs_location": {
+          "$ref": "#/definitions/NFSLocation",
+          "description": "NFS -- server + path metadata. Client mounts the export and\nreads \u003cexport_path\u003e/\u003cfile_path\u003e after mount."
+        }
+      },
+      "description": "Response for GetRestoreCRDownloadLocation."
     },
     "RestoreCreateRequest": {
       "type": "object",
@@ -11893,6 +11988,21 @@
         }
       },
       "description": "ShootDiscoveryConfigInfo contains Gardener-specific configuration for discovering Shoot clusters."
+    },
+    "SignedURLLocation": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "Pre-signed HTTPS URL for the CR object. Multi-use within the\nexpiry window. MUST NOT be logged (contains a signed credential\nin the query parameters)."
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Wall-clock expiry timestamp of the signed URL. Client SHOULD use\nthis to display \"expires in Xm\" UI hints; MUST NOT rely on it for\nenforcement (the backend enforces via the embedded signature)."
+        }
+      },
+      "description": "Signed URL access details returned for S3 / Azure / Google -backed\nBackupLocations. Client fetches bytes directly from the storage\nbackend via HTTP GET on the URL."
     },
     "SortOption": {
       "type": "object",
