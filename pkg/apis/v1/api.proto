@@ -3610,6 +3610,109 @@ service Restore {
             delete : "/v1/restore/{org_id}/{name}"
         };
     }
+
+    // Return the access details for a restore CR file.
+    //
+    // For S3 / Azure / Google backends: a short-lived signed URL. Client
+    // fetches bytes directly from the storage backend.
+    //
+    // For NFS backends: the NFS server address + export + file path.
+    // Client mounts the NFS export using its own tools (mount / scp /
+    // rsync) and reads the file. Client's NFS connectivity is the
+    // client's responsibility -- px-backup does NOT provision any
+    // in-cluster infrastructure for NFS downloads.
+    //
+    // The CR file name is derived server-side from the restore record --
+    // one restore has exactly one CR file (Stork naming convention:
+    // "restore-crs/<restore-name>-<short-uid>.json"). The client does
+    // NOT pass a file-name / object-key field.
+    rpc GetRestoreCRDownloadLocation(RestoreCRDownloadLocationRequest)
+        returns (RestoreCRDownloadLocationResponse) {
+        option (google.api.http) = {
+            get : "/v1/restore/{org_id}/{name}/crDownloadLocation"
+        };
+    }
+}
+
+// Request for GetRestoreCRDownloadLocation.
+message RestoreCRDownloadLocationRequest {
+    // Org scope (matches every other Restore RPC).
+    string org_id = 1;
+
+    // Restore name.
+    string name = 2;
+
+    // Restore uid.
+    string uid = 3;
+
+    // Signed URL lifetime in seconds. Applies ONLY to S3 / Azure /
+    // Google backends. Server clamps to [60, 604800] (1 min to 7 days).
+    // Zero or unset -> default 1800 (30 minutes). Ignored for NFS.
+    uint64 expiry_seconds = 4;
+}
+
+// Response for GetRestoreCRDownloadLocation.
+message RestoreCRDownloadLocationResponse {
+    // Backend type -- reuses the existing BackupLocationInfo.Type enum
+    // (Invalid / S3 / Azure / Google / NFS). Client uses this to pick
+    // the right access method AND to know which `location` oneof field
+    // to read.
+    BackupLocationInfo.Type backend_type = 1;
+
+    // Access details -- exactly one of `signed_url` or `nfs_location` is
+    // populated, determined by backend_type. Structuring the URL and
+    // its expiry as a nested SignedURLLocation (rather than flat fields
+    // on this message) makes it architecturally impossible for
+    // `expires_at` to appear in an NFS response -- avoiding the
+    // proto3 Timestamp-defaults-to-1970 leakage pitfall.
+    oneof location {
+        // S3 / Azure / Google -- pre-signed URL + expiry bundle.
+        SignedURLLocation signed_url = 2;
+
+        // NFS -- server + path metadata. Client mounts the export and
+        // reads <export_path>/<file_path> after mount.
+        NFSLocation nfs_location = 3;
+    }
+}
+
+// Signed URL access details returned for S3 / Azure / Google -backed
+// BackupLocations. Client fetches bytes directly from the storage
+// backend via HTTP GET on the URL.
+message SignedURLLocation {
+    // Pre-signed HTTPS URL for the CR object. Multi-use within the
+    // expiry window. MUST NOT be logged (contains a signed credential
+    // in the query parameters).
+    string url = 1;
+
+    // Wall-clock expiry timestamp of the signed URL. Client SHOULD use
+    // this to display "expires in Xm" UI hints; MUST NOT rely on it for
+    // enforcement (the backend enforces via the embedded signature).
+    google.protobuf.Timestamp expires_at = 2;
+}
+
+// NFS access details returned when the BackupLocation is NFS-backed.
+// Client is responsible for NFS connectivity -- px-backup does not
+// provision any in-cluster download infrastructure.
+message NFSLocation {
+    // NFS server address as configured on the BackupLocation.
+    // Example: "10.38.42.100" or "nfs.customer.com".
+    string server = 1;
+
+    // NFS export path on the server -- the client mounts server:export_path.
+    // Sourced from BackupLocationInfo.path.
+    // Example: "/exports".
+    string export_path = 2;
+
+    // Path to the CR file relative to the mount point. Server derives:
+    //   <NFSConfig.sub_path>/restore-crs/<restore-name>-<short-uid>.json
+    // The sub_path prefix is folded in server-side so the client only sees
+    // one path to concatenate: <mount>/<file_path>.
+    string file_path = 3;
+
+    // Suggested NFS mount options (matches the BL's own configuration).
+    // Example: "vers=4,rsize=1048576,wsize=1048576".
+    // Optional -- empty string means "use client defaults".
+    string mount_options = 4;
 }
 
 // Define RestoreCreateRequest struct
