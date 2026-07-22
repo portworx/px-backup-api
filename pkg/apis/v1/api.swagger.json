@@ -2136,7 +2136,7 @@
           },
           {
             "name": "cluster_enumerate_options.cluster_providers",
-            "description": "Filter by cluster cloud provider. Only return clusters matching any of\nthe specified providers (AWS, Azure, Google, IBM, Rancher, Other).",
+            "description": "Filter by cluster cloud provider. Only return clusters matching any of\nthe specified providers (AWS, Azure, Google, IBM, Rancher, Harvester, Other).\n\n - Harvester: Harvester is an HCI cluster built on RKE2.",
             "in": "query",
             "required": false,
             "type": "array",
@@ -2149,6 +2149,7 @@
                 "Google",
                 "IBM",
                 "Rancher",
+                "Harvester",
                 "Other"
               ]
             },
@@ -8372,7 +8373,7 @@
           "items": {
             "$ref": "#/definitions/ClusterInfoProvider"
           },
-          "description": "Filter by cluster cloud provider. Only return clusters matching any of\nthe specified providers (AWS, Azure, Google, IBM, Rancher, Other)."
+          "description": "Filter by cluster cloud provider. Only return clusters matching any of\nthe specified providers (AWS, Azure, Google, IBM, Rancher, Harvester, Other)."
         }
       },
       "description": "Advanced filter options for cluster enumeration."
@@ -8641,9 +8642,11 @@
         "Google",
         "IBM",
         "Rancher",
+        "Harvester",
         "Other"
       ],
       "default": "Invalid",
+      "description": "- Harvester: Harvester is an HCI cluster built on RKE2.",
       "title": "Cloud provider type"
     },
     "ClusterInfoStatusInfo": {
