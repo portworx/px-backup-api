@@ -152,6 +152,8 @@ message ClusterInfo {
         Google = 3;
         IBM = 4;
         Rancher = 5;
+        // Harvester is an HCI cluster built on RKE2.
+        Harvester = 6;
         Other = 999;
     }
 
@@ -2310,7 +2312,7 @@ message ClusterEnumerateOptions {
     // GardenerShootInfo.managed matches this value.
     google.protobuf.BoolValue managed = 5;
     // Filter by cluster cloud provider. Only return clusters matching any of
-    // the specified providers (AWS, Azure, Google, IBM, Rancher, Other).
+    // the specified providers (AWS, Azure, Google, IBM, Rancher, Harvester, Other).
     repeated ClusterInfo.Provider cluster_providers = 6;
 }
 
