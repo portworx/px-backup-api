@@ -1310,22 +1310,6 @@ message ReplacePolicy {
     }
 }
 
-// Message for restore info
-// For internal use only; not returned in API responses. References an item's
-// entries within a restore's reasons, volumes and resources.
-message IndexInfo {
-    int32          reason_index   = 1;
-    repeated int32 volume_index   = 2;
-    repeated int32 resource_index = 3;
-}
-
-// For internal use only; not returned in API responses. Links each virtual
-// machine to its status, reason, volumes and resources.
-message VirtualMachineStatusIndexInfo {
-    int32     vmstatusinfo_index = 1;
-    IndexInfo index_info         = 2;
-}
-
 message RestoreInfo {
     // backup is deprecated, not to be used.
     string backup = 1;
@@ -1450,10 +1434,17 @@ message RestoreInfo {
         bool skip_vm_restart = 2;
     }
 
-    // Per-VM restore status: the virtual machine and its restore status.
+    // Per-VM restore status.
     message VirtualMachineStatusInfo {
-        VirtualMachine vm     = 1 [ (gogoproto.embed) = true ];
-        StatusInfo     status = 2;
+        // Name of the virtual machine.
+        string name       = 1;
+        // Namespace of the virtual machine.
+        string namespace  = 2;
+        // Restore status of the virtual machine.
+        StatusInfo status = 3;
+        // Volumes owned by this virtual machine. Positions into
+        // RestoreInfo.volumes. Empty for namespace-scoped restores.
+        repeated int32 volume_index = 4;
     }
 
     message Filter {
@@ -1536,15 +1527,21 @@ message RestoreInfo {
                     Success = 1;
                     Failed = 2;
                     Retained = 3;
+                    Skipped = 4;
+                    Deleted = 5;
                 }
             }
 
-            // Resource with name and reason index
+            // Restored resource entry.
             message Resource {
-                // Name of the resource
+                // Name of the resource.
                 string name = 1;
-                // Index into the reasons table in RestoreResources (0 means no reason)
+                // Index into the reasons table in RestoreResources (0 means no reason).
                 int32 reason_index = 2;
+                // Virtual machines that own this resource. Empty when the
+                // resource is not owned by any virtual machine (namespace-scoped
+                // restore or shared cluster-scoped resource).
+                repeated int32 vm_index = 3;
             }
         }
 
@@ -1602,10 +1599,7 @@ message RestoreFileStatusInfo {
 message RestoreObject {
     Metadata metadata = 1 [ (gogoproto.embed) = true ];
     RestoreInfo restore_info = 2 [ (gogoproto.embed) = true ];
-    // For internal use only; not returned in API responses.
-    repeated VirtualMachineStatusIndexInfo vm_status_index = 3;
-    // For internal use only; not returned in API responses.
-    repeated string reasons = 4;
+    repeated string reasons = 3;
 }
 
 message HealthStatusRequest {}
