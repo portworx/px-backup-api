@@ -7770,7 +7770,9 @@
         "Invalid",
         "Success",
         "Failed",
-        "Retained"
+        "Retained",
+        "Skipped",
+        "Deleted"
       ],
       "default": "Invalid"
     },
@@ -9045,30 +9047,6 @@
           "type": "string"
         }
       }
-    },
-    "IndexInfo": {
-      "type": "object",
-      "properties": {
-        "reason_index": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "volume_index": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "resource_index": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "description": "Message for restore info\nFor internal use only; not returned in API responses. References an item's\nentries within a restore's reasons, volumes and resources."
     },
     "LicenseActivateRequest": {
       "type": "object",
@@ -10386,15 +10364,23 @@
       "properties": {
         "name": {
           "type": "string",
-          "title": "Name of the resource"
+          "description": "Name of the resource."
         },
         "reason_index": {
           "type": "integer",
           "format": "int32",
-          "title": "Index into the reasons table in RestoreResources (0 means no reason)"
+          "description": "Index into the reasons table in RestoreResources (0 means no reason)."
+        },
+        "vm_index": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": "Virtual machines that own this resource. Empty when the\nresource is not owned by any virtual machine (namespace-scoped\nrestore or shared cluster-scoped resource)."
         }
       },
-      "title": "Resource with name and reason index"
+      "description": "Restored resource entry."
     },
     "ResourceChunkInfoResourceInfo": {
       "type": "object",
@@ -11091,14 +11077,28 @@
     "RestoreInfoVirtualMachineStatusInfo": {
       "type": "object",
       "properties": {
-        "vm": {
-          "$ref": "#/definitions/VirtualMachine"
+        "name": {
+          "type": "string",
+          "description": "Name of the virtual machine."
+        },
+        "namespace": {
+          "type": "string",
+          "description": "Namespace of the virtual machine."
         },
         "status": {
-          "$ref": "#/definitions/RestoreInfoStatusInfo"
+          "$ref": "#/definitions/RestoreInfoStatusInfo",
+          "description": "Restore status of the virtual machine."
+        },
+        "volume_index": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": "Volumes owned by this virtual machine. Positions into\nRestoreInfo.volumes. Empty for namespace-scoped restores."
         }
       },
-      "description": "Per-VM restore status: the virtual machine and its restore status."
+      "description": "Per-VM restore status."
     },
     "RestoreInfoVolume": {
       "type": "object",
@@ -11157,19 +11157,11 @@
         "restore_info": {
           "$ref": "#/definitions/RestoreInfo"
         },
-        "vm_status_index": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/VirtualMachineStatusIndexInfo"
-          },
-          "description": "For internal use only; not returned in API responses."
-        },
         "reasons": {
           "type": "array",
           "items": {
             "type": "string"
-          },
-          "description": "For internal use only; not returned in API responses."
+          }
         }
       },
       "description": "Message for Restore object which will be stored in Datastore."
@@ -12323,19 +12315,6 @@
         }
       },
       "description": "VirtualMachineRestoreFilter — restore-side analogue of VirtualMachineFilter.\ninclude_vms / exclude_vms identify VMs by name + namespace using the shared\nVirtualMachine message."
-    },
-    "VirtualMachineStatusIndexInfo": {
-      "type": "object",
-      "properties": {
-        "vmstatusinfo_index": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "index_info": {
-          "$ref": "#/definitions/IndexInfo"
-        }
-      },
-      "description": "For internal use only; not returned in API responses. Links each virtual\nmachine to its status, reason, volumes and resources."
     },
     "VolumeBackupMode": {
       "type": "object",
