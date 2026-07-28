@@ -6504,11 +6504,15 @@
         },
         "sync": {
           "type": "boolean",
-          "description": "sync and the sync_info are valid only in Federated PXB deployment mode.\nsync is used to trigger backup sync from the object store.\nIt is an on-demand sync, not automatic or periodic.\nNote: The sync flag will be reset by the server once the backup sync operation\nis completed for this BackupLocation. Parallel sync triggers by updating sync\nflag while another sync is in progress are not allowed."
+          "description": "sync is used to trigger a one-shot backup sync from the object store.\nValid in both Federated and Non-Federated deployment modes.\nOnly allowed on BackupLocations where sync_manual = true (Manual mode).\nRejected if sync_manual = false (Automatic BL).\nNote: The sync flag will be reset by the server once the backup sync operation\nis completed for this BackupLocation. Parallel sync triggers by updating sync\nflag while another sync is in progress are not allowed."
         },
         "sync_info": {
           "$ref": "#/definitions/BackupLocationInfoSyncInfo",
-          "description": "sync_info provides information about the sync operation including status, timing, and stats."
+          "description": "sync_info provides information about the sync operation including status, timing, and stats.\nPopulated for both Automatic and Manual BLs in both Federated and Non-Federated modes."
+        },
+        "sync_manual": {
+          "type": "boolean",
+          "description": "sync_manual controls whether this BackupLocation uses manual or automatic sync.\n- true  : Manual mode. Periodic BackupSync is skipped for this BL.\n          Syncs only occur when explicitly triggered via sync=true.\n- false : Automatic mode. Periodic BackupSync runs every 10 minutes.\n- null (not set): rejected on Create; treated as no-op on Update.\nValid in both Federated and Non-Federated deployment modes.\nUses BoolValue wrapper to distinguish between \"not provided\" (nil) and \"explicitly set to false\"."
         },
         "s3_config": {
           "$ref": "#/definitions/S3Config"
@@ -6559,6 +6563,16 @@
         "sync_stats": {
           "$ref": "#/definitions/SyncInfoSyncStats",
           "title": "Statistics about the sync operation (timing, counts, etc.)"
+        },
+        "backups_synced": {
+          "type": "string",
+          "format": "int64",
+          "description": "Number of NEW BackupObjects imported into the datastore during the\nmost recent sync cycle. Final value on Completed answers \"was this\nsync productive?\" (0 = nothing new was on the object store).\nZeroed at the start of each new sync cycle (Pending / InProgress\ntransitions). Non-federated only; federated leaves this at 0."
+        },
+        "backups_processed": {
+          "type": "string",
+          "format": "int64",
+          "description": "Total number of backup objects enumerated during the most recent\nsync cycle. Includes new imports, already-synced skips, and\nper-object errors. Updated periodically during InProgress (every\n100 objects or 5 seconds, whichever first) so consumers can\ndistinguish \"sync progressing but nothing new\" (processed \u003e 0,\nsynced == 0) from \"sync stuck\" (neither incrementing while\nstatus = InProgress).\nZeroed at the start of each new sync cycle. Non-federated only.\nLimitation: only the most recent cycle is retained."
         }
       },
       "title": "Message for maintaining information about sync operations"
