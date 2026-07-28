@@ -1058,6 +1058,10 @@ message BackupInfo {
     uint64 failed_resource_count = 58;
     // Number of failed volumes during backup
     uint64 failed_vol_count = 59;
+    // synced is true if this backup object was created by backup sync
+    // (discovered in a backup location, originally created by another
+    // cluster/deployment) rather than by a backup request in this deployment.
+    bool synced = 60;
     // Message for maintaining status of sync operations
     message SyncStatusInfo {
         Status status = 1;
