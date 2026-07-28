@@ -5791,6 +5791,10 @@
           "type": "string",
           "format": "uint64",
           "title": "Number of failed volumes during backup"
+        },
+        "synced": {
+          "type": "boolean",
+          "description": "synced is true if this backup object was created by backup sync\n(discovered in a backup location, originally created by another\ncluster/deployment) rather than by a backup request in this deployment."
         }
       }
     },
