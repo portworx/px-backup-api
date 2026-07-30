@@ -3264,6 +3264,26 @@ message BackupDeleteRequest {
     // It acts as an explicit confirmation that the caller intends to delete
     // multiple backups. If it is not set to true, the bulk delete is rejected.
     bool acknowledge = 13;
+    // Bulk delete filters. These narrow the set of backups selected for deletion
+    // and behave the same as the identically-named fields in EnumerateOptions.
+
+    // label selectors for the object for filtering
+    map<string, string> labels = 14;
+    // Time range for which to delete objects
+    TimeRange time_range = 15;
+    // Filter to use owner uids on objects. Any object that contains the
+    // filter will be returned
+    repeated string owners = 16;
+    // filter to use backupObjectType on object
+    string backup_object_type = 17;
+    // filter based on the object status.
+    // Need to pass the string value of the status field of the object ( backup /restore )
+    // For example, {"Success", "Failed"}
+    repeated string status = 18;
+    // filter to use policy name and uid. Any object that contains the filter will be returned.
+    repeated ObjectRef schedule_policy_ref = 19;
+    // filter to use backup schedule policy name and uid. Any object that contains the filter will be returned.
+    repeated ObjectRef backup_schedule_ref = 20;
 }
 
 // Response message structure for object delete
