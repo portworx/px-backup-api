@@ -602,20 +602,38 @@
             "collectionFormat": "multi"
           },
           {
-            "name": "backup_delete_enumerate_options.backup_object_type",
-            "description": "filter to use backupObjectType on object.",
+            "name": "backup_delete_enumerate_options.backup_object_type.type",
             "in": "query",
             "required": false,
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "All",
+              "VirtualMachine"
+            ],
+            "default": "Invalid"
           },
           {
-            "name": "backup_delete_enumerate_options.status",
-            "description": "filter based on the object status.\nNeed to pass the string value of the status field of the object ( backup /restore )\nFor example, {\"Success\", \"Failed\"}.",
+            "name": "backup_delete_enumerate_options.statuses",
+            "description": "Filter by one or more Backup StatusInfo.Status values.\nEmpty list = no status filter.",
             "in": "query",
             "required": false,
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "Invalid",
+                "Pending",
+                "InProgress",
+                "Aborted",
+                "Failed",
+                "Deleting",
+                "Success",
+                "Captured",
+                "PartialSuccess",
+                "DeletePending",
+                "CloudBackupMissing"
+              ]
             },
             "collectionFormat": "multi"
           }
@@ -5719,15 +5737,15 @@
           "title": "Filter to use owner uids on objects. Any object that contains the\nfilter will be returned"
         },
         "backup_object_type": {
-          "type": "string",
-          "title": "filter to use backupObjectType on object"
+          "$ref": "#/definitions/BackupInfoBackupObjectType",
+          "description": "Filter by backup object type (application/namespace vs VirtualMachine).\nUnset = no object-type filter."
         },
-        "status": {
+        "statuses": {
           "type": "array",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/BackupInfoStatusInfoStatus"
           },
-          "title": "filter based on the object status.\nNeed to pass the string value of the status field of the object ( backup /restore )\nFor example, {\"Success\", \"Failed\"}"
+          "description": "Filter by one or more Backup StatusInfo.Status values.\nEmpty list = no status filter."
         },
         "schedule_policy_ref": {
           "type": "array",

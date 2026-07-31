@@ -3237,12 +3237,12 @@ message BackupDeleteEnumerateOptions {
     // Filter to use owner uids on objects. Any object that contains the
     // filter will be returned
     repeated string owners = 3;
-    // filter to use backupObjectType on object
-    string backup_object_type = 4;
-    // filter based on the object status.
-    // Need to pass the string value of the status field of the object ( backup /restore )
-    // For example, {"Success", "Failed"}
-    repeated string status = 5;
+    // Filter by backup object type (application/namespace vs VirtualMachine).
+    // Unset = no object-type filter.
+    BackupInfo.BackupObjectType backup_object_type = 4;
+    // Filter by one or more Backup StatusInfo.Status values.
+    // Empty list = no status filter.
+    repeated BackupInfo.StatusInfo.Status statuses = 5;
     // filter to use policy name and uid. Any object that contains the filter will be returned.
     repeated ObjectRef schedule_policy_ref = 6;
     // filter to use backup schedule policy name and uid. Any object that contains the filter will be returned.
