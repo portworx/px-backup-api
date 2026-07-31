@@ -577,21 +577,21 @@
             "type": "boolean"
           },
           {
-            "name": "time_range.start_time",
+            "name": "backup_delete_enumerate_options.time_range.start_time",
             "in": "query",
             "required": false,
             "type": "string",
             "format": "date-time"
           },
           {
-            "name": "time_range.end_time",
+            "name": "backup_delete_enumerate_options.time_range.end_time",
             "in": "query",
             "required": false,
             "type": "string",
             "format": "date-time"
           },
           {
-            "name": "owners",
+            "name": "backup_delete_enumerate_options.owners",
             "description": "Filter to use owner uids on objects. Any object that contains the\nfilter will be returned.",
             "in": "query",
             "required": false,
@@ -602,14 +602,14 @@
             "collectionFormat": "multi"
           },
           {
-            "name": "backup_object_type",
+            "name": "backup_delete_enumerate_options.backup_object_type",
             "description": "filter to use backupObjectType on object.",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
-            "name": "status",
+            "name": "backup_delete_enumerate_options.status",
             "description": "filter based on the object status.\nNeed to pass the string value of the status field of the object ( backup /restore )\nFor example, {\"Success\", \"Failed\"}.",
             "in": "query",
             "required": false,
@@ -5697,6 +5697,55 @@
       },
       "title": "Response message structure for backup create"
     },
+    "BackupDeleteEnumerateOptions": {
+      "type": "object",
+      "properties": {
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "label selectors for the object for filtering"
+        },
+        "time_range": {
+          "$ref": "#/definitions/TimeRange",
+          "title": "Time range for which to delete objects"
+        },
+        "owners": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Filter to use owner uids on objects. Any object that contains the\nfilter will be returned"
+        },
+        "backup_object_type": {
+          "type": "string",
+          "title": "filter to use backupObjectType on object"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "filter based on the object status.\nNeed to pass the string value of the status field of the object ( backup /restore )\nFor example, {\"Success\", \"Failed\"}"
+        },
+        "schedule_policy_ref": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "filter to use policy name and uid. Any object that contains the filter will be returned."
+        },
+        "backup_schedule_ref": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "filter to use backup schedule policy name and uid. Any object that contains the filter will be returned."
+        }
+      },
+      "description": "Advanced filter options for bulk backup deletion. These narrow the set of\nbackups selected for deletion and behave the same as the identically-named\nfields in EnumerateOptions."
+    },
     "BackupDeleteRequest": {
       "type": "object",
       "properties": {
@@ -5757,48 +5806,9 @@
           "type": "boolean",
           "description": "acknowledge must be set to true for a bulk delete request to proceed.\nIt acts as an explicit confirmation that the caller intends to delete\nmultiple backups. If it is not set to true, the bulk delete is rejected."
         },
-        "labels": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "title": "label selectors for the object for filtering"
-        },
-        "time_range": {
-          "$ref": "#/definitions/TimeRange",
-          "title": "Time range for which to delete objects"
-        },
-        "owners": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "Filter to use owner uids on objects. Any object that contains the\nfilter will be returned"
-        },
-        "backup_object_type": {
-          "type": "string",
-          "title": "filter to use backupObjectType on object"
-        },
-        "status": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "filter based on the object status.\nNeed to pass the string value of the status field of the object ( backup /restore )\nFor example, {\"Success\", \"Failed\"}"
-        },
-        "schedule_policy_ref": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ObjectRef"
-          },
-          "description": "filter to use policy name and uid. Any object that contains the filter will be returned."
-        },
-        "backup_schedule_ref": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ObjectRef"
-          },
-          "description": "filter to use backup schedule policy name and uid. Any object that contains the filter will be returned."
+        "backup_delete_enumerate_options": {
+          "$ref": "#/definitions/BackupDeleteEnumerateOptions",
+          "description": "Advanced filter options for bulk delete."
         }
       },
       "title": "Request message structure for object delete"
