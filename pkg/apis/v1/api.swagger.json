@@ -6009,6 +6009,20 @@
           "type": "string",
           "format": "uint64",
           "title": "Number of failed volumes during backup"
+        },
+        "cleanup_error_reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "cleanup_error_reasons is the lookup table for CleanupDetails.error_reason_index.\nInterns cleanup failure messages so they are not repeated per volume. Index 0 = \"no reason\"."
+        },
+        "cleanup_dependent_backups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "cleanup_dependent_backups is the lookup table for CleanupDetails.dependent_backup_index --\nthe backup (name+uid) owning a volume's blocker snapshot. Index 0 = \"no dependent backup\"."
         }
       }
     },
@@ -6062,24 +6076,17 @@
       "properties": {
         "dependent_snapshot_id": {
           "type": "string",
-          "title": "dependent_snapshot_id is set while this volume is blocked by a newer\nincremental"
+          "description": "dependent_snapshot_id is the id of the newer-incremental snapshot blocking\nTHIS volume's delete. Per-volume; empty when the volume is not blocked."
         },
-        "retry_count": {
+        "error_reason_index": {
           "type": "integer",
           "format": "int32",
-          "title": "retry_count is bumped by the worker defer block on panic/error. Informational\nonly"
+          "description": "error_reason_index indexes into BackupInfo.cleanup_error_reasons (0 = no reason).\nInterned to avoid repeating the failure string across volumes."
         },
-        "error_reason": {
-          "type": "string",
-          "description": "error_reason captures the last failure message. Updated on every retry."
-        },
-        "dependent_backup_uid": {
-          "type": "string",
-          "title": "UID of backup owning the blocker snapshot"
-        },
-        "dependent_backup_name": {
-          "type": "string",
-          "title": "Name of backup owning the blocker snapshot (for indexed lookup)"
+        "dependent_backup_index": {
+          "type": "integer",
+          "format": "int32",
+          "description": "dependent_backup_index indexes into BackupInfo.cleanup_dependent_backups (0 = none)\n-- the backup owning this volume's blocker snapshot. Volumes blocked by the same\nbackup share an entry; volumes on divergent chains reference different entries."
         }
       },
       "description": "CleanupDetails captures per-volume garbage-collection state for the unified\ndeletion pipeline. All fields are optional."

@@ -1058,6 +1058,12 @@ message BackupInfo {
     uint64 failed_resource_count = 58;
     // Number of failed volumes during backup
     uint64 failed_vol_count = 59;
+    // cleanup_error_reasons is the lookup table for CleanupDetails.error_reason_index.
+    // Interns cleanup failure messages so they are not repeated per volume. Index 0 = "no reason".
+    repeated string cleanup_error_reasons = 60;
+    // cleanup_dependent_backups is the lookup table for CleanupDetails.dependent_backup_index --
+    // the backup (name+uid) owning a volume's blocker snapshot. Index 0 = "no dependent backup".
+    repeated ObjectRef cleanup_dependent_backups = 61;
     // Message for maintaining status of sync operations
     message SyncStatusInfo {
         Status status = 1;
@@ -1177,22 +1183,18 @@ message BackupInfo {
     // CleanupDetails captures per-volume garbage-collection state for the unified
     // deletion pipeline. All fields are optional.
     message CleanupDetails {
-        // dependent_snapshot_id is set while this volume is blocked by a newer
-        // incremental
+        // dependent_snapshot_id is the id of the newer-incremental snapshot blocking
+        // THIS volume's delete. Per-volume; empty when the volume is not blocked.
         string dependent_snapshot_id = 1;
 
-        // retry_count is bumped by the worker defer block on panic/error. Informational
-        // only
-        int32 retry_count = 2;
+        // error_reason_index indexes into BackupInfo.cleanup_error_reasons (0 = no reason).
+        // Interned to avoid repeating the failure string across volumes.
+        int32 error_reason_index = 2;
 
-        // error_reason captures the last failure message. Updated on every retry.
-        string error_reason = 3;
-
-        // UID of backup owning the blocker snapshot
-        string dependent_backup_uid = 4;
-
-        // Name of backup owning the blocker snapshot (for indexed lookup)
-        string dependent_backup_name = 5;
+        // dependent_backup_index indexes into BackupInfo.cleanup_dependent_backups (0 = none)
+        // -- the backup owning this volume's blocker snapshot. Volumes blocked by the same
+        // backup share an entry; volumes on divergent chains reference different entries.
+        int32 dependent_backup_index = 3;
     }
 
 }
