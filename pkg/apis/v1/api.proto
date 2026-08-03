@@ -3263,6 +3263,29 @@ message BackupInspectRequest {
 // Response message structure for object inspect
 message BackupInspectResponse { BackupObject backup = 1; }
 
+// Advanced filter options for bulk backup deletion. These narrow the set of
+// backups selected for deletion and behave the same as the identically-named
+// fields in EnumerateOptions.
+message BackupDeleteEnumerateOptions {
+    // label selectors for the object for filtering
+    map<string, string> labels = 1;
+    // Time range for which to delete objects
+    TimeRange time_range = 2;
+    // Filter to use owner uids on objects. Any object that contains the
+    // filter will be returned
+    repeated string owners = 3;
+    // Filter by backup object type (application/namespace vs VirtualMachine).
+    // Unset = no object-type filter.
+    BackupInfo.BackupObjectType backup_object_type = 4;
+    // Filter by one or more Backup StatusInfo.Status values.
+    // Empty list = no status filter.
+    repeated BackupInfo.StatusInfo.Status statuses = 5;
+    // filter to use policy name and uid. Any object that contains the filter will be returned.
+    repeated ObjectRef schedule_policy_ref = 6;
+    // filter to use backup schedule policy name and uid. Any object that contains the filter will be returned.
+    repeated ObjectRef backup_schedule_ref = 7;
+}
+
 // Request message structure for object delete
 message BackupDeleteRequest {
     string name = 1;
@@ -3301,6 +3324,8 @@ message BackupDeleteRequest {
     // It acts as an explicit confirmation that the caller intends to delete
     // multiple backups. If it is not set to true, the bulk delete is rejected.
     bool acknowledge = 13;
+    // Advanced filter options for bulk delete.
+    BackupDeleteEnumerateOptions backup_delete_enumerate_options = 14;
 }
 
 // Response message structure for object delete
