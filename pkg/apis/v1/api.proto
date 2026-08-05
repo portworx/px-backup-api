@@ -900,6 +900,7 @@ message ResourceDetail {
     string                 name   = 1;
     string                 gvk    = 2;  // "Kind/Group/Version"; empty group = core
     RestoreInfo.StatusInfo status = 3;  // status enum + resolved reason string
+    uint64                 size   = 4; // size per pvc during restore
 }
 
 // Counts of items (volumes, resources, etc.) grouped by their status.
