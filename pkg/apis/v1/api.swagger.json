@@ -6360,6 +6360,15 @@
         "backup_mode": {
           "$ref": "#/definitions/VolumeBackupMode",
           "title": "Indicate backup mode - full/incr (for pxd volumes) or not supported (for other volume drivers)"
+        },
+        "start_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Reconcile-observation times, not data-mover timings. Either may be\nunset, and finish_time can be set without start_time, so check both\nbefore subtracting and never substitute a zero or epoch value.\n18 is taken by cleanup_details on the in-flight PB-15309 branches."
+        },
+        "finish_time": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     },
@@ -11309,6 +11318,15 @@
         "total_size": {
           "type": "string",
           "format": "uint64"
+        },
+        "start_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Same semantics and caveats as BackupInfo.Volume.start_time/finish_time."
+        },
+        "finish_time": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     },
