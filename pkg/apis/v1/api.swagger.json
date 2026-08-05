@@ -10524,6 +10524,10 @@
         },
         "status": {
           "$ref": "#/definitions/RestoreInfoStatusInfo"
+        },
+        "size": {
+          "type": "string",
+          "format": "uint64"
         }
       },
       "description": "ResourceDetail describes one owned entity (volume or non-volume resource)\nof a VM in the GetRestoreResourceDetails response. Volumes and non-volume\nresources are unified into one list, differentiated by gvk.\nFor PVCs, gvk = \"PersistentVolumeClaim/v1\"."
