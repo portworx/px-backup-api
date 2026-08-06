@@ -595,6 +595,8 @@ message BackupScheduleInfo {
     Remark remark = 35;
     // Namespaces that were unavailable in the cluster at the time of the last scheduled backup.
     repeated string missing_namespaces = 36;
+    // Namespaces from a static-list VM backup that had no matching VMs (empty ns or ARLS-filtered).
+    repeated string namespaces_without_matching_vms = 37;
 
 
     message BackupType {
@@ -1063,6 +1065,8 @@ message BackupInfo {
     // (discovered in a backup location, originally created by another
     // cluster/deployment) rather than by a backup request in this deployment.
     bool synced = 60;
+    // Namespaces from a static-list VM backup that had no matching VMs (empty ns or ARLS-filtered).
+    repeated string namespaces_without_matching_vms = 61;
     // Message for maintaining status of sync operations
     message SyncStatusInfo {
         Status status = 1;
