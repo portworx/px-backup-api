@@ -6127,6 +6127,13 @@
         "synced": {
           "type": "boolean",
           "description": "synced is true if this backup object was created by backup sync\n(discovered in a backup location, originally created by another\ncluster/deployment) rather than by a backup request in this deployment."
+        },
+        "namespaces_without_matching_vms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Namespaces from a static-list VM backup that had no matching VMs (empty ns or ARLS-filtered)."
         }
       }
     },
@@ -7548,6 +7555,13 @@
             "type": "string"
           },
           "description": "Namespaces that were unavailable in the cluster at the time of the last scheduled backup."
+        },
+        "namespaces_without_matching_vms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Namespaces from a static-list VM backup that had no matching VMs (empty ns or ARLS-filtered)."
         }
       }
     },
