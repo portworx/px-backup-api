@@ -1120,12 +1120,6 @@ message BackupInfo {
         string virtual_machine_name = 16;
         // Indicate backup mode - full/incr (for pxd volumes) or not supported (for other volume drivers)
         BackupMode backup_mode = 17;
-        // Reconcile-observation times, not data-mover timings. Either may be
-        // unset, and finish_time can be set without start_time, so check both
-        // before subtracting and never substitute a zero or epoch value.
-        // 18 is taken by cleanup_details on the in-flight PB-15309 branches.
-        google.protobuf.Timestamp start_time = 19;
-        google.protobuf.Timestamp finish_time = 20;
 
         message JobSecurityContext {
             int64 runAsUser = 1;
@@ -1403,9 +1397,6 @@ message RestoreInfo {
         repeated string zones = 7;
         map<string, string> options = 8;
         uint64 total_size = 9;
-        // Same semantics and caveats as BackupInfo.Volume.start_time/finish_time.
-        google.protobuf.Timestamp start_time = 10;
-        google.protobuf.Timestamp finish_time = 11;
     }
 
     // Message for maintaining status of the object.
