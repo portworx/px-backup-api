@@ -6134,6 +6134,20 @@
             "type": "string"
           },
           "description": "Namespaces from a static-list VM backup that had no matching VMs (empty ns or ARLS-filtered)."
+        },
+        "cleanup_error_reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "cleanup_error_reasons is the lookup table for CleanupDetails.error_reason_index.\nInterns cleanup failure messages so they are not repeated per volume. Index 0 = \"no reason\"."
+        },
+        "cleanup_dependent_backups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "cleanup_dependent_backups is the lookup table for CleanupDetails.dependent_backup_index --\nthe backup (name+uid) owning a volume's blocker snapshot. Index 0 = \"no dependent backup\"."
         }
       }
     },
@@ -6181,6 +6195,26 @@
         "Normal"
       ],
       "default": "Invalid"
+    },
+    "BackupInfoCleanupDetails": {
+      "type": "object",
+      "properties": {
+        "dependent_snapshot_id": {
+          "type": "string",
+          "description": "dependent_snapshot_id is the id of the newer-incremental snapshot blocking\nthis volume's delete. Per-volume; empty when the volume is not blocked."
+        },
+        "error_reason_index": {
+          "type": "integer",
+          "format": "int32",
+          "description": "error_reason_index indexes into BackupInfo.cleanup_error_reasons (0 = no reason).\nInterned to avoid repeating the failure string across volumes."
+        },
+        "dependent_backup_index": {
+          "type": "integer",
+          "format": "int32",
+          "description": "dependent_backup_index indexes into BackupInfo.cleanup_dependent_backups (0 = none)\n-- the backup owning this volume's blocker snapshot. Volumes blocked by the same\nbackup share an entry; volumes on divergent chains reference different entries."
+        }
+      },
+      "description": "CleanupDetails captures per-volume garbage-collection state for the unified\ndeletion pipeline. All fields are optional."
     },
     "BackupInfoNamespaceResources": {
       "type": "object",
@@ -6360,6 +6394,10 @@
         "backup_mode": {
           "$ref": "#/definitions/VolumeBackupMode",
           "title": "Indicate backup mode - full/incr (for pxd volumes) or not supported (for other volume drivers)"
+        },
+        "cleanup_details": {
+          "$ref": "#/definitions/BackupInfoCleanupDetails",
+          "description": "cleanup_details carries per-volume GC state. Absent on volumes that\nhave not yet been picked up by the deletion sweeper."
         }
       }
     },

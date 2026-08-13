@@ -1067,6 +1067,12 @@ message BackupInfo {
     bool synced = 60;
     // Namespaces from a static-list VM backup that had no matching VMs (empty ns or ARLS-filtered).
     repeated string namespaces_without_matching_vms = 61;
+    // cleanup_error_reasons is the lookup table for CleanupDetails.error_reason_index.
+    // Interns cleanup failure messages so they are not repeated per volume. Index 0 = "no reason".
+    repeated string cleanup_error_reasons = 62;
+    // cleanup_dependent_backups is the lookup table for CleanupDetails.dependent_backup_index --
+    // the backup (name+uid) owning a volume's blocker snapshot. Index 0 = "no dependent backup".
+    repeated ObjectRef cleanup_dependent_backups = 63;
     // Message for maintaining status of sync operations
     message SyncStatusInfo {
         Status status = 1;
@@ -1120,7 +1126,9 @@ message BackupInfo {
         string virtual_machine_name = 16;
         // Indicate backup mode - full/incr (for pxd volumes) or not supported (for other volume drivers)
         BackupMode backup_mode = 17;
-
+        // cleanup_details carries per-volume GC state. Absent on volumes that
+        // have not yet been picked up by the deletion sweeper.
+        CleanupDetails cleanup_details = 18;
         message JobSecurityContext {
             int64 runAsUser = 1;
             int64 runAsGroup = 2;
@@ -1179,6 +1187,23 @@ message BackupInfo {
             All = 1; // for All application backup
             VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
         }
+    }
+
+    // CleanupDetails captures per-volume garbage-collection state for the unified
+    // deletion pipeline. All fields are optional.
+    message CleanupDetails {
+        // dependent_snapshot_id is the id of the newer-incremental snapshot blocking
+        // this volume's delete. Per-volume; empty when the volume is not blocked.
+        string dependent_snapshot_id = 1;
+
+        // error_reason_index indexes into BackupInfo.cleanup_error_reasons (0 = no reason).
+        // Interned to avoid repeating the failure string across volumes.
+        int32 error_reason_index = 2;
+
+        // dependent_backup_index indexes into BackupInfo.cleanup_dependent_backups (0 = none)
+        // -- the backup owning this volume's blocker snapshot. Volumes blocked by the same
+        // backup share an entry; volumes on divergent chains reference different entries.
+        int32 dependent_backup_index = 3;
     }
 
 }
