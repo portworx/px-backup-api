@@ -1930,6 +1930,17 @@ message BackupScheduleCreateResponse {
     BackupScheduleObject backup_schedule = 1;
 }
 
+// BackupScheduleFilterOptions carries the selectors used to pick which backup
+// schedules a bulk operation acts on. It is distinct from the fields that set
+// values on the schedules themselves, so a new bulk selector can be added here
+// without adding another top-level field to every request.
+message BackupScheduleFilterOptions {
+    // Filter schedules by the volumeResourceOnly policy they reference.
+    // Mirrors EnumerateOptions.volume_resource_only_policy_ref, so the same
+    // filter the Schedules page applies can be sent with a bulk operation.
+    repeated ObjectRef volume_resource_only_policy_ref = 1;
+}
+
 // Define BackupScheduleUpdateRequest struct
 message BackupScheduleUpdateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
@@ -1992,6 +2003,10 @@ message BackupScheduleUpdateRequest {
     // we cannot return an error. Therefore, we require the user to explicitly confirm acceptance of the side effects of UID relaxation.
     bool bulk_uid_check_relaxation = 30;
     string ns_label_selectors = 31;
+    // Selectors narrowing which schedules a bulk update acts on. Distinct from
+    // volume_resource_only_policy_ref above, which sets the volumeResourceOnly
+    // policy on the schedule being updated.
+    BackupScheduleFilterOptions filter_options = 32;
 }
 
 // Define BackupScheduleUpdateResponse struct
@@ -2061,6 +2076,8 @@ message BackupScheduleDeleteRequest {
     // If the user provides only the name in the schedulePolicyRef, and there are multiple SchedulePolicy objects with the same name,
     // we cannot return an error. Therefore, we require the user to explicitly confirm acceptance of the side effects of UID relaxation.
     bool bulk_uid_check_relaxation = 12;
+    // Selectors narrowing which schedules a bulk delete acts on.
+    BackupScheduleFilterOptions filter_options = 13;
 }
 
 // Define BackupScheduleDeleteResponse struct
