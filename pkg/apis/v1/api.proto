@@ -1934,11 +1934,31 @@ message BackupScheduleCreateResponse {
 // schedules a bulk operation acts on. It is distinct from the fields that set
 // values on the schedules themselves, so a new bulk selector can be added here
 // without adding another top-level field to every request.
+// This message is common to both the Update and Delete operations, wrapped by
+// BackupScheduleUpdateFilterOptions and BackupScheduleDeleteFilterOptions.
 message BackupScheduleFilterOptions {
     // Filter schedules by the volumeResourceOnly policy they reference.
     // Mirrors EnumerateOptions.volume_resource_only_policy_ref, so the same
     // filter the Schedules page applies can be sent with a bulk operation.
     repeated ObjectRef volume_resource_only_policy_ref = 1;
+}
+
+// BackupScheduleUpdateFilterOptions carries the selectors used to pick which
+// backup schedules a bulk update acts on. It wraps the common
+// BackupScheduleFilterOptions so update-specific selectors can be added here
+// later without changing the shared message or the delete filter.
+message BackupScheduleUpdateFilterOptions {
+    // Common bulk selectors shared with the delete filter.
+    BackupScheduleFilterOptions filter_options = 1;
+}
+
+// BackupScheduleDeleteFilterOptions carries the selectors used to pick which
+// backup schedules a bulk delete acts on. It wraps the common
+// BackupScheduleFilterOptions so delete-specific selectors can be added here
+// later without changing the shared message or the update filter.
+message BackupScheduleDeleteFilterOptions {
+    // Common bulk selectors shared with the update filter.
+    BackupScheduleFilterOptions filter_options = 1;
 }
 
 // Define BackupScheduleUpdateRequest struct
@@ -2006,7 +2026,7 @@ message BackupScheduleUpdateRequest {
     // Selectors narrowing which schedules a bulk update acts on. Distinct from
     // volume_resource_only_policy_ref above, which sets the volumeResourceOnly
     // policy on the schedule being updated.
-    BackupScheduleFilterOptions filter_options = 32;
+    BackupScheduleUpdateFilterOptions filter_options = 32;
 }
 
 // Define BackupScheduleUpdateResponse struct
@@ -2077,7 +2097,7 @@ message BackupScheduleDeleteRequest {
     // we cannot return an error. Therefore, we require the user to explicitly confirm acceptance of the side effects of UID relaxation.
     bool bulk_uid_check_relaxation = 12;
     // Selectors narrowing which schedules a bulk delete acts on.
-    BackupScheduleFilterOptions filter_options = 13;
+    BackupScheduleDeleteFilterOptions filter_options = 13;
 }
 
 // Define BackupScheduleDeleteResponse struct
