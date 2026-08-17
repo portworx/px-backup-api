@@ -7056,7 +7056,7 @@
           "description": "Filter schedules by the volumeResourceOnly policy they reference.\nMirrors EnumerateOptions.volume_resource_only_policy_ref, so the same\nfilter the Schedules page applies can be sent with a bulk operation."
         }
       },
-      "description": "BackupScheduleFilterOptions carries the selectors used to pick which backup\nschedules a bulk operation acts on. It is distinct from the fields that set\nvalues on the schedules themselves, so a new bulk selector can be added here\nwithout adding another top-level field to every request."
+      "description": "BackupScheduleFilterOptions carries the selectors used to pick which backup\nschedules a bulk operation acts on. It is distinct from the fields that set\nvalues on the schedules themselves, so a new bulk selector can be added here\nwithout adding another top-level field to every request.\nThis message is common to both the Update and Delete operations, wrapped by\nBackupScheduleUpdateFilterOptions and BackupScheduleDeleteFilterOptions."
     },
     "BackupScheduleInfo": {
       "type": "object",

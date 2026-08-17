@@ -11270,6 +11270,8 @@ func (m *BackupScheduleCreateResponse) GetBackupSchedule() *BackupScheduleObject
 // schedules a bulk operation acts on. It is distinct from the fields that set
 // values on the schedules themselves, so a new bulk selector can be added here
 // without adding another top-level field to every request.
+// This message is common to both the Update and Delete operations, wrapped by
+// BackupScheduleUpdateFilterOptions and BackupScheduleDeleteFilterOptions.
 type BackupScheduleFilterOptions struct {
 	// Filter schedules by the volumeResourceOnly policy they reference.
 	// Mirrors EnumerateOptions.volume_resource_only_policy_ref, so the same
