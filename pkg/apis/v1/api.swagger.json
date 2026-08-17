@@ -6921,6 +6921,16 @@
       },
       "title": "Define BackupScheduleCreateResponse struct"
     },
+    "BackupScheduleDeleteFilterOptions": {
+      "type": "object",
+      "properties": {
+        "filter_options": {
+          "$ref": "#/definitions/BackupScheduleFilterOptions",
+          "description": "Common bulk selectors shared with the update filter."
+        }
+      },
+      "description": "BackupScheduleDeleteFilterOptions carries the selectors used to pick which\nbackup schedules a bulk delete acts on. It wraps the common\nBackupScheduleFilterOptions so delete-specific selectors can be added here\nlater without changing the shared message or the update filter."
+    },
     "BackupScheduleDeleteRequest": {
       "type": "object",
       "properties": {
@@ -6979,7 +6989,7 @@
           "description": "bulk_uid_check_relaxation - This flag needs to be set to relax the UID check for bulk update operations.\nIn a bulk operation, the user will pass multiple filter options to select a list of BackupSchedule objects.\nFor example, the user may send a schedulePolicyRef object to filter BackupSchedules that use that SchedulePolicy.\nIf the user provides only the name in the schedulePolicyRef, and there are multiple SchedulePolicy objects with the same name,\nwe cannot return an error. Therefore, we require the user to explicitly confirm acceptance of the side effects of UID relaxation."
         },
         "filter_options": {
-          "$ref": "#/definitions/BackupScheduleFilterOptions",
+          "$ref": "#/definitions/BackupScheduleDeleteFilterOptions",
           "description": "Selectors narrowing which schedules a bulk delete acts on."
         }
       },
@@ -7328,6 +7338,16 @@
         }
       }
     },
+    "BackupScheduleUpdateFilterOptions": {
+      "type": "object",
+      "properties": {
+        "filter_options": {
+          "$ref": "#/definitions/BackupScheduleFilterOptions",
+          "description": "Common bulk selectors shared with the delete filter."
+        }
+      },
+      "description": "BackupScheduleUpdateFilterOptions carries the selectors used to pick which\nbackup schedules a bulk update acts on. It wraps the common\nBackupScheduleFilterOptions so update-specific selectors can be added here\nlater without changing the shared message or the delete filter."
+    },
     "BackupScheduleUpdateRequest": {
       "type": "object",
       "properties": {
@@ -7468,7 +7488,7 @@
           "type": "string"
         },
         "filter_options": {
-          "$ref": "#/definitions/BackupScheduleFilterOptions",
+          "$ref": "#/definitions/BackupScheduleUpdateFilterOptions",
           "description": "Selectors narrowing which schedules a bulk update acts on. Distinct from\nvolume_resource_only_policy_ref above, which sets the volumeResourceOnly\npolicy on the schedule being updated."
         }
       },
