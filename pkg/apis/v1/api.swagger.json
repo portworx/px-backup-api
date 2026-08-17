@@ -6977,6 +6977,10 @@
         "bulk_uid_check_relaxation": {
           "type": "boolean",
           "description": "bulk_uid_check_relaxation - This flag needs to be set to relax the UID check for bulk update operations.\nIn a bulk operation, the user will pass multiple filter options to select a list of BackupSchedule objects.\nFor example, the user may send a schedulePolicyRef object to filter BackupSchedules that use that SchedulePolicy.\nIf the user provides only the name in the schedulePolicyRef, and there are multiple SchedulePolicy objects with the same name,\nwe cannot return an error. Therefore, we require the user to explicitly confirm acceptance of the side effects of UID relaxation."
+        },
+        "filter_options": {
+          "$ref": "#/definitions/BackupScheduleFilterOptions",
+          "description": "Selectors narrowing which schedules a bulk delete acts on."
         }
       },
       "title": "Define BackupScheduleDeleteRequest struct"
@@ -7030,6 +7034,19 @@
         }
       },
       "title": "Define BackupScheduleEnumerateResponse struct"
+    },
+    "BackupScheduleFilterOptions": {
+      "type": "object",
+      "properties": {
+        "volume_resource_only_policy_ref": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "Filter schedules by the volumeResourceOnly policy they reference.\nMirrors EnumerateOptions.volume_resource_only_policy_ref, so the same\nfilter the Schedules page applies can be sent with a bulk operation."
+        }
+      },
+      "description": "BackupScheduleFilterOptions carries the selectors used to pick which backup\nschedules a bulk operation acts on. It is distinct from the fields that set\nvalues on the schedules themselves, so a new bulk selector can be added here\nwithout adding another top-level field to every request."
     },
     "BackupScheduleInfo": {
       "type": "object",
@@ -7449,6 +7466,10 @@
         },
         "ns_label_selectors": {
           "type": "string"
+        },
+        "filter_options": {
+          "$ref": "#/definitions/BackupScheduleFilterOptions",
+          "description": "Selectors narrowing which schedules a bulk update acts on. Distinct from\nvolume_resource_only_policy_ref above, which sets the volumeResourceOnly\npolicy on the schedule being updated."
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
