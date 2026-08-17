@@ -1527,6 +1527,30 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "filter_options.filter_options.owners",
+            "description": "[Access: Super Admin only] Owner uids to scope the operation to schedules owned by these\nusers. Empty = no owner filter.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "filter_options.status",
+            "description": "[Access: All users] Run state to scope the delete. A schedule is either Running or\nSuspended; unspecified = no run-state filter.\n\n - BackupScheduleRunStateInvalid: Invalid or unspecified run state; ignored when used as a filter value.\n - BackupScheduleRunStateRunning: Schedule is actively running (not suspended).\n - BackupScheduleRunStateSuspended: Schedule is suspended.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "BackupScheduleRunStateInvalid",
+              "BackupScheduleRunStateRunning",
+              "BackupScheduleRunStateSuspended"
+            ],
+            "default": "BackupScheduleRunStateInvalid"
           }
         ],
         "tags": [
@@ -7270,6 +7294,10 @@
         "filter_options": {
           "$ref": "#/definitions/BackupScheduleFilterOptions",
           "description": "Common bulk selectors shared with the update filter."
+        },
+        "status": {
+          "$ref": "#/definitions/BackupScheduleRunState",
+          "description": "[Access: All users] Run state to scope the delete. A schedule is either Running or\nSuspended; unspecified = no run-state filter."
         }
       },
       "description": "BackupScheduleDeleteFilterOptions carries the selectors used to pick which\nbackup schedules a bulk delete acts on. It wraps the common\nBackupScheduleFilterOptions so delete-specific selectors can be added here\nlater without changing the shared message or the update filter."
@@ -7397,6 +7425,20 @@
             "$ref": "#/definitions/ObjectRef"
           },
           "description": "Filter schedules by the volumeResourceOnly policy they reference.\nMirrors EnumerateOptions.volume_resource_only_policy_ref, so the same\nfilter the Schedules page applies can be sent with a bulk operation."
+        },
+        "owners": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "[Access: Super Admin only] Owner uids to scope the operation to schedules owned by these\nusers. Empty = no owner filter."
+        },
+        "backup_location_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "[Access: All users] Backup locations to scope the operation to. Matches on name (and uid\nwhen provided). Empty = no backup-location filter."
         }
       },
       "description": "BackupScheduleFilterOptions carries the selectors used to pick which backup\nschedules a bulk operation acts on. It is distinct from the fields that set\nvalues on the schedules themselves, so a new bulk selector can be added here\nwithout adding another top-level field to every request.\nThis message is common to both the Update and Delete operations, wrapped by\nBackupScheduleUpdateFilterOptions and BackupScheduleDeleteFilterOptions."
@@ -7687,6 +7729,16 @@
           "$ref": "#/definitions/BackupScheduleInfo"
         }
       }
+    },
+    "BackupScheduleRunState": {
+      "type": "string",
+      "enum": [
+        "BackupScheduleRunStateInvalid",
+        "BackupScheduleRunStateRunning",
+        "BackupScheduleRunStateSuspended"
+      ],
+      "default": "BackupScheduleRunStateInvalid",
+      "description": "BackupScheduleRunState is the run state of a backup schedule (running vs suspended),\nused to filter bulk suspend/resume and delete operations.\n\n - BackupScheduleRunStateInvalid: Invalid or unspecified run state; ignored when used as a filter value.\n - BackupScheduleRunStateRunning: Schedule is actively running (not suspended).\n - BackupScheduleRunStateSuspended: Schedule is suspended."
     },
     "BackupScheduleUpdateFilterOptions": {
       "type": "object",
