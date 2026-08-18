@@ -7441,7 +7441,7 @@
           "description": "[Access: All users] Backup locations to scope the operation to. Matches on name (and uid\nwhen provided). Empty = no backup-location filter."
         }
       },
-      "description": "BackupScheduleFilterOptions carries the selectors used to pick which backup\nschedules a bulk operation acts on. It is distinct from the fields that set\nvalues on the schedules themselves, so a new bulk selector can be added here\nwithout adding another top-level field to every request.\nThis message is common to both the Update and Delete operations, wrapped by\nBackupScheduleUpdateFilterOptions and BackupScheduleDeleteFilterOptions."
+      "description": "BackupScheduleFilterOptions carries the selectors used to pick which backup schedules a bulk\nBackupSchedule Update (suspend/resume) or Delete operation acts on. It is distinct from the\nfields that set values on the schedules themselves, so a new bulk selector can be added here\nwithout adding another top-level field to every request. Every field documents its access level:\nwhether it is available to all users or restricted to Super Admin.\nThis message is common to both the Update and Delete operations, wrapped by\nBackupScheduleUpdateFilterOptions and BackupScheduleDeleteFilterOptions."
     },
     "BackupScheduleInfo": {
       "type": "object",
