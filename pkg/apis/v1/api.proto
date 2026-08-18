@@ -2026,10 +2026,22 @@ message BackupScheduleCreateResponse {
     BackupScheduleObject backup_schedule = 1;
 }
 
-// BackupScheduleFilterOptions carries the selectors used to pick which backup
-// schedules a bulk operation acts on. It is distinct from the fields that set
-// values on the schedules themselves, so a new bulk selector can be added here
-// without adding another top-level field to every request.
+// BackupScheduleRunState is the run state of a backup schedule (running vs suspended),
+// used to filter bulk suspend/resume and delete operations.
+enum BackupScheduleRunState {
+    // Invalid or unspecified run state; ignored when used as a filter value.
+    BackupScheduleRunStateInvalid = 0;
+    // Schedule is actively running (not suspended).
+    BackupScheduleRunStateRunning = 1;
+    // Schedule is suspended.
+    BackupScheduleRunStateSuspended = 2;
+}
+
+// BackupScheduleFilterOptions carries the selectors used to pick which backup schedules a bulk
+// BackupSchedule Update (suspend/resume) or Delete operation acts on. It is distinct from the
+// fields that set values on the schedules themselves, so a new bulk selector can be added here
+// without adding another top-level field to every request. Every field documents its access level:
+// whether it is available to all users or restricted to Super Admin.
 // This message is common to both the Update and Delete operations, wrapped by
 // BackupScheduleUpdateFilterOptions and BackupScheduleDeleteFilterOptions.
 message BackupScheduleFilterOptions {
@@ -2037,6 +2049,12 @@ message BackupScheduleFilterOptions {
     // Mirrors EnumerateOptions.volume_resource_only_policy_ref, so the same
     // filter the Schedules page applies can be sent with a bulk operation.
     repeated ObjectRef volume_resource_only_policy_ref = 1;
+    // [Access: Super Admin only] Owner uids to scope the operation to schedules owned by these
+    // users. Empty = no owner filter.
+    repeated string owners = 2;
+    // [Access: All users] Backup locations to scope the operation to. Matches on name (and uid
+    // when provided). Empty = no backup-location filter.
+    repeated ObjectRef backup_location_refs = 3;
 }
 
 // BackupScheduleUpdateFilterOptions carries the selectors used to pick which
@@ -2055,6 +2073,9 @@ message BackupScheduleUpdateFilterOptions {
 message BackupScheduleDeleteFilterOptions {
     // Common bulk selectors shared with the update filter.
     BackupScheduleFilterOptions filter_options = 1;
+    // [Access: All users] Run state to scope the delete. A schedule is either Running or
+    // Suspended; unspecified = no run-state filter.
+    BackupScheduleRunState status = 2;
 }
 
 // Define BackupScheduleUpdateRequest struct
