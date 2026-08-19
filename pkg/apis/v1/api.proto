@@ -801,15 +801,25 @@ message BackupLocationInfo {
     // for longer than the configured timeout, remaining InProgress clusters are marked as Failed.
     // System-managed field (OUTPUT) - set when validation is triggered.
     google.protobuf.Timestamp validation_started_at = 15;
-    // sync and the sync_info are valid only in Federated PXB deployment mode.
-    // sync is used to trigger backup sync from the object store.
-    // It is an on-demand sync, not automatic or periodic.
+    // sync is used to trigger a one-shot backup sync from the object store.
+    // Valid in both Federated and Non-Federated deployment modes.
+    // Only allowed on BackupLocations where sync_manual = true (Manual mode).
+    // Rejected if sync_manual = false (Automatic BL).
     // Note: The sync flag will be reset by the server once the backup sync operation
     // is completed for this BackupLocation. Parallel sync triggers by updating sync
     // flag while another sync is in progress are not allowed.
     bool sync = 13;
     // sync_info provides information about the sync operation including status, timing, and stats.
+    // Populated for both Automatic and Manual BLs in both Federated and Non-Federated modes.
     SyncInfo sync_info = 14;
+    // sync_manual controls whether this BackupLocation uses manual or automatic sync.
+    // - true  : Manual mode. Periodic BackupSync is skipped for this BL.
+    //           Syncs only occur when explicitly triggered via sync=true.
+    // - false : Automatic mode. Periodic BackupSync runs every 10 minutes.
+    // - null (not set): rejected on Create; treated as no-op on Update.
+    // Valid in both Federated and Non-Federated deployment modes.
+    // Uses BoolValue wrapper to distinguish between "not provided" (nil) and "explicitly set to false".
+    google.protobuf.BoolValue sync_manual = 16;
 
     // Message for maintaining status of the object.
     message StatusInfo {
@@ -835,6 +845,22 @@ message BackupLocationInfo {
         ObjectRef cluster_ref = 3;
         // Statistics about the sync operation (timing, counts, etc.)
         SyncStats sync_stats = 4;
+        // Number of NEW BackupObjects imported into the datastore during the
+        // most recent sync cycle. Final value on Completed answers "was this
+        // sync productive?" (0 = nothing new was on the object store).
+        // Zeroed at the start of each new sync cycle (Pending / InProgress
+        // transitions). Non-federated only; federated leaves this at 0.
+        int64 backups_synced = 5;
+        // Total number of backup objects enumerated during the most recent
+        // sync cycle. Includes new imports, already-synced skips, and
+        // per-object errors. Updated periodically during InProgress (every
+        // 100 objects or 5 seconds, whichever first) so consumers can
+        // distinguish "sync progressing but nothing new" (processed > 0,
+        // synced == 0) from "sync stuck" (neither incrementing while
+        // status = InProgress).
+        // Zeroed at the start of each new sync cycle. Non-federated only.
+        // Limitation: only the most recent cycle is retained.
+        int64 backups_processed = 6;
 
         enum Status {
             Invalid = 0;
