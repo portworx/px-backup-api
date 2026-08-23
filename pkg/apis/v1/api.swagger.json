@@ -6916,6 +6916,14 @@
             "type": "string"
           },
           "description": "Namespaces from a static-list VM backup that had no matching VMs (empty ns or ARLS-filtered)."
+        },
+        "resource_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "---- Resource-Centric Backup (PB-17448). Next free number was 62.\n60 and 61 are taken by synced and namespaces_without_matching_vms. ----\nWhich catalog resource this recovery point belongs to."
+        },
+        "intent_id": {
+          "type": "string",
+          "description": "The single Protection Intent that produced it."
         }
       }
     },

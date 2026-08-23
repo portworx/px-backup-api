@@ -1181,6 +1181,13 @@ message BackupInfo {
         }
     }
 
+
+    // ---- Resource-Centric Backup (PB-17448). Next free number was 62.
+    // 60 and 61 are taken by synced and namespaces_without_matching_vms. ----
+    // Which catalog resource this recovery point belongs to.
+    ObjectRef resource_ref = 62;
+    // The single Protection Intent that produced it.
+    string intent_id = 63;
 }
 
 // Message representing resources within a namespace with status, metrics, and resource type breakdown
