@@ -1558,6 +1558,274 @@
         ]
       }
     },
+    "/v1/binding": {
+      "post": {
+        "operationId": "Binding_Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BindingCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BindingCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Binding"
+        ]
+      }
+    },
+    "/v1/binding/{org_id}": {
+      "get": {
+        "operationId": "Binding_Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BindingEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "sla_policy_name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sla_policy_uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Binding"
+        ]
+      }
+    },
+    "/v1/binding/{org_id}/{catalog_resource_uid}": {
+      "get": {
+        "operationId": "Binding_Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BindingInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_resource_uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Binding"
+        ]
+      },
+      "delete": {
+        "operationId": "Binding_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BindingDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_resource_uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Binding"
+        ]
+      }
+    },
+    "/v1/catalogresource/{org_id}": {
+      "get": {
+        "summary": "Enumerate lists discovered namespaces and virtual machines.",
+        "operationId": "ResourceCatalog_Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ResourceCatalogEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "cluster_name",
+            "description": "Empty means every cluster.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cluster_uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "kinds",
+            "description": "Empty means every kind.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "KindInvalid",
+                "AppNamespace",
+                "VirtualMachine"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "states",
+            "description": "Empty means every state.\n\n - NotConfigured: Discovered in the catalog; no placement applied yet.\n - Unprotected: Placement applied, so a destination is known; no Binding yet.\n - ProtectedNotInSLA: Bound, but no recovery point qualifies yet.\n - ProtectedInSLA: Bound and meeting its recoverability period.\n - Excluded: Carries an exclusion; outside the SLA denominator.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ProtectionStateInvalid",
+                "NotConfigured",
+                "Unprotected",
+                "ProtectedNotInSLA",
+                "ProtectedInSLA",
+                "Excluded"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "include_tombstoned",
+            "description": "Tombstoned rows are hidden unless this is set.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "ResourceCatalog"
+        ]
+      }
+    },
+    "/v1/catalogresource/{org_id}/{uid}": {
+      "get": {
+        "summary": "Inspect returns one catalog resource by its Kubernetes UID.",
+        "operationId": "ResourceCatalog_Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ResourceCatalogInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "description": "The Kubernetes UID, which is the identity.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ResourceCatalog"
+        ]
+      }
+    },
     "/v1/cloudcredential": {
       "post": {
         "summary": "Creates new cloud credential",
@@ -3288,6 +3556,297 @@
         ],
         "tags": [
           "Organization"
+        ]
+      }
+    },
+    "/v1/placementassignment": {
+      "post": {
+        "summary": "Create applies a placement rule to every resource its filter matches.",
+        "operationId": "PlacementAssignment_Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PlacementAssignmentCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PlacementAssignmentCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PlacementAssignment"
+        ]
+      }
+    },
+    "/v1/placementassignment/{org_id}": {
+      "get": {
+        "operationId": "PlacementAssignment_Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PlacementAssignmentEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "placement_rule_name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "placement_rule_uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "PlacementAssignment"
+        ]
+      }
+    },
+    "/v1/placementassignment/{org_id}/{catalog_resource_uid}": {
+      "get": {
+        "operationId": "PlacementAssignment_Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PlacementAssignmentInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_resource_uid",
+            "description": "The catalog resource UID. An assignment is one-to-one with a resource.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "PlacementAssignment"
+        ]
+      },
+      "delete": {
+        "operationId": "PlacementAssignment_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PlacementAssignmentDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_resource_uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "PlacementAssignment"
+        ]
+      }
+    },
+    "/v1/placementrule": {
+      "post": {
+        "operationId": "PlacementRule_Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PlacementRuleCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PlacementRuleCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PlacementRule"
+        ]
+      }
+    },
+    "/v1/placementrule/{org_id}": {
+      "get": {
+        "operationId": "PlacementRule_Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PlacementRuleEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "PlacementRule"
+        ]
+      }
+    },
+    "/v1/placementrule/{org_id}/{name}/{uid}": {
+      "get": {
+        "operationId": "PlacementRule_Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PlacementRuleInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "PlacementRule"
+        ]
+      },
+      "delete": {
+        "summary": "Delete is refused while any assignment still references the rule.",
+        "operationId": "PlacementRule_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PlacementRuleDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "PlacementRule"
         ]
       }
     },
@@ -5101,6 +5660,205 @@
         ],
         "tags": [
           "Cluster"
+        ]
+      }
+    },
+    "/v1/slapolicy": {
+      "post": {
+        "summary": "Create an SLA Policy with zero or more baseline intents.",
+        "operationId": "SLAPolicy_Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SLAPolicyCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SLAPolicyCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SLAPolicy"
+        ]
+      }
+    },
+    "/v1/slapolicy/{org_id}": {
+      "get": {
+        "summary": "Enumerate returns every SLA Policy the caller may see.",
+        "operationId": "SLAPolicy_Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SLAPolicyEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SLAPolicy"
+        ]
+      }
+    },
+    "/v1/slapolicy/{org_id}/{name}/{uid}": {
+      "get": {
+        "summary": "Inspect returns one SLA Policy.",
+        "operationId": "SLAPolicy_Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SLAPolicyInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SLAPolicy"
+        ]
+      },
+      "delete": {
+        "summary": "Delete removes an SLA Policy. Refused while any Binding references it.",
+        "operationId": "SLAPolicy_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SLAPolicyDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SLAPolicy"
+        ]
+      }
+    },
+    "/v1/slapolicy/{org_id}/{name}/{uid}/intent": {
+      "post": {
+        "summary": "AddIntent adds one baseline intent and reports what it reaches.",
+        "operationId": "SLAPolicy_AddIntent",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SLAPolicyAddIntentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SLAPolicyAddIntentRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SLAPolicy"
         ]
       }
     },
@@ -7985,6 +8743,270 @@
       "type": "object",
       "title": "Define BackupUpdateResponse struct"
     },
+    "BindingCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "catalog_resource_uids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "One or more catalog resource UIDs. Each gets its own Binding."
+        },
+        "sla_policy_name": {
+          "type": "string"
+        },
+        "sla_policy_uid": {
+          "type": "string"
+        },
+        "pre_exec_rule_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "post_exec_rule_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "backup_object_type": {
+          "$ref": "#/definitions/BackupScheduleInfoBackupObjectType"
+        }
+      },
+      "description": "Create is create-if-absent. It fails when the resource has no placement,\nbecause then there is nowhere to send the backups, and there is no override\nfor any tier."
+    },
+    "BindingCreateResponse": {
+      "type": "object",
+      "properties": {
+        "created": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          }
+        },
+        "skipped_already_bound": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          }
+        },
+        "rejected_no_placement": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "BindingDeleteResponse": {
+      "type": "object"
+    },
+    "BindingEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BindingObject"
+          }
+        }
+      }
+    },
+    "BindingInfo": {
+      "type": "object",
+      "properties": {
+        "resource_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "sla_policy_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "An SLAPolicyObject. NOT the legacy BackupScheduleInfo.schedule_policy_ref,\nbecause it points at a different object."
+        },
+        "sla_policy_revision": {
+          "type": "string",
+          "format": "uint64",
+          "description": "Which revision was bound, for retention anchoring."
+        },
+        "baseline_assignment_owner": {
+          "type": "string"
+        },
+        "governance": {
+          "$ref": "#/definitions/BindingInfoGovernance",
+          "description": "DERIVED from the owner's tier, never selectable."
+        },
+        "placement_assignment_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "supplemental_intents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProtectionIntent"
+          },
+          "description": "Stored inline. This is the only place a supplemental intent exists."
+        },
+        "pre_exec_rule_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "Binding-wide hooks. Reuses the existing RuleObject untouched."
+        },
+        "post_exec_rule_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "backup_object_type": {
+          "$ref": "#/definitions/BackupScheduleInfoBackupObjectType"
+        },
+        "resource_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parallel_backup": {
+          "type": "boolean"
+        },
+        "keep_cr_status": {
+          "type": "boolean"
+        },
+        "created_by": {
+          "type": "string",
+          "description": "Immutable."
+        },
+        "source_rule_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "Rule provenance, matching the placement assignment."
+        },
+        "still_matches_source_rule": {
+          "type": "boolean"
+        },
+        "departed_since": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stork_schedule_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BindingInfoStorkScheduleRef"
+          },
+          "description": "The stork objects this Binding drives. One ApplicationBackupSchedule CR\nper effective intent, each naming exactly one namespace."
+        }
+      },
+      "description": "The durable junction of one resource and one SLA Policy.\n\nReshaped from BackupScheduleInfo into a new object, keeping its field names\nwhere the meaning is unchanged. What was wrong with the legacy message is its\ncardinality: one schedule selects many namespaces. Here it is one to one, and\nselection moves out to the binding rule — that inversion is the whole model."
+    },
+    "BindingInfoGovernance": {
+      "type": "string",
+      "enum": [
+        "GovernanceInvalid",
+        "EnforcedBaseline",
+        "DelegatedControl"
+      ],
+      "default": "GovernanceInvalid",
+      "description": " - EnforcedBaseline: A Super or Infra Admin owns the baseline assignment.\n - DelegatedControl: An App Admin owns it and may replace it."
+    },
+    "BindingInfoStorkScheduleRef": {
+      "type": "object",
+      "properties": {
+        "intent_id": {
+          "type": "string"
+        },
+        "schedule_policy_cr_name": {
+          "type": "string",
+          "description": "storkv1.SchedulePolicy, cluster-scoped."
+        },
+        "backup_schedule_cr_name": {
+          "type": "string",
+          "description": "storkv1.ApplicationBackupSchedule."
+        },
+        "backup_schedule_cr_namespace": {
+          "type": "string"
+        }
+      },
+      "description": "Correlates one intent to the stork CRs that execute it."
+    },
+    "BindingInspectResponse": {
+      "type": "object",
+      "properties": {
+        "binding": {
+          "$ref": "#/definitions/BindingObject"
+        }
+      }
+    },
+    "BindingObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "binding_info": {
+          "$ref": "#/definitions/BindingInfo"
+        }
+      }
+    },
+    "CatalogResourceInfo": {
+      "type": "object",
+      "properties": {
+        "cluster_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "kind": {
+          "$ref": "#/definitions/CatalogResourceInfoKind"
+        },
+        "parent_uid": {
+          "type": "string",
+          "description": "Virtual machines only: the Kubernetes UID of the owning namespace."
+        },
+        "lifecycle": {
+          "$ref": "#/definitions/CatalogResourceInfoLifecycle",
+          "description": "An overlay on the state, not a sixth state."
+        },
+        "protection_state": {
+          "$ref": "#/definitions/ProtectionState",
+          "description": "Materialized, never computed on read."
+        },
+        "first_seen_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deletion_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "placement_assignment_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "At most one of each."
+        },
+        "binding_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        }
+      },
+      "description": "One namespace or one virtual machine that we have discovered on a cluster.\n\nNothing like this exists today. Note that ResourceInfo and ResourceObject are\nalready taken and mean \"what was inside a given backup\", which is why this is\nnamed CatalogResource.\nIdentity note: Metadata.uid holds the KUBERNETES UID and Metadata.name holds\nthe namespace or virtual-machine name. They are not repeated here, both\nbecause the embed would collide and because it makes a catalog row\naddressable by the same --name and --uid pair as every other object.\nIdentity is Metadata.uid plus cluster_ref; the name is display only, since a\nnamespace can be deleted and recreated under the same name."
+    },
+    "CatalogResourceInfoKind": {
+      "type": "string",
+      "enum": [
+        "KindInvalid",
+        "AppNamespace",
+        "VirtualMachine"
+      ],
+      "default": "KindInvalid"
+    },
+    "CatalogResourceInfoLifecycle": {
+      "type": "string",
+      "enum": [
+        "LifecycleInvalid",
+        "Live",
+        "Tombstoned"
+      ],
+      "default": "LifecycleInvalid"
+    },
+    "CatalogResourceObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "catalog_resource_info": {
+          "$ref": "#/definitions/CatalogResourceInfo"
+        }
+      }
+    },
     "ChunkInfoResourceInfoStatus": {
       "type": "string",
       "enum": [
@@ -9114,6 +10136,15 @@
         }
       }
     },
+    "EncryptionRequirement": {
+      "type": "object",
+      "properties": {
+        "require_customer_managed_key": {
+          "type": "boolean"
+        }
+      },
+      "description": "The requirement lives on the intent. Key material stays on the backup\nlocation, which is why there is no key reference here."
+    },
     "EnumerateOptions": {
       "type": "object",
       "properties": {
@@ -9826,58 +10857,6 @@
         }
       }
     },
-    "MonthlyPolicyRelativeMonthlyPolicy": {
-      "type": "object",
-      "properties": {
-        "day": {
-          "type": "string",
-          "title": "Relative day of relative week, Only one day can be specified.\nFor example, sun or mon"
-        },
-        "weekly_index": {
-          "$ref": "#/definitions/RelativeMonthlyPolicyweeklyIndex"
-        },
-        "time": {
-          "type": "string",
-          "description": "Time, when the policy should be triggered. Expected format is\ntime.Kitchen eg 12:04PM or 12:04pm."
-        },
-        "retain": {
-          "type": "string",
-          "format": "int64",
-          "description": "Number of objects to retain for monthly policy, default value is 12."
-        },
-        "incremental_count": {
-          "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
-          "description": "Number of incremental snapshots to take before taking a full snapshot."
-        }
-      }
-    },
-    "MonthlyPolicySelectiveMonthlyPolicy": {
-      "type": "object",
-      "properties": {
-        "date": {
-          "type": "string",
-          "format": "int64",
-          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month, it will be skipped. For example, if 30 is specified,\nit'll be skipped in February."
-        },
-        "time": {
-          "type": "string",
-          "description": "Time, when the policy should be triggered. Expected format is\ntime.Kitchen eg 12:04PM or 12:04pm."
-        },
-        "retain": {
-          "type": "string",
-          "format": "int64",
-          "description": "Number of objects to retain for monthly policy, default value is 12."
-        },
-        "incremental_count": {
-          "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
-          "description": "Number of incremental snapshots to take before taking a full snapshot."
-        },
-        "months": {
-          "type": "string",
-          "title": "months specify the list months on which schedule needs to be taken.\nIf it is empty, the schedule will be taken on every month of the year.\nmonths will take comma seperated multiple month value.\nFor example, jan,feb or Jan,Feb or january,february or January,February"
-        }
-      }
-    },
     "NFSConfig": {
       "type": "object",
       "properties": {
@@ -10190,6 +11169,18 @@
         }
       }
     },
+    "OwnerTier": {
+      "type": "string",
+      "enum": [
+        "OwnerTierInvalid",
+        "SuperAdmin",
+        "InfraAdmin",
+        "AppAdmin",
+        "User"
+      ],
+      "default": "OwnerTierInvalid",
+      "description": "The tier that owns an object. Full resolution is owned by PB-16926; the\nhappy path always writes SuperAdmin."
+    },
     "Ownership": {
       "type": "object",
       "properties": {
@@ -10266,6 +11257,392 @@
         }
       },
       "title": "Define Permission struct"
+    },
+    "PlacementAssignmentCreateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "placement_rule_name": {
+          "type": "string"
+        },
+        "placement_rule_uid": {
+          "type": "string"
+        },
+        "only_catalog_resource_uids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Narrows what the filter already matched, for a staged rollout. A UID the\nfilter does not match is rejected rather than applied."
+        },
+        "dry_run": {
+          "type": "boolean",
+          "description": "Report what would happen and write nothing."
+        }
+      },
+      "description": "Create applies a placement rule. It names the RULE, never a resource: the\nrule carries the filter and the filter chooses the resources. One call\ntherefore writes many assignments."
+    },
+    "PlacementAssignmentCreateResponse": {
+      "type": "object",
+      "properties": {
+        "applied": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          }
+        },
+        "skipped_already_assigned": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          }
+        },
+        "rejected_not_matching_filter": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "PlacementAssignmentDeleteResponse": {
+      "type": "object"
+    },
+    "PlacementAssignmentEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "placement_assignments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PlacementAssignmentObject"
+          }
+        }
+      }
+    },
+    "PlacementAssignmentInfo": {
+      "type": "object",
+      "properties": {
+        "resource_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "backup_location_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "local_snapshot_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "applied_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "captured_rule_definition": {
+          "$ref": "#/definitions/ResourceFilter",
+          "description": "Frozen at apply time."
+        },
+        "source_rule_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "Rule provenance."
+        },
+        "still_matches_source_rule": {
+          "type": "boolean"
+        },
+        "departed_since": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "description": "One resource's resolved destination. Separate from the rule because it must\nkeep the rule's definition as it was at apply time — otherwise editing an\nauto rule would retroactively move every resource already using it."
+    },
+    "PlacementAssignmentInspectResponse": {
+      "type": "object",
+      "properties": {
+        "placement_assignment": {
+          "$ref": "#/definitions/PlacementAssignmentObject"
+        }
+      }
+    },
+    "PlacementAssignmentObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "placement_assignment_info": {
+          "$ref": "#/definitions/PlacementAssignmentInfo"
+        }
+      }
+    },
+    "PlacementRuleCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "placement_rule": {
+          "$ref": "#/definitions/PlacementRuleInfo"
+        }
+      }
+    },
+    "PlacementRuleCreateResponse": {
+      "type": "object"
+    },
+    "PlacementRuleDeleteResponse": {
+      "type": "object"
+    },
+    "PlacementRuleEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "placement_rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PlacementRuleObject"
+          }
+        }
+      }
+    },
+    "PlacementRuleInfo": {
+      "type": "object",
+      "properties": {
+        "filter": {
+          "$ref": "#/definitions/ResourceFilter"
+        },
+        "backup_location_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "Mandatory, and always off-cluster."
+        },
+        "local_snapshot_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "Optional local-snapshot leg. Local-only is invalid."
+        },
+        "mode": {
+          "$ref": "#/definitions/PlacementRuleInfoMode"
+        },
+        "owner_tier": {
+          "$ref": "#/definitions/OwnerTier",
+          "description": "The creator's tier, captured at create time. Metadata.ownership already\ncarries who owns the rule, so there is no owner field here."
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Auto rules only."
+        },
+        "applied_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "One-shot rules: the moment of their single application."
+        }
+      },
+      "description": "A named statement of where the backups of matching resources go."
+    },
+    "PlacementRuleInfoMode": {
+      "type": "string",
+      "enum": [
+        "ModeInvalid",
+        "OneShot",
+        "Auto"
+      ],
+      "default": "ModeInvalid",
+      "description": " - OneShot: Applies once, to whatever its filter matches at that moment.\n - Auto: Keeps applying to new matches."
+    },
+    "PlacementRuleInspectResponse": {
+      "type": "object",
+      "properties": {
+        "placement_rule": {
+          "$ref": "#/definitions/PlacementRuleObject"
+        }
+      }
+    },
+    "PlacementRuleObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "placement_rule_info": {
+          "$ref": "#/definitions/PlacementRuleInfo"
+        }
+      }
+    },
+    "ProtectionIntent": {
+      "type": "object",
+      "properties": {
+        "intent_id": {
+          "type": "string",
+          "description": "Stable within its SLA Policy or its Binding."
+        },
+        "interval": {
+          "$ref": "#/definitions/ProtectionIntentIntervalPolicy"
+        },
+        "daily": {
+          "$ref": "#/definitions/ProtectionIntentDailyPolicy"
+        },
+        "weekly": {
+          "$ref": "#/definitions/ProtectionIntentWeeklyPolicy"
+        },
+        "monthly": {
+          "$ref": "#/definitions/ProtectionIntentMonthlyPolicy"
+        },
+        "incremental_count": {
+          "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
+          "description": "Referenced rather than copied: a leaf value type with no retain conflict.\nThe wrapper is what separates \"always full\" (0) from unset, so it stays\na message."
+        },
+        "run_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Chosen by the administrator. Automatic run-time selection is out of v1."
+        },
+        "recoverability_period": {
+          "type": "string",
+          "description": "The ONLY retention field. A period, never a count. A count cannot say\n\"recoverable for 30 days\" when runs are missed."
+        },
+        "capture_mode": {
+          "$ref": "#/definitions/ProtectionIntentCaptureMode",
+          "description": "Capture. Relocated from BackupScheduleInfo.backup_type and .direct_kdmp."
+        },
+        "require_snapshot_capture": {
+          "type": "boolean",
+          "description": "Super/Infra only. Fails rather than falling back to the generic path."
+        },
+        "vsc_override_labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Was BackupScheduleInfo.volume_snapshot_class_mapping."
+        },
+        "volume_resource_only_policy_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "encryption_requirement": {
+          "$ref": "#/definitions/EncryptionRequirement"
+        },
+        "classification": {
+          "$ref": "#/definitions/ProtectionIntentClassification"
+        },
+        "owner": {
+          "type": "string",
+          "description": "Creator. Only the creator may edit a supplemental intent."
+        },
+        "owner_tier": {
+          "$ref": "#/definitions/OwnerTier"
+        }
+      },
+      "description": "One statement of how often a resource is captured, how long it stays\nrecoverable, and how it is captured.\n\nEmbeddable only. It sits in an SLAPolicyInfo as a baseline intent and in a\nBindingInfo as a supplemental one, so it is never a standalone object.\n\nThe four schedule forms are COPIED from SchedulePolicyInfo, keeping every\nfield name, MINUS retain and incremental_count. Both of those appear in all\nfive legacy forms and are duplicated at this level; retain is a count and\nwould sit beside a period, giving one intent two retention models."
+    },
+    "ProtectionIntentCaptureMode": {
+      "type": "string",
+      "enum": [
+        "CaptureModeInvalid",
+        "AutomaticOptimized",
+        "GenericCrossCloud"
+      ],
+      "default": "CaptureModeInvalid",
+      "description": " - AutomaticOptimized: Prefers a snapshot; may fall back unless forbidden.\n - GenericCrossCloud: Always the generic path; never silently switched."
+    },
+    "ProtectionIntentClassification": {
+      "type": "string",
+      "enum": [
+        "ClassificationInvalid",
+        "Baseline",
+        "Supplemental"
+      ],
+      "default": "ClassificationInvalid",
+      "description": " - Baseline: Came from the shared SLA Policy.\n - Supplemental: Lives in one Binding only."
+    },
+    "ProtectionIntentDailyPolicy": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "string",
+          "description": "time.Kitchen, for example 12:04PM."
+        }
+      }
+    },
+    "ProtectionIntentIntervalPolicy": {
+      "type": "object",
+      "properties": {
+        "minutes": {
+          "type": "string",
+          "format": "int64",
+          "description": "Interval in minutes between runs."
+        }
+      }
+    },
+    "ProtectionIntentMonthlyPolicy": {
+      "type": "object",
+      "properties": {
+        "relative_monthly_policy": {
+          "$ref": "#/definitions/ProtectionIntentMonthlyPolicyRelativeMonthlyPolicy"
+        },
+        "selective_monthly_policy": {
+          "$ref": "#/definitions/ProtectionIntentMonthlyPolicySelectiveMonthlyPolicy"
+        }
+      }
+    },
+    "ProtectionIntentMonthlyPolicyRelativeMonthlyPolicy": {
+      "type": "object",
+      "properties": {
+        "day": {
+          "type": "string",
+          "description": "One day only, for example sun."
+        },
+        "weekly_index": {
+          "$ref": "#/definitions/RelativeMonthlyPolicyWeeklyIndex"
+        },
+        "time": {
+          "type": "string"
+        }
+      }
+    },
+    "ProtectionIntentMonthlyPolicySelectiveMonthlyPolicy": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "int64"
+        },
+        "time": {
+          "type": "string"
+        },
+        "months": {
+          "type": "string",
+          "description": "Comma-separated months. Empty means every month."
+        }
+      }
+    },
+    "ProtectionIntentWeeklyPolicy": {
+      "type": "object",
+      "properties": {
+        "day": {
+          "type": "string",
+          "description": "Comma-separated days, for example sunday,monday."
+        },
+        "time": {
+          "type": "string"
+        },
+        "bi_weekly": {
+          "type": "boolean",
+          "description": "Run on alternate weeks."
+        }
+      }
+    },
+    "ProtectionState": {
+      "type": "string",
+      "enum": [
+        "ProtectionStateInvalid",
+        "NotConfigured",
+        "Unprotected",
+        "ProtectedNotInSLA",
+        "ProtectedInSLA",
+        "Excluded"
+      ],
+      "default": "ProtectionStateInvalid",
+      "description": "Five states. \"Deleted\" is the lifecycle field, never a sixth value.\n\n - NotConfigured: Discovered in the catalog; no placement applied yet.\n - Unprotected: Placement applied, so a destination is known; no Binding yet.\n - ProtectedNotInSLA: Bound, but no recovery point qualifies yet.\n - ProtectedInSLA: Bound and meeting its recoverability period.\n - Excluded: Carries an exclusion; outside the SLA denominator."
     },
     "RancherConfig": {
       "type": "object",
@@ -10539,6 +11916,18 @@
       ],
       "default": "Invalid"
     },
+    "RelativeMonthlyPolicyWeeklyIndex": {
+      "type": "string",
+      "enum": [
+        "WeeklyIndexInvalid",
+        "first",
+        "second",
+        "third",
+        "fourth",
+        "last"
+      ],
+      "default": "WeeklyIndexInvalid"
+    },
     "RelativeMonthlyPolicyweeklyIndex": {
       "type": "string",
       "enum": [
@@ -10579,6 +11968,33 @@
         "Delete"
       ],
       "default": "Invalid"
+    },
+    "ResourceCatalogEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CatalogResourceObject"
+          }
+        },
+        "state_counts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "uint64"
+          },
+          "description": "Per-state totals, so a caller need not count client-side."
+        }
+      }
+    },
+    "ResourceCatalogInspectResponse": {
+      "type": "object",
+      "properties": {
+        "resource": {
+          "$ref": "#/definitions/CatalogResourceObject"
+        }
+      }
     },
     "ResourceChunkInfoResource": {
       "type": "object",
@@ -10638,6 +12054,40 @@
         }
       },
       "description": "ResourceDetail describes one owned entity (volume or non-volume resource)\nof a VM in the GetRestoreResourceDetails response. Volumes and non-volume\nresources are unified into one list, differentiated by gvk.\nFor PVCs, gvk = \"PersistentVolumeClaim/v1\"."
+    },
+    "ResourceFilter": {
+      "type": "object",
+      "properties": {
+        "cluster_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "Empty means every cluster in the captured boundary."
+        },
+        "target_kinds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CatalogResourceInfoKind"
+          },
+          "description": "Must be stated explicitly; there is no implicit \"everything\"."
+        },
+        "resource_uids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "A hand-picked set of catalog resource UIDs."
+        },
+        "namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Explicit namespace names, scoped by cluster_refs."
+        }
+      },
+      "description": "Which resources a rule targets. Shared by the placement rule and, later, the\nbinding rule.\n\nObject-level label selectors are rejected at validation: they choose objects\ninside a namespace, which are not resources and cannot hold an assignment."
     },
     "ResourceInfo": {
       "type": "object",
@@ -11929,6 +13379,108 @@
       "default": "Invalid",
       "title": "- SSE_S3: Server-side encryption with AWS S3 managed keys\n - SSE_KMS: Server-side encryption with AWS Key Management Service"
     },
+    "SLAPolicyAddIntentRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        },
+        "intent": {
+          "$ref": "#/definitions/ProtectionIntent"
+        }
+      },
+      "description": "One intent at a time, deliberately. A whole-object update could not tell\n\"one intent added\" from \"three rewritten\", and the impact review needs the\nexact change before it touches every Binding on this SLA Policy."
+    },
+    "SLAPolicyAddIntentResponse": {
+      "type": "object",
+      "properties": {
+        "revision": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "affected_bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "Every Binding this addition reaches."
+        }
+      }
+    },
+    "SLAPolicyCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "sla_policy": {
+          "$ref": "#/definitions/SLAPolicyInfo"
+        }
+      }
+    },
+    "SLAPolicyCreateResponse": {
+      "type": "object"
+    },
+    "SLAPolicyDeleteResponse": {
+      "type": "object"
+    },
+    "SLAPolicyEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "sla_policies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SLAPolicyObject"
+          }
+        }
+      }
+    },
+    "SLAPolicyInfo": {
+      "type": "object",
+      "properties": {
+        "protection_intents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProtectionIntent"
+          }
+        },
+        "revision": {
+          "type": "string",
+          "format": "uint64",
+          "description": "Increases only. A recovery point records the revision it ran under."
+        },
+        "paused": {
+          "type": "boolean",
+          "description": "Suppresses new scheduled runs. Not a resource state."
+        }
+      },
+      "description": "A reusable, resource-agnostic set of Protection Intents. Holds no location,\nno placement rule, no governance mode and no supplemental intent, so one SLA\nPolicy can serve resources in different clusters.\n\nMetadata carries Ownership, so there is no owner field. There is no\nback-reference list of Bindings either: it would be unbounded at fleet scale\nand every bind would have to write this shared document. \"Which Bindings use\nthis SLA Policy\" is an index on the Binding."
+    },
+    "SLAPolicyInspectResponse": {
+      "type": "object",
+      "properties": {
+        "sla_policy": {
+          "$ref": "#/definitions/SLAPolicyObject"
+        }
+      }
+    },
+    "SLAPolicyObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "sla_policy_info": {
+          "$ref": "#/definitions/SLAPolicyInfo"
+        }
+      }
+    },
     "SchedulePolicyCreateRequest": {
       "type": "object",
       "properties": {
@@ -12069,10 +13621,62 @@
           "description": "Number of incremental snapshots to take before taking a full snapshot.\nThis field is deprecated, not to be used."
         },
         "relative_monthly_policy": {
-          "$ref": "#/definitions/MonthlyPolicyRelativeMonthlyPolicy"
+          "$ref": "#/definitions/SchedulePolicyInfoMonthlyPolicyRelativeMonthlyPolicy"
         },
         "selective_monthly_policy": {
-          "$ref": "#/definitions/MonthlyPolicySelectiveMonthlyPolicy"
+          "$ref": "#/definitions/SchedulePolicyInfoMonthlyPolicySelectiveMonthlyPolicy"
+        }
+      }
+    },
+    "SchedulePolicyInfoMonthlyPolicyRelativeMonthlyPolicy": {
+      "type": "object",
+      "properties": {
+        "day": {
+          "type": "string",
+          "title": "Relative day of relative week, Only one day can be specified.\nFor example, sun or mon"
+        },
+        "weekly_index": {
+          "$ref": "#/definitions/RelativeMonthlyPolicyweeklyIndex"
+        },
+        "time": {
+          "type": "string",
+          "description": "Time, when the policy should be triggered. Expected format is\ntime.Kitchen eg 12:04PM or 12:04pm."
+        },
+        "retain": {
+          "type": "string",
+          "format": "int64",
+          "description": "Number of objects to retain for monthly policy, default value is 12."
+        },
+        "incremental_count": {
+          "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
+          "description": "Number of incremental snapshots to take before taking a full snapshot."
+        }
+      }
+    },
+    "SchedulePolicyInfoMonthlyPolicySelectiveMonthlyPolicy": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "int64",
+          "description": "Date of the month when the policy should be triggered. If a given date\ndoesn't exist in a month, it will be skipped. For example, if 30 is specified,\nit'll be skipped in February."
+        },
+        "time": {
+          "type": "string",
+          "description": "Time, when the policy should be triggered. Expected format is\ntime.Kitchen eg 12:04PM or 12:04pm."
+        },
+        "retain": {
+          "type": "string",
+          "format": "int64",
+          "description": "Number of objects to retain for monthly policy, default value is 12."
+        },
+        "incremental_count": {
+          "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
+          "description": "Number of incremental snapshots to take before taking a full snapshot."
+        },
+        "months": {
+          "type": "string",
+          "title": "months specify the list months on which schedule needs to be taken.\nIf it is empty, the schedule will be taken on every month of the year.\nmonths will take comma seperated multiple month value.\nFor example, jan,feb or Jan,Feb or january,february or January,February"
         }
       }
     },
