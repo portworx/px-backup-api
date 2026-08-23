@@ -5264,6 +5264,10 @@ message SLAPolicyObject {
 message CatalogResourceInfo {
     ObjectRef cluster_ref = 1;
     Kind kind = 2;
+    // The namespace or virtual-machine name, for display and for naming the
+    // stork objects. Not called "name", because Metadata already has one and
+    // the embed would collide.
+    string resource_name = 10;
     // Virtual machines only: the Kubernetes UID of the owning namespace.
     string parent_uid = 3;
     // An overlay on the state, not a sixth state.

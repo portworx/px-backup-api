@@ -8956,6 +8956,10 @@
         "kind": {
           "$ref": "#/definitions/CatalogResourceInfoKind"
         },
+        "resource_name": {
+          "type": "string",
+          "description": "The namespace or virtual-machine name, for display and for naming the\nstork objects. Not called \"name\", because Metadata already has one and\nthe embed would collide."
+        },
         "parent_uid": {
           "type": "string",
           "description": "Virtual machines only: the Kubernetes UID of the owning namespace."
