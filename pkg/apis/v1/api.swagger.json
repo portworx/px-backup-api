@@ -5862,6 +5862,108 @@
         ]
       }
     },
+    "/v1/slapolicy/{org_id}/{name}/{uid}/resume": {
+      "post": {
+        "summary": "Resume lets the scheduled runs start again.",
+        "operationId": "SLAPolicy_Resume",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SLAPolicyResumeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SLAPolicyResumeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SLAPolicy"
+        ]
+      }
+    },
+    "/v1/slapolicy/{org_id}/{name}/{uid}/suspend": {
+      "post": {
+        "summary": "Suspend stops new scheduled runs across every Binding on this SLA policy.",
+        "operationId": "SLAPolicy_Suspend",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SLAPolicySuspendResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SLAPolicySuspendRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SLAPolicy"
+        ]
+      }
+    },
     "/v1/unsharecluster": {
       "patch": {
         "summary": "UnShareCluster removes shared access for the user(s) or group(s) to the cluster",
@@ -8923,6 +9025,13 @@
           "description": "storkv1.ApplicationBackupSchedule."
         },
         "backup_schedule_cr_namespace": {
+          "type": "string"
+        },
+        "schedule_policy_uid": {
+          "type": "string",
+          "description": "The px-backup UIDs of the derived objects. Needed to address them on\nan unbind or a suspend, where a name alone is not enough."
+        },
+        "backup_schedule_uid": {
           "type": "string"
         }
       },
@@ -13490,6 +13599,58 @@
         },
         "sla_policy_info": {
           "$ref": "#/definitions/SLAPolicyInfo"
+        }
+      }
+    },
+    "SLAPolicyResumeRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        }
+      }
+    },
+    "SLAPolicyResumeResponse": {
+      "type": "object",
+      "properties": {
+        "resumed_bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          }
+        }
+      }
+    },
+    "SLAPolicySuspendRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        }
+      },
+      "description": "Suspend stops new scheduled runs for every Binding on this SLA policy. It\nremoves nothing: the Bindings, the placements and every recovery point stay."
+    },
+    "SLAPolicySuspendResponse": {
+      "type": "object",
+      "properties": {
+        "suspended_bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "The Bindings whose schedules were suspended."
         }
       }
     },

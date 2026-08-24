@@ -5430,6 +5430,10 @@ message BindingInfo {
         // storkv1.ApplicationBackupSchedule.
         string backup_schedule_cr_name = 3;
         string backup_schedule_cr_namespace = 4;
+        // The px-backup UIDs of the derived objects. Needed to address them on
+        // an unbind or a suspend, where a name alone is not enough.
+        string schedule_policy_uid = 5;
+        string backup_schedule_uid = 6;
     }
 }
 
@@ -5484,6 +5488,27 @@ message SLAPolicyAddIntentResponse {
     repeated ObjectRef affected_bindings = 2;
 }
 
+// Suspend stops new scheduled runs for every Binding on this SLA policy. It
+// removes nothing: the Bindings, the placements and every recovery point stay.
+message SLAPolicySuspendRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+message SLAPolicySuspendResponse {
+    // The Bindings whose schedules were suspended.
+    repeated ObjectRef suspended_bindings = 1;
+}
+
+message SLAPolicyResumeRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+message SLAPolicyResumeResponse {
+    repeated ObjectRef resumed_bindings = 1;
+}
+
 service SLAPolicy {
     // Create an SLA Policy with zero or more baseline intents.
     rpc Create(SLAPolicyCreateRequest) returns (SLAPolicyCreateResponse) {
@@ -5520,6 +5545,22 @@ service SLAPolicy {
         returns (SLAPolicyAddIntentResponse) {
         option (google.api.http) = {
             post : "/v1/slapolicy/{org_id}/{name}/{uid}/intent"
+            body : "*"
+        };
+    }
+
+    // Suspend stops new scheduled runs across every Binding on this SLA policy.
+    rpc Suspend(SLAPolicySuspendRequest) returns (SLAPolicySuspendResponse) {
+        option (google.api.http) = {
+            post : "/v1/slapolicy/{org_id}/{name}/{uid}/suspend"
+            body : "*"
+        };
+    }
+
+    // Resume lets the scheduled runs start again.
+    rpc Resume(SLAPolicyResumeRequest) returns (SLAPolicyResumeResponse) {
+        option (google.api.http) = {
+            post : "/v1/slapolicy/{org_id}/{name}/{uid}/resume"
             body : "*"
         };
     }
