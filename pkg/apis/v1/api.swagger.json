@@ -1527,6 +1527,30 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "filter_options.filter_options.owners",
+            "description": "[Access: Super Admin only] Owner uids to scope the operation to schedules owned by these\nusers. Empty = no owner filter.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "filter_options.status",
+            "description": "[Access: All users] Run state to scope the delete. A schedule is either Running or\nSuspended; unspecified = no run-state filter.\n\n - BackupScheduleRunStateInvalid: Invalid or unspecified run state; ignored when used as a filter value.\n - BackupScheduleRunStateRunning: Schedule is actively running (not suspended).\n - BackupScheduleRunStateSuspended: Schedule is suspended.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "BackupScheduleRunStateInvalid",
+              "BackupScheduleRunStateRunning",
+              "BackupScheduleRunStateSuspended"
+            ],
+            "default": "BackupScheduleRunStateInvalid"
           }
         ],
         "tags": [
@@ -6398,15 +6422,6 @@
         "cleanup_details": {
           "$ref": "#/definitions/BackupInfoCleanupDetails",
           "description": "cleanup_details carries per-volume GC state. Absent on volumes that\nhave not yet been picked up by the deletion sweeper."
-        },
-        "start_time": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Reconcile-observation times, not data-mover timings. Either may be\nunset, and finish_time can be set without start_time, so check both\nbefore subtracting and never substitute a zero or epoch value."
-        },
-        "finish_time": {
-          "type": "string",
-          "format": "date-time"
         }
       }
     },
@@ -7325,6 +7340,20 @@
       },
       "title": "Define BackupScheduleCreateResponse struct"
     },
+    "BackupScheduleDeleteFilterOptions": {
+      "type": "object",
+      "properties": {
+        "filter_options": {
+          "$ref": "#/definitions/BackupScheduleFilterOptions",
+          "description": "Common bulk selectors shared with the update filter."
+        },
+        "status": {
+          "$ref": "#/definitions/BackupScheduleRunState",
+          "description": "[Access: All users] Run state to scope the delete. A schedule is either Running or\nSuspended; unspecified = no run-state filter."
+        }
+      },
+      "description": "BackupScheduleDeleteFilterOptions carries the selectors used to pick which\nbackup schedules a bulk delete acts on. It wraps the common\nBackupScheduleFilterOptions so delete-specific selectors can be added here\nlater without changing the shared message or the update filter."
+    },
     "BackupScheduleDeleteRequest": {
       "type": "object",
       "properties": {
@@ -7381,6 +7410,10 @@
         "bulk_uid_check_relaxation": {
           "type": "boolean",
           "description": "bulk_uid_check_relaxation - This flag needs to be set to relax the UID check for bulk update operations.\nIn a bulk operation, the user will pass multiple filter options to select a list of BackupSchedule objects.\nFor example, the user may send a schedulePolicyRef object to filter BackupSchedules that use that SchedulePolicy.\nIf the user provides only the name in the schedulePolicyRef, and there are multiple SchedulePolicy objects with the same name,\nwe cannot return an error. Therefore, we require the user to explicitly confirm acceptance of the side effects of UID relaxation."
+        },
+        "filter_options": {
+          "$ref": "#/definitions/BackupScheduleDeleteFilterOptions",
+          "description": "Selectors narrowing which schedules a bulk delete acts on."
         }
       },
       "title": "Define BackupScheduleDeleteRequest struct"
@@ -7434,6 +7467,33 @@
         }
       },
       "title": "Define BackupScheduleEnumerateResponse struct"
+    },
+    "BackupScheduleFilterOptions": {
+      "type": "object",
+      "properties": {
+        "volume_resource_only_policy_ref": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "Filter schedules by the volumeResourceOnly policy they reference.\nMirrors EnumerateOptions.volume_resource_only_policy_ref, so the same\nfilter the Schedules page applies can be sent with a bulk operation."
+        },
+        "owners": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "[Access: Super Admin only] Owner uids to scope the operation to schedules owned by these\nusers. Empty = no owner filter."
+        },
+        "backup_location_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "[Access: All users] Backup locations to scope the operation to. Matches on name (and uid\nwhen provided). Empty = no backup-location filter."
+        }
+      },
+      "description": "BackupScheduleFilterOptions carries the selectors used to pick which backup schedules a bulk\nBackupSchedule Update (suspend/resume) or Delete operation acts on. It is distinct from the\nfields that set values on the schedules themselves, so a new bulk selector can be added here\nwithout adding another top-level field to every request. Every field documents its access level:\nwhether it is available to all users or restricted to Super Admin.\nThis message is common to both the Update and Delete operations, wrapped by\nBackupScheduleUpdateFilterOptions and BackupScheduleDeleteFilterOptions."
     },
     "BackupScheduleInfo": {
       "type": "object",
@@ -7722,6 +7782,26 @@
         }
       }
     },
+    "BackupScheduleRunState": {
+      "type": "string",
+      "enum": [
+        "BackupScheduleRunStateInvalid",
+        "BackupScheduleRunStateRunning",
+        "BackupScheduleRunStateSuspended"
+      ],
+      "default": "BackupScheduleRunStateInvalid",
+      "description": "BackupScheduleRunState is the run state of a backup schedule (running vs suspended),\nused to filter bulk suspend/resume and delete operations.\n\n - BackupScheduleRunStateInvalid: Invalid or unspecified run state; ignored when used as a filter value.\n - BackupScheduleRunStateRunning: Schedule is actively running (not suspended).\n - BackupScheduleRunStateSuspended: Schedule is suspended."
+    },
+    "BackupScheduleUpdateFilterOptions": {
+      "type": "object",
+      "properties": {
+        "filter_options": {
+          "$ref": "#/definitions/BackupScheduleFilterOptions",
+          "description": "Common bulk selectors shared with the delete filter."
+        }
+      },
+      "description": "BackupScheduleUpdateFilterOptions carries the selectors used to pick which\nbackup schedules a bulk update acts on. It wraps the common\nBackupScheduleFilterOptions so update-specific selectors can be added here\nlater without changing the shared message or the delete filter."
+    },
     "BackupScheduleUpdateRequest": {
       "type": "object",
       "properties": {
@@ -7860,6 +7940,10 @@
         },
         "ns_label_selectors": {
           "type": "string"
+        },
+        "filter_options": {
+          "$ref": "#/definitions/BackupScheduleUpdateFilterOptions",
+          "description": "Selectors narrowing which schedules a bulk update acts on. Distinct from\nvolume_resource_only_policy_ref above, which sets the volumeResourceOnly\npolicy on the schedule being updated."
         }
       },
       "title": "Define BackupScheduleUpdateRequest struct"
@@ -11329,15 +11413,6 @@
         "total_size": {
           "type": "string",
           "format": "uint64"
-        },
-        "start_time": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Same semantics and caveats as BackupInfo.Volume.start_time/finish_time."
-        },
-        "finish_time": {
-          "type": "string",
-          "format": "date-time"
         }
       }
     },
