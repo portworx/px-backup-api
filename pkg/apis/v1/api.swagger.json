@@ -4272,6 +4272,107 @@
         ]
       }
     },
+    "/v1/recoverypoint/{org_id}": {
+      "get": {
+        "summary": "Enumerate returns one resource's timeline, newest first.",
+        "operationId": "RecoveryPoint_Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RecoveryPointEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_resource_uid",
+            "description": "The catalog resource UID. Empty returns every recovery point in the org.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "intent_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "restorable_only",
+            "description": "Only points that can actually be restored.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "RecoveryPoint"
+        ]
+      }
+    },
+    "/v1/recoverypoint/{org_id}/{catalog_resource_uid}/{backup_name}": {
+      "get": {
+        "summary": "Inspect returns one resource's entry in one backup.",
+        "operationId": "RecoveryPoint_Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RecoveryPointInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_resource_uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "backup_name",
+            "description": "The shared backup this point belongs to.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "backup_uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "RecoveryPoint"
+        ]
+      }
+    },
     "/v1/resourceType/{org_id}": {
       "get": {
         "summary": "ResourceTypes api will return the list of ResourceTypes are support by px-backup for backup.",
@@ -7019,13 +7120,9 @@
           },
           "description": "Namespaces from a static-list VM backup that had no matching VMs (empty ns or ARLS-filtered)."
         },
-        "resource_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "description": "---- Resource-Centric Backup (PB-17448). Next free number was 62.\n60 and 61 are taken by synced and namespaces_without_matching_vms. ----\nWhich catalog resource this recovery point belongs to."
-        },
         "intent_id": {
           "type": "string",
-          "description": "The single Protection Intent that produced it."
+          "description": "The single Protection Intent that produced it. Still correct: one\nschedule key serves exactly one intent."
         }
       }
     },
@@ -8990,12 +9087,19 @@
           "type": "string",
           "format": "date-time"
         },
-        "stork_schedule_refs": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/BindingInfoStorkScheduleRef"
-          },
-          "description": "The stork objects this Binding drives. One ApplicationBackupSchedule CR\nper effective intent, each naming exactly one namespace."
+        "schedule_key": {
+          "type": "string",
+          "description": "Which shared schedule executes this Binding.\n\nDERIVED, never user-supplied. Two Bindings holding the same value are\nexecuted by one ApplicationBackupSchedule CR, so this is an\nequivalence-class key rather than an identifier for anything.\n\nReadable rather than an opaque hash, because an operator has to be able\nto see why two resources did not group:\n    v1|c1|fb-bl|gold:daily|Namespace|hooks:none|par:false\n\nThe leading version is load-bearing. Changing the derivation changes\nevery key and orphans every existing CR, so the prefix makes that\ndetectable rather than silent. The CR name is a short digest of this,\nbecause Kubernetes needs a DNS-safe name under 63 characters."
+        },
+        "schedule_policy_cr_name": {
+          "type": "string",
+          "description": "The derived CR names, recorded so an unbind or a suspend can address\nthem without recomputing the digest."
+        },
+        "backup_schedule_cr_name": {
+          "type": "string"
+        },
+        "backup_schedule_uid": {
+          "type": "string"
         }
       },
       "description": "The durable junction of one resource and one SLA Policy.\n\nReshaped from BackupScheduleInfo into a new object, keeping its field names\nwhere the meaning is unchanged. What was wrong with the legacy message is its\ncardinality: one schedule selects many namespaces. Here it is one to one, and\nselection moves out to the binding rule — that inversion is the whole model."
@@ -9009,33 +9113,6 @@
       ],
       "default": "GovernanceInvalid",
       "description": " - EnforcedBaseline: A Super or Infra Admin owns the baseline assignment.\n - DelegatedControl: An App Admin owns it and may replace it."
-    },
-    "BindingInfoStorkScheduleRef": {
-      "type": "object",
-      "properties": {
-        "intent_id": {
-          "type": "string"
-        },
-        "schedule_policy_cr_name": {
-          "type": "string",
-          "description": "storkv1.SchedulePolicy, cluster-scoped."
-        },
-        "backup_schedule_cr_name": {
-          "type": "string",
-          "description": "storkv1.ApplicationBackupSchedule."
-        },
-        "backup_schedule_cr_namespace": {
-          "type": "string"
-        },
-        "schedule_policy_uid": {
-          "type": "string",
-          "description": "The px-backup UIDs of the derived objects. Needed to address them on\nan unbind or a suspend, where a name alone is not enough."
-        },
-        "backup_schedule_uid": {
-          "type": "string"
-        }
-      },
-      "description": "Correlates one intent to the stork CRs that execute it."
     },
     "BindingInspectResponse": {
       "type": "object",
@@ -12026,6 +12103,91 @@
     },
     "RecipientUpdateResponse": {
       "type": "object"
+    },
+    "RecoveryPointEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "recovery_points": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RecoveryPointObject"
+          }
+        }
+      }
+    },
+    "RecoveryPointInfo": {
+      "type": "object",
+      "properties": {
+        "resource_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "Identified by Kubernetes UID, never by name."
+        },
+        "backup_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "The SHARED backup this came from. Several recovery points point here."
+        },
+        "intent_id": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/RecoveryPointInfoStatus"
+        },
+        "restorable": {
+          "type": "boolean",
+          "description": "False when the resource's own data did not complete, even if the\nbackup as a whole reports partial success."
+        },
+        "size_bytes": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "sla_policy_revision_at_capture": {
+          "type": "string",
+          "format": "uint64",
+          "description": "Retention is anchored to the revision in force at capture."
+        },
+        "taken_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expiry_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Drives reference-counted deletion: the shared backup may only be removed\nonce the last recovery point referencing it is gone."
+        },
+        "failure_reason": {
+          "type": "string",
+          "description": "Populated when the resource did not succeed, for the timeline gap."
+        }
+      },
+      "description": "One resource's entry in one run of a shared backup.\n\nA backup now covers many resources, so the backup alone cannot answer \"what\ncan I restore for this namespace\". This can NOT be derived by querying\nstork's per-namespace array inside the backup document, because that array\nis keyed by namespace NAME while identity here is the Kubernetes UID. A\nnamespace deleted and recreated under the same name is a different resource,\nand a name-keyed lookup would hand it the earlier resource's history.\n\nA recovery point exists only for a resource that actually succeeded. A\nresource that failed inside a partially successful backup gets none, so its\ntimeline shows a gap and the SLA engine reports it out of SLA. That is how\nper-resource failure isolation survives a shared execution."
+    },
+    "RecoveryPointInfoStatus": {
+      "type": "string",
+      "enum": [
+        "StatusInvalid",
+        "Successful",
+        "PartialSuccess"
+      ],
+      "default": "StatusInvalid"
+    },
+    "RecoveryPointInspectResponse": {
+      "type": "object",
+      "properties": {
+        "recovery_point": {
+          "$ref": "#/definitions/RecoveryPointObject"
+        }
+      }
+    },
+    "RecoveryPointObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "recovery_point_info": {
+          "$ref": "#/definitions/RecoveryPointInfo"
+        }
+      }
     },
     "RefreshStatusInfoRefreshStatus": {
       "type": "string",

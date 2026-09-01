@@ -1182,11 +1182,15 @@ message BackupInfo {
     }
 
 
-    // ---- Resource-Centric Backup (PB-17448). Next free number was 62.
+    // ---- Resource-Centric Backup. Next free number was 62.
     // 60 and 61 are taken by synced and namespaces_without_matching_vms. ----
-    // Which catalog resource this recovery point belongs to.
-    ObjectRef resource_ref = 62;
-    // The single Protection Intent that produced it.
+    // Field 62 held resource_ref under the one-schedule-per-resource model.
+    // A backup now covers many resources, so one reference cannot describe it
+    // and the per-resource verdict lives in RecoveryPointInfo instead.
+    reserved 62;
+    reserved "resource_ref";
+    // The single Protection Intent that produced it. Still correct: one
+    // schedule key serves exactly one intent.
     string intent_id = 63;
 }
 
@@ -5410,9 +5414,33 @@ message BindingInfo {
     bool still_matches_source_rule = 16;
     google.protobuf.Timestamp departed_since = 17;
 
-    // The stork objects this Binding drives. One ApplicationBackupSchedule CR
-    // per effective intent, each naming exactly one namespace.
-    repeated StorkScheduleRef stork_schedule_refs = 18;
+    // Field 18 held stork_schedule_refs, a list of CRs this Binding owned
+    // under the one-schedule-per-resource model. A Binding no longer owns a
+    // schedule; it contributes its resource to a shared one.
+    reserved 18;
+    reserved "stork_schedule_refs";
+
+    // Which shared schedule executes this Binding.
+    //
+    // DERIVED, never user-supplied. Two Bindings holding the same value are
+    // executed by one ApplicationBackupSchedule CR, so this is an
+    // equivalence-class key rather than an identifier for anything.
+    //
+    // Readable rather than an opaque hash, because an operator has to be able
+    // to see why two resources did not group:
+    //     v1|c1|fb-bl|gold:daily|Namespace|hooks:none|par:false
+    //
+    // The leading version is load-bearing. Changing the derivation changes
+    // every key and orphans every existing CR, so the prefix makes that
+    // detectable rather than silent. The CR name is a short digest of this,
+    // because Kubernetes needs a DNS-safe name under 63 characters.
+    string schedule_key = 19;
+
+    // The derived CR names, recorded so an unbind or a suspend can address
+    // them without recomputing the digest.
+    string schedule_policy_cr_name = 20;
+    string backup_schedule_cr_name = 21;
+    string backup_schedule_uid = 22;
 
     enum Governance {
         GovernanceInvalid = 0;
@@ -5420,20 +5448,6 @@ message BindingInfo {
         EnforcedBaseline = 1;
         // An App Admin owns it and may replace it.
         DelegatedControl = 2;
-    }
-
-    // Correlates one intent to the stork CRs that execute it.
-    message StorkScheduleRef {
-        string intent_id = 1;
-        // storkv1.SchedulePolicy, cluster-scoped.
-        string schedule_policy_cr_name = 2;
-        // storkv1.ApplicationBackupSchedule.
-        string backup_schedule_cr_name = 3;
-        string backup_schedule_cr_namespace = 4;
-        // The px-backup UIDs of the derived objects. Needed to address them on
-        // an unbind or a suspend, where a name alone is not enough.
-        string schedule_policy_uid = 5;
-        string backup_schedule_uid = 6;
     }
 }
 
@@ -5753,6 +5767,91 @@ service PlacementAssignment {
         returns (PlacementAssignmentDeleteResponse) {
         option (google.api.http) = {
             delete : "/v1/placementassignment/{org_id}/{catalog_resource_uid}"
+        };
+    }
+}
+
+// One resource's entry in one run of a shared backup.
+//
+// A backup now covers many resources, so the backup alone cannot answer "what
+// can I restore for this namespace". This can NOT be derived by querying
+// stork's per-namespace array inside the backup document, because that array
+// is keyed by namespace NAME while identity here is the Kubernetes UID. A
+// namespace deleted and recreated under the same name is a different resource,
+// and a name-keyed lookup would hand it the earlier resource's history.
+//
+// A recovery point exists only for a resource that actually succeeded. A
+// resource that failed inside a partially successful backup gets none, so its
+// timeline shows a gap and the SLA engine reports it out of SLA. That is how
+// per-resource failure isolation survives a shared execution.
+message RecoveryPointInfo {
+    // Identified by Kubernetes UID, never by name.
+    ObjectRef resource_ref = 1;
+    // The SHARED backup this came from. Several recovery points point here.
+    ObjectRef backup_ref = 2;
+    string intent_id = 3;
+    Status status = 4;
+    // False when the resource's own data did not complete, even if the
+    // backup as a whole reports partial success.
+    bool restorable = 5;
+    uint64 size_bytes = 6;
+    // Retention is anchored to the revision in force at capture.
+    uint64 sla_policy_revision_at_capture = 7;
+    google.protobuf.Timestamp taken_time = 8;
+    // Drives reference-counted deletion: the shared backup may only be removed
+    // once the last recovery point referencing it is gone.
+    google.protobuf.Timestamp expiry_time = 9;
+    // Populated when the resource did not succeed, for the timeline gap.
+    string failure_reason = 10;
+
+    enum Status {
+        StatusInvalid = 0;
+        Successful = 1;
+        PartialSuccess = 2;
+    }
+}
+
+message RecoveryPointObject {
+    Metadata metadata = 1
+        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    RecoveryPointInfo recovery_point_info = 2 [ (gogoproto.embed) = true ];
+}
+
+message RecoveryPointEnumerateRequest {
+    string org_id = 1;
+    // The catalog resource UID. Empty returns every recovery point in the org.
+    string catalog_resource_uid = 2;
+    string intent_id = 3;
+    // Only points that can actually be restored.
+    bool restorable_only = 4;
+}
+message RecoveryPointEnumerateResponse {
+    repeated RecoveryPointObject recovery_points = 1;
+}
+
+message RecoveryPointInspectRequest {
+    string org_id = 1;
+    string catalog_resource_uid = 2;
+    // The shared backup this point belongs to.
+    string backup_name = 3;
+    string backup_uid = 4;
+}
+message RecoveryPointInspectResponse { RecoveryPointObject recovery_point = 1; }
+
+service RecoveryPoint {
+    // Enumerate returns one resource's timeline, newest first.
+    rpc Enumerate(RecoveryPointEnumerateRequest)
+        returns (RecoveryPointEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/recoverypoint/{org_id}"
+        };
+    }
+
+    // Inspect returns one resource's entry in one backup.
+    rpc Inspect(RecoveryPointInspectRequest)
+        returns (RecoveryPointInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/recoverypoint/{org_id}/{catalog_resource_uid}/{backup_name}"
         };
     }
 }
