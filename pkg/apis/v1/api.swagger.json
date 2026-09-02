@@ -1590,6 +1590,52 @@
         ]
       }
     },
+    "/v1/binding/supplementalintent/{org_id}/{catalog_resource_uid}": {
+      "put": {
+        "summary": "AddSupplementalIntent extends ONE Binding without touching the SLA\nPolicy that governs it.",
+        "operationId": "Binding_AddSupplementalIntent",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BindingAddSupplementalIntentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_resource_uid",
+            "description": "The resource whose Binding gains the intent.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BindingAddSupplementalIntentRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Binding"
+        ]
+      }
+    },
     "/v1/binding/{org_id}": {
       "get": {
         "operationId": "Binding_Enumerate",
@@ -8995,6 +9041,37 @@
     "BackupUpdateResponse": {
       "type": "object",
       "title": "Define BackupUpdateResponse struct"
+    },
+    "BindingAddSupplementalIntentRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "catalog_resource_uid": {
+          "type": "string",
+          "description": "The resource whose Binding gains the intent."
+        },
+        "intent": {
+          "$ref": "#/definitions/ProtectionIntent",
+          "description": "The intent to add. Its owner, tier and classification are stamped by the\nserver from the caller's token and cannot be set by the request."
+        }
+      },
+      "description": "A supplemental intent is Binding-local (FR-063). It extends the one Binding\nit is added to, and creates no second SLA Policy and no second Binding.\n\nThis is why it cannot go on the SLA Policy instead: a policy is shared, so an\nintent placed there fans out to every resource bound to it. An App Admin\ngiven one namespace would then impose their chosen cadence, and its cost, on\nresources they were never given."
+    },
+    "BindingAddSupplementalIntentResponse": {
+      "type": "object",
+      "properties": {
+        "backup_schedule_cr_name": {
+          "type": "string",
+          "description": "The schedule this intent will execute on. It is a new shared schedule\nwhenever no existing one carries the same schedule key."
+        },
+        "intent_count": {
+          "type": "string",
+          "format": "int64",
+          "description": "How many intents the Binding now carries, baseline included."
+        }
+      }
     },
     "BindingCreateRequest": {
       "type": "object",

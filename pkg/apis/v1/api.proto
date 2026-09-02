@@ -5936,6 +5936,29 @@ message BindingDeleteRequest {
 }
 message BindingDeleteResponse {}
 
+// A supplemental intent is Binding-local (FR-063). It extends the one Binding
+// it is added to, and creates no second SLA Policy and no second Binding.
+//
+// This is why it cannot go on the SLA Policy instead: a policy is shared, so an
+// intent placed there fans out to every resource bound to it. An App Admin
+// given one namespace would then impose their chosen cadence, and its cost, on
+// resources they were never given.
+message BindingAddSupplementalIntentRequest {
+    string org_id = 1;
+    // The resource whose Binding gains the intent.
+    string catalog_resource_uid = 2;
+    // The intent to add. Its owner, tier and classification are stamped by the
+    // server from the caller's token and cannot be set by the request.
+    ProtectionIntent intent = 3;
+}
+message BindingAddSupplementalIntentResponse {
+    // The schedule this intent will execute on. It is a new shared schedule
+    // whenever no existing one carries the same schedule key.
+    string backup_schedule_cr_name = 1;
+    // How many intents the Binding now carries, baseline included.
+    int64 intent_count = 2;
+}
+
 service Binding {
     rpc Create(BindingCreateRequest) returns (BindingCreateResponse) {
         option (google.api.http) = {
@@ -5953,6 +5976,16 @@ service Binding {
     rpc Enumerate(BindingEnumerateRequest) returns (BindingEnumerateResponse) {
         option (google.api.http) = {
             get : "/v1/binding/{org_id}"
+        };
+    }
+
+    // AddSupplementalIntent extends ONE Binding without touching the SLA
+    // Policy that governs it.
+    rpc AddSupplementalIntent(BindingAddSupplementalIntentRequest)
+        returns (BindingAddSupplementalIntentResponse) {
+        option (google.api.http) = {
+            put : "/v1/binding/supplementalintent/{org_id}/{catalog_resource_uid}"
+            body : "*"
         };
     }
 
