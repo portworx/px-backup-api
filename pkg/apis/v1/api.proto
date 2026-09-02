@@ -5625,6 +5625,42 @@ service ResourceCatalog {
             get : "/v1/catalogresource/{org_id}/{uid}"
         };
     }
+
+    // UpdateShare grants or revokes another identity's access to a resource.
+    rpc UpdateShare(ResourceCatalogUpdateShareRequest)
+        returns (ResourceCatalogUpdateShareResponse) {
+        option (google.api.http) = {
+            put : "/v1/catalogresource/updateshare/{org_id}/{uid}"
+            body : "*"
+        };
+    }
+}
+
+// Sharing a resource is how a persona boundary is crossed. An Infra or Super
+// Admin owns the inventory; an App Admin sees a namespace only once it has been
+// shared with them.
+//
+// Read lets the grantee see the resource, its Bindings and what it can restore.
+// Write additionally lets them add a supplemental intent and edit hooks. Neither
+// lets them rebind, unbind, weaken the baseline, or see a destination: those are
+// refused by tier, not by the access level.
+//
+// Sharing carries through the read path. A grantee who can see a resource can
+// see that resource's Bindings, recovery points and backups, because a share
+// that showed the resource but not its history would be useless.
+message ResourceCatalogUpdateShareRequest {
+    string org_id = 1;
+    // The catalog resource's Kubernetes UID.
+    string uid = 2;
+    // Identities to grant. Replaces the current grant list for the ids named.
+    repeated Ownership.AccessConfig users = 3;
+    repeated Ownership.AccessConfig groups = 4;
+    // Identities to revoke, by id. Applied after the grants above.
+    repeated string remove_users = 5;
+    repeated string remove_groups = 6;
+}
+message ResourceCatalogUpdateShareResponse {
+    CatalogResourceObject resource = 1;
 }
 
 // ---------------------------------------------------------------------------

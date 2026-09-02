@@ -1702,6 +1702,52 @@
         ]
       }
     },
+    "/v1/catalogresource/updateshare/{org_id}/{uid}": {
+      "put": {
+        "summary": "UpdateShare grants or revokes another identity's access to a resource.",
+        "operationId": "ResourceCatalog_UpdateShare",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ResourceCatalogUpdateShareResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "description": "The catalog resource's Kubernetes UID.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ResourceCatalogUpdateShareRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ResourceCatalog"
+        ]
+      }
+    },
     "/v1/catalogresource/{org_id}": {
       "get": {
         "summary": "Enumerate lists discovered namespaces and virtual machines.",
@@ -12272,6 +12318,53 @@
       }
     },
     "ResourceCatalogInspectResponse": {
+      "type": "object",
+      "properties": {
+        "resource": {
+          "$ref": "#/definitions/CatalogResourceObject"
+        }
+      }
+    },
+    "ResourceCatalogUpdateShareRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string",
+          "description": "The catalog resource's Kubernetes UID."
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OwnershipAccessConfig"
+          },
+          "description": "Identities to grant. Replaces the current grant list for the ids named."
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OwnershipAccessConfig"
+          }
+        },
+        "remove_users": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Identities to revoke, by id. Applied after the grants above."
+        },
+        "remove_groups": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Sharing a resource is how a persona boundary is crossed. An Infra or Super\nAdmin owns the inventory; an App Admin sees a namespace only once it has been\nshared with them.\n\nRead lets the grantee see the resource, its Bindings and what it can restore.\nWrite additionally lets them add a supplemental intent and edit hooks. Neither\nlets them rebind, unbind, weaken the baseline, or see a destination: those are\nrefused by tier, not by the access level.\n\nSharing carries through the read path. A grantee who can see a resource can\nsee that resource's Bindings, recovery points and backups, because a share\nthat showed the resource but not its history would be useless."
+    },
+    "ResourceCatalogUpdateShareResponse": {
       "type": "object",
       "properties": {
         "resource": {
