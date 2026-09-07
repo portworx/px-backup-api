@@ -5157,12 +5157,8 @@ type BackupLocationInfo struct {
 	// Populated for both Automatic and Manual BLs in both Federated and Non-Federated modes.
 	SyncInfo *BackupLocationInfo_SyncInfo `protobuf:"bytes,14,opt,name=sync_info,json=syncInfo,proto3" json:"sync_info,omitempty"`
 	// sync_manual controls whether this BackupLocation uses manual or automatic sync.
-	//   - true  : Manual mode. Periodic BackupSync is skipped for this BL.
-	//     Syncs only occur when explicitly triggered via sync=true.
-	//   - false : Automatic mode. Periodic BackupSync runs every 10 minutes.
-	//   - null (not set): rejected on Create; treated as no-op on Update.
-	//
-	// Valid in both Federated and Non-Federated deployment modes.
+	// true=Manual (valid in both modes); false=Automatic (Non-Federated only; rejected with
+	// InvalidArgument in Federated mode); null=server default (Federated Create defaults to true).
 	// Uses BoolValue wrapper to distinguish between "not provided" (nil) and "explicitly set to false".
 	SyncManual *types.BoolValue `protobuf:"bytes,16,opt,name=sync_manual,json=syncManual,proto3" json:"sync_manual,omitempty"`
 	// Types that are valid to be assigned to Config:
