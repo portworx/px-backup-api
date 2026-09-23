@@ -44,7 +44,7 @@
         ]
       },
       "put": {
-        "summary": "Update given backup details",
+        "summary": "Update given backup details.\nUnlike most Update APIs, this is a narrow, explicit-field update, not\na full-object replace: only the fields declared on\nBackupUpdateRequest can be changed; other Backup fields are\nimmutable via this API.",
         "operationId": "Backup_Update",
         "responses": {
           "200": {
@@ -676,7 +676,7 @@
         ]
       },
       "put": {
-        "summary": "Update given backup location details",
+        "summary": "Update given backup location details.\nThis is a full-object replace, not a partial/delta update: first\nInspect the backup location, modify only the fields that need to\nchange, and send the complete BackupLocationUpdateRequest back. See\nBackupLocationUpdateRequest and BackupLocationInfo for which fields\nare editable vs immutable.",
         "operationId": "BackupLocation_Update",
         "responses": {
           "200": {
@@ -1083,7 +1083,7 @@
         ]
       },
       "put": {
-        "summary": "Updates a backup schedule",
+        "summary": "Updates a backup schedule, or a bulk-selected set of backup\nschedules (see BackupScheduleUpdateFilterOptions).\nUnlike most Update APIs, this takes an explicit, flat set of fields\nrather than the full BackupSchedule object. Inspect the schedule(s)\nfirst and send back the complete set of value fields you want the\nschedule(s) to have, since fields left at their zero value may reset\nthe corresponding setting. See BackupScheduleUpdateRequest for which\nfields select the target schedule(s) vs. supply new values.",
         "operationId": "BackupSchedule_Update",
         "responses": {
           "200": {
@@ -1591,7 +1591,7 @@
         ]
       },
       "put": {
-        "summary": "Update given cloud credential details",
+        "summary": "Update given cloud credential details.\nThis is a full-object replace, not a partial/delta update: first\nInspect the cloud credential, modify only the fields that need to\nchange, and send the complete CloudCredentialUpdateRequest back. See\nCloudCredentialUpdateRequest and CloudCredentialInfo for which fields\nare editable vs immutable.",
         "operationId": "CloudCredential_Update",
         "responses": {
           "200": {
@@ -1881,7 +1881,7 @@
         ]
       },
       "put": {
-        "summary": "Update given cluster details",
+        "summary": "Update given cluster details.\nThis is a full-object replace, not a partial/delta update: first\nInspect the cluster, modify only the fields that need to change, and\nsend the complete ClusterUpdateRequest (including unchanged nested\nfields such as px_config) back. See ClusterUpdateRequest for which\nfields are editable vs immutable.",
         "operationId": "Cluster_Update",
         "responses": {
           "200": {
@@ -2821,7 +2821,7 @@
         ]
       },
       "put": {
-        "summary": "Updates Usage Based activation ID",
+        "summary": "Updates Usage Based activation ID.\nNarrow, explicit-field update: only usage_based_id can be changed via\nthis API.",
         "operationId": "License_Update",
         "responses": {
           "200": {
@@ -3324,7 +3324,7 @@
         ]
       },
       "put": {
-        "summary": "Update the details of a alert manager receiver",
+        "summary": "Update the details of a alert manager receiver.\nThis is a full-object replace, not a partial/delta update: first\nInspect the receiver, modify only the fields that need to change, and\nsend the complete ReceiverUpdateRequest back.",
         "operationId": "Receiver_Update",
         "responses": {
           "200": {
@@ -3555,7 +3555,7 @@
         ]
       },
       "put": {
-        "summary": "Update the details of a recipient",
+        "summary": "Update the details of a recipient.\nThis is a full-object replace, not a partial/delta update: first\nInspect the recipient, modify only the fields that need to change,\nand send the complete RecipientUpdateRequest back.",
         "operationId": "Recipient_Update",
         "responses": {
           "200": {
@@ -3789,7 +3789,7 @@
         ]
       },
       "put": {
-        "summary": "Update given restore details",
+        "summary": "Update given restore details.\nUnlike most Update APIs, this only supports updating\nmetadata.labels/ownership; all other Restore fields are set at\nCreate time and are immutable via Update.",
         "operationId": "Restore_Update",
         "responses": {
           "200": {
@@ -4341,7 +4341,7 @@
         ]
       },
       "put": {
-        "summary": "Update given role information",
+        "summary": "Update given role information.\nThis is a full-object replace, not a partial/delta update: first\nInspect the role, modify only the fields that need to change, and\nsend the complete RoleUpdateRequest back.",
         "operationId": "Role_Update",
         "responses": {
           "200": {
@@ -4680,7 +4680,7 @@
         ]
       },
       "put": {
-        "summary": "Update given rule details",
+        "summary": "Update given rule details.\nThis is a full-object replace, not a partial/delta update: first\nInspect the rule, modify only the fields that need to change, and\nsend the complete RuleUpdateRequest back.",
         "operationId": "Rules_Update",
         "responses": {
           "200": {
@@ -4892,7 +4892,7 @@
         ]
       },
       "put": {
-        "summary": "Update given schedule policy details",
+        "summary": "Update given schedule policy details.\nThis is a full-object replace, not a partial/delta update: first\nInspect the schedule policy, modify only the fields that need to\nchange, and send the complete SchedulePolicyUpdateRequest back.",
         "operationId": "SchedulePolicy_Update",
         "responses": {
           "200": {
@@ -5193,7 +5193,7 @@
         ]
       },
       "put": {
-        "summary": "Update given volumeResourceOnly policy details",
+        "summary": "Update given volumeResourceOnly policy details.\nThis is a full-object replace, not a partial/delta update: first\nInspect the policy, modify only the fields that need to change, and\nsend the complete VolumeResourceOnlyPolicyUpdateRequest back.",
         "operationId": "VolumeResourceOnlyPolicy_Update",
         "responses": {
           "200": {
@@ -6465,26 +6465,31 @@
       "properties": {
         "type": {
           "$ref": "#/definitions/BackupLocationInfoType",
-          "description": "Cloud provider type for the backup location.\nFor Both Federated and Non-Federated Identity: Required.\n  - Specifies the type of cloud provider (S3, Azure, Google, NFS).\n  - In Federated Identity mode, this field is used to identify the cloud provider type\n    even though no cloud credential object is referenced."
+          "description": "Cloud provider type for the backup location.\nFor Both Federated and Non-Federated Identity: Required.\n  - Specifies the type of cloud provider (S3, Azure, Google, NFS).\n  - In Federated Identity mode, this field is used to identify the cloud provider type\n    even though no cloud credential object is referenced.\nNot editable via Update: the provider a backup location was created\nfor cannot be switched to a different one."
         },
         "path": {
-          "type": "string"
+          "type": "string",
+          "description": "Editable."
         },
         "encryption_key": {
-          "type": "string"
+          "type": "string",
+          "description": "Editable."
         },
         "cloud_credential": {
           "type": "string",
           "description": "cloud_credential is deprecated, not to be used."
         },
         "status": {
-          "$ref": "#/definitions/BackupLocationInfoStatusInfo"
+          "$ref": "#/definitions/BackupLocationInfoStatusInfo",
+          "description": "System-managed field (OUTPUT) - reflects validation status. Not\neditable; any value set in the request is ignored."
         },
         "delete_backups": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "Action flag, not persisted object state."
         },
         "validate_cloud_credential": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "Editable. Triggers (re-)validation of the backup location on Update."
         },
         "cloud_credential_ref": {
           "$ref": "#/definitions/ObjectRef",
@@ -6637,7 +6642,7 @@
           "type": "string"
         }
       },
-      "title": "Define BackupLocationOwnershipUpdateRequest struct"
+      "description": "Define BackupLocationOwnershipUpdateRequest struct\nOwnership-only partial update: org_id/name/uid select the backup\nlocation; ownership is the only editable field."
     },
     "BackupLocationOwnershipUpdateResponse": {
       "type": "object",
@@ -6678,13 +6683,15 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata"
+          "$ref": "#/definitions/CreateMetadata",
+          "description": "See CreateMetadata: name/org_id/uid identify the backup location and\nare immutable via Update; labels/ownership are editable."
         },
         "backup_location": {
-          "$ref": "#/definitions/BackupLocationInfo"
+          "$ref": "#/definitions/BackupLocationInfo",
+          "description": "Must be sent in full; omitted sub-fields may be reset. See\nBackupLocationInfo for which nested fields are editable, immutable,\nor system-managed (output-only)."
         }
       },
-      "title": "Define BackupLocationUpdateRequest struct"
+      "description": "Define BackupLocationUpdateRequest struct\nBackupLocationUpdateRequest performs a full-object replace: fetch the\ncurrent backup location via Inspect, modify only the fields you need to\nchange, and send the complete request back."
     },
     "BackupLocationUpdateResponse": {
       "type": "object",
@@ -7754,7 +7761,8 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata"
+          "$ref": "#/definitions/CreateMetadata",
+          "description": "Selector: identifies the schedule (single-object case). See\nCreateMetadata; name/org_id/uid are immutable identifiers,\nlabels/ownership are editable."
         },
         "schedule_policy": {
           "type": "string",
@@ -7894,7 +7902,7 @@
           "description": "Selectors narrowing which schedules a bulk update acts on. Distinct from\nvolume_resource_only_policy_ref above, which sets the volumeResourceOnly\npolicy on the schedule being updated."
         }
       },
-      "title": "Define BackupScheduleUpdateRequest struct"
+      "description": "BackupScheduleUpdateRequest fields fall into two groups:\n  - Selector fields identify which schedule(s) to update: metadata\n    (name/org_id/uid, for a single schedule), or include_objects/\n    exclude_objects/include_filter/exclude_filter/filter_options/\n    cluster_scope/bulk_uid_check_relaxation (for a bulk update across\n    multiple schedules).\n  - Value fields (namespaces, label_selectors, suspend, include_resources,\n    reclaim_policy, schedule_policy_ref, backup_location_ref,\n    pre_exec_rule_ref, post_exec_rule_ref, etc.) are the new values\n    applied to every selected schedule; send the complete set you want,\n    since fields left unset may reset the corresponding setting."
     },
     "BackupScheduleUpdateResponse": {
       "type": "object",
@@ -7959,7 +7967,7 @@
           "type": "string"
         }
       },
-      "title": "Request message for backup share update request"
+      "description": "Request message for backup share update request\nPartial update: org_id/name/uid select the backup; backupshare is the\nonly editable field. Unlike ClusterBackupShareUpdateRequest, this does\nnot split add/del shares — confirmed: `backupshare` replaces the\nexisting share list wholesale, it does not merge/append."
     },
     "BackupShareUpdateResponse": {
       "type": "object",
@@ -7969,17 +7977,19 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata"
+          "$ref": "#/definitions/CreateMetadata",
+          "description": "See CreateMetadata: name/org_id/uid identify the backup and are\nimmutable via Update; labels/ownership are editable."
         },
         "cloud_credential": {
           "type": "string",
           "description": "Reference to cloud credential object used for backup\ncloud_credential is deprecated, not to be used."
         },
         "cloud_credential_ref": {
-          "$ref": "#/definitions/ObjectRef"
+          "$ref": "#/definitions/ObjectRef",
+          "description": "Editable."
         }
       },
-      "title": "Define BackupUpdateRequest struct"
+      "description": "Define BackupUpdateRequest struct\nBackupUpdateRequest only allows updating cloud_credential_ref and\nmetadata.labels/ownership; all other Backup fields (e.g. namespaces,\nresources, backup_location_ref) are set at Create time and are immutable\nvia Update."
     },
     "BackupUpdateResponse": {
       "type": "object",
@@ -8045,7 +8055,8 @@
       "type": "object",
       "properties": {
         "type": {
-          "$ref": "#/definitions/CloudCredentialInfoType"
+          "$ref": "#/definitions/CloudCredentialInfoType",
+          "description": "Cloud provider type. Editable — the server does not enforce\nimmutability here: sending a different type switches the\ncredential's provider and takes effect immediately, including\nrestarting cluster controllers keyed on the new type. The\nrequest's `config` must match the new `type`."
         },
         "aws_config": {
           "$ref": "#/definitions/AWSConfig"
@@ -8112,7 +8123,8 @@
         "uid": {
           "type": "string"
         }
-      }
+      },
+      "description": "Ownership-only partial update: org_id/name/uid select the credential;\nownership is the only editable field."
     },
     "CloudCredentialOwnershipUpdateResponse": {
       "type": "object"
@@ -8121,13 +8133,15 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata"
+          "$ref": "#/definitions/CreateMetadata",
+          "description": "See CreateMetadata: name/org_id/uid identify the credential and are\nimmutable via Update; labels/ownership are editable."
         },
         "cloud_credential": {
-          "$ref": "#/definitions/CloudCredentialInfo"
+          "$ref": "#/definitions/CloudCredentialInfo",
+          "description": "Editable, except `type` (see CloudCredentialInfo). Must be sent in\nfull; omitted sub-fields may be reset."
         }
       },
-      "title": "Define CloudCredentialUpdateRequest struct"
+      "description": "Define CloudCredentialUpdateRequest struct\nCloudCredentialUpdateRequest performs a full-object replace: fetch the\ncurrent cloud credential via Inspect, modify only the fields you need to\nchange, and send the complete request back."
     },
     "CloudCredentialUpdateResponse": {
       "type": "object",
@@ -8151,7 +8165,8 @@
         "uid": {
           "type": "string"
         }
-      }
+      },
+      "description": "Incremental partial update: org_id/name/uid select the cluster;\nadd_backup_share/del_backup_share are applied as additive/subtractive\ndiffs to the existing share list, not a full-list replace."
     },
     "ClusterBackupShareUpdateResponse": {
       "type": "object"
@@ -8494,11 +8509,11 @@
       "properties": {
         "org_id": {
           "type": "string",
-          "description": "Organization ID of the cluster discovery config to update."
+          "description": "Selector: organization ID of the cluster discovery config to update."
         },
         "config_ref": {
           "$ref": "#/definitions/ObjectRef",
-          "description": "Reference to the cluster discovery config to update (name is required, uid is optional for exact match)."
+          "description": "Selector: reference to the cluster discovery config to update (name is required, uid is optional for exact match)."
         },
         "gardener_kubeconfig": {
           "type": "string",
@@ -8523,7 +8538,8 @@
           "type": "boolean",
           "description": "Confirmation flag required to proceed with the update.\nMust be set to true explicitly; otherwise the update will be rejected."
         }
-      }
+      },
+      "description": "ClusterDiscoveryConfigUpdateRequest is a true partial/PATCH-style update\n(unlike most other Update APIs in this service): unset fields are left\nunchanged rather than being reset. Fields using a wrapper type (e.g.\nBoolValue) distinguish \"not provided\" from an explicit zero value; plain\nscalar/message fields are only applied when non-empty."
     },
     "ClusterDiscoveryConfigUpdateResponse": {
       "type": "object"
@@ -8937,26 +8953,31 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata"
+          "$ref": "#/definitions/CreateMetadata",
+          "description": "See CreateMetadata: name/org_id/uid identify the cluster and are\nimmutable via Update; labels/ownership are editable."
         },
         "px_config": {
-          "$ref": "#/definitions/PXConfig"
+          "$ref": "#/definitions/PXConfig",
+          "description": "Editable. Must be sent in full; omitted sub-fields may be reset."
         },
         "kubeconfig": {
-          "type": "string"
+          "type": "string",
+          "description": "Editable."
         },
         "cloud_credential": {
           "type": "string",
           "description": "cloud_credential is deprecated, not to be used."
         },
         "cloud_credential_ref": {
-          "$ref": "#/definitions/ObjectRef"
+          "$ref": "#/definitions/ObjectRef",
+          "description": "Editable."
         },
         "platform_credential_ref": {
-          "$ref": "#/definitions/ObjectRef"
+          "$ref": "#/definitions/ObjectRef",
+          "description": "Editable."
         }
       },
-      "title": "Define ClusterUpdateRequest struct"
+      "description": "Define ClusterUpdateRequest struct\nClusterUpdateRequest performs a full-object replace of the cluster: fetch\nthe current cluster via Inspect, modify only the fields you need to\nchange, and send the complete request back, including nested fields\n(e.g. px_config) that did not change."
     },
     "ClusterUpdateResponse": {
       "type": "object",
@@ -9045,11 +9066,11 @@
       "properties": {
         "name": {
           "type": "string",
-          "title": "name of the object"
+          "description": "name of the object.\nUpdate: immutable identifier, used to locate the object being\nupdated. Cannot be changed via Update."
         },
         "org_id": {
           "type": "string",
-          "title": "org id of the object"
+          "description": "org id of the object.\nUpdate: immutable identifier, used to locate the object being\nupdated. Cannot be changed via Update."
         },
         "owner": {
           "type": "string",
@@ -9060,17 +9081,18 @@
           "additionalProperties": {
             "type": "string"
           },
-          "title": "labels associated with the object"
+          "description": "labels associated with the object.\nUpdate: editable."
         },
         "ownership": {
           "$ref": "#/definitions/Ownership",
-          "title": "ownership of the object"
+          "description": "ownership of the object.\nUpdate: editable."
         },
         "uid": {
           "type": "string",
-          "title": "uid of the object"
+          "description": "uid of the object.\nUpdate: immutable identifier, optionally used (together with name) to\nlocate the object being updated. Cannot be changed via Update."
         }
-      }
+      },
+      "description": "CreateMetadata is embedded in both Create and Update requests across all\nAPIs. Its fields play different roles depending on which request it is\nembedded in:\n  - On Create: name/org_id/labels/ownership are all supplied by the caller\n    to define the new object. uid is not set by the caller; it is\n    generated by the server.\n  - On Update: name/org_id/uid are read-only identifiers used only to\n    locate the existing object to update; they cannot be changed via\n    Update. labels and ownership are the only fields here that are\n    actually editable via Update.\n\nUpdate APIs generally do not support partial/delta updates: the caller is\nexpected to Inspect/Enumerate the object first, modify only the fields\nthat need to change, and send the complete object (including unchanged\nnested fields) back in the Update request. Fields omitted or left at\ntheir zero value may be reset, unless a message/RPC explicitly documents\notherwise."
     },
     "EmailConfig": {
       "type": "object",
@@ -9395,12 +9417,15 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata"
+          "$ref": "#/definitions/CreateMetadata",
+          "description": "metadata.org_id identifies the org whose license is updated."
         },
         "usage_based_id": {
-          "type": "string"
+          "type": "string",
+          "description": "Editable."
         }
-      }
+      },
+      "description": "LicenseUpdateRequest is a narrow, explicit-field update: only\nusage_based_id can be changed via this API."
     },
     "LicenseUpdateResponse": {
       "type": "object"
@@ -10315,7 +10340,8 @@
       "type": "object",
       "properties": {
         "type": {
-          "$ref": "#/definitions/ReceiverInfoType"
+          "$ref": "#/definitions/ReceiverInfoType",
+          "description": "Used together with org_id/ownership to look up the receiver on\nUpdate — name/uid are not part of that lookup. Sending a\ndifferent type does not change this receiver's type in place; it\ntargets a different receiver (or matches none) instead."
         },
         "email_config": {
           "$ref": "#/definitions/EmailConfig"
@@ -10373,12 +10399,15 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata"
+          "$ref": "#/definitions/CreateMetadata",
+          "description": "See CreateMetadata: name/org_id/uid identify the receiver and are\nimmutable via Update; labels/ownership are editable."
         },
         "receiver_info": {
-          "$ref": "#/definitions/ReceiverInfo"
+          "$ref": "#/definitions/ReceiverInfo",
+          "description": "Editable, except `type` (see ReceiverInfo). Must be sent in full;\nomitted sub-fields may be reset."
         }
-      }
+      },
+      "description": "ReceiverUpdateRequest performs a full-object replace: fetch the current\nreceiver via Inspect, modify only the fields you need to change, and send\nthe complete request back."
     },
     "ReceiverUpdateResponse": {
       "type": "object"
@@ -10456,26 +10485,26 @@
       "properties": {
         "type": {
           "$ref": "#/definitions/RecipientInfoType",
-          "title": "Type of notification on user level"
+          "description": "Type of notification on user level.\nEditable — the server does not enforce immutability here:\nsending a different type overwrites the stored value."
         },
         "recipient_id": {
           "type": "array",
           "items": {
             "type": "string"
           },
-          "title": "Based on type recipient list is added"
+          "description": "Based on type recipient list is added. Editable."
         },
         "active": {
           "type": "boolean",
-          "title": "current status set by user"
+          "description": "current status set by user. Editable."
         },
         "receiver_ref": {
           "$ref": "#/definitions/ObjectRef",
-          "title": "Link receiver object"
+          "description": "Link receiver object. Editable."
         },
         "severity": {
           "$ref": "#/definitions/RecipientInfoSeverity",
-          "title": "Filter level of alert by severity"
+          "description": "Filter level of alert by severity. Editable."
         }
       }
     },
@@ -10519,12 +10548,15 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata"
+          "$ref": "#/definitions/CreateMetadata",
+          "description": "See CreateMetadata: name/org_id/uid identify the recipient and are\nimmutable via Update; labels/ownership are editable."
         },
         "recipient_info": {
-          "$ref": "#/definitions/RecipientInfo"
+          "$ref": "#/definitions/RecipientInfo",
+          "description": "Editable, except `type` (see RecipientInfo). Must be sent in full;\nomitted sub-fields may be reset."
         }
-      }
+      },
+      "description": "RecipientUpdateRequest performs a full-object replace: fetch the current\nrecipient via Inspect, modify only the fields you need to change, and\nsend the complete request back."
     },
     "RecipientUpdateResponse": {
       "type": "object"
@@ -11577,10 +11609,11 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata"
+          "$ref": "#/definitions/CreateMetadata",
+          "description": "See CreateMetadata: name/org_id/uid identify the restore and are\nimmutable via Update; labels/ownership are editable."
         }
       },
-      "title": "Define RestoreUpdateRequest struct"
+      "description": "Define RestoreUpdateRequest struct\nRestoreUpdateRequest only allows updating metadata.labels/ownership; a\nrestore's other properties are fixed at Create time."
     },
     "RestoreUpdateResponse": {
       "type": "object",
@@ -11695,20 +11728,22 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata"
+          "$ref": "#/definitions/CreateMetadata",
+          "description": "See CreateMetadata: name/org_id/uid identify the role and are\nimmutable via Update; labels/ownership are editable."
         },
         "rules": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/RoleConfig"
-          }
+          },
+          "description": "Editable. Must be sent in full; omitted entries are removed."
         },
         "role_id": {
           "type": "string",
-          "title": "Keyclock UID associated with role"
+          "description": "Keyclock UID associated with role.\nIntended to be a system-managed identifier assigned by Keycloak\nat creation, but the server does not currently enforce\nimmutability here: whatever value is sent overwrites the stored\nrole_id. Callers should echo the existing value back unchanged."
         }
       },
-      "title": "RoleUpdateRequest defines roleobject update structure"
+      "description": "RoleUpdateRequest defines roleobject update structure\nRoleUpdateRequest performs a full-object replace: fetch the current role\nvia Inspect, modify only the fields you need to change, and send the\ncomplete request back."
     },
     "RoleUpdateResponse": {
       "type": "object",
@@ -11787,7 +11822,7 @@
           "type": "string"
         }
       },
-      "title": "Define RuleOwnershipUpdateRequest struct"
+      "description": "Define RuleOwnershipUpdateRequest struct\nOwnership-only partial update: org_id/name/uid select the rule;\nownership is the only editable field."
     },
     "RuleOwnershipUpdateResponse": {
       "type": "object",
@@ -11797,12 +11832,15 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata"
+          "$ref": "#/definitions/CreateMetadata",
+          "description": "See CreateMetadata: name/org_id/uid identify the rule and are\nimmutable via Update; labels/ownership are editable."
         },
         "rules_info": {
-          "$ref": "#/definitions/RulesInfo"
+          "$ref": "#/definitions/RulesInfo",
+          "description": "Editable. Must be sent in full; omitted sub-fields may be reset."
         }
-      }
+      },
+      "description": "RuleUpdateRequest performs a full-object replace: fetch the current rule\nvia Inspect, modify only the fields you need to change, and send the\ncomplete request back."
     },
     "RuleUpdateResponse": {
       "type": "object",
@@ -11818,7 +11856,7 @@
           }
         }
       },
-      "title": "Message for passing pre and post exec rules for backup"
+      "description": "Message for passing pre and post exec rules for backup\nRulesInfo fields are all editable via Update."
     },
     "RulesInfoAction": {
       "type": "object",
@@ -12137,7 +12175,8 @@
         "uid": {
           "type": "string"
         }
-      }
+      },
+      "description": "Ownership-only partial update: org_id/name/uid select the policy;\nownership is the only editable field."
     },
     "SchedulePolicyOwnershipUpdateResponse": {
       "type": "object"
@@ -12146,13 +12185,15 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata"
+          "$ref": "#/definitions/CreateMetadata",
+          "description": "See CreateMetadata: name/org_id/uid identify the policy and are\nimmutable via Update; labels/ownership are editable."
         },
         "schedule_policy": {
-          "$ref": "#/definitions/SchedulePolicyInfo"
+          "$ref": "#/definitions/SchedulePolicyInfo",
+          "description": "Editable. Must be sent in full; omitted sub-fields may be reset."
         }
       },
-      "title": "Define SchedulePolicyUpdateRequest struct"
+      "description": "Define SchedulePolicyUpdateRequest struct\nSchedulePolicyUpdateRequest performs a full-object replace: fetch the\ncurrent schedule policy via Inspect, modify only the fields you need to\nchange, and send the complete request back."
     },
     "SchedulePolicyUpdateResponse": {
       "type": "object",
@@ -12677,7 +12718,8 @@
           },
           "title": "List of NFS servers that need to used to skip the backing up of volume data in the case of NFS volumes\nThis parameter is valid only when the volume type is set with nfs as one of the parameter"
         }
-      }
+      },
+      "description": "VolumeResourceOnlyPolicyInfo fields are all editable via Update."
     },
     "VolumeResourceOnlyPolicyInfoVolumeType": {
       "type": "string",
@@ -12724,7 +12766,8 @@
         "uid": {
           "type": "string"
         }
-      }
+      },
+      "description": "Ownership-only partial update: org_id/name/uid select the policy;\nownership is the only editable field."
     },
     "VolumeResourceOnlyPolicyOwnershipUpdateResponse": {
       "type": "object"
@@ -12733,13 +12776,15 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata"
+          "$ref": "#/definitions/CreateMetadata",
+          "description": "See CreateMetadata: name/org_id/uid identify the policy and are\nimmutable via Update; labels/ownership are editable."
         },
         "volume_resource_only_policy": {
-          "$ref": "#/definitions/VolumeResourceOnlyPolicyInfo"
+          "$ref": "#/definitions/VolumeResourceOnlyPolicyInfo",
+          "description": "Editable. Must be sent in full; omitted sub-fields may be reset."
         }
       },
-      "title": "Define VolumeResourceOnlyPolicyUpdateRequest struct"
+      "description": "Define VolumeResourceOnlyPolicyUpdateRequest struct\nVolumeResourceOnlyPolicyUpdateRequest performs a full-object replace:\nfetch the current policy via Inspect, modify only the fields you need to\nchange, and send the complete request back."
     },
     "VolumeResourceOnlyPolicyUpdateResponse": {
       "type": "object",
