@@ -353,6 +353,11 @@ message GoogleConfig {
 }
 
 message CloudCredentialInfo {
+    // Cloud provider type. Editable — the server does not enforce
+    // immutability here: sending a different type switches the
+    // credential's provider and takes effect immediately, including
+    // restarting cluster controllers keyed on the new type. The
+    // request's `config` must match the new `type`.
     Type type = 1;
 
     enum Type {
@@ -364,6 +369,8 @@ message CloudCredentialInfo {
         Rancher = 5;
     }
 
+    // Editable. Must match `type`; send the complete config for that
+    // provider back on Update, not just the changed values.
     oneof config {
         AWSConfig aws_config = 100;
         AzureConfig azure_config = 101;
@@ -379,6 +386,7 @@ message CloudCredentialObject {
     CloudCredentialInfo cloud_credential_info = 2;
 }
 
+// VolumeResourceOnlyPolicyInfo fields are all editable via Update.
 message VolumeResourceOnlyPolicyInfo {
   enum VolumeType {
     Invalid = 0;
@@ -740,16 +748,24 @@ message BackupLocationInfo {
     //   - Specifies the type of cloud provider (S3, Azure, Google, NFS).
     //   - In Federated Identity mode, this field is used to identify the cloud provider type
     //     even though no cloud credential object is referenced.
+    // Not editable via Update: the provider a backup location was created
+    // for cannot be switched to a different one.
     Type type = 1;
+    // Editable.
     string path = 2;
+    // Editable.
     string encryption_key = 3 [
         (gogoproto.jsontag) = "encryptionkey",
         (gogoproto.moretags) = "secure:\"true\""
     ];
     // cloud_credential is deprecated, not to be used.
     string cloud_credential = 4;
+    // System-managed field (OUTPUT) - reflects validation status. Not
+    // editable; any value set in the request is ignored.
     StatusInfo status = 5;
+    // Action flag, not persisted object state.
     bool delete_backups = 6;
+    // Editable. Triggers (re-)validation of the backup location on Update.
     bool validate_cloud_credential = 7;
     // Reference to the cloud credential object.
     // For Non-Federated Identity: Required for Non NFS provider.
@@ -1283,6 +1299,7 @@ message BackupObject {
 }
 
 // Message for passing pre and post exec rules for backup
+// RulesInfo fields are all editable via Update.
 message RulesInfo {
     repeated RuleItem rules = 1 [ (gogoproto.moretags) = "yaml:\"rules\"" ];
 
@@ -1687,7 +1704,10 @@ service VolumeResourceOnlyPolicy {
         };
     }
 
-    // Update given volumeResourceOnly policy details
+    // Update given volumeResourceOnly policy details.
+    // This is a full-object replace, not a partial/delta update: first
+    // Inspect the policy, modify only the fields that need to change, and
+    // send the complete VolumeResourceOnlyPolicyUpdateRequest back.
     rpc Update(VolumeResourceOnlyPolicyUpdateRequest)
         returns (VolumeResourceOnlyPolicyUpdateResponse) {
         option (google.api.http) = {
@@ -1742,8 +1762,14 @@ message VolumeResourceOnlyPolicyCreateResponse {
     VolumeResourceOnlyPolicyObject volume_resource_only_policy = 1;
 }
 // Define VolumeResourceOnlyPolicyUpdateRequest struct
+// VolumeResourceOnlyPolicyUpdateRequest performs a full-object replace:
+// fetch the current policy via Inspect, modify only the fields you need to
+// change, and send the complete request back.
 message VolumeResourceOnlyPolicyUpdateRequest {
+    // See CreateMetadata: name/org_id/uid identify the policy and are
+    // immutable via Update; labels/ownership are editable.
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    // Editable. Must be sent in full; omitted sub-fields may be reset.
     VolumeResourceOnlyPolicyInfo volume_resource_only_policy = 2;
 }
 // Define VolumeResourceOnlyPolicyUpdateResponse struct
@@ -1780,6 +1806,8 @@ message VolumeResourceOnlyPolicyDeleteRequest {
 }
 // Define VolumeResourceOnlyPolicyDeleteResponse struct
 message VolumeResourceOnlyPolicyDeleteResponse {}
+// Ownership-only partial update: org_id/name/uid select the policy;
+// ownership is the only editable field.
 message VolumeResourceOnlyPolicyOwnershipUpdateRequest {
     string org_id = 1;
     string name = 2;
@@ -1798,7 +1826,10 @@ service SchedulePolicy {
         };
     }
 
-    // Update given schedule policy details
+    // Update given schedule policy details.
+    // This is a full-object replace, not a partial/delta update: first
+    // Inspect the schedule policy, modify only the fields that need to
+    // change, and send the complete SchedulePolicyUpdateRequest back.
     rpc Update(SchedulePolicyUpdateRequest)
         returns (SchedulePolicyUpdateResponse) {
         option (google.api.http) = {
@@ -1853,8 +1884,14 @@ message SchedulePolicyCreateResponse {
 }
 
 // Define SchedulePolicyUpdateRequest struct
+// SchedulePolicyUpdateRequest performs a full-object replace: fetch the
+// current schedule policy via Inspect, modify only the fields you need to
+// change, and send the complete request back.
 message SchedulePolicyUpdateRequest {
+    // See CreateMetadata: name/org_id/uid identify the policy and are
+    // immutable via Update; labels/ownership are editable.
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    // Editable. Must be sent in full; omitted sub-fields may be reset.
     SchedulePolicyInfo schedule_policy = 2;
 }
 
@@ -1895,6 +1932,8 @@ message SchedulePolicyDeleteRequest {
 // Define SchedulePolicyDeleteResponse struct
 message SchedulePolicyDeleteResponse {}
 
+// Ownership-only partial update: org_id/name/uid select the policy;
+// ownership is the only editable field.
 message SchedulePolicyOwnershipUpdateRequest {
     string org_id = 1;
     string name = 2;
@@ -1914,7 +1953,14 @@ service BackupSchedule {
         };
     }
 
-    // Updates a backup schedule
+    // Updates a backup schedule, or a bulk-selected set of backup
+    // schedules (see BackupScheduleUpdateFilterOptions).
+    // Unlike most Update APIs, this takes an explicit, flat set of fields
+    // rather than the full BackupSchedule object. Inspect the schedule(s)
+    // first and send back the complete set of value fields you want the
+    // schedule(s) to have, since fields left at their zero value may reset
+    // the corresponding setting. See BackupScheduleUpdateRequest for which
+    // fields select the target schedule(s) vs. supply new values.
     rpc Update(BackupScheduleUpdateRequest)
         returns (BackupScheduleUpdateResponse) {
         option (google.api.http) = {
@@ -2078,8 +2124,21 @@ message BackupScheduleDeleteFilterOptions {
     BackupScheduleRunState status = 2;
 }
 
-// Define BackupScheduleUpdateRequest struct
+// BackupScheduleUpdateRequest fields fall into two groups:
+//   - Selector fields identify which schedule(s) to update: metadata
+//     (name/org_id/uid, for a single schedule), or include_objects/
+//     exclude_objects/include_filter/exclude_filter/filter_options/
+//     cluster_scope/bulk_uid_check_relaxation (for a bulk update across
+//     multiple schedules).
+//   - Value fields (namespaces, label_selectors, suspend, include_resources,
+//     reclaim_policy, schedule_policy_ref, backup_location_ref,
+//     pre_exec_rule_ref, post_exec_rule_ref, etc.) are the new values
+//     applied to every selected schedule; send the complete set you want,
+//     since fields left unset may reset the corresponding setting.
 message BackupScheduleUpdateRequest {
+    // Selector: identifies the schedule (single-object case). See
+    // CreateMetadata; name/org_id/uid are immutable identifiers,
+    // labels/ownership are editable.
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
     // schedule_policy is deprecated, not to be used
     string schedule_policy = 2;
@@ -2230,7 +2289,12 @@ service Cluster {
         };
     }
 
-    // Update given cluster details
+    // Update given cluster details.
+    // This is a full-object replace, not a partial/delta update: first
+    // Inspect the cluster, modify only the fields that need to change, and
+    // send the complete ClusterUpdateRequest (including unchanged nested
+    // fields such as px_config) back. See ClusterUpdateRequest for which
+    // fields are editable vs immutable.
     rpc Update(ClusterUpdateRequest) returns (ClusterUpdateResponse) {
         option (google.api.http) = {
             put : "/v1/cluster"
@@ -2290,6 +2354,9 @@ service Cluster {
     }
 }
 
+// Incremental partial update: org_id/name/uid select the cluster;
+// add_backup_share/del_backup_share are applied as additive/subtractive
+// diffs to the existing share list, not a full-list replace.
 message ClusterBackupShareUpdateRequest {
     string org_id = 1;
     string name = 2;
@@ -2342,16 +2409,26 @@ message ClusterCreateResponse {
 }
 
 // Define ClusterUpdateRequest struct
+// ClusterUpdateRequest performs a full-object replace of the cluster: fetch
+// the current cluster via Inspect, modify only the fields you need to
+// change, and send the complete request back, including nested fields
+// (e.g. px_config) that did not change.
 message ClusterUpdateRequest {
+    // See CreateMetadata: name/org_id/uid identify the cluster and are
+    // immutable via Update; labels/ownership are editable.
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    // Editable. Must be sent in full; omitted sub-fields may be reset.
     PXConfig px_config = 2 [ (gogoproto.jsontag) = "pxconfig" ];
+    // Editable.
     string kubeconfig = 3 [
         (gogoproto.jsontag) = "kubeconfig",
         (gogoproto.moretags) = "secure:\"true\""
     ];
     // cloud_credential is deprecated, not to be used.
     string cloud_credential = 4;
+    // Editable.
     ObjectRef cloud_credential_ref = 5;
+    // Editable.
     ObjectRef platform_credential_ref = 6;
 }
 
@@ -2476,7 +2553,12 @@ service CloudCredential {
         };
     }
 
-    // Update given cloud credential details
+    // Update given cloud credential details.
+    // This is a full-object replace, not a partial/delta update: first
+    // Inspect the cloud credential, modify only the fields that need to
+    // change, and send the complete CloudCredentialUpdateRequest back. See
+    // CloudCredentialUpdateRequest and CloudCredentialInfo for which fields
+    // are editable vs immutable.
     rpc Update(CloudCredentialUpdateRequest)
         returns (CloudCredentialUpdateResponse) {
         option (google.api.http) = {
@@ -2531,8 +2613,15 @@ message CloudCredentialCreateResponse {
 }
 
 // Define CloudCredentialUpdateRequest struct
+// CloudCredentialUpdateRequest performs a full-object replace: fetch the
+// current cloud credential via Inspect, modify only the fields you need to
+// change, and send the complete request back.
 message CloudCredentialUpdateRequest {
+    // See CreateMetadata: name/org_id/uid identify the credential and are
+    // immutable via Update; labels/ownership are editable.
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    // Editable, except `type` (see CloudCredentialInfo). Must be sent in
+    // full; omitted sub-fields may be reset.
     CloudCredentialInfo cloud_credential = 2;
 }
 
@@ -2577,6 +2666,8 @@ message CloudCredentialDeleteRequest {
 // Define CloudCredentialInspectResponse struct
 message CloudCredentialDeleteResponse {}
 
+// Ownership-only partial update: org_id/name/uid select the credential;
+// ownership is the only editable field.
 message CloudCredentialOwnershipUpdateRequest {
     string org_id = 1;
     // Cloud credential name to be updated.
@@ -2613,7 +2704,10 @@ service Receiver {
         };
     }
 
-    // Update the details of a alert manager receiver
+    // Update the details of a alert manager receiver.
+    // This is a full-object replace, not a partial/delta update: first
+    // Inspect the receiver, modify only the fields that need to change, and
+    // send the complete ReceiverUpdateRequest back.
     rpc Update(ReceiverUpdateRequest)
         returns (ReceiverUpdateResponse) {
          option (google.api.http) = {
@@ -2664,6 +2758,10 @@ message EmailConfig {
 }
 
 message ReceiverInfo {
+    // Used together with org_id/ownership to look up the receiver on
+    // Update — name/uid are not part of that lookup. Sending a
+    // different type does not change this receiver's type in place; it
+    // targets a different receiver (or matches none) instead.
     Type type = 1;
 
     enum Type {
@@ -2671,6 +2769,8 @@ message ReceiverInfo {
         EMAIL = 1;
     }
 
+    // Editable. Must match `type`; send the complete config for that type
+    // back on Update, not just the changed values.
     oneof config {
         EmailConfig email_config = 100;
     }
@@ -2713,8 +2813,15 @@ message ReceiverInspectResponse {
     ReceiverObject receiver = 1;
 }
 
+// ReceiverUpdateRequest performs a full-object replace: fetch the current
+// receiver via Inspect, modify only the fields you need to change, and send
+// the complete request back.
 message ReceiverUpdateRequest {
+    // See CreateMetadata: name/org_id/uid identify the receiver and are
+    // immutable via Update; labels/ownership are editable.
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    // Editable, except `type` (see ReceiverInfo). Must be sent in full;
+    // omitted sub-fields may be reset.
     ReceiverInfo receiver_info = 2;
 }
 
@@ -2765,7 +2872,10 @@ service Recipient {
         };
     }
 
-    // Update the details of a recipient
+    // Update the details of a recipient.
+    // This is a full-object replace, not a partial/delta update: first
+    // Inspect the recipient, modify only the fields that need to change,
+    // and send the complete RecipientUpdateRequest back.
     rpc Update(RecipientUpdateRequest)
         returns (RecipientUpdateResponse) {
          option (google.api.http) = {
@@ -2790,19 +2900,21 @@ message RecipientObject {
 }
 
 message RecipientInfo {
-    // Type of notification on user level
+    // Type of notification on user level.
+    // Editable — the server does not enforce immutability here:
+    // sending a different type overwrites the stored value.
     Type type = 1;
     enum Type {
         INVALID = 0;
         EMAIL = 1;
     }
-    // Based on type recipient list is added
+    // Based on type recipient list is added. Editable.
     repeated string recipient_id = 2;
-    // current status set by user
+    // current status set by user. Editable.
     bool active = 3;
-    // Link receiver object
+    // Link receiver object. Editable.
     ObjectRef receiver_ref = 4;
-    // Filter level of alert by severity
+    // Filter level of alert by severity. Editable.
     Severity severity = 5;
     enum Severity {
         UNKNOWN = 0;
@@ -2848,8 +2960,15 @@ message RecipientInspectResponse {
     RecipientObject recipient = 1;
 }
 
+// RecipientUpdateRequest performs a full-object replace: fetch the current
+// recipient via Inspect, modify only the fields you need to change, and
+// send the complete request back.
 message RecipientUpdateRequest {
+    // See CreateMetadata: name/org_id/uid identify the recipient and are
+    // immutable via Update; labels/ownership are editable.
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    // Editable, except `type` (see RecipientInfo). Must be sent in full;
+    // omitted sub-fields may be reset.
     RecipientInfo recipient_info = 2;
 }
 
@@ -2873,7 +2992,12 @@ service BackupLocation {
         };
     }
 
-    // Update given backup location details
+    // Update given backup location details.
+    // This is a full-object replace, not a partial/delta update: first
+    // Inspect the backup location, modify only the fields that need to
+    // change, and send the complete BackupLocationUpdateRequest back. See
+    // BackupLocationUpdateRequest and BackupLocationInfo for which fields
+    // are editable vs immutable.
     rpc Update(BackupLocationUpdateRequest)
         returns (BackupLocationUpdateResponse) {
         option (google.api.http) = {
@@ -2937,8 +3061,16 @@ message BackupLocationCreateResponse {
 }
 
 // Define BackupLocationUpdateRequest struct
+// BackupLocationUpdateRequest performs a full-object replace: fetch the
+// current backup location via Inspect, modify only the fields you need to
+// change, and send the complete request back.
 message BackupLocationUpdateRequest {
+    // See CreateMetadata: name/org_id/uid identify the backup location and
+    // are immutable via Update; labels/ownership are editable.
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    // Must be sent in full; omitted sub-fields may be reset. See
+    // BackupLocationInfo for which nested fields are editable, immutable,
+    // or system-managed (output-only).
     BackupLocationInfo backup_location = 2;
 }
 
@@ -3029,6 +3161,8 @@ message BackupLocationValidateRequest {
 message BackupLocationValidateResponse {}
 
 // Define BackupLocationOwnershipUpdateRequest struct
+// Ownership-only partial update: org_id/name/uid select the backup
+// location; ownership is the only editable field.
 message BackupLocationOwnershipUpdateRequest {
     string org_id = 1;
     // Backup location to be updated
@@ -3110,7 +3244,11 @@ service Backup {
         };
     }
 
-    // Update given backup details
+    // Update given backup details.
+    // Unlike most Update APIs, this is a narrow, explicit-field update, not
+    // a full-object replace: only the fields declared on
+    // BackupUpdateRequest can be changed; other Backup fields are
+    // immutable via this API.
     rpc Update(BackupUpdateRequest) returns (BackupUpdateResponse) {
         option (google.api.http) = {
             put : "/v1/backup"
@@ -3243,11 +3381,18 @@ message BackupCreateResponse {
 }
 
 // Define BackupUpdateRequest struct
+// BackupUpdateRequest only allows updating cloud_credential_ref and
+// metadata.labels/ownership; all other Backup fields (e.g. namespaces,
+// resources, backup_location_ref) are set at Create time and are immutable
+// via Update.
 message BackupUpdateRequest {
+    // See CreateMetadata: name/org_id/uid identify the backup and are
+    // immutable via Update; labels/ownership are editable.
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
     // Reference to cloud credential object used for backup
     // cloud_credential is deprecated, not to be used.
     string cloud_credential = 2;
+    // Editable.
     ObjectRef cloud_credential_ref = 3;
 }
 
@@ -3358,6 +3503,10 @@ message BackupDeleteRequest {
 message BackupDeleteResponse {}
 
 // Request message for backup share update request
+// Partial update: org_id/name/uid select the backup; backupshare is the
+// only editable field. Unlike ClusterBackupShareUpdateRequest, this does
+// not split add/del shares — confirmed: `backupshare` replaces the
+// existing share list wholesale, it does not merge/append.
 message BackupShareUpdateRequest {
     string org_id = 1;
     // Backup to be updated
@@ -3663,7 +3812,10 @@ service Restore {
         };
     }
 
-    // Update given restore details
+    // Update given restore details.
+    // Unlike most Update APIs, this only supports updating
+    // metadata.labels/ownership; all other Restore fields are set at
+    // Create time and are immutable via Update.
     rpc Update(RestoreUpdateRequest) returns (RestoreUpdateResponse) {
         option (google.api.http) = {
             put : "/v1/restore"
@@ -3881,7 +4033,11 @@ message RestoreCreateResponse {
 }
 
 // Define RestoreUpdateRequest struct
+// RestoreUpdateRequest only allows updating metadata.labels/ownership; a
+// restore's other properties are fixed at Create time.
 message RestoreUpdateRequest {
+    // See CreateMetadata: name/org_id/uid identify the restore and are
+    // immutable via Update; labels/ownership are editable.
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
 }
 
@@ -3998,8 +4154,14 @@ message RuleCreateResponse {
     RuleObject rule = 1;
 }
 
+// RuleUpdateRequest performs a full-object replace: fetch the current rule
+// via Inspect, modify only the fields you need to change, and send the
+// complete request back.
 message RuleUpdateRequest {
+    // See CreateMetadata: name/org_id/uid identify the rule and are
+    // immutable via Update; labels/ownership are editable.
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    // Editable. Must be sent in full; omitted sub-fields may be reset.
     RulesInfo rules_info = 2;
 }
 
@@ -4033,6 +4195,8 @@ message RuleDeleteRequest {
 message RuleDeleteResponse {}
 
 // Define RuleOwnershipUpdateRequest struct
+// Ownership-only partial update: org_id/name/uid select the rule;
+// ownership is the only editable field.
 message RuleOwnershipUpdateRequest {
     string org_id = 1;
     // Rule to be updated
@@ -4053,7 +4217,10 @@ service Rules {
         };
     }
 
-    // Update given rule details
+    // Update given rule details.
+    // This is a full-object replace, not a partial/delta update: first
+    // Inspect the rule, modify only the fields that need to change, and
+    // send the complete RuleUpdateRequest back.
     rpc Update(RuleUpdateRequest) returns (RuleUpdateResponse) {
         option (google.api.http) = {
             put : "/v1/rule"
@@ -4129,8 +4296,12 @@ message LicenseActivateRequest {
 
 message LicenseActivateResponse {}
 
+// LicenseUpdateRequest is a narrow, explicit-field update: only
+// usage_based_id can be changed via this API.
 message LicenseUpdateRequest {
+    // metadata.org_id identifies the org whose license is updated.
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    // Editable.
     string usage_based_id = 2;
 }
 
@@ -4211,7 +4382,9 @@ service License {
         };
     }
 
-    // Updates Usage Based activation ID
+    // Updates Usage Based activation ID.
+    // Narrow, explicit-field update: only usage_based_id can be changed via
+    // this API.
     rpc Update(LicenseUpdateRequest) returns (LicenseUpdateResponse) {
         option (google.api.http) = {
             put : "/v1/license"
@@ -4524,7 +4697,10 @@ service Role {
             get : "/v1/role/{org_id}/{name}"
         };
     }
-    // Update given role information
+    // Update given role information.
+    // This is a full-object replace, not a partial/delta update: first
+    // Inspect the role, modify only the fields that need to change, and
+    // send the complete RoleUpdateRequest back.
     rpc Update(RoleUpdateRequest) returns (RoleUpdateResponse) {
         option (google.api.http) = {
             put : "/v1/role"
@@ -4559,10 +4735,20 @@ message RoleCreateResponse {
     RoleObject role = 1;
 }
 // RoleUpdateRequest defines roleobject update structure
+// RoleUpdateRequest performs a full-object replace: fetch the current role
+// via Inspect, modify only the fields you need to change, and send the
+// complete request back.
 message RoleUpdateRequest {
+    // See CreateMetadata: name/org_id/uid identify the role and are
+    // immutable via Update; labels/ownership are editable.
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    // Editable. Must be sent in full; omitted entries are removed.
     repeated RoleConfig rules = 2;
-    // Keyclock UID associated with role
+    // Keyclock UID associated with role.
+    // Intended to be a system-managed identifier assigned by Keycloak
+    // at creation, but the server does not currently enforce
+    // immutability here: whatever value is sent overwrites the stored
+    // role_id. Callers should echo the existing value back unchanged.
     string role_id = 3;
 }
 
@@ -4961,10 +5147,15 @@ message ClusterDiscoveryConfigCreateResponse {
     ClusterDiscoveryConfigObject cluster_discovery_config = 1;
 }
 
+// ClusterDiscoveryConfigUpdateRequest is a true partial/PATCH-style update
+// (unlike most other Update APIs in this service): unset fields are left
+// unchanged rather than being reset. Fields using a wrapper type (e.g.
+// BoolValue) distinguish "not provided" from an explicit zero value; plain
+// scalar/message fields are only applied when non-empty.
 message ClusterDiscoveryConfigUpdateRequest {
-    // Organization ID of the cluster discovery config to update.
+    // Selector: organization ID of the cluster discovery config to update.
     string org_id = 1;
-    // Reference to the cluster discovery config to update (name is required, uid is optional for exact match).
+    // Selector: reference to the cluster discovery config to update (name is required, uid is optional for exact match).
     ObjectRef config_ref = 2;
     // Updated Gardener kubeconfig containing the token, certificate, and other
     // auth credentials for the Gardener API server. The server/API endpoint
