@@ -3162,6 +3162,31 @@ service Backup {
             body: "*"
         };
     }
+    // Starts a vulnerability assessment of images referenced by saved workload specs.
+    rpc CreateBackupImageScan(BackupImageScanCreateRequest) returns (BackupImageScanGetResponse) {
+        option (google.api.http) = {
+            post: "/v1/backup/images/scan"
+            body: "*"
+        };
+    }
+    rpc GetBackupImageScan(BackupImageScanGetRequest) returns (BackupImageScanGetResponse) {
+        option (google.api.http) = {
+            post: "/v1/backup/images/scan/get"
+            body: "*"
+        };
+    }
+    rpc ListBackupImageFindings(BackupImageFindingsRequest) returns (BackupImageFindingsResponse) {
+        option (google.api.http) = {
+            post: "/v1/backup/images/findings"
+            body: "*"
+        };
+    }
+    rpc CompareBackupImageScans(BackupImageScanCompareRequest) returns (BackupImageScanCompareResponse) {
+        option (google.api.http) = {
+            post: "/v1/backup/images/compare"
+            body: "*"
+        };
+    }
     // RetryBackupResources retries backup of a failed or partial success backup
     rpc RetryBackupResources(BackupRetryRequest)
         returns (BackupRetryResponse) {
@@ -5062,4 +5087,119 @@ message ClusterDiscoveryConfigRefreshClustersResponse {
     bool triggered = 1;
     // Message providing additional context (e.g., "Refresh started" or error details).
     string message = 2;
+}
+
+// A scan is an assessment of referenced image bytes at scan time, not proof of
+// what was running in every Pod at backup time.
+message BackupImageScanCreateRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    string request_id = 4;
+    bool rescan = 5;
+}
+
+message BackupImageScanGetRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    string run_uid = 4;
+}
+
+message BackupImageScanImage {
+    string reference = 1;
+    string digest_reference = 2;
+    string status = 3;
+    string error = 4;
+    uint64 distinct_cves = 5;
+    uint64 finding_count = 6;
+    string os_family = 7;
+    string os_version = 8;
+}
+
+message BackupImageScanAssociation {
+    string namespace = 1;
+    string kind = 2;
+    string workload = 3;
+    string container_type = 4;
+    string container = 5;
+    string reference = 6;
+}
+
+message BackupImageScanRun {
+    string uid = 1;
+    string backup_uid = 2;
+    string status = 3;
+    string reason = 4;
+    google.protobuf.Timestamp created_at = 5;
+    google.protobuf.Timestamp assessed_at = 6;
+    string profile_id = 7;
+    string trivy_version = 8;
+    string db_sha256 = 9;
+    string platform = 10;
+    uint64 distinct_cves = 11;
+    uint64 finding_count = 12;
+    uint64 image_count = 13;
+    uint64 scanned_count = 14;
+    repeated BackupImageScanImage images = 15;
+    repeated BackupImageScanAssociation associations = 16;
+}
+
+message BackupImageScanGetResponse {
+    BackupImageScanRun run = 1;
+    bool existing = 2;
+}
+
+message BackupImageFindingsRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    string run_uid = 4;
+    string image_reference = 5;
+    string severity = 6;
+    uint32 page_size = 7;
+    string page_token = 8;
+}
+
+message BackupImageFinding {
+    string image_reference = 1;
+    string digest_reference = 2;
+    string cve = 3;
+    string severity = 4;
+    string severity_source = 5;
+    string package_name = 6;
+    string package_id = 7;
+    string package_path = 8;
+    string installed_version = 9;
+    string fixed_package_version = 10;
+    string target = 11;
+    string advisory_url = 12;
+}
+
+message BackupImageFindingsResponse {
+    repeated BackupImageFinding findings = 1;
+    string next_page_token = 2;
+}
+
+message BackupImageScanCompareRequest {
+    string org_id = 1;
+    string first_name = 2;
+    string first_uid = 3;
+    string first_run_uid = 4;
+    string second_name = 5;
+    string second_uid = 6;
+    string second_run_uid = 7;
+}
+
+message BackupImageScanCompareResponse {
+    string first_run_uid = 1;
+    string second_run_uid = 2;
+    uint64 first_distinct_cves = 3;
+    uint64 second_distinct_cves = 4;
+    repeated string removed_cves = 5;
+    repeated string introduced_cves = 6;
+    repeated string remaining_cves = 7;
+    repeated string added_images = 8;
+    repeated string removed_images = 9;
+    bool truncated = 10;
 }

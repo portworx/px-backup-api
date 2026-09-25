@@ -108,6 +108,135 @@
         ]
       }
     },
+    "/v1/backup/images/compare": {
+      "post": {
+        "operationId": "Backup_CompareBackupImageScans",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupImageScanCompareResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupImageScanCompareRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
+    "/v1/backup/images/findings": {
+      "post": {
+        "operationId": "Backup_ListBackupImageFindings",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupImageFindingsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupImageFindingsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
+    "/v1/backup/images/scan": {
+      "post": {
+        "summary": "Starts a vulnerability assessment of images referenced by saved workload specs.",
+        "operationId": "Backup_CreateBackupImageScan",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupImageScanGetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupImageScanCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
+    "/v1/backup/images/scan/get": {
+      "post": {
+        "operationId": "Backup_GetBackupImageScan",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupImageScanGetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupImageScanGetRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
     "/v1/backup/retryBackupResources": {
       "put": {
         "summary": "RetryBackupResources retries backup of a failed or partial success backup",
@@ -5891,6 +6020,337 @@
         }
       },
       "title": "Response message structure for enumerate create"
+    },
+    "BackupImageFinding": {
+      "type": "object",
+      "properties": {
+        "image_reference": {
+          "type": "string"
+        },
+        "digest_reference": {
+          "type": "string"
+        },
+        "cve": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string"
+        },
+        "severity_source": {
+          "type": "string"
+        },
+        "package_name": {
+          "type": "string"
+        },
+        "package_id": {
+          "type": "string"
+        },
+        "package_path": {
+          "type": "string"
+        },
+        "installed_version": {
+          "type": "string"
+        },
+        "fixed_package_version": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "advisory_url": {
+          "type": "string"
+        }
+      }
+    },
+    "BackupImageFindingsRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        },
+        "run_uid": {
+          "type": "string"
+        },
+        "image_reference": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "page_token": {
+          "type": "string"
+        }
+      }
+    },
+    "BackupImageFindingsResponse": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupImageFinding"
+          }
+        },
+        "next_page_token": {
+          "type": "string"
+        }
+      }
+    },
+    "BackupImageScanAssociation": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "workload": {
+          "type": "string"
+        },
+        "container_type": {
+          "type": "string"
+        },
+        "container": {
+          "type": "string"
+        },
+        "reference": {
+          "type": "string"
+        }
+      }
+    },
+    "BackupImageScanCompareRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "first_uid": {
+          "type": "string"
+        },
+        "first_run_uid": {
+          "type": "string"
+        },
+        "second_name": {
+          "type": "string"
+        },
+        "second_uid": {
+          "type": "string"
+        },
+        "second_run_uid": {
+          "type": "string"
+        }
+      }
+    },
+    "BackupImageScanCompareResponse": {
+      "type": "object",
+      "properties": {
+        "first_run_uid": {
+          "type": "string"
+        },
+        "second_run_uid": {
+          "type": "string"
+        },
+        "first_distinct_cves": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "second_distinct_cves": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "removed_cves": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "introduced_cves": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "remaining_cves": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "added_images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "removed_images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "truncated": {
+          "type": "boolean"
+        }
+      }
+    },
+    "BackupImageScanCreateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        },
+        "request_id": {
+          "type": "string"
+        },
+        "rescan": {
+          "type": "boolean"
+        }
+      },
+      "description": "A scan is an assessment of referenced image bytes at scan time, not proof of\nwhat was running in every Pod at backup time."
+    },
+    "BackupImageScanGetRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        },
+        "run_uid": {
+          "type": "string"
+        }
+      }
+    },
+    "BackupImageScanGetResponse": {
+      "type": "object",
+      "properties": {
+        "run": {
+          "$ref": "#/definitions/BackupImageScanRun"
+        },
+        "existing": {
+          "type": "boolean"
+        }
+      }
+    },
+    "BackupImageScanImage": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "string"
+        },
+        "digest_reference": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "error": {
+          "type": "string"
+        },
+        "distinct_cves": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "finding_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "os_family": {
+          "type": "string"
+        },
+        "os_version": {
+          "type": "string"
+        }
+      }
+    },
+    "BackupImageScanRun": {
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string"
+        },
+        "backup_uid": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "assessed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "profile_id": {
+          "type": "string"
+        },
+        "trivy_version": {
+          "type": "string"
+        },
+        "db_sha256": {
+          "type": "string"
+        },
+        "platform": {
+          "type": "string"
+        },
+        "distinct_cves": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "finding_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "image_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "scanned_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupImageScanImage"
+          }
+        },
+        "associations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupImageScanAssociation"
+          }
+        }
+      }
     },
     "BackupInfo": {
       "type": "object",
