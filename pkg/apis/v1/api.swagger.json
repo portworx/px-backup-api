@@ -6349,6 +6349,19 @@
           "items": {
             "$ref": "#/definitions/BackupImageScanAssociation"
           }
+        },
+        "critical_findings": {
+          "type": "string",
+          "format": "uint64",
+          "description": "CVE/package finding counts across scanned images, grouped by severity."
+        },
+        "high_findings": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "medium_findings": {
+          "type": "string",
+          "format": "uint64"
         }
       }
     },

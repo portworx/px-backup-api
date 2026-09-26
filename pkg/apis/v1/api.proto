@@ -5143,6 +5143,10 @@ message BackupImageScanRun {
     uint64 scanned_count = 14;
     repeated BackupImageScanImage images = 15;
     repeated BackupImageScanAssociation associations = 16;
+    // CVE/package finding counts across scanned images, grouped by severity.
+    uint64 critical_findings = 17;
+    uint64 high_findings = 18;
+    uint64 medium_findings = 19;
 }
 
 message BackupImageScanGetResponse {
