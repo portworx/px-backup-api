@@ -270,6 +270,39 @@
         ]
       }
     },
+    "/v1/backup/schedule/posture/get": {
+      "post": {
+        "summary": "Returns configuration findings across recovery points of one backup schedule.",
+        "operationId": "Backup_GetBackupSchedulePosture",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupSchedulePostureResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupSchedulePostureRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
     "/v1/backup/updatebackupshare": {
       "put": {
         "summary": "UpdateBackupShare updates backupshare of existing backup object",
@@ -7223,6 +7256,89 @@
       "default": "Invalid",
       "description": " - NS: Represents backup schedules scoped to Kubernetes namespaces (non-VM workloads).\nTypically used for application-level backups.\n - VM: Represents backup schedules scoped to VirtualMachine workloads.\nUsed for VM-based backup scenarios.\n - All: Represents both NS and VM backup schedule types. Used when an operation should apply to all types."
     },
+    "BackupPostureFinding": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "rule_id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "first_observed_backup_uid": {
+          "type": "string"
+        }
+      }
+    },
+    "BackupPosturePoint": {
+      "type": "object",
+      "properties": {
+        "backup_name": {
+          "type": "string"
+        },
+        "backup_uid": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "state": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "rule_set_version": {
+          "type": "string"
+        },
+        "trivy_version": {
+          "type": "string"
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupPostureFinding"
+          }
+        },
+        "introduced": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupPostureFinding"
+          }
+        },
+        "resolved": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupPostureFinding"
+          }
+        },
+        "comparable_to_previous": {
+          "type": "boolean"
+        }
+      }
+    },
     "BackupResourceDetailGetRequest": {
       "type": "object",
       "properties": {
@@ -8200,6 +8316,37 @@
         },
         "backup_schedule_info": {
           "$ref": "#/definitions/BackupScheduleInfo"
+        }
+      }
+    },
+    "BackupSchedulePostureRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "schedule_name": {
+          "type": "string"
+        },
+        "schedule_uid": {
+          "type": "string"
+        }
+      }
+    },
+    "BackupSchedulePostureResponse": {
+      "type": "object",
+      "properties": {
+        "schedule_name": {
+          "type": "string"
+        },
+        "schedule_uid": {
+          "type": "string"
+        },
+        "points": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupPosturePoint"
+          }
         }
       }
     },

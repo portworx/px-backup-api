@@ -3187,6 +3187,13 @@ service Backup {
             body: "*"
         };
     }
+    // Returns configuration findings across recovery points of one backup schedule.
+    rpc GetBackupSchedulePosture(BackupSchedulePostureRequest) returns (BackupSchedulePostureResponse) {
+        option (google.api.http) = {
+            post: "/v1/backup/schedule/posture/get"
+            body: "*"
+        };
+    }
     // RetryBackupResources retries backup of a failed or partial success backup
     rpc RetryBackupResources(BackupRetryRequest)
         returns (BackupRetryResponse) {
@@ -5206,4 +5213,43 @@ message BackupImageScanCompareResponse {
     repeated string added_images = 8;
     repeated string removed_images = 9;
     bool truncated = 10;
+}
+
+message BackupSchedulePostureRequest {
+    string org_id = 1;
+    string schedule_name = 2;
+    string schedule_uid = 3;
+}
+
+message BackupPostureFinding {
+    string key = 1;
+    string rule_id = 2;
+    string title = 3;
+    string detail = 4;
+    string namespace = 5;
+    string kind = 6;
+    string name = 7;
+    string severity = 8;
+    string source = 9;
+    string first_observed_backup_uid = 10;
+}
+
+message BackupPosturePoint {
+    string backup_name = 1;
+    string backup_uid = 2;
+    google.protobuf.Timestamp created_at = 3;
+    string state = 4;
+    string reason = 5;
+    string rule_set_version = 6;
+    string trivy_version = 7;
+    repeated BackupPostureFinding findings = 8;
+    repeated BackupPostureFinding introduced = 9;
+    repeated BackupPostureFinding resolved = 10;
+    bool comparable_to_previous = 11;
+}
+
+message BackupSchedulePostureResponse {
+    string schedule_name = 1;
+    string schedule_uid = 2;
+    repeated BackupPosturePoint points = 3;
 }
