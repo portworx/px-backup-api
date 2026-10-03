@@ -336,6 +336,134 @@
         ]
       }
     },
+    "/v1/backup/volumes/malware/findings": {
+      "post": {
+        "operationId": "Backup_ListBackupMalwareFindings",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupMalwareFindingsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupMalwareFindingsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
+    "/v1/backup/volumes/malware/scan": {
+      "post": {
+        "operationId": "Backup_CreateBackupMalwareScan",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupMalwareScanGetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupMalwareScanCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
+    "/v1/backup/volumes/malware/scan/cancel": {
+      "post": {
+        "operationId": "Backup_CancelBackupMalwareScan",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupMalwareScanGetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupMalwareScanGetRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
+    "/v1/backup/volumes/malware/scan/get": {
+      "post": {
+        "operationId": "Backup_GetBackupMalwareScan",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupMalwareScanGetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupMalwareScanGetRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
     "/v1/backup/{org_id}": {
       "get": {
         "summary": "Enumerate returns a list of objects",
@@ -7221,6 +7349,249 @@
     "BackupLocationValidateResponse": {
       "type": "object",
       "title": "Define BackupLocationValidateResponse struct"
+    },
+    "BackupMalwareFinding": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string"
+        },
+        "pvc": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string"
+        },
+        "engine": {
+          "type": "string"
+        },
+        "rule_id": {
+          "type": "string"
+        },
+        "is_test_indicator": {
+          "type": "boolean"
+        }
+      }
+    },
+    "BackupMalwareFindingsRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        },
+        "run_uid": {
+          "type": "string"
+        },
+        "page_size": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "page_token": {
+          "type": "string"
+        }
+      }
+    },
+    "BackupMalwareFindingsResponse": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupMalwareFinding"
+          }
+        },
+        "next_page_token": {
+          "type": "string"
+        }
+      }
+    },
+    "BackupMalwareProfile": {
+      "type": "object",
+      "properties": {
+        "clamav_version": {
+          "type": "string"
+        },
+        "yara_version": {
+          "type": "string"
+        },
+        "db_sha256": {
+          "type": "string"
+        },
+        "rules_sha256": {
+          "type": "string"
+        },
+        "database_version": {
+          "type": "string"
+        },
+        "image_id": {
+          "type": "string"
+        }
+      }
+    },
+    "BackupMalwareScanCreateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        },
+        "request_id": {
+          "type": "string"
+        },
+        "rescan": {
+          "type": "boolean"
+        }
+      }
+    },
+    "BackupMalwareScanGetRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        },
+        "run_uid": {
+          "type": "string"
+        }
+      }
+    },
+    "BackupMalwareScanGetResponse": {
+      "type": "object",
+      "properties": {
+        "run": {
+          "$ref": "#/definitions/BackupMalwareScanRun"
+        },
+        "existing": {
+          "type": "boolean"
+        }
+      }
+    },
+    "BackupMalwareScanRun": {
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string"
+        },
+        "backup_uid": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "cleanup_status": {
+          "type": "string"
+        },
+        "cleanup_reason": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "assessed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "volume_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "assessed_volume_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "detected_files": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "finding_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "scanned_files": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "skipped_files": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "scanned_bytes": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "volumes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BackupMalwareVolume"
+          }
+        }
+      }
+    },
+    "BackupMalwareVolume": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string"
+        },
+        "pvc": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "detected_files": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "finding_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "scanned_files": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "skipped_files": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "scanned_bytes": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "profile": {
+          "$ref": "#/definitions/BackupMalwareProfile"
+        }
+      }
     },
     "BackupObject": {
       "type": "object",

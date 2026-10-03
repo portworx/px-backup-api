@@ -3194,6 +3194,30 @@ service Backup {
             body: "*"
         };
     }
+    rpc CreateBackupMalwareScan(BackupMalwareScanCreateRequest) returns (BackupMalwareScanGetResponse) {
+        option (google.api.http) = {
+            post: "/v1/backup/volumes/malware/scan"
+            body: "*"
+        };
+    }
+    rpc GetBackupMalwareScan(BackupMalwareScanGetRequest) returns (BackupMalwareScanGetResponse) {
+        option (google.api.http) = {
+            post: "/v1/backup/volumes/malware/scan/get"
+            body: "*"
+        };
+    }
+    rpc ListBackupMalwareFindings(BackupMalwareFindingsRequest) returns (BackupMalwareFindingsResponse) {
+        option (google.api.http) = {
+            post: "/v1/backup/volumes/malware/findings"
+            body: "*"
+        };
+    }
+    rpc CancelBackupMalwareScan(BackupMalwareScanGetRequest) returns (BackupMalwareScanGetResponse) {
+        option (google.api.http) = {
+            post: "/v1/backup/volumes/malware/scan/cancel"
+            body: "*"
+        };
+    }
     // RetryBackupResources retries backup of a failed or partial success backup
     rpc RetryBackupResources(BackupRetryRequest)
         returns (BackupRetryResponse) {
@@ -5252,4 +5276,83 @@ message BackupSchedulePostureResponse {
     string schedule_name = 1;
     string schedule_uid = 2;
     repeated BackupPosturePoint points = 3;
+}
+
+
+message BackupMalwareScanCreateRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    string request_id = 4;
+    bool rescan = 5;
+}
+message BackupMalwareScanGetRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    string run_uid = 4;
+}
+message BackupMalwareProfile {
+    string clamav_version = 1;
+    string yara_version = 2;
+    string db_sha256 = 3;
+    string rules_sha256 = 4;
+    string database_version = 5;
+    string image_id = 6;
+}
+message BackupMalwareVolume {
+    string namespace = 1;
+    string pvc = 2;
+    string status = 3;
+    string reason = 4;
+    uint64 detected_files = 5;
+    uint64 finding_count = 6;
+    uint64 scanned_files = 7;
+    uint64 skipped_files = 8;
+    uint64 scanned_bytes = 9;
+    BackupMalwareProfile profile = 10;
+}
+message BackupMalwareScanRun {
+    string uid = 1;
+    string backup_uid = 2;
+    string status = 3;
+    string result = 4;
+    string reason = 5;
+    string cleanup_status = 6;
+    string cleanup_reason = 7;
+    google.protobuf.Timestamp created_at = 8;
+    google.protobuf.Timestamp assessed_at = 9;
+    uint64 volume_count = 10;
+    uint64 assessed_volume_count = 11;
+    uint64 detected_files = 12;
+    uint64 finding_count = 13;
+    uint64 scanned_files = 14;
+    uint64 skipped_files = 15;
+    uint64 scanned_bytes = 16;
+    repeated BackupMalwareVolume volumes = 17;
+}
+message BackupMalwareScanGetResponse {
+    BackupMalwareScanRun run = 1;
+    bool existing = 2;
+}
+message BackupMalwareFinding {
+    string namespace = 1;
+    string pvc = 2;
+    string path = 3;
+    string sha256 = 4;
+    string engine = 5;
+    string rule_id = 6;
+    bool is_test_indicator = 7;
+}
+message BackupMalwareFindingsRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    string run_uid = 4;
+    uint64 page_size = 5;
+    string page_token = 6;
+}
+message BackupMalwareFindingsResponse {
+    repeated BackupMalwareFinding findings = 1;
+    string next_page_token = 2;
 }
