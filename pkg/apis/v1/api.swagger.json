@@ -5700,6 +5700,10 @@
         "volume_resource_only_policy_ref": {
           "$ref": "#/definitions/ObjectRef",
           "title": "reference to volumeResourceOnly policy object"
+        },
+        "sensitive_data_scan": {
+          "type": "boolean",
+          "description": "Opt this backup in to a sensitive-data scan (PII/PHI/PCI/secrets) of\neach KDMP volume's restored temp PVC. The scan runs between the\nsnapshot restore and the data transfer and never fails the backup;\nits results appear on the per-volume options under the\n\"sensitive-data.\" prefix."
         }
       },
       "title": "Request message structure for backup create"
@@ -6158,6 +6162,10 @@
             "type": "string"
           },
           "description": "Namespaces from a static-list VM backup that had no matching VMs (empty ns or ARLS-filtered)."
+        },
+        "sensitive_data_scan": {
+          "type": "boolean",
+          "description": "Whether a sensitive-data scan was requested for this backup. Mirrors\nBackupCreateRequest.sensitive_data_scan so it round-trips through\nInspect/sync."
         }
       }
     },
@@ -7249,6 +7257,10 @@
         "volume_resource_only_policy_ref": {
           "$ref": "#/definitions/ObjectRef",
           "title": "reference to volumeResourceOnly policy object"
+        },
+        "sensitive_data_scan": {
+          "type": "boolean",
+          "description": "Opt every backup produced by this schedule in to a sensitive-data scan."
         }
       },
       "title": "Define BackupScheduleCreateRequest struct"
@@ -7604,6 +7616,10 @@
             "type": "string"
           },
           "description": "Namespaces from a static-list VM backup that had no matching VMs (empty ns or ARLS-filtered)."
+        },
+        "sensitive_data_scan": {
+          "type": "boolean",
+          "description": "Whether a sensitive-data scan is requested for every backup from this schedule."
         }
       }
     },

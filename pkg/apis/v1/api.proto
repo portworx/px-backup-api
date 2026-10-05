@@ -597,6 +597,8 @@ message BackupScheduleInfo {
     repeated string missing_namespaces = 36;
     // Namespaces from a static-list VM backup that had no matching VMs (empty ns or ARLS-filtered).
     repeated string namespaces_without_matching_vms = 37;
+    // Whether a sensitive-data scan is requested for every backup from this schedule.
+    bool sensitive_data_scan = 38;
 
 
     message BackupType {
@@ -1067,6 +1069,10 @@ message BackupInfo {
     bool synced = 60;
     // Namespaces from a static-list VM backup that had no matching VMs (empty ns or ARLS-filtered).
     repeated string namespaces_without_matching_vms = 61;
+    // Whether a sensitive-data scan was requested for this backup. Mirrors
+    // BackupCreateRequest.sensitive_data_scan so it round-trips through
+    // Inspect/sync.
+    bool sensitive_data_scan = 62;
     // Message for maintaining status of sync operations
     message SyncStatusInfo {
         Status status = 1;
@@ -2005,6 +2011,8 @@ message BackupScheduleCreateRequest {
     string advanced_resource_label_selector = 27;
     // reference to volumeResourceOnly policy object
     ObjectRef volume_resource_only_policy_ref = 28;
+    // Opt every backup produced by this schedule in to a sensitive-data scan.
+    bool sensitive_data_scan = 29;
 
     enum BackupType {
         Invalid = 0;
@@ -3219,6 +3227,12 @@ message BackupCreateRequest {
     string advanced_resource_label_selector = 23;
     // reference to volumeResourceOnly policy object
     ObjectRef volume_resource_only_policy_ref = 24;
+    // Opt this backup in to a sensitive-data scan (PII/PHI/PCI/secrets) of
+    // each KDMP volume's restored temp PVC. The scan runs between the
+    // snapshot restore and the data transfer and never fails the backup;
+    // its results appear on the per-volume options under the
+    // "sensitive-data." prefix.
+    bool sensitive_data_scan = 25;
 
 
 
