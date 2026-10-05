@@ -4666,6 +4666,17 @@ service Upgrade {
             get : "/v1/upgrade/clusters/{org_id}/{job_id}"
         };
     }
+
+    // ListClusterStorkStatus returns the current stork version of each
+    // registered cluster, with the latest supported version and whether the
+    // cluster is outdated. The UI uses it for the Stork tab and the Clusters
+    // page.
+    rpc ListClusterStorkStatus(ClusterStorkStatusRequest)
+        returns (ClusterStorkStatusResponse) {
+        option (google.api.http) = {
+            get : "/v1/upgrade/clusters/{org_id}/stork-status"
+        };
+    }
 }
 
 // UpgradeStatusInfo is the status of one upgrade step or one cluster.
@@ -4773,5 +4784,34 @@ message ClusterUpgradeJobInfo {
     message ClusterUpgradeState {
         ObjectRef cluster_ref = 1;
         UpgradeStatusInfo status = 2;
+        // The cluster display name.
+        string cluster_name = 3;
+        // The stork version before the upgrade.
+        string from_version = 4;
+        // The target stork version.
+        string to_version = 5;
     }
+}
+
+// ClusterStorkStatusRequest asks for the stork status of every cluster.
+message ClusterStorkStatusRequest {
+    string org_id = 1;
+}
+
+// ClusterStorkStatusResponse returns the stork status of every cluster.
+message ClusterStorkStatusResponse {
+    repeated ClusterStorkStatus items = 1;
+}
+
+// ClusterStorkStatus is the stork status of one cluster.
+message ClusterStorkStatus {
+    ObjectRef cluster_ref = 1;
+    // The cluster display name.
+    string cluster_name = 2;
+    // The current stork version on the cluster.
+    string stork_version = 3;
+    // The latest supported stork version, from releases.json.
+    string latest_version = 4;
+    // True when stork_version is lower than latest_version.
+    bool outdated = 5;
 }
