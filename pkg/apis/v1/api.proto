@@ -4620,3 +4620,158 @@ message ClusterDiscoveryConfigRefreshClustersResponse {
     // Message providing additional context (e.g., "Refresh started" or error details).
     string message = 2;
 }
+
+// Upgrade owns the UI-driven upgrade of px-backup.
+// It has two independent paths:
+//   1. The control-plane bundle (run as an in-process helm upgrade).
+//   2. The stork/kdmp components on registered target clusters.
+service Upgrade {
+    // UpgradeControlPlane starts an in-place upgrade of the px-backup control
+    // plane. It returns a tracking id. Use GetControlPlaneUpgrade to poll the
+    // status. The version pair must be valid per the releases.json
+    // upgradePolicy: current_version must be a member of the target
+    // supportedUpgradeFrom, and upgrade_version must be a strictly higher
+    // semver.
+    rpc UpgradeControlPlane(ControlPlaneUpgradeRequest)
+        returns (ControlPlaneUpgradeResponse) {
+        option (google.api.http) = {
+            post : "/v1/upgrade"
+            body : "*"
+        };
+    }
+
+    // GetControlPlaneUpgrade returns the status of a control-plane upgrade.
+    rpc GetControlPlaneUpgrade(ControlPlaneUpgradeStatusRequest)
+        returns (ControlPlaneUpgradeStatusResponse) {
+        option (google.api.http) = {
+            get : "/v1/upgrade/{org_id}/{tracking_id}"
+        };
+    }
+
+    // UpgradeClusters starts a bulk stork/kdmp upgrade on the given clusters.
+    // It returns a job id right away, before any cluster finishes. Use
+    // GetClusterUpgrade to poll the per-cluster status.
+    rpc UpgradeClusters(ClusterUpgradeRequest)
+        returns (ClusterUpgradeResponse) {
+        option (google.api.http) = {
+            post : "/v1/upgrade/clusters"
+            body : "*"
+        };
+    }
+
+    // GetClusterUpgrade returns the per-cluster status of a bulk upgrade job.
+    rpc GetClusterUpgrade(ClusterUpgradeStatusRequest)
+        returns (ClusterUpgradeStatusResponse) {
+        option (google.api.http) = {
+            get : "/v1/upgrade/clusters/{org_id}/{job_id}"
+        };
+    }
+}
+
+// UpgradeStatusInfo is the status of one upgrade step or one cluster.
+message UpgradeStatusInfo {
+    Status status = 1;
+    // Human-readable reason for the current status.
+    string reason = 2;
+
+    enum Status {
+        Invalid = 0;
+        // Pending means the step is queued but not started.
+        Pending = 1;
+        // InProgress means the step is running.
+        InProgress = 2;
+        // Success means the step finished without error.
+        Success = 3;
+        // Failed means the step did not finish.
+        Failed = 4;
+    }
+}
+
+// ControlPlaneUpgradeRequest starts a control-plane upgrade.
+message ControlPlaneUpgradeRequest {
+    // Organization id.
+    string org_id = 1;
+    // The current running version, taken from releases.json.
+    string current_version = 2;
+    // The target version to upgrade to.
+    string upgrade_version = 3;
+}
+
+// ControlPlaneUpgradeResponse returns the tracking id of the upgrade.
+message ControlPlaneUpgradeResponse {
+    // Tracking id to poll the upgrade status.
+    string tracking_id = 1;
+}
+
+// ControlPlaneUpgradeStatusRequest asks for the status of a control-plane
+// upgrade.
+message ControlPlaneUpgradeStatusRequest {
+    string org_id = 1;
+    string tracking_id = 2;
+}
+
+// ControlPlaneUpgradeStatusResponse returns the status of a control-plane
+// upgrade.
+message ControlPlaneUpgradeStatusResponse {
+    ControlPlaneUpgradeInfo upgrade_info = 1;
+}
+
+// ControlPlaneUpgradeInfo holds the state of one control-plane upgrade.
+message ControlPlaneUpgradeInfo {
+    string tracking_id = 1;
+    string current_version = 2;
+    string upgrade_version = 3;
+    // The overall status of the upgrade.
+    UpgradeStatusInfo status = 4;
+    // The ordered stage states: pre-checks, image update, migration,
+    // health check.
+    repeated StageInfo stages = 5;
+
+    // StageInfo holds the status of one upgrade stage.
+    message StageInfo {
+        // The stage name, for example "pre-checks" or "migration".
+        string name = 1;
+        UpgradeStatusInfo status = 2;
+    }
+}
+
+// ClusterUpgradeRequest starts a bulk stork/kdmp upgrade.
+message ClusterUpgradeRequest {
+    // Organization id.
+    string org_id = 1;
+    // The clusters to upgrade stork and kdmp on.
+    repeated ObjectRef cluster_refs = 2;
+    // The target stork/kdmp version. kdmp uses the stork version.
+    string upgrade_version = 3;
+}
+
+// ClusterUpgradeResponse returns the job id of the bulk upgrade.
+message ClusterUpgradeResponse {
+    // Job id to poll the per-cluster status.
+    string job_id = 1;
+}
+
+// ClusterUpgradeStatusRequest asks for the status of a bulk upgrade job.
+message ClusterUpgradeStatusRequest {
+    string org_id = 1;
+    string job_id = 2;
+}
+
+// ClusterUpgradeStatusResponse returns the status of a bulk upgrade job.
+message ClusterUpgradeStatusResponse {
+    ClusterUpgradeJobInfo job_info = 1;
+}
+
+// ClusterUpgradeJobInfo holds the state of one bulk upgrade job.
+message ClusterUpgradeJobInfo {
+    string job_id = 1;
+    string upgrade_version = 2;
+    // The state of each cluster in the job.
+    repeated ClusterUpgradeState cluster_states = 3;
+
+    // ClusterUpgradeState holds the status of one cluster in the job.
+    message ClusterUpgradeState {
+        ObjectRef cluster_ref = 1;
+        UpgradeStatusInfo status = 2;
+    }
+}
