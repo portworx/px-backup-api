@@ -141,6 +141,39 @@
         ]
       }
     },
+    "/v1/backup/synthetic": {
+      "post": {
+        "summary": "SyntheticBackup creates a synthetic backup from a set of successful\nbackups of the same backup schedule",
+        "operationId": "Backup_SyntheticBackup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BackupSyntheticResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackupSyntheticRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Backup"
+        ]
+      }
+    },
     "/v1/backup/updatebackupshare": {
       "put": {
         "summary": "UpdateBackupShare updates backupshare of existing backup object",
@@ -7964,6 +7997,48 @@
     "BackupShareUpdateResponse": {
       "type": "object",
       "title": "Response message for backup share update request"
+    },
+    "BackupSyntheticRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string",
+          "title": "Organization id"
+        },
+        "name": {
+          "type": "string",
+          "title": "Name of the backup the synthetic backup is requested from"
+        },
+        "uid": {
+          "type": "string",
+          "title": "UID of the backup the synthetic backup is requested from"
+        },
+        "backup_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "title": "Backups to combine. All must be successful backups of the same backup schedule"
+        }
+      },
+      "title": "Request message for creating a synthetic backup"
+    },
+    "BackupSyntheticResponse": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Auto-generated synthetic backup name format : \u003cbackup name\u003e-synthetic-\u003cepoch\u003e"
+        },
+        "backup_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "title": "Backups to be combined, oldest first"
+        }
+      },
+      "title": "Response message for BackupSyntheticRequest"
     },
     "BackupUpdateRequest": {
       "type": "object",

@@ -3170,6 +3170,15 @@ service Backup {
             body : "*"
         };
     }
+    // SyntheticBackup creates a synthetic backup from a set of successful
+    // backups of the same backup schedule
+    rpc SyntheticBackup(BackupSyntheticRequest)
+        returns (BackupSyntheticResponse) {
+        option (google.api.http) = {
+            post : "/v1/backup/synthetic"
+            body : "*"
+        };
+    }
 }
 
 // Request message structure for backup create
@@ -3384,6 +3393,26 @@ message BackupRetryRequest {
 message BackupRetryResponse {
     // Auto-generated backup name format : <original backup name>-retry{count}-<epoch> ;
     BackupObject backup = 1;
+}
+
+// Request message for creating a synthetic backup
+message BackupSyntheticRequest {
+    // Organization id
+    string org_id = 1;
+    // Name of the backup the synthetic backup is requested from
+    string name = 2;
+    // UID of the backup the synthetic backup is requested from
+    string uid = 3;
+    // Backups to combine. All must be successful backups of the same backup schedule
+    repeated ObjectRef backup_refs = 4;
+}
+
+// Response message for BackupSyntheticRequest
+message BackupSyntheticResponse {
+    // Auto-generated synthetic backup name format : <backup name>-synthetic-<epoch>
+    string name = 1;
+    // Backups to be combined, oldest first
+    repeated ObjectRef backup_refs = 2;
 }
 
 
