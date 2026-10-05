@@ -6158,8 +6158,39 @@
             "type": "string"
           },
           "description": "Namespaces from a static-list VM backup that had no matching VMs (empty ns or ARLS-filtered)."
+        },
+        "archive_info": {
+          "$ref": "#/definitions/BackupInfoArchiveInfo",
+          "description": "Progress of archival from the primary BackupLocation to its paired archive\nBackupLocation. Only populated when the primary BL has an archive pair.\nhack16-demo scope."
         }
       }
+    },
+    "BackupInfoArchiveInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/BackupInfoArchiveInfoStatus"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "description": "ArchiveInfo tracks the archival of this backup to the paired archive BL."
+    },
+    "BackupInfoArchiveInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Initiated",
+        "InProgress",
+        "Done",
+        "Failed"
+      ],
+      "default": "Invalid"
     },
     "BackupInfoBackupObjectType": {
       "type": "object",
@@ -6524,6 +6555,15 @@
         "sync_info": {
           "$ref": "#/definitions/BackupLocationInfoSyncInfo",
           "description": "sync_info provides information about the sync operation including status, timing, and stats."
+        },
+        "archive_pair_name": {
+          "type": "string",
+          "description": "Name of a sibling BackupLocation that is the archive target for this one.\nWhen set, backups taken against this location are copied to the archive\nlocation after archive_after_seconds have elapsed since backup success and\nthen removed from the primary. Only non-NFS primaries may be paired to an\nNFS archive. hack16-demo scope."
+        },
+        "archive_after_seconds": {
+          "type": "string",
+          "format": "int64",
+          "description": "Delay in seconds between backup success and the start of archival.\nIgnored when archive_pair_name is empty. hack16-demo scope."
         },
         "s3_config": {
           "$ref": "#/definitions/S3Config"

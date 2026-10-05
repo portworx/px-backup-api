@@ -861,6 +861,16 @@ message BackupLocationInfo {
         NFS = 4;
     }
 
+    // Name of a sibling BackupLocation that is the archive target for this one.
+    // When set, backups taken against this location are copied to the archive
+    // location after archive_after_seconds have elapsed since backup success and
+    // then removed from the primary. Only non-NFS primaries may be paired to an
+    // NFS archive. hack16-demo scope.
+    string archive_pair_name = 16;
+    // Delay in seconds between backup success and the start of archival.
+    // Ignored when archive_pair_name is empty. hack16-demo scope.
+    int64 archive_after_seconds = 17;
+
     oneof config {
         S3Config s3_config = 100;
         NFSConfig nfs_config = 101;
@@ -1067,6 +1077,24 @@ message BackupInfo {
     bool synced = 60;
     // Namespaces from a static-list VM backup that had no matching VMs (empty ns or ARLS-filtered).
     repeated string namespaces_without_matching_vms = 61;
+    // Progress of archival from the primary BackupLocation to its paired archive
+    // BackupLocation. Only populated when the primary BL has an archive pair.
+    // hack16-demo scope.
+    ArchiveInfo archive_info = 62;
+    // ArchiveInfo tracks the archival of this backup to the paired archive BL.
+    message ArchiveInfo {
+        Status status = 1;
+        string reason = 2;
+        google.protobuf.Timestamp updated_at = 3;
+
+        enum Status {
+            Invalid = 0;
+            Initiated = 1;
+            InProgress = 2;
+            Done = 3;
+            Failed = 4;
+        }
+    }
     // Message for maintaining status of sync operations
     message SyncStatusInfo {
         Status status = 1;
