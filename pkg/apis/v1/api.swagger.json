@@ -4906,37 +4906,6 @@
         ]
       }
     },
-    "/v1/upgrade/clusters/{org_id}/stork-status": {
-      "get": {
-        "summary": "ListClusterStorkStatus returns the current stork version of each\nregistered cluster, with the latest supported version and whether the\ncluster is outdated. The UI uses it for the Stork tab and the Clusters\npage.",
-        "operationId": "Upgrade_ListClusterStorkStatus",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/ClusterStorkStatusResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Upgrade"
-        ]
-      }
-    },
     "/v1/upgrade/clusters/{org_id}/{job_id}": {
       "get": {
         "summary": "GetClusterUpgrade returns the per-cluster status of a bulk upgrade job.",
@@ -4964,6 +4933,37 @@
           },
           {
             "name": "job_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Upgrade"
+        ]
+      }
+    },
+    "/v1/upgrade/stork-status/{org_id}": {
+      "get": {
+        "summary": "ListClusterStorkStatus returns the current stork version of each\nregistered cluster, with the latest supported version and whether the\ncluster is outdated. The UI uses it for the Stork tab and the Clusters\npage.",
+        "operationId": "Upgrade_ListClusterStorkStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ClusterStorkStatusResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
             "in": "path",
             "required": true,
             "type": "string"

@@ -12980,7 +12980,7 @@ var (
 
 	pattern_Upgrade_GetClusterUpgrade_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "upgrade", "clusters", "org_id", "job_id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Upgrade_ListClusterStorkStatus_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "upgrade", "clusters", "org_id", "stork-status"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Upgrade_ListClusterStorkStatus_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "upgrade", "stork-status", "org_id"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

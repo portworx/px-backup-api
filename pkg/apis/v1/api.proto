@@ -4673,8 +4673,12 @@ service Upgrade {
     // page.
     rpc ListClusterStorkStatus(ClusterStorkStatusRequest)
         returns (ClusterStorkStatusResponse) {
+        // Use a separate /stork-status/ prefix, not /clusters/{org_id}/..., so
+        // the REST gateway does not shadow this with GetClusterUpgrade's
+        // /clusters/{org_id}/{job_id} wildcard (stork-status would match as a
+        // job_id).
         option (google.api.http) = {
-            get : "/v1/upgrade/clusters/{org_id}/stork-status"
+            get : "/v1/upgrade/stork-status/{org_id}"
         };
     }
 }
