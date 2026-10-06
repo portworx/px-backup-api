@@ -4897,6 +4897,177 @@
         ]
       }
     },
+    "/v1/upgrade": {
+      "post": {
+        "summary": "UpgradeControlPlane starts an in-place upgrade of the px-backup control\nplane. It returns a tracking id. Use GetControlPlaneUpgrade to poll the\nstatus. The version pair must be valid per the releases.json\nupgradePolicy: current_version must be a member of the target\nsupportedUpgradeFrom, and upgrade_version must be a strictly higher\nsemver.",
+        "operationId": "Upgrade_UpgradeControlPlane",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ControlPlaneUpgradeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ControlPlaneUpgradeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Upgrade"
+        ]
+      }
+    },
+    "/v1/upgrade/clusters": {
+      "post": {
+        "summary": "UpgradeClusters starts a bulk stork/kdmp upgrade on the given clusters.\nIt returns a job id right away, before any cluster finishes. Use\nGetClusterUpgrade to poll the per-cluster status.",
+        "operationId": "Upgrade_UpgradeClusters",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ClusterUpgradeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ClusterUpgradeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Upgrade"
+        ]
+      }
+    },
+    "/v1/upgrade/clusters/{org_id}/{job_id}": {
+      "get": {
+        "summary": "GetClusterUpgrade returns the per-cluster status of a bulk upgrade job.",
+        "operationId": "Upgrade_GetClusterUpgrade",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ClusterUpgradeStatusResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Upgrade"
+        ]
+      }
+    },
+    "/v1/upgrade/stork-status/{org_id}": {
+      "get": {
+        "summary": "ListClusterStorkStatus returns the current stork version of each\nregistered cluster, with the latest supported version and whether the\ncluster is outdated. The UI uses it for the Stork tab and the Clusters\npage.",
+        "operationId": "Upgrade_ListClusterStorkStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ClusterStorkStatusResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Upgrade"
+        ]
+      }
+    },
+    "/v1/upgrade/{org_id}/{tracking_id}": {
+      "get": {
+        "summary": "GetControlPlaneUpgrade returns the status of a control-plane upgrade.",
+        "operationId": "Upgrade_GetControlPlaneUpgrade",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ControlPlaneUpgradeStatusResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "tracking_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Upgrade"
+        ]
+      }
+    },
     "/v1/version": {
       "get": {
         "summary": "gets the version of the server",
@@ -8486,6 +8657,43 @@
         }
       }
     },
+    "ClusterStorkStatus": {
+      "type": "object",
+      "properties": {
+        "cluster_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "cluster_name": {
+          "type": "string",
+          "description": "The cluster display name."
+        },
+        "stork_version": {
+          "type": "string",
+          "description": "The current stork version on the cluster."
+        },
+        "latest_version": {
+          "type": "string",
+          "description": "The latest supported stork version, from releases.json."
+        },
+        "outdated": {
+          "type": "boolean",
+          "description": "True when stork_version is lower than latest_version."
+        }
+      },
+      "description": "ClusterStorkStatus is the stork status of one cluster."
+    },
+    "ClusterStorkStatusResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ClusterStorkStatus"
+          }
+        }
+      },
+      "description": "ClusterStorkStatusResponse returns the stork status of every cluster."
+    },
     "ClusterUpdateRequest": {
       "type": "object",
       "properties": {
@@ -8514,6 +8722,89 @@
     "ClusterUpdateResponse": {
       "type": "object",
       "title": "Define ClusterUpdateResponse struct"
+    },
+    "ClusterUpgradeJobInfo": {
+      "type": "object",
+      "properties": {
+        "job_id": {
+          "type": "string"
+        },
+        "upgrade_version": {
+          "type": "string"
+        },
+        "cluster_states": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ClusterUpgradeJobInfoClusterUpgradeState"
+          },
+          "description": "The state of each cluster in the job."
+        }
+      },
+      "description": "ClusterUpgradeJobInfo holds the state of one bulk upgrade job."
+    },
+    "ClusterUpgradeJobInfoClusterUpgradeState": {
+      "type": "object",
+      "properties": {
+        "cluster_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "status": {
+          "$ref": "#/definitions/UpgradeStatusInfo"
+        },
+        "cluster_name": {
+          "type": "string",
+          "description": "The cluster display name."
+        },
+        "from_version": {
+          "type": "string",
+          "description": "The stork version before the upgrade."
+        },
+        "to_version": {
+          "type": "string",
+          "description": "The target stork version."
+        }
+      },
+      "description": "ClusterUpgradeState holds the status of one cluster in the job."
+    },
+    "ClusterUpgradeRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string",
+          "description": "Organization id."
+        },
+        "cluster_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "The clusters to upgrade stork and kdmp on."
+        },
+        "upgrade_version": {
+          "type": "string",
+          "description": "The target stork/kdmp version. kdmp uses the stork version."
+        }
+      },
+      "description": "ClusterUpgradeRequest starts a bulk stork/kdmp upgrade."
+    },
+    "ClusterUpgradeResponse": {
+      "type": "object",
+      "properties": {
+        "job_id": {
+          "type": "string",
+          "description": "Job id to poll the per-cluster status."
+        }
+      },
+      "description": "ClusterUpgradeResponse returns the job id of the bulk upgrade."
+    },
+    "ClusterUpgradeStatusResponse": {
+      "type": "object",
+      "properties": {
+        "job_info": {
+          "$ref": "#/definitions/ClusterUpgradeJobInfo"
+        }
+      },
+      "description": "ClusterUpgradeStatusResponse returns the status of a bulk upgrade job."
     },
     "ClusterValidationStatus": {
       "type": "object",
@@ -8592,6 +8883,82 @@
           "title": "Time range for which to return objects"
         }
       }
+    },
+    "ControlPlaneUpgradeInfo": {
+      "type": "object",
+      "properties": {
+        "tracking_id": {
+          "type": "string"
+        },
+        "current_version": {
+          "type": "string"
+        },
+        "upgrade_version": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/UpgradeStatusInfo",
+          "description": "The overall status of the upgrade."
+        },
+        "stages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ControlPlaneUpgradeInfoStageInfo"
+          },
+          "description": "The ordered stage states: pre-checks, image update, migration,\nhealth check."
+        }
+      },
+      "description": "ControlPlaneUpgradeInfo holds the state of one control-plane upgrade."
+    },
+    "ControlPlaneUpgradeInfoStageInfo": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The stage name, for example \"pre-checks\" or \"migration\"."
+        },
+        "status": {
+          "$ref": "#/definitions/UpgradeStatusInfo"
+        }
+      },
+      "description": "StageInfo holds the status of one upgrade stage."
+    },
+    "ControlPlaneUpgradeRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string",
+          "description": "Organization id."
+        },
+        "current_version": {
+          "type": "string",
+          "description": "The current running version, taken from releases.json."
+        },
+        "upgrade_version": {
+          "type": "string",
+          "description": "The target version to upgrade to."
+        }
+      },
+      "description": "ControlPlaneUpgradeRequest starts a control-plane upgrade."
+    },
+    "ControlPlaneUpgradeResponse": {
+      "type": "object",
+      "properties": {
+        "tracking_id": {
+          "type": "string",
+          "description": "Tracking id to poll the upgrade status."
+        }
+      },
+      "description": "ControlPlaneUpgradeResponse returns the tracking id of the upgrade."
+    },
+    "ControlPlaneUpgradeStatusResponse": {
+      "type": "object",
+      "properties": {
+        "upgrade_info": {
+          "$ref": "#/definitions/ControlPlaneUpgradeInfo"
+        }
+      },
+      "description": "ControlPlaneUpgradeStatusResponse returns the status of a control-plane\nupgrade."
     },
     "CreateMetadata": {
       "type": "object",
@@ -11612,6 +11979,31 @@
     },
     "UnShareClusterResponse": {
       "type": "object"
+    },
+    "UpgradeStatusInfo": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/UpgradeStatusInfoStatus"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Human-readable reason for the current status."
+        }
+      },
+      "description": "UpgradeStatusInfo is the status of one upgrade step or one cluster."
+    },
+    "UpgradeStatusInfoStatus": {
+      "type": "string",
+      "enum": [
+        "Invalid",
+        "Pending",
+        "InProgress",
+        "Success",
+        "Failed"
+      ],
+      "default": "Invalid",
+      "description": " - Pending: Pending means the step is queued but not started.\n - InProgress: InProgress means the step is running.\n - Success: Success means the step finished without error.\n - Failed: Failed means the step did not finish."
     },
     "VersionGetResponse": {
       "type": "object",
