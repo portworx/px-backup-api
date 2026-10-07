@@ -1181,6 +1181,34 @@ message BackupInfo {
         }
     }
 
+
+    // ---- Resource-Centric Backup. Next free number was 62.
+    // 60 and 61 are taken by synced and namespaces_without_matching_vms. ----
+    // Field 62 held resource_ref under the one-schedule-per-resource model.
+    // A backup now covers many resources, so one reference cannot describe it
+    // and the per-resource verdict lives in RecoveryPointInfo instead.
+    reserved 62;
+    reserved "resource_ref";
+    // The single Protection Intent that produced it. Still correct: one
+    // schedule key serves exactly one intent.
+    string intent_id = 63;
+    // Which equivalence class produced it, so a backup is traceable back to
+    // its group. OUTPUT_ONLY.
+    string schedule_key = 64;
+    // Which catalog resources this backup covers. The backup is SHARED, so
+    // this is its member list. Bounded by the size of one schedule group, not
+    // by the fleet.
+    repeated string covered_resource_uids = 65;
+    // Which SLA Policy was in force, and at which revision. Retention is
+    // anchored to the revision -- FR-133.
+    ObjectRef sla_policy_ref = 66;
+    uint64 sla_policy_revision_at_capture = 67;
+    // How each volume was ACTUALLY captured, and why a preferred method was
+    // not used -- FR-098. BackupInfo.volumes records what was backed up, not
+    // which method moved it.
+    repeated VolumeCaptureDetail volume_capture_details = 68;
+    // False for a legacy backup, which has no recovery points.
+    bool resource_centric = 69;
 }
 
 // Message representing resources within a namespace with status, metrics, and resource type breakdown
@@ -5062,4 +5090,1934 @@ message ClusterDiscoveryConfigRefreshClustersResponse {
     bool triggered = 1;
     // Message providing additional context (e.g., "Refresh started" or error details).
     string message = 2;
+}
+
+// ============================================================================
+// Resource-Centric Backup — PB-17448 happy-path subset.
+//
+// Design: workspace-config/specs/003-resource-centric-backup/
+//         contracts/proto-changes-fc1.md
+//
+// SchedulePolicyInfo and BackupScheduleInfo are NOT touched. The SLA Policy and
+// the Binding are new objects, so the legacy pair can go read-only at cutover
+// without either message carrying two meanings.
+// ============================================================================
+
+// Five states. "Deleted" is the lifecycle field, never a sixth value.
+enum ProtectionState {
+    ProtectionStateInvalid = 0;
+    // Discovered in the catalog; no placement applied yet.
+    NotConfigured = 1;
+    // Placement applied, so a destination is known; no Binding yet.
+    Unprotected = 2;
+    // Bound, but no recovery point qualifies yet.
+    ProtectedNotInSLA = 3;
+    // Bound and meeting its recoverability period.
+    ProtectedInSLA = 4;
+    // Carries an exclusion; outside the SLA denominator.
+    Excluded = 5;
+}
+
+// The tier that owns an object. Full resolution is owned by PB-16926; the
+// happy path always writes SuperAdmin.
+enum OwnerTier {
+    OwnerTierInvalid = 0;
+    SuperAdmin = 1;
+    InfraAdmin = 2;
+    AppAdmin = 3;
+    User = 4;
+}
+
+// ---------------------------------------------------------------------------
+// Shared leaf types for the resource-centric model.
+//
+// Each exists because no message in this API already carries its meaning.
+// Metadata, Ownership and ObjectRef are reused rather than redefined.
+// ---------------------------------------------------------------------------
+
+// When a child belonged to a parent. Open-ended while it still belongs.
+// Needed because Metadata's timestamps describe the OBJECT, not the relation,
+// and a restore to a past time must know the membership at that time.
+message MembershipInterval {
+    // Kubernetes UID of the child, normally a VirtualMachine.
+    string child_uid = 1;
+    google.protobuf.Timestamp joined_time = 2;
+    // Unset means the child is still a member.
+    google.protobuf.Timestamp left_time = 3;
+}
+
+// Exactly one inventory owner per Kubernetes object -- FR-004.
+// Without this a VM disk is captured twice: once by the namespace backup and
+// once by the VM backup.
+message GraphOwnerEntry {
+    // For example "v1/ConfigMap" or "kubevirt.io/v1/VirtualMachine".
+    string group_version_kind = 1;
+    string object_name = 2;
+    // The catalog resource that owns this object for inventory purposes.
+    string owner_resource_uid = 3;
+    // True when the object has several consumers and ownership was arbitrated.
+    bool shared = 4;
+}
+
+// A volume with more than one consumer -- FR-010.
+message SharedVolumeInfo {
+    string pvc_name = 1;
+    repeated string consumer_resource_uids = 2;
+    // The consumer that owns it in the inventory. The others reference it.
+    string owner_resource_uid = 3;
+}
+
+// Why a resource is held out of auto-rule claiming -- FR-014, FR-016.
+// An exclusion needs a reason, an author and a time; no existing field holds
+// any of these.
+message AutoRuleExclusionInfo {
+    bool excluded = 1;
+    // A code from an ExclusionReasonTemplate.
+    string reason_code = 2;
+    string reason_text = 3;
+    string excluded_by = 4;
+    google.protobuf.Timestamp excluded_time = 5;
+    // Unset means the exclusion does not expire.
+    google.protobuf.Timestamp expires_time = 6;
+}
+
+// How one volume was actually captured, and why -- FR-098.
+// BackupInfo.volumes records WHAT was backed up. This records which method
+// moved it, and why a preferred method was not used.
+message VolumeCaptureDetail {
+    string pvc_name = 1;
+    string namespace = 2;
+    Method requested_method = 3;
+    Method actual_method = 4;
+    // Set only when actual_method differs from requested_method.
+    string fallback_reason = 5;
+    string volume_snapshot_class = 6;
+    bool encrypted = 7;
+
+    enum Method {
+        MethodInvalid = 0;
+        CSISnapshot = 1;
+        PortworxCloudSnap = 2;
+        GenericKDMP = 3;
+        DirectKDMP = 4;
+    }
+}
+
+// A per-intent destination override -- FR-036.
+// One SLA Policy may hold intents that need different destinations, and a
+// placement assignment carries only one backup_location_ref.
+message IntentDestination {
+    string intent_id = 1;
+    ObjectRef backup_location_ref = 2;
+    ObjectRef local_snapshot_ref = 3;
+}
+
+// One recorded change of owner -- FR-128.
+// Ownership holds the current state only, with no history.
+message OwnershipTransition {
+    string from_owner = 1;
+    string to_owner = 2;
+    string changed_by = 3;
+    google.protobuf.Timestamp changed_time = 4;
+    string reason = 5;
+}
+
+// A count of resources in one protection state, for the summary views.
+message ProtectionStateCount {
+    ProtectionState state = 1;
+    int32 count = 2;
+    CatalogResourceInfo.Kind kind = 3;
+}
+
+// One derived schedule belonging to one Protection Intent.
+//
+// Groups the four values that BindingInfo already carries at 19 to 22 for the
+// baseline. Those four are NOT reshaped into this message: that would be a
+// breaking change for no gain.
+message DerivedSchedule {
+    string intent_id = 1;
+    // DERIVED, never user-supplied. OUTPUT_ONLY.
+    string schedule_key = 2;
+    string schedule_policy_cr_name = 3;
+    string backup_schedule_cr_name = 4;
+    string backup_schedule_uid = 5;
+}
+
+// The requirement lives on the intent. Key material stays on the backup
+// location, which is why there is no key reference here.
+message EncryptionRequirement {
+    bool require_customer_managed_key = 1;
+}
+
+// One statement of how often a resource is captured, how long it stays
+// recoverable, and how it is captured.
+//
+// Embeddable only. It sits in an SLAPolicyInfo as a baseline intent and in a
+// BindingInfo as a supplemental one, so it is never a standalone object.
+//
+// The four schedule forms are COPIED from SchedulePolicyInfo, keeping every
+// field name, MINUS retain and incremental_count. Both of those appear in all
+// five legacy forms and are duplicated at this level; retain is a count and
+// would sit beside a period, giving one intent two retention models.
+message ProtectionIntent {
+    // Stable within its SLA Policy or its Binding.
+    string intent_id = 1;
+
+    oneof schedule {
+        IntervalPolicy interval = 2;
+        DailyPolicy daily = 3;
+        WeeklyPolicy weekly = 4;
+        MonthlyPolicy monthly = 5;
+    }
+
+    // Referenced rather than copied: a leaf value type with no retain conflict.
+    // The wrapper is what separates "always full" (0) from unset, so it stays
+    // a message.
+    SchedulePolicyInfo.IncrementalCount incremental_count = 6;
+
+    // Chosen by the administrator. Automatic run-time selection is out of v1.
+    google.protobuf.Timestamp run_time = 7;
+
+    // The ONLY retention field. A period, never a count. A count cannot say
+    // "recoverable for 30 days" when runs are missed.
+    google.protobuf.Duration recoverability_period = 8;
+
+    // Capture. Relocated from BackupScheduleInfo.backup_type and .direct_kdmp.
+    CaptureMode capture_mode = 9;
+    // Super/Infra only. Fails rather than falling back to the generic path.
+    bool require_snapshot_capture = 10;
+    // Was BackupScheduleInfo.volume_snapshot_class_mapping.
+    map<string, string> vsc_override_labels = 11;
+    ObjectRef volume_resource_only_policy_ref = 12;
+    EncryptionRequirement encryption_requirement = 13;
+
+    Classification classification = 14;
+    // Creator. Only the creator may edit a supplemental intent.
+    string owner = 15;
+    OwnerTier owner_tier = 16;
+
+    // A floor the owner of the baseline sets -- FR-044. A supplemental intent
+    // may not state a recoverability_period below it.
+    google.protobuf.Duration minimum_retention_period = 17;
+
+    // ---- the four forms, copied minus retain and incremental_count ----
+
+    message IntervalPolicy {
+        // Interval in minutes between runs.
+        int64 minutes = 1;
+    }
+
+    message DailyPolicy {
+        // time.Kitchen, for example 12:04PM.
+        string time = 1;
+    }
+
+    message WeeklyPolicy {
+        // Comma-separated days, for example sunday,monday.
+        string day = 1;
+        string time = 2;
+        // Run on alternate weeks.
+        bool bi_weekly = 3;
+    }
+
+    message MonthlyPolicy {
+        // The deprecated flat fields on the legacy message are NOT copied.
+        oneof monthly_policy {
+            RelativeMonthlyPolicy relative_monthly_policy = 1;
+            SelectiveMonthlyPolicy selective_monthly_policy = 2;
+        }
+
+        message SelectiveMonthlyPolicy {
+            int64 date = 1;
+            string time = 2;
+            // Comma-separated months. Empty means every month.
+            string months = 3;
+        }
+
+        message RelativeMonthlyPolicy {
+            // One day only, for example sun.
+            string day = 1;
+            WeeklyIndex weekly_index = 2;
+            string time = 3;
+
+            enum WeeklyIndex {
+                WeeklyIndexInvalid = 0;
+                first = 1;
+                second = 2;
+                third = 3;
+                fourth = 4;
+                last = 5;
+            }
+        }
+    }
+
+    enum CaptureMode {
+        CaptureModeInvalid = 0;
+        // Prefers a snapshot; may fall back unless forbidden.
+        AutomaticOptimized = 1;
+        // Always the generic path; never silently switched.
+        GenericCrossCloud = 2;
+    }
+
+    enum Classification {
+        ClassificationInvalid = 0;
+        // Came from the shared SLA Policy.
+        Baseline = 1;
+        // Lives in one Binding only.
+        Supplemental = 2;
+    }
+}
+
+// A reusable, resource-agnostic set of Protection Intents. Holds no location,
+// no placement rule, no governance mode and no supplemental intent, so one SLA
+// Policy can serve resources in different clusters.
+//
+// Metadata carries Ownership, so there is no owner field. There is no
+// back-reference list of Bindings either: it would be unbounded at fleet scale
+// and every bind would have to write this shared document. "Which Bindings use
+// this SLA Policy" is an index on the Binding.
+message SLAPolicyInfo {
+    repeated ProtectionIntent protection_intents = 1;
+    // Increases only. A recovery point records the revision it ran under.
+    uint64 revision = 2;
+    // Suppresses new scheduled runs. Not a resource state.
+    bool paused = 3;
+    // When it was suspended, and by whom. Needed to report the protection gap.
+    google.protobuf.Timestamp paused_time = 4;
+    string paused_by = 5;
+    // OUTPUT_ONLY, computed from an index on the Binding. A COUNT, not a list:
+    // a list would be unbounded at fleet scale and every bind would have to
+    // write this shared document.
+    int32 binding_count = 6;
+}
+
+message SLAPolicyObject {
+    Metadata metadata = 1
+        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    SLAPolicyInfo sla_policy_info = 2 [ (gogoproto.embed) = true ];
+}
+
+// One namespace or one virtual machine that we have discovered on a cluster.
+//
+// Nothing like this exists today. Note that ResourceInfo and ResourceObject are
+// already taken and mean "what was inside a given backup", which is why this is
+// named CatalogResource.
+// Identity note: Metadata.uid holds the KUBERNETES UID and Metadata.name holds
+// the namespace or virtual-machine name. They are not repeated here, both
+// because the embed would collide and because it makes a catalog row
+// addressable by the same --name and --uid pair as every other object.
+// Identity is Metadata.uid plus cluster_ref; the name is display only, since a
+// namespace can be deleted and recreated under the same name.
+message CatalogResourceInfo {
+    ObjectRef cluster_ref = 1;
+    Kind kind = 2;
+    // The namespace or virtual-machine name, for display and for naming the
+    // stork objects. Not called "name", because Metadata already has one and
+    // the embed would collide.
+    string resource_name = 10;
+    // Virtual machines only: the Kubernetes UID of the owning namespace.
+    string parent_uid = 3;
+    // An overlay on the state, not a sixth state.
+    Lifecycle lifecycle = 4;
+    // Materialized, never computed on read.
+    ProtectionState protection_state = 5;
+
+    google.protobuf.Timestamp first_seen_time = 6;
+    google.protobuf.Timestamp deletion_time = 7;
+
+    // At most one of each.
+    ObjectRef placement_assignment_ref = 8;
+    ObjectRef binding_ref = 9;
+
+    // Namespaces only. Tells a list view that this namespace holds VMs, so the
+    // UI can warn before a namespace-level action reaches a child.
+    ContentBadge content_badge = 11;
+    // Namespaces only. Materialized so a list view does not count children on
+    // every read.
+    int32 child_count = 12;
+    int32 children_in_sla = 13;
+    // VMs only. Which parent, for which interval. A restore to a past time
+    // needs the membership AT that time, which parent_uid cannot give.
+    repeated MembershipInterval membership_history = 14;
+    // Exactly one inventory owner per Kubernetes object -- FR-004. This is what
+    // stops a VM disk being captured by both the VM and its namespace.
+    // Recomputed by discovery on every pass.
+    repeated GraphOwnerEntry graph_owner_index = 15;
+    // A volume with more than one consumer -- FR-010.
+    repeated SharedVolumeInfo shared_volumes = 16;
+    // Holds the resource out of auto-rule claiming -- FR-014.
+    AutoRuleExclusionInfo exclusion = 17;
+    // Discovery freshness. Separates "gone from the cluster" from "not scanned
+    // in this pass"; first_seen_time covers only the first pass.
+    google.protobuf.Timestamp last_seen_time = 18;
+
+    enum ContentBadge {
+        ContentBadgeInvalid = 0;
+        ConventionalOnly = 1;
+        VirtualMachinesOnly = 2;
+        Mixed = 3;
+    }
+
+    enum Kind {
+        KindInvalid = 0;
+        AppNamespace = 1;
+        VirtualMachine = 2;
+    }
+
+    enum Lifecycle {
+        LifecycleInvalid = 0;
+        Live = 1;
+        Tombstoned = 2;
+    }
+}
+
+message CatalogResourceObject {
+    Metadata metadata = 1
+        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    CatalogResourceInfo catalog_resource_info = 2 [ (gogoproto.embed) = true ];
+}
+
+// Which resources a rule targets. Shared by the placement rule and, later, the
+// binding rule.
+//
+// Object-level label selectors are rejected at validation: they choose objects
+// inside a namespace, which are not resources and cannot hold an assignment.
+message ResourceFilter {
+    // Empty means every cluster in the captured boundary.
+    repeated ObjectRef cluster_refs = 1;
+    // Must be stated explicitly; there is no implicit "everything".
+    repeated CatalogResourceInfo.Kind target_kinds = 2;
+    // A hand-picked set of catalog resource UIDs.
+    repeated string resource_uids = 3;
+    // Explicit namespace names, scoped by cluster_refs.
+    repeated string namespaces = 4;
+    // Select namespaces by the labels on the Namespace itself.
+    map<string, string> namespace_label_selector = 5;
+    // Select VMs by the labels on the VirtualMachine itself, independently of
+    // the parent. Two maps rather than one, because a single selector could not
+    // say "namespaces labelled tier=gold, and VMs labelled app=db", and
+    // target_kinds names kinds rather than label sets.
+    map<string, string> vm_label_selector = 6;
+}
+
+// A named statement of where the backups of matching resources go.
+message PlacementRuleInfo {
+    ResourceFilter filter = 1;
+    // Mandatory, and always off-cluster.
+    ObjectRef backup_location_ref = 2;
+    // Optional local-snapshot leg. Local-only is invalid.
+    ObjectRef local_snapshot_ref = 3;
+    Mode mode = 4;
+    // The creator's tier, captured at create time. Metadata.ownership already
+    // carries who owns the rule, so there is no owner field here.
+    OwnerTier owner_tier = 5;
+    google.protobuf.Timestamp created_time = 6;
+    // Auto rules only.
+    bool enabled = 7;
+    // One-shot rules: the moment of their single application.
+    google.protobuf.Timestamp applied_time = 8;
+
+    // OUTPUT_ONLY. When the auto cycle last evaluated this rule.
+    google.protobuf.Timestamp last_evaluated_time = 9;
+    // OUTPUT_ONLY. How many assignments this rule produced.
+    int32 assignment_count = 10;
+    // OUTPUT_ONLY. How many of them no longer match -- FR-030.
+    int32 drift_count = 11;
+    // The creator's authority at create time, frozen. Survives the creator
+    // being removed -- FR-074. Reuses ResourceFilter rather than a new message.
+    ResourceFilter captured_target_boundary = 12;
+
+    enum Mode {
+        ModeInvalid = 0;
+        // Applies once, to whatever its filter matches at that moment.
+        OneShot = 1;
+        // Keeps applying to new matches.
+        Auto = 2;
+    }
+}
+
+message PlacementRuleObject {
+    Metadata metadata = 1
+        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    PlacementRuleInfo placement_rule_info = 2 [ (gogoproto.embed) = true ];
+}
+
+// One resource's resolved destination. Separate from the rule because it must
+// keep the rule's definition as it was at apply time — otherwise editing an
+// auto rule would retroactively move every resource already using it.
+message PlacementAssignmentInfo {
+    ObjectRef resource_ref = 1;
+    ObjectRef backup_location_ref = 2;
+    ObjectRef local_snapshot_ref = 3;
+    google.protobuf.Timestamp applied_time = 4;
+    // Frozen at apply time.
+    ResourceFilter captured_rule_definition = 5;
+
+    // Rule provenance.
+    ObjectRef source_rule_ref = 6;
+    bool still_matches_source_rule = 7;
+    google.protobuf.Timestamp departed_since = 8;
+
+    // Per-intent destination override -- FR-036. Empty means every intent uses
+    // backup_location_ref.
+    repeated IntentDestination intent_destinations = 9;
+    // Records that the destination was reached by privilege elevation, and
+    // under which context -- FR-118. Auditable after the fact; the delegate
+    // never sees the location's credentials.
+    string placement_inheriting_context = 10;
+}
+
+message PlacementAssignmentObject {
+    Metadata metadata = 1
+        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    PlacementAssignmentInfo placement_assignment_info = 2
+        [ (gogoproto.embed) = true ];
+}
+
+// The durable junction of one resource and one SLA Policy.
+//
+// Reshaped from BackupScheduleInfo into a new object, keeping its field names
+// where the meaning is unchanged. What was wrong with the legacy message is its
+// cardinality: one schedule selects many namespaces. Here it is one to one, and
+// selection moves out to the binding rule — that inversion is the whole model.
+message BindingInfo {
+    ObjectRef resource_ref = 1;
+    // An SLAPolicyObject. NOT the legacy BackupScheduleInfo.schedule_policy_ref,
+    // because it points at a different object.
+    ObjectRef sla_policy_ref = 2;
+    // Which revision was bound, for retention anchoring.
+    uint64 sla_policy_revision = 3;
+    string baseline_assignment_owner = 4;
+    // DERIVED from the owner's tier, never selectable.
+    Governance governance = 5;
+    ObjectRef placement_assignment_ref = 6;
+    // Stored inline. This is the only place a supplemental intent exists.
+    repeated ProtectionIntent supplemental_intents = 7;
+
+    // Binding-wide hooks. Reuses the existing RuleObject untouched.
+    ObjectRef pre_exec_rule_ref = 8;
+    ObjectRef post_exec_rule_ref = 9;
+
+    BackupScheduleInfo.BackupObjectType backup_object_type = 10;
+    repeated string resource_types = 11;
+    bool parallel_backup = 12;
+    bool keep_cr_status = 13;
+
+    // Immutable.
+    string created_by = 14;
+
+    // Rule provenance, matching the placement assignment.
+    ObjectRef source_rule_ref = 15;
+    bool still_matches_source_rule = 16;
+    google.protobuf.Timestamp departed_since = 17;
+
+    // Field 18 held stork_schedule_refs, a list of CRs this Binding owned
+    // under the one-schedule-per-resource model. A Binding no longer owns a
+    // schedule; it contributes its resource to a shared one.
+    reserved 18;
+    reserved "stork_schedule_refs";
+
+    // Which shared schedule executes this Binding.
+    //
+    // DERIVED, never user-supplied. Two Bindings holding the same value are
+    // executed by one ApplicationBackupSchedule CR, so this is an
+    // equivalence-class key rather than an identifier for anything.
+    //
+    // Readable rather than an opaque hash, because an operator has to be able
+    // to see why two resources did not group:
+    //     v1|c1|fb-bl|gold:daily|Namespace|hooks:none|par:false
+    //
+    // The leading version is load-bearing. Changing the derivation changes
+    // every key and orphans every existing CR, so the prefix makes that
+    // detectable rather than silent. The CR name is a short digest of this,
+    // because Kubernetes needs a DNS-safe name under 63 characters.
+    string schedule_key = 19;
+
+    // The derived CR names, recorded so an unbind or a suspend can address
+    // them without recomputing the digest.
+    string schedule_policy_cr_name = 20;
+    string backup_schedule_cr_name = 21;
+    string backup_schedule_uid = 22;
+
+    // Fields 19 to 22 describe the BASELINE intent's derived schedule only.
+    // A Binding that carries supplemental intents contributes to more than one
+    // schedule, so each extra one is recorded here. Suspend and Resume must
+    // walk this list as well as the baseline -- FR-047.
+    repeated DerivedSchedule additional_schedules = 23;
+
+    // OUTPUT_ONLY. Materialized so a list view does not have to read every
+    // recovery point to answer "when did this last run".
+    google.protobuf.Timestamp last_run_time = 24;
+    ObjectRef last_recovery_point_ref = 25;
+
+    // Per-intent destination override, keyed by intent id -- FR-036.
+    // NEVER returned to an App Admin -- FR-028.
+    repeated IntentDestination intent_destinations = 26;
+    // The hook definition in force, captured at execution start -- FR-065.
+    uint64 hook_revision = 27;
+    // Every ownership transfer, with reason -- FR-060, FR-096. Ownership holds
+    // the current state only, so the history needs its own list.
+    repeated OwnershipTransition owner_history = 28;
+    // Reused from BackupScheduleInfo, same meaning.
+    repeated string exclude_resource_types = 29;
+
+    enum Governance {
+        GovernanceInvalid = 0;
+        // A Super or Infra Admin owns the baseline assignment.
+        EnforcedBaseline = 1;
+        // An App Admin owns it and may replace it.
+        DelegatedControl = 2;
+    }
+}
+
+message BindingObject {
+    Metadata metadata = 1
+        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    BindingInfo binding_info = 2 [ (gogoproto.embed) = true ];
+}
+
+// ---------------------------------------------------------------------------
+// SLAPolicy service
+// ---------------------------------------------------------------------------
+
+message SLAPolicyCreateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    SLAPolicyInfo sla_policy = 2;
+}
+message SLAPolicyCreateResponse {}
+
+message SLAPolicyInspectRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+message SLAPolicyInspectResponse { SLAPolicyObject sla_policy = 1; }
+
+message SLAPolicyEnumerateRequest {
+    string org_id = 1;
+    map<string, string> labels = 2;
+}
+message SLAPolicyEnumerateResponse { repeated SLAPolicyObject sla_policies = 1; }
+
+message SLAPolicyDeleteRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+message SLAPolicyDeleteResponse {}
+
+// One intent at a time, deliberately. A whole-object update could not tell
+// "one intent added" from "three rewritten", and the impact review needs the
+// exact change before it touches every Binding on this SLA Policy.
+message SLAPolicyAddIntentRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    ProtectionIntent intent = 4;
+}
+message SLAPolicyAddIntentResponse {
+    uint64 revision = 1;
+    // Every Binding this addition reaches.
+    repeated ObjectRef affected_bindings = 2;
+}
+
+// Suspend stops new scheduled runs for every Binding on this SLA policy. It
+// removes nothing: the Bindings, the placements and every recovery point stay.
+message SLAPolicySuspendRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+message SLAPolicySuspendResponse {
+    // The Bindings whose schedules were suspended.
+    repeated ObjectRef suspended_bindings = 1;
+}
+
+message SLAPolicyResumeRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+message SLAPolicyResumeResponse {
+    repeated ObjectRef resumed_bindings = 1;
+}
+
+service SLAPolicy {
+    // Create an SLA Policy with zero or more baseline intents.
+    rpc Create(SLAPolicyCreateRequest) returns (SLAPolicyCreateResponse) {
+        option (google.api.http) = {
+            post : "/v1/slapolicy"
+            body : "*"
+        };
+    }
+
+    // Inspect returns one SLA Policy.
+    rpc Inspect(SLAPolicyInspectRequest) returns (SLAPolicyInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/slapolicy/{org_id}/{name}/{uid}"
+        };
+    }
+
+    // Enumerate returns every SLA Policy the caller may see.
+    rpc Enumerate(SLAPolicyEnumerateRequest)
+        returns (SLAPolicyEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/slapolicy/{org_id}"
+        };
+    }
+
+    // Delete removes an SLA Policy. Refused while any Binding references it.
+    rpc Delete(SLAPolicyDeleteRequest) returns (SLAPolicyDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/slapolicy/{org_id}/{name}/{uid}"
+        };
+    }
+
+    // AddIntent adds one baseline intent and reports what it reaches.
+    rpc AddIntent(SLAPolicyAddIntentRequest)
+        returns (SLAPolicyAddIntentResponse) {
+        option (google.api.http) = {
+            post : "/v1/slapolicy/{org_id}/{name}/{uid}/intent"
+            body : "*"
+        };
+    }
+
+    // Suspend stops new scheduled runs across every Binding on this SLA policy.
+    rpc Suspend(SLAPolicySuspendRequest) returns (SLAPolicySuspendResponse) {
+        option (google.api.http) = {
+            post : "/v1/slapolicy/{org_id}/{name}/{uid}/suspend"
+            body : "*"
+        };
+    }
+
+    // Resume lets the scheduled runs start again.
+    //
+    // Suspend and Resume MUST walk every derived schedule, baseline and
+    // supplemental -- FR-047. Addressing the baseline key alone leaves a
+    // supplemental schedule running through a suspend, and reports success.
+    rpc Resume(SLAPolicyResumeRequest) returns (SLAPolicyResumeResponse) {
+        option (google.api.http) = {
+            post : "/v1/slapolicy/{org_id}/{name}/{uid}/resume"
+            body : "*"
+        };
+    }
+
+    // Update replaces the intent list wholesale. It refuses to touch an intent
+    // whose classification is Supplemental, because those live on a Binding.
+    // It bumps revision and re-derives the schedule key of every Binding on
+    // this policy.
+    rpc Update(SLAPolicyUpdateRequest) returns (SLAPolicyUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/slapolicy"
+            body : "*"
+        };
+    }
+
+    // UpdateIntent edits ONE intent in place, so a client does not have to
+    // send the whole list and risk dropping a concurrent editor's change.
+    rpc UpdateIntent(SLAPolicyUpdateIntentRequest)
+        returns (SLAPolicyUpdateIntentResponse) {
+        option (google.api.http) = {
+            put : "/v1/slapolicy/{org_id}/{name}/{uid}/intent/{intent_id}"
+            body : "*"
+        };
+    }
+
+    // RemoveIntent is the pair of AddIntent. Without it an intent can only be
+    // removed by a whole-list Update.
+    rpc RemoveIntent(SLAPolicyRemoveIntentRequest)
+        returns (SLAPolicyRemoveIntentResponse) {
+        option (google.api.http) = {
+            delete : "/v1/slapolicy/{org_id}/{name}/{uid}/intent/{intent_id}"
+        };
+    }
+
+    rpc UpdateOwnership(SLAPolicyUpdateOwnershipRequest)
+        returns (SLAPolicyUpdateOwnershipResponse) {
+        option (google.api.http) = {
+            put : "/v1/slapolicy/updateownership/{org_id}/{name}/{uid}"
+            body : "*"
+        };
+    }
+}
+
+message SLAPolicyUpdateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    SLAPolicyInfo sla_policy = 2;
+}
+message SLAPolicyUpdateResponse {
+    SLAPolicyObject sla_policy = 1;
+    // How many Bindings had their schedule key re-derived.
+    int32 regrouped_binding_count = 2;
+}
+
+message SLAPolicyUpdateIntentRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    string intent_id = 4;
+    ProtectionIntent intent = 5;
+}
+message SLAPolicyUpdateIntentResponse {
+    SLAPolicyObject sla_policy = 1;
+    int32 regrouped_binding_count = 2;
+}
+
+message SLAPolicyRemoveIntentRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    string intent_id = 4;
+}
+message SLAPolicyRemoveIntentResponse {
+    SLAPolicyObject sla_policy = 1;
+    // Resources that lose coverage when this intent goes. Returned so the
+    // caller can review the blast radius.
+    repeated ObjectRef affected_resources = 2;
+}
+
+message SLAPolicyUpdateOwnershipRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    repeated Ownership.AccessConfig users = 4;
+    repeated Ownership.AccessConfig groups = 5;
+    repeated string remove_users = 6;
+    repeated string remove_groups = 7;
+}
+message SLAPolicyUpdateOwnershipResponse {
+    SLAPolicyObject sla_policy = 1;
+}
+
+// ---------------------------------------------------------------------------
+// ResourceCatalog service — read-only. The catalog is written by discovery.
+// ---------------------------------------------------------------------------
+
+message ResourceCatalogEnumerateRequest {
+    string org_id = 1;
+    // Empty means every cluster.
+    string cluster_name = 2;
+    string cluster_uid = 3;
+    // Empty means every kind.
+    repeated CatalogResourceInfo.Kind kinds = 4;
+    // Empty means every state.
+    repeated ProtectionState states = 5;
+    // Tombstoned rows are hidden unless this is set.
+    bool include_tombstoned = 6;
+}
+message ResourceCatalogEnumerateResponse {
+    repeated CatalogResourceObject resources = 1;
+    // Per-state totals, so a caller need not count client-side.
+    map<string, uint64> state_counts = 2;
+}
+
+message ResourceCatalogInspectRequest {
+    string org_id = 1;
+    // The Kubernetes UID, which is the identity.
+    string uid = 2;
+}
+message ResourceCatalogInspectResponse { CatalogResourceObject resource = 1; }
+
+service ResourceCatalog {
+    // Enumerate lists discovered namespaces and virtual machines.
+    rpc Enumerate(ResourceCatalogEnumerateRequest)
+        returns (ResourceCatalogEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/catalogresource/{org_id}"
+        };
+    }
+
+    // Inspect returns one catalog resource by its Kubernetes UID.
+    rpc Inspect(ResourceCatalogInspectRequest)
+        returns (ResourceCatalogInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/catalogresource/{org_id}/{uid}"
+        };
+    }
+
+    // UpdateOwnership grants or revokes another identity's access to a
+    // resource. Named for the house standard; no other service in this API
+    // calls this operation "UpdateShare". Merge semantics are unchanged.
+    rpc UpdateOwnership(ResourceCatalogUpdateOwnershipRequest)
+        returns (ResourceCatalogUpdateOwnershipResponse) {
+        option (google.api.http) = {
+            put : "/v1/catalogresource/updateownership/{org_id}/{uid}"
+            body : "*"
+        };
+    }
+
+    // Update is the ONLY mutable part of a catalog row. Everything else is
+    // written by discovery, so there is no Create and no Delete here: a client
+    // cannot invent a namespace.
+    rpc Update(ResourceCatalogUpdateRequest)
+        returns (ResourceCatalogUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/catalogresource/{org_id}/{uid}"
+            body : "*"
+        };
+    }
+
+    // Preview resolves a ResourceFilter and returns what it WOULD select,
+    // without writing anything -- FR-011. Required before a rule is created,
+    // because scope is applied by intersection and two callers writing the
+    // same filter legitimately see different sets -- FR-074a.
+    rpc Preview(ResourceCatalogPreviewRequest)
+        returns (ResourceCatalogPreviewResponse) {
+        option (google.api.http) = {
+            post : "/v1/catalogresource/preview/{org_id}"
+            body : "*"
+        };
+    }
+}
+
+message ResourceCatalogUpdateRequest {
+    string org_id = 1;
+    // The catalog resource's Kubernetes UID.
+    string uid = 2;
+    // Infra or higher. Clearing it means setting excluded to false.
+    AutoRuleExclusionInfo exclusion = 3;
+}
+message ResourceCatalogUpdateResponse {
+    CatalogResourceObject resource = 1;
+}
+
+message ResourceCatalogPreviewRequest {
+    string org_id = 1;
+    ResourceFilter filter = 2;
+}
+message ResourceCatalogPreviewResponse {
+    // What the filter selects for THIS caller, after their scope is applied.
+    repeated CatalogResourceObject matched = 1;
+    int32 matched_count = 2;
+    // Resources the filter matched but that cannot be claimed, with a reason
+    // such as "Claimed by <rule>" or "Excluded".
+    repeated SkippedResource skipped = 3;
+
+    message SkippedResource {
+        string resource_uid = 1;
+        string resource_name = 2;
+        string reason = 3;
+    }
+}
+
+// Sharing a resource is how a persona boundary is crossed. An Infra or Super
+// Admin owns the inventory; an App Admin sees a namespace only once it has been
+// shared with them.
+//
+// Read lets the grantee see the resource, its Bindings and what it can restore.
+// Write additionally lets them add a supplemental intent and edit hooks. Neither
+// lets them rebind, unbind, weaken the baseline, or see a destination: those are
+// refused by tier, not by the access level.
+//
+// Sharing carries through the read path. A grantee who can see a resource can
+// see that resource's Bindings, recovery points and backups, because a share
+// that showed the resource but not its history would be useless.
+message ResourceCatalogUpdateOwnershipRequest {
+    string org_id = 1;
+    // The catalog resource's Kubernetes UID.
+    string uid = 2;
+    // Identities to grant. Replaces the current grant list for the ids named.
+    repeated Ownership.AccessConfig users = 3;
+    repeated Ownership.AccessConfig groups = 4;
+    // Identities to revoke, by id. Applied after the grants above.
+    repeated string remove_users = 5;
+    repeated string remove_groups = 6;
+}
+message ResourceCatalogUpdateOwnershipResponse {
+    CatalogResourceObject resource = 1;
+}
+
+// ---------------------------------------------------------------------------
+// PlacementRule service
+// ---------------------------------------------------------------------------
+
+message PlacementRuleCreateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    PlacementRuleInfo placement_rule = 2;
+}
+message PlacementRuleCreateResponse {}
+
+message PlacementRuleInspectRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+message PlacementRuleInspectResponse { PlacementRuleObject placement_rule = 1; }
+
+message PlacementRuleEnumerateRequest {
+    string org_id = 1;
+    map<string, string> labels = 2;
+}
+message PlacementRuleEnumerateResponse {
+    repeated PlacementRuleObject placement_rules = 1;
+}
+
+message PlacementRuleDeleteRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+message PlacementRuleDeleteResponse {}
+
+service PlacementRule {
+    rpc Create(PlacementRuleCreateRequest)
+        returns (PlacementRuleCreateResponse) {
+        option (google.api.http) = {
+            post : "/v1/placementrule"
+            body : "*"
+        };
+    }
+
+    rpc Inspect(PlacementRuleInspectRequest)
+        returns (PlacementRuleInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/placementrule/{org_id}/{name}/{uid}"
+        };
+    }
+
+    rpc Enumerate(PlacementRuleEnumerateRequest)
+        returns (PlacementRuleEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/placementrule/{org_id}"
+        };
+    }
+
+    // Delete is refused while any assignment still references the rule.
+    rpc Delete(PlacementRuleDeleteRequest)
+        returns (PlacementRuleDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/placementrule/{org_id}/{name}/{uid}"
+        };
+    }
+
+    // Update edits the rule. It does NOT touch assignments already made --
+    // FR-030 -- so it returns the resulting drift count rather than moving
+    // anything. A one-shot rule is immutable after its single application.
+    rpc Update(PlacementRuleUpdateRequest)
+        returns (PlacementRuleUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/placementrule"
+            body : "*"
+        };
+    }
+
+    // UpdateOwnership shares the RULE itself, not the resources it matches.
+    rpc UpdateOwnership(PlacementRuleUpdateOwnershipRequest)
+        returns (PlacementRuleUpdateOwnershipResponse) {
+        option (google.api.http) = {
+            put : "/v1/placementrule/updateownership/{org_id}/{name}/{uid}"
+            body : "*"
+        };
+    }
+
+    // Apply runs a one-shot rule now, or forces an auto rule's cycle.
+    // Claiming only ever ADDS protection: a resource already claimed by
+    // another rule is skipped, never taken -- FR-075.
+    rpc Apply(PlacementRuleApplyRequest)
+        returns (PlacementRuleApplyResponse) {
+        option (google.api.http) = {
+            post : "/v1/placementrule/apply/{org_id}/{name}/{uid}"
+            body : "*"
+        };
+    }
+}
+
+message PlacementRuleUpdateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    PlacementRuleInfo placement_rule = 2;
+}
+message PlacementRuleUpdateResponse {
+    PlacementRuleObject placement_rule = 1;
+    // Assignments that no longer match the edited rule. They are NOT moved.
+    int32 drift_count = 2;
+}
+
+message PlacementRuleUpdateOwnershipRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    repeated Ownership.AccessConfig users = 4;
+    repeated Ownership.AccessConfig groups = 5;
+    repeated string remove_users = 6;
+    repeated string remove_groups = 7;
+}
+message PlacementRuleUpdateOwnershipResponse {
+    PlacementRuleObject placement_rule = 1;
+}
+
+message PlacementRuleApplyRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    // Resolve and report without writing. Same result shape as a real apply.
+    bool dry_run = 4;
+}
+message PlacementRuleApplyResponse {
+    int32 claimed_count = 1;
+    repeated ResourceCatalogPreviewResponse.SkippedResource skipped = 2;
+}
+
+// ---------------------------------------------------------------------------
+// PlacementAssignment service
+// ---------------------------------------------------------------------------
+
+// Create applies a placement rule. It names the RULE, never a resource: the
+// rule carries the filter and the filter chooses the resources. One call
+// therefore writes many assignments.
+message PlacementAssignmentCreateRequest {
+    string org_id = 1;
+    string placement_rule_name = 2;
+    string placement_rule_uid = 3;
+    // Narrows what the filter already matched, for a staged rollout. A UID the
+    // filter does not match is rejected rather than applied.
+    repeated string only_catalog_resource_uids = 4;
+    // Report what would happen and write nothing.
+    bool dry_run = 5;
+}
+message PlacementAssignmentCreateResponse {
+    repeated ObjectRef applied = 1;
+    repeated ObjectRef skipped_already_assigned = 2;
+    repeated string rejected_not_matching_filter = 3;
+}
+
+message PlacementAssignmentInspectRequest {
+    string org_id = 1;
+    // The catalog resource UID. An assignment is one-to-one with a resource.
+    string catalog_resource_uid = 2;
+}
+message PlacementAssignmentInspectResponse {
+    PlacementAssignmentObject placement_assignment = 1;
+}
+
+message PlacementAssignmentEnumerateRequest {
+    string org_id = 1;
+    string placement_rule_name = 2;
+    string placement_rule_uid = 3;
+}
+message PlacementAssignmentEnumerateResponse {
+    repeated PlacementAssignmentObject placement_assignments = 1;
+}
+
+// Clear requires the resource to be unbound first.
+message PlacementAssignmentDeleteRequest {
+    string org_id = 1;
+    string catalog_resource_uid = 2;
+}
+message PlacementAssignmentDeleteResponse {}
+
+message PlacementAssignmentUpdateRequest {
+    string org_id = 1;
+    // Identified by the resource it belongs to, not by its own name.
+    string catalog_resource_uid = 2;
+    // Set to re-read the source rule and adopt its current definition. This
+    // is the ONLY way an edited rule reaches a resource already assigned.
+    bool refresh_from_rule = 3;
+    // Ignored when refresh_from_rule is set.
+    ObjectRef backup_location_ref = 4;
+    ObjectRef local_snapshot_ref = 5;
+    repeated IntentDestination intent_destinations = 6;
+}
+message PlacementAssignmentUpdateResponse {
+    PlacementAssignmentObject placement_assignment = 1;
+}
+
+service PlacementAssignment {
+    // Create applies a placement rule to every resource its filter matches.
+    rpc Create(PlacementAssignmentCreateRequest)
+        returns (PlacementAssignmentCreateResponse) {
+        option (google.api.http) = {
+            post : "/v1/placementassignment"
+            body : "*"
+        };
+    }
+
+    rpc Inspect(PlacementAssignmentInspectRequest)
+        returns (PlacementAssignmentInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/placementassignment/{org_id}/{catalog_resource_uid}"
+        };
+    }
+
+    rpc Enumerate(PlacementAssignmentEnumerateRequest)
+        returns (PlacementAssignmentEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/placementassignment/{org_id}"
+        };
+    }
+
+    // Update changes the destination for one resource.
+    //
+    // There is deliberately no UpdateOwnership on this service. An assignment
+    // is not independently owned: its owner is the Placement Rule's owner and
+    // its visibility comes from the catalog row it names. A third settable
+    // owner would let a destination be read by someone who can read neither.
+    rpc Update(PlacementAssignmentUpdateRequest)
+        returns (PlacementAssignmentUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/placementassignment/{org_id}/{catalog_resource_uid}"
+            body : "*"
+        };
+    }
+
+    rpc Delete(PlacementAssignmentDeleteRequest)
+        returns (PlacementAssignmentDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/placementassignment/{org_id}/{catalog_resource_uid}"
+        };
+    }
+}
+
+// One resource's entry in one run of a shared backup.
+//
+// A backup now covers many resources, so the backup alone cannot answer "what
+// can I restore for this namespace". This can NOT be derived by querying
+// stork's per-namespace array inside the backup document, because that array
+// is keyed by namespace NAME while identity here is the Kubernetes UID. A
+// namespace deleted and recreated under the same name is a different resource,
+// and a name-keyed lookup would hand it the earlier resource's history.
+//
+// A recovery point exists only for a resource that actually succeeded. A
+// resource that failed inside a partially successful backup gets none, so its
+// timeline shows a gap and the SLA engine reports it out of SLA. That is how
+// per-resource failure isolation survives a shared execution.
+message RecoveryPointInfo {
+    // Identified by Kubernetes UID, never by name.
+    ObjectRef resource_ref = 1;
+    // The SHARED backup this came from. Several recovery points point here.
+    ObjectRef backup_ref = 2;
+    string intent_id = 3;
+    Status status = 4;
+    // False when the resource's own data did not complete, even if the
+    // backup as a whole reports partial success.
+    bool restorable = 5;
+    uint64 size_bytes = 6;
+    // Retention is anchored to the revision in force at capture.
+    uint64 sla_policy_revision_at_capture = 7;
+    google.protobuf.Timestamp taken_time = 8;
+    // Drives reference-counted deletion: the shared backup may only be removed
+    // once the last recovery point referencing it is gone.
+    google.protobuf.Timestamp expiry_time = 9;
+    // Populated when the resource did not succeed, for the timeline gap.
+    string failure_reason = 10;
+
+    // OUTPUT_ONLY, computed per caller and never stored. Separates "this point
+    // exists but is not yours" from "this point does not exist" -- FR-105.
+    // It gates the per-resource view of a backup shared by several tenants.
+    bool accessible = 11;
+    // Which Binding produced it. intent_id alone does not say, because two
+    // Bindings may carry the same intent id.
+    ObjectRef binding_ref = 12;
+    // A VM's point refers to its namespace's point from the same run, when one
+    // exists. A VM point may publish where the parent point failed.
+    ObjectRef parent_recovery_point_ref = 13;
+
+    enum Status {
+        StatusInvalid = 0;
+        Successful = 1;
+        PartialSuccess = 2;
+    }
+}
+
+message RecoveryPointObject {
+    Metadata metadata = 1
+        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    RecoveryPointInfo recovery_point_info = 2 [ (gogoproto.embed) = true ];
+}
+
+message RecoveryPointEnumerateRequest {
+    string org_id = 1;
+    // The catalog resource UID. Empty returns every recovery point in the org.
+    string catalog_resource_uid = 2;
+    string intent_id = 3;
+    // Only points that can actually be restored.
+    bool restorable_only = 4;
+}
+message RecoveryPointEnumerateResponse {
+    repeated RecoveryPointObject recovery_points = 1;
+}
+
+message RecoveryPointInspectRequest {
+    string org_id = 1;
+    string catalog_resource_uid = 2;
+    // The shared backup this point belongs to.
+    string backup_name = 3;
+    string backup_uid = 4;
+}
+message RecoveryPointInspectResponse { RecoveryPointObject recovery_point = 1; }
+
+service RecoveryPoint {
+    // Enumerate returns one resource's timeline, newest first.
+    rpc Enumerate(RecoveryPointEnumerateRequest)
+        returns (RecoveryPointEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/recoverypoint/{org_id}"
+        };
+    }
+
+    // Inspect returns one resource's entry in one backup.
+    rpc Inspect(RecoveryPointInspectRequest)
+        returns (RecoveryPointInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/recoverypoint/{org_id}/{catalog_resource_uid}/{backup_name}"
+        };
+    }
+
+    // Timeline returns the points for one resource in time order WITH THE GAPS
+    // NAMED -- FR-108. A timeline that shows only successes is misleading: a
+    // missing run is what puts a resource out of SLA.
+    rpc Timeline(RecoveryPointTimelineRequest)
+        returns (RecoveryPointTimelineResponse) {
+        option (google.api.http) = {
+            get : "/v1/recoverypoint/timeline/{org_id}/{catalog_resource_uid}"
+        };
+    }
+
+    // EnumerateForRestore returns only the points that are both restorable and
+    // accessible to the caller, for one resource at one target time.
+    rpc EnumerateForRestore(RecoveryPointEnumerateForRestoreRequest)
+        returns (RecoveryPointEnumerateForRestoreResponse) {
+        option (google.api.http) = {
+            get : "/v1/recoverypoint/forrestore/{org_id}/{catalog_resource_uid}"
+        };
+    }
+
+    // Delete is for retention only, and is refused until expiry_time is
+    // written. The shared backup is reference-counted: it may be removed only
+    // when the LAST recovery point naming it is gone.
+    rpc Delete(RecoveryPointDeleteRequest)
+        returns (RecoveryPointDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/recoverypoint/{org_id}/{catalog_resource_uid}/{backup_name}"
+        };
+    }
+}
+
+message RecoveryPointTimelineRequest {
+    string org_id = 1;
+    string catalog_resource_uid = 2;
+    google.protobuf.Timestamp from_time = 3;
+    google.protobuf.Timestamp to_time = 4;
+    // Empty means every intent.
+    repeated string intent_ids = 5;
+}
+message RecoveryPointTimelineResponse {
+    repeated RecoveryPointObject recovery_points = 1;
+    // A run that was expected and did not produce a point. As important as a
+    // point, and the reason a resource falls out of SLA.
+    repeated Gap gaps = 2;
+
+    message Gap {
+        string intent_id = 1;
+        google.protobuf.Timestamp expected_time = 2;
+        string reason = 3;
+    }
+}
+
+message RecoveryPointEnumerateForRestoreRequest {
+    string org_id = 1;
+    string catalog_resource_uid = 2;
+    // The newest point at or before this time. Unset means the newest point.
+    google.protobuf.Timestamp target_time = 3;
+}
+message RecoveryPointEnumerateForRestoreResponse {
+    repeated RecoveryPointObject recovery_points = 1;
+    // VMs that belonged to this namespace AT target_time -- FR-008, FR-110.
+    // Present membership is the wrong answer for a past restore.
+    repeated string member_resource_uids_at_target_time = 2;
+}
+
+message RecoveryPointDeleteRequest {
+    string org_id = 1;
+    string catalog_resource_uid = 2;
+    string backup_name = 3;
+}
+message RecoveryPointDeleteResponse {
+    // True when this was the last point naming the shared backup, so the
+    // backup itself became eligible for deletion.
+    bool backup_released = 1;
+    // How many points still reference that backup.
+    int32 remaining_reference_count = 2;
+}
+
+// ---------------------------------------------------------------------------
+// Binding service
+// ---------------------------------------------------------------------------
+
+// Create is create-if-absent. It fails when the resource has no placement,
+// because then there is nowhere to send the backups, and there is no override
+// for any tier.
+message BindingCreateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    // One or more catalog resource UIDs. Each gets its own Binding.
+    repeated string catalog_resource_uids = 2;
+    string sla_policy_name = 3;
+    string sla_policy_uid = 4;
+    ObjectRef pre_exec_rule_ref = 5;
+    ObjectRef post_exec_rule_ref = 6;
+    BackupScheduleInfo.BackupObjectType backup_object_type = 7;
+}
+message BindingCreateResponse {
+    repeated ObjectRef created = 1;
+    repeated ObjectRef skipped_already_bound = 2;
+    repeated string rejected_no_placement = 3;
+}
+
+message BindingInspectRequest {
+    string org_id = 1;
+    string catalog_resource_uid = 2;
+}
+message BindingInspectResponse { BindingObject binding = 1; }
+
+message BindingEnumerateRequest {
+    string org_id = 1;
+    string sla_policy_name = 2;
+    string sla_policy_uid = 3;
+}
+message BindingEnumerateResponse { repeated BindingObject bindings = 1; }
+
+// Delete is the unbind. It retains the placement and every historical
+// recovery point.
+message BindingDeleteRequest {
+    string org_id = 1;
+    string catalog_resource_uid = 2;
+}
+message BindingDeleteResponse {}
+
+// A supplemental intent is Binding-local (FR-063). It extends the one Binding
+// it is added to, and creates no second SLA Policy and no second Binding.
+//
+// This is why it cannot go on the SLA Policy instead: a policy is shared, so an
+// intent placed there fans out to every resource bound to it. An App Admin
+// given one namespace would then impose their chosen cadence, and its cost, on
+// resources they were never given.
+message BindingAddSupplementalIntentRequest {
+    string org_id = 1;
+    // The resource whose Binding gains the intent.
+    string catalog_resource_uid = 2;
+    // The intent to add. Its owner, tier and classification are stamped by the
+    // server from the caller's token and cannot be set by the request.
+    ProtectionIntent intent = 3;
+}
+message BindingAddSupplementalIntentResponse {
+    // The schedule this intent will execute on. It is a new shared schedule
+    // whenever no existing one carries the same schedule key.
+    string backup_schedule_cr_name = 1;
+    // How many intents the Binding now carries, baseline included.
+    int64 intent_count = 2;
+}
+
+service Binding {
+    rpc Create(BindingCreateRequest) returns (BindingCreateResponse) {
+        option (google.api.http) = {
+            post : "/v1/binding"
+            body : "*"
+        };
+    }
+
+    rpc Inspect(BindingInspectRequest) returns (BindingInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/binding/{org_id}/{catalog_resource_uid}"
+        };
+    }
+
+    rpc Enumerate(BindingEnumerateRequest) returns (BindingEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/binding/{org_id}"
+        };
+    }
+
+    // AddSupplementalIntent extends ONE Binding without touching the SLA
+    // Policy that governs it.
+    rpc AddSupplementalIntent(BindingAddSupplementalIntentRequest)
+        returns (BindingAddSupplementalIntentResponse) {
+        option (google.api.http) = {
+            put : "/v1/binding/supplementalintent/{org_id}/{catalog_resource_uid}"
+            body : "*"
+        };
+    }
+
+    rpc Delete(BindingDeleteRequest) returns (BindingDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/binding/{org_id}/{catalog_resource_uid}"
+        };
+    }
+
+    // Update replaces the supplemental list and the capture settings.
+    // Requires Write on the RESOURCE, not on the SLA Policy.
+    rpc Update(BindingUpdateRequest) returns (BindingUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/binding/{org_id}/{catalog_resource_uid}"
+            body : "*"
+        };
+    }
+
+    // RemoveSupplementalIntent is the pair of AddSupplementalIntent.
+    rpc RemoveSupplementalIntent(BindingRemoveSupplementalIntentRequest)
+        returns (BindingRemoveSupplementalIntentResponse) {
+        option (google.api.http) = {
+            delete : "/v1/binding/supplementalintent/{org_id}/{catalog_resource_uid}/{intent_id}"
+        };
+    }
+
+    // TriggerNow runs one intent immediately, against this Binding's own
+    // destination and capture settings -- FR-060.
+    rpc TriggerNow(BindingTriggerNowRequest)
+        returns (BindingTriggerNowResponse) {
+        option (google.api.http) = {
+            post : "/v1/binding/triggernow/{org_id}/{catalog_resource_uid}"
+            body : "*"
+        };
+    }
+
+    // PreviewSchedule returns the next N run times across every intent --
+    // FR-061. A recoverability period hides a copy count, and this is how a
+    // client shows the real cadence before committing.
+    rpc PreviewSchedule(BindingPreviewScheduleRequest)
+        returns (BindingPreviewScheduleResponse) {
+        option (google.api.http) = {
+            get : "/v1/binding/previewschedule/{org_id}/{catalog_resource_uid}"
+        };
+    }
+
+    rpc UpdateOwnership(BindingUpdateOwnershipRequest)
+        returns (BindingUpdateOwnershipResponse) {
+        option (google.api.http) = {
+            put : "/v1/binding/updateownership/{org_id}/{catalog_resource_uid}"
+            body : "*"
+        };
+    }
+}
+
+message BindingUpdateRequest {
+    string org_id = 1;
+    string catalog_resource_uid = 2;
+    // Replaces the list wholesale. Only the creator of an intent may change
+    // it -- FR-064.
+    repeated ProtectionIntent supplemental_intents = 3;
+    ObjectRef pre_exec_rule_ref = 4;
+    ObjectRef post_exec_rule_ref = 5;
+    BackupScheduleInfo.BackupObjectType backup_object_type = 6;
+    repeated string resource_types = 7;
+    repeated string exclude_resource_types = 8;
+    bool parallel_backup = 9;
+    bool keep_cr_status = 10;
+    // Super and Infra only. Never accepted from an App Admin -- FR-028.
+    repeated IntentDestination intent_destinations = 11;
+}
+message BindingUpdateResponse {
+    BindingObject binding = 1;
+}
+
+message BindingRemoveSupplementalIntentRequest {
+    string org_id = 1;
+    string catalog_resource_uid = 2;
+    string intent_id = 3;
+}
+message BindingRemoveSupplementalIntentResponse {
+    BindingObject binding = 1;
+}
+
+message BindingTriggerNowRequest {
+    string org_id = 1;
+    string catalog_resource_uid = 2;
+    // Which intent to run. Required: a Binding may carry several.
+    string intent_id = 3;
+}
+message BindingTriggerNowResponse {
+    // The backup this run produced, once it has been created.
+    ObjectRef backup_ref = 1;
+}
+
+message BindingPreviewScheduleRequest {
+    string org_id = 1;
+    string catalog_resource_uid = 2;
+    // How many future run times to return per intent. Default 10.
+    int32 count = 3;
+}
+message BindingPreviewScheduleResponse {
+    repeated IntentSchedule schedules = 1;
+
+    message IntentSchedule {
+        string intent_id = 1;
+        string schedule_key = 2;
+        repeated google.protobuf.Timestamp next_run_times = 3;
+        // The count derived from the recoverability period:
+        // ceil(period / longest gap), floored at 1. Shown because a user
+        // states a business need and does not do this arithmetic.
+        int32 derived_retain_count = 4;
+    }
+}
+
+message BindingUpdateOwnershipRequest {
+    string org_id = 1;
+    string catalog_resource_uid = 2;
+    repeated Ownership.AccessConfig users = 3;
+    repeated Ownership.AccessConfig groups = 4;
+    repeated string remove_users = 5;
+    repeated string remove_groups = 6;
+}
+message BindingUpdateOwnershipResponse {
+    BindingObject binding = 1;
+}
+
+// ---------------------------------------------------------------------------
+// BindingRule service
+//
+// The Placement Rule answers "where". This answers "under which SLA Policy".
+// Nothing in this API carried that meaning before, so the whole object and
+// service are new -- FR-052, FR-072, FR-080.
+//
+// Auto Placement Rules evaluate BEFORE auto Binding Rules on every cycle --
+// FR-072. A resource cannot be bound before it has a destination.
+// ---------------------------------------------------------------------------
+
+message BindingRuleInfo {
+    // The same message the Placement Rule uses. Object-level label selectors
+    // are rejected at validation with a typed error, never ignored: those
+    // objects are not resources and cannot hold a Binding.
+    ResourceFilter filter = 1;
+    // Must be owned by this rule's owner -- FR-055.
+    ObjectRef sla_policy_ref = 2;
+    // Reuses the Placement Rule's enum rather than declaring a second one.
+    PlacementRuleInfo.Mode mode = 3;
+    OwnerTier owner_tier = 4;
+    google.protobuf.Timestamp created_time = 5;
+    bool enabled = 6;
+    google.protobuf.Timestamp applied_time = 7;
+
+    // Binding-wide capture settings, stamped onto every Binding it creates.
+    ObjectRef pre_exec_rule_ref = 8;
+    ObjectRef post_exec_rule_ref = 9;
+    BackupScheduleInfo.BackupObjectType backup_object_type = 10;
+    repeated string resource_types = 11;
+    bool parallel_backup = 12;
+    bool keep_cr_status = 13;
+
+    // OUTPUT_ONLY.
+    google.protobuf.Timestamp last_evaluated_time = 14;
+    int32 binding_count = 15;
+    int32 drift_count = 16;
+
+    // The creator's authority at create time, frozen -- FR-074.
+    ResourceFilter captured_target_boundary = 17;
+    // Super and Infra only. Per-intent destination override -- FR-036.
+    repeated IntentDestination intent_destination_template = 18;
+    // Super and Infra only.
+    map<string, string> vsc_override_template = 19;
+}
+
+message BindingRuleObject {
+    Metadata metadata = 1
+        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    BindingRuleInfo binding_rule_info = 2 [ (gogoproto.embed) = true ];
+}
+
+message BindingRuleCreateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    BindingRuleInfo binding_rule = 2;
+}
+message BindingRuleCreateResponse { BindingRuleObject binding_rule = 1; }
+
+message BindingRuleInspectRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+message BindingRuleInspectResponse { BindingRuleObject binding_rule = 1; }
+
+message BindingRuleEnumerateRequest {
+    string org_id = 1;
+    // Empty means every mode.
+    repeated PlacementRuleInfo.Mode modes = 2;
+}
+message BindingRuleEnumerateResponse {
+    repeated BindingRuleObject binding_rules = 1;
+}
+
+message BindingRuleUpdateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    BindingRuleInfo binding_rule = 2;
+}
+message BindingRuleUpdateResponse {
+    BindingRuleObject binding_rule = 1;
+    int32 drift_count = 2;
+}
+
+message BindingRuleDeleteRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+message BindingRuleDeleteResponse {}
+
+message BindingRuleApplyRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    bool dry_run = 4;
+}
+message BindingRuleApplyResponse {
+    int32 bound_count = 1;
+    repeated ResourceCatalogPreviewResponse.SkippedResource skipped = 2;
+}
+
+message BindingRuleUpdateOwnershipRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    repeated Ownership.AccessConfig users = 4;
+    repeated Ownership.AccessConfig groups = 5;
+    repeated string remove_users = 6;
+    repeated string remove_groups = 7;
+}
+message BindingRuleUpdateOwnershipResponse {
+    BindingRuleObject binding_rule = 1;
+}
+
+// The shape follows PlacementRule exactly, so an operator learns one pattern.
+service BindingRule {
+    rpc Create(BindingRuleCreateRequest)
+        returns (BindingRuleCreateResponse) {
+        option (google.api.http) = {
+            post : "/v1/bindingrule"
+            body : "*"
+        };
+    }
+
+    rpc Inspect(BindingRuleInspectRequest)
+        returns (BindingRuleInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/bindingrule/{org_id}/{name}/{uid}"
+        };
+    }
+
+    rpc Enumerate(BindingRuleEnumerateRequest)
+        returns (BindingRuleEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/bindingrule/{org_id}"
+        };
+    }
+
+    // Auto rules only. A one-shot rule is immutable after its single
+    // application -- FR-070.
+    rpc Update(BindingRuleUpdateRequest)
+        returns (BindingRuleUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/bindingrule"
+            body : "*"
+        };
+    }
+
+    // Delete leaves every Binding the rule created intact -- FR-080.
+    rpc Delete(BindingRuleDeleteRequest)
+        returns (BindingRuleDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/bindingrule/{org_id}/{name}/{uid}"
+        };
+    }
+
+    rpc Apply(BindingRuleApplyRequest) returns (BindingRuleApplyResponse) {
+        option (google.api.http) = {
+            post : "/v1/bindingrule/apply/{org_id}/{name}/{uid}"
+            body : "*"
+        };
+    }
+
+    rpc UpdateOwnership(BindingRuleUpdateOwnershipRequest)
+        returns (BindingRuleUpdateOwnershipResponse) {
+        option (google.api.http) = {
+            put : "/v1/bindingrule/updateownership/{org_id}/{name}/{uid}"
+            body : "*"
+        };
+    }
+}
+
+// ---------------------------------------------------------------------------
+// ExclusionReasonTemplate service
+//
+// An administrator-managed list of reasons an operator may pick from when
+// holding a resource out of auto-rule scope -- FR-016. Super Admin writes,
+// everyone reads.
+// ---------------------------------------------------------------------------
+
+message ExclusionReasonTemplateInfo {
+    // Stored on the catalog row as AutoRuleExclusionInfo.reason_code.
+    string code = 1;
+    string description = 2;
+    // The operator must also supply reason_text.
+    bool requires_free_text = 3;
+    // The operator must also supply expires_time.
+    bool requires_expiry = 4;
+    // An inactive template is kept for the rows that already cite it, but is
+    // not offered for a new exclusion.
+    bool active = 5;
+}
+
+message ExclusionReasonTemplateObject {
+    Metadata metadata = 1
+        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    ExclusionReasonTemplateInfo exclusion_reason_template_info = 2
+        [ (gogoproto.embed) = true ];
+}
+
+message ExclusionReasonTemplateCreateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    ExclusionReasonTemplateInfo exclusion_reason_template = 2;
+}
+message ExclusionReasonTemplateCreateResponse {
+    ExclusionReasonTemplateObject exclusion_reason_template = 1;
+}
+
+message ExclusionReasonTemplateInspectRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+message ExclusionReasonTemplateInspectResponse {
+    ExclusionReasonTemplateObject exclusion_reason_template = 1;
+}
+
+message ExclusionReasonTemplateEnumerateRequest {
+    string org_id = 1;
+    bool include_inactive = 2;
+}
+message ExclusionReasonTemplateEnumerateResponse {
+    repeated ExclusionReasonTemplateObject exclusion_reason_templates = 1;
+}
+
+message ExclusionReasonTemplateUpdateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    ExclusionReasonTemplateInfo exclusion_reason_template = 2;
+}
+message ExclusionReasonTemplateUpdateResponse {
+    ExclusionReasonTemplateObject exclusion_reason_template = 1;
+}
+
+message ExclusionReasonTemplateDeleteRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+message ExclusionReasonTemplateDeleteResponse {}
+
+message ExclusionReasonTemplateUpdateOwnershipRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    repeated Ownership.AccessConfig users = 4;
+    repeated Ownership.AccessConfig groups = 5;
+    repeated string remove_users = 6;
+    repeated string remove_groups = 7;
+}
+message ExclusionReasonTemplateUpdateOwnershipResponse {
+    ExclusionReasonTemplateObject exclusion_reason_template = 1;
+}
+
+service ExclusionReasonTemplate {
+    rpc Create(ExclusionReasonTemplateCreateRequest)
+        returns (ExclusionReasonTemplateCreateResponse) {
+        option (google.api.http) = {
+            post : "/v1/exclusionreasontemplate"
+            body : "*"
+        };
+    }
+
+    rpc Inspect(ExclusionReasonTemplateInspectRequest)
+        returns (ExclusionReasonTemplateInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/exclusionreasontemplate/{org_id}/{name}/{uid}"
+        };
+    }
+
+    rpc Enumerate(ExclusionReasonTemplateEnumerateRequest)
+        returns (ExclusionReasonTemplateEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/exclusionreasontemplate/{org_id}"
+        };
+    }
+
+    rpc Update(ExclusionReasonTemplateUpdateRequest)
+        returns (ExclusionReasonTemplateUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/exclusionreasontemplate"
+            body : "*"
+        };
+    }
+
+    // Refused while any catalog row still cites this code. Deactivate instead.
+    rpc Delete(ExclusionReasonTemplateDeleteRequest)
+        returns (ExclusionReasonTemplateDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/exclusionreasontemplate/{org_id}/{name}/{uid}"
+        };
+    }
+
+    rpc UpdateOwnership(ExclusionReasonTemplateUpdateOwnershipRequest)
+        returns (ExclusionReasonTemplateUpdateOwnershipResponse) {
+        option (google.api.http) = {
+            put : "/v1/exclusionreasontemplate/updateownership/{org_id}/{name}/{uid}"
+            body : "*"
+        };
+    }
+}
+
+// ---------------------------------------------------------------------------
+// ProtectionSummary service
+//
+// The fleet rollup -- FR-091, FR-093. Namespaces and VMs are counted
+// SEPARATELY: a VM is a resource in its own right, so folding the two into one
+// number would misreport the fleet.
+//
+// The state is materialized on the catalog row and is never recomputed on
+// read -- FR-013.
+// ---------------------------------------------------------------------------
+
+message ProtectionSummaryGetRequest {
+    string org_id = 1;
+    // Empty means every cluster in the caller's boundary.
+    string cluster_name = 2;
+    string cluster_uid = 3;
+}
+message ProtectionSummaryGetResponse {
+    repeated ProtectionStateCount counts = 1;
+    // Namespaces that hold at least one VM, so a caller can tell a mixed
+    // fleet from a conventional one.
+    int32 namespaces_with_virtual_machines = 2;
+}
+
+message ProtectionSummaryEnumerateRequest {
+    string org_id = 1;
+    GroupBy group_by = 2;
+
+    enum GroupBy {
+        GroupByInvalid = 0;
+        Cluster = 1;
+        Owner = 2;
+    }
+}
+message ProtectionSummaryEnumerateResponse {
+    repeated Group groups = 1;
+
+    message Group {
+        // The cluster UID or the owner id, per the requested grouping.
+        string key = 1;
+        string display_name = 2;
+        repeated ProtectionStateCount counts = 3;
+    }
+}
+
+service ProtectionSummary {
+    rpc Get(ProtectionSummaryGetRequest)
+        returns (ProtectionSummaryGetResponse) {
+        option (google.api.http) = {
+            get : "/v1/protectionsummary/{org_id}"
+        };
+    }
+
+    rpc Enumerate(ProtectionSummaryEnumerateRequest)
+        returns (ProtectionSummaryEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/protectionsummary/enumerate/{org_id}"
+        };
+    }
 }
