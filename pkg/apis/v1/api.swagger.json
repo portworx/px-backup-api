@@ -11,6 +11,227 @@
     "application/json"
   ],
   "paths": {
+    "/v1/adminscope": {
+      "post": {
+        "summary": "Super Admin only, every call.",
+        "operationId": "AdminScope_Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/AdminScopeCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AdminScopeCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AdminScope"
+        ]
+      },
+      "put": {
+        "operationId": "AdminScope_Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/AdminScopeUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AdminScopeUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AdminScope"
+        ]
+      }
+    },
+    "/v1/adminscope/preview/{org_id}": {
+      "post": {
+        "summary": "Preview MUST precede Update. The returned token binds the commit to the\nexact set the administrator saw.",
+        "operationId": "AdminScope_Preview",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/AdminScopePreviewResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AdminScopePreviewRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AdminScope"
+        ]
+      }
+    },
+    "/v1/adminscope/{org_id}": {
+      "get": {
+        "operationId": "AdminScope_Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/AdminScopeEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "identity_id",
+            "description": "Empty means every scoped identity.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AdminScope"
+        ]
+      }
+    },
+    "/v1/adminscope/{org_id}/{name}/{uid}": {
+      "get": {
+        "operationId": "AdminScope_Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/AdminScopeInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AdminScope"
+        ]
+      },
+      "delete": {
+        "operationId": "AdminScope_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/AdminScopeDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AdminScope"
+        ]
+      }
+    },
     "/v1/backup": {
       "post": {
         "summary": "Creates a new backup object",
@@ -2081,6 +2302,45 @@
         ]
       }
     },
+    "/v1/bindingrule/preview/{org_id}": {
+      "post": {
+        "summary": "Journey C4. A read, not an Apply with a flag: Apply answers \"what would\nhappen if I ran this\", Preview answers \"what does this select\".",
+        "operationId": "BindingRule_Preview",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BindingRulePreviewResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BindingRulePreviewRequest"
+            }
+          }
+        ],
+        "tags": [
+          "BindingRule"
+        ]
+      }
+    },
     "/v1/bindingrule/updateownership/{org_id}/{name}/{uid}": {
       "put": {
         "operationId": "BindingRule_UpdateOwnership",
@@ -2291,6 +2551,45 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/ResourceCatalogPreviewRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ResourceCatalog"
+        ]
+      }
+    },
+    "/v1/catalogresource/reconstruct/{org_id}": {
+      "post": {
+        "summary": "Journey M2. The ONE case where a client creates a catalog row: the\nsource cluster is gone, so discovery can never produce it, and without\na row its recovery points cannot be reached.",
+        "operationId": "ResourceCatalog_Reconstruct",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ResourceCatalogReconstructResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ResourceCatalogReconstructRequest"
             }
           }
         ],
@@ -3717,6 +4016,485 @@
         ],
         "tags": [
           "ClusterDiscoveryConfig"
+        ]
+      }
+    },
+    "/v1/delegationrule": {
+      "post": {
+        "operationId": "DelegationRule_Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DelegationRuleCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DelegationRuleCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "DelegationRule"
+        ]
+      },
+      "put": {
+        "operationId": "DelegationRule_Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DelegationRuleUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DelegationRuleUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "DelegationRule"
+        ]
+      }
+    },
+    "/v1/delegationrule/apply/{org_id}/{name}/{uid}": {
+      "post": {
+        "summary": "Static mode applies once on confirmation. Auto mode runs on the cycle\nand this forces it.",
+        "operationId": "DelegationRule_Apply",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DelegationRuleApplyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DelegationRuleApplyRequest"
+            }
+          }
+        ],
+        "tags": [
+          "DelegationRule"
+        ]
+      }
+    },
+    "/v1/delegationrule/preview/{org_id}": {
+      "post": {
+        "summary": "Journey F11: shows Would delegate, Already delegated, Excluded, and for\nauto mode Claimed by a higher or older rule.",
+        "operationId": "DelegationRule_Preview",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DelegationRulePreviewResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DelegationRulePreviewRequest"
+            }
+          }
+        ],
+        "tags": [
+          "DelegationRule"
+        ]
+      }
+    },
+    "/v1/delegationrule/updateownership/{org_id}/{name}/{uid}": {
+      "put": {
+        "operationId": "DelegationRule_UpdateOwnership",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DelegationRuleUpdateOwnershipResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DelegationRuleUpdateOwnershipRequest"
+            }
+          }
+        ],
+        "tags": [
+          "DelegationRule"
+        ]
+      }
+    },
+    "/v1/delegationrule/{org_id}": {
+      "get": {
+        "operationId": "DelegationRule_Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DelegationRuleEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "delegate_id",
+            "description": "Empty means every delegate.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "modes",
+            "description": " - OneShot: Applies once, to whatever its filter matches at that moment.\n - Auto: Keeps applying to new matches.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ModeInvalid",
+                "OneShot",
+                "Auto"
+              ]
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "DelegationRule"
+        ]
+      }
+    },
+    "/v1/delegationrule/{org_id}/{name}/{uid}": {
+      "get": {
+        "operationId": "DelegationRule_Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DelegationRuleInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "DelegationRule"
+        ]
+      },
+      "delete": {
+        "operationId": "DelegationRule_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DelegationRuleDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "DelegationRule"
+        ]
+      }
+    },
+    "/v1/driftevent/{org_id}": {
+      "get": {
+        "operationId": "DriftEvent_Enumerate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DriftEventEnumerateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "rule_ref.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "rule_ref.uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "resource_uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cycle_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "outcomes",
+            "description": " - Applied: The rule acted.\n - WouldPlace: Preview only: what would happen if this rule ran now.\n - SkippedAlreadyPlaced: Skipped. Claiming only ever ADDS -- an existing assignment, Binding or\ndelegation is never overwritten.\n - SkippedClaimedByOtherRule: Lost arbitration to a stronger tier, or to an equally ranked older rule.\n - SkippedExcluded: Held out by an auto-rule exclusion.\n - FailedNoPlacement: Matched, but a Binding needs a placement first.\n - DepartedScopeAssignmentRetained: Stopped matching. The assignment and Binding are RETAINED.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ClaimOutcomeInvalid",
+                "Applied",
+                "WouldPlace",
+                "WouldBind",
+                "WouldDelegate",
+                "SkippedAlreadyPlaced",
+                "SkippedAlreadyBound",
+                "SkippedAlreadyDelegated",
+                "SkippedClaimedByOtherRule",
+                "SkippedExcluded",
+                "FailedNoPlacement",
+                "DepartedScopeAssignmentRetained"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "from_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "to_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "page_token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "DriftEvent"
+        ]
+      }
+    },
+    "/v1/driftevent/{org_id}/{uid}": {
+      "get": {
+        "operationId": "DriftEvent_Inspect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DriftEventInspectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "DriftEvent"
         ]
       }
     },
@@ -7477,6 +8255,49 @@
         ]
       }
     },
+    "/v1/slapolicy/{org_id}/{name}/{uid}/mechanics": {
+      "get": {
+        "summary": "Journey B13. Read-only translated mechanics for a reusable SLA Policy:\nwhat the plain-language intents mean as schedules, copies and capture.",
+        "operationId": "SLAPolicy_PreviewMechanics",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SLAPolicyPreviewMechanicsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SLAPolicy"
+        ]
+      }
+    },
     "/v1/slapolicy/{org_id}/{name}/{uid}/resume": {
       "post": {
         "summary": "Resume lets the scheduled runs start again.",
@@ -8037,6 +8858,159 @@
         }
       }
     },
+    "AdminScopeCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "admin_scope": {
+          "$ref": "#/definitions/AdminScopeInfo"
+        }
+      }
+    },
+    "AdminScopeCreateResponse": {
+      "type": "object",
+      "properties": {
+        "admin_scope": {
+          "$ref": "#/definitions/AdminScopeObject"
+        }
+      }
+    },
+    "AdminScopeDeleteResponse": {
+      "type": "object"
+    },
+    "AdminScopeEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "admin_scopes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AdminScopeObject"
+          }
+        }
+      }
+    },
+    "AdminScopeInfo": {
+      "type": "object",
+      "properties": {
+        "identity_id": {
+          "type": "string",
+          "description": "The identity this scope belongs to, as it appears in the token."
+        },
+        "tier": {
+          "$ref": "#/definitions/OwnerTier",
+          "description": "InfraAdmin in v1. Super Admin is unscoped and App Admin scope comes from\nresource ownership, not from this object."
+        },
+        "whole_clusters": {
+          "$ref": "#/definitions/ObjectRefList",
+          "description": "Journey O2: one or more complete clusters."
+        },
+        "materialized": {
+          "$ref": "#/definitions/MaterializedResourceSet",
+          "description": "Journey O2a: a filter-assisted set, resolved once."
+        },
+        "granted_by": {
+          "type": "string",
+          "description": "Super Admin only, both of them."
+        },
+        "granted_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_committed_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Each change needs a fresh Super-Admin preview and an explicit commit."
+        }
+      }
+    },
+    "AdminScopeInspectResponse": {
+      "type": "object",
+      "properties": {
+        "admin_scope": {
+          "$ref": "#/definitions/AdminScopeObject"
+        }
+      }
+    },
+    "AdminScopeObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "admin_scope_info": {
+          "$ref": "#/definitions/AdminScopeInfo"
+        }
+      }
+    },
+    "AdminScopePreviewRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "identity_id": {
+          "type": "string"
+        },
+        "whole_clusters": {
+          "$ref": "#/definitions/ObjectRefList",
+          "description": "The form being proposed. Exactly one, as on AdminScopeInfo."
+        },
+        "filter": {
+          "$ref": "#/definitions/ResourceFilter"
+        }
+      }
+    },
+    "AdminScopePreviewResponse": {
+      "type": "object",
+      "properties": {
+        "matched": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CatalogResourceObject"
+          },
+          "description": "The exact UIDs that would be materialized. Journey O2a requires the\nadministrator to see them before committing."
+        },
+        "matched_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "overlapping_identities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "preview_token": {
+          "type": "string",
+          "description": "Pass to AdminScope.Update to commit this exact set."
+        }
+      }
+    },
+    "AdminScopeUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "admin_scope": {
+          "$ref": "#/definitions/AdminScopeInfo"
+        },
+        "preview_token": {
+          "type": "string",
+          "description": "Must carry the token from a preceding Preview. FR-123 requires a fresh\nSuper-Admin-initiated preview and an explicit commit for every change."
+        }
+      }
+    },
+    "AdminScopeUpdateResponse": {
+      "type": "object",
+      "properties": {
+        "admin_scope": {
+          "$ref": "#/definitions/AdminScopeObject"
+        }
+      }
+    },
     "AutoRuleExclusionInfo": {
       "type": "object",
       "properties": {
@@ -8061,6 +9035,10 @@
           "type": "string",
           "format": "date-time",
           "description": "Unset means the exclusion does not expire."
+        },
+        "excluded_by_tier": {
+          "$ref": "#/definitions/OwnerTier",
+          "description": "The setter's tier, captured at the time.\n\nNeeded to decide HOW FAR the exclusion reaches. An App Admin may set one\nwithin their own resource scope, and a rule owned by a stronger tier may\nor may not honour it. Without this field neither behaviour can be\nexpressed, because excluded_by is an identity whose tier can change."
         }
       },
       "description": "Why a resource is held out of auto-rule claiming -- FR-014, FR-016.\nAn exclusion needs a reason, an author and a time; no existing field holds\nany of these."
@@ -10988,6 +11966,79 @@
         }
       }
     },
+    "BindingRulePreviewRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        },
+        "candidate": {
+          "$ref": "#/definitions/BindingRuleInfo",
+          "description": "Preview a definition that has not been created yet."
+        }
+      },
+      "description": "Journey C4: preview and review a Binding Rule's target set."
+    },
+    "BindingRulePreviewResponse": {
+      "type": "object",
+      "properties": {
+        "matched_namespaces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CatalogResourceObject"
+          },
+          "description": "C4 requires Namespace and VM matches to be shown apart -- FR-093."
+        },
+        "matched_virtual_machines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CatalogResourceObject"
+          }
+        },
+        "matched_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "skipped": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceCatalogPreviewResponseSkippedResource"
+          },
+          "description": "Classified, not free text. Already bound always means skip."
+        },
+        "vm_parents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BindingRulePreviewResponseVirtualMachineParent"
+          },
+          "description": "C4: show every VM's parent Namespace, and identify graph ownership,\nso an operator can see what a VM match really covers."
+        }
+      }
+    },
+    "BindingRulePreviewResponseVirtualMachineParent": {
+      "type": "object",
+      "properties": {
+        "vm_resource_uid": {
+          "type": "string"
+        },
+        "parent_namespace_uid": {
+          "type": "string"
+        },
+        "parent_namespace_name": {
+          "type": "string"
+        },
+        "parent_also_matched": {
+          "type": "boolean",
+          "description": "True when the parent Namespace is also in this match set."
+        }
+      }
+    },
     "BindingRuleUpdateOwnershipRequest": {
       "type": "object",
       "properties": {
@@ -11320,6 +12371,25 @@
         "Deleted"
       ],
       "default": "Invalid"
+    },
+    "ClaimOutcome": {
+      "type": "string",
+      "enum": [
+        "ClaimOutcomeInvalid",
+        "Applied",
+        "WouldPlace",
+        "WouldBind",
+        "WouldDelegate",
+        "SkippedAlreadyPlaced",
+        "SkippedAlreadyBound",
+        "SkippedAlreadyDelegated",
+        "SkippedClaimedByOtherRule",
+        "SkippedExcluded",
+        "FailedNoPlacement",
+        "DepartedScopeAssignmentRetained"
+      ],
+      "default": "ClaimOutcomeInvalid",
+      "description": "Why a rule did or did not act on one resource.\n\nONE vocabulary, shared by every preview and every Drift Event -- journeys C4,\nD5 and F11 each name an overlapping list, and three separate enums would drift\napart. A free-form string cannot be switched on by a client, cannot be counted,\nand cannot be redacted per tier.\n\n - Applied: The rule acted.\n - WouldPlace: Preview only: what would happen if this rule ran now.\n - SkippedAlreadyPlaced: Skipped. Claiming only ever ADDS -- an existing assignment, Binding or\ndelegation is never overwritten.\n - SkippedClaimedByOtherRule: Lost arbitration to a stronger tier, or to an equally ranked older rule.\n - SkippedExcluded: Held out by an auto-rule exclusion.\n - FailedNoPlacement: Matched, but a Binding needs a placement first.\n - DepartedScopeAssignmentRetained: Stopped matching. The assignment and Binding are RETAINED."
     },
     "CloudCredentialCreateRequest": {
       "type": "object",
@@ -12396,6 +13466,266 @@
         }
       }
     },
+    "DelegationRuleApplyRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        },
+        "dry_run": {
+          "type": "boolean"
+        }
+      }
+    },
+    "DelegationRuleApplyResponse": {
+      "type": "object",
+      "properties": {
+        "delegated_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "skipped": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceCatalogPreviewResponseSkippedResource"
+          }
+        }
+      }
+    },
+    "DelegationRuleCreateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "delegation_rule": {
+          "$ref": "#/definitions/DelegationRuleInfo"
+        }
+      }
+    },
+    "DelegationRuleCreateResponse": {
+      "type": "object",
+      "properties": {
+        "delegation_rule": {
+          "$ref": "#/definitions/DelegationRuleObject"
+        }
+      }
+    },
+    "DelegationRuleDeleteResponse": {
+      "type": "object",
+      "description": "Deleting the rule does NOT revoke what it already delegated, exactly as\ndeleting a Binding Rule leaves its Bindings intact -- FR-080."
+    },
+    "DelegationRuleEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "delegation_rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DelegationRuleObject"
+          }
+        }
+      }
+    },
+    "DelegationRuleInfo": {
+      "type": "object",
+      "properties": {
+        "filter": {
+          "$ref": "#/definitions/ResourceFilter"
+        },
+        "delegate_id": {
+          "type": "string",
+          "description": "Who receives the access."
+        },
+        "access": {
+          "$ref": "#/definitions/OwnershipAccessType"
+        },
+        "delegate_tier": {
+          "$ref": "#/definitions/OwnerTier",
+          "description": "The delegate's tier. Journey F11 delegates to a LOWER privileged role."
+        },
+        "mode": {
+          "$ref": "#/definitions/PlacementRuleInfoMode",
+          "description": "Reuses the Placement Rule's enum rather than declaring a third one."
+        },
+        "owner_tier": {
+          "$ref": "#/definitions/OwnerTier",
+          "description": "Super Admin or Infra Admin only -- F11. Arbitration key 1."
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Arbitration key 2: the older rule wins at equal tier."
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "applied_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "captured_target_boundary": {
+          "$ref": "#/definitions/ResourceFilter",
+          "description": "The creator's authority, frozen -- FR-074."
+        },
+        "include_future_children": {
+          "type": "boolean",
+          "description": "Delegating a Namespace grants the Namespace graph and all current AND\nFUTURE child VMs. Delegating specific VMs grants neither the Namespace\ngraph nor sibling VMs. Journey F10, and acceptance scenario 2 of\nUser Story 8."
+        },
+        "exclude_from_auto_claim_on_delegate": {
+          "type": "boolean",
+          "description": "Mark every delegated resource do-not-claim, so an auto Binding Rule\ncannot take it before the delegate binds their own SLA Policy."
+        },
+        "last_evaluated_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "OUTPUT_ONLY."
+        },
+        "delegation_count": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "DelegationRuleInspectResponse": {
+      "type": "object",
+      "properties": {
+        "delegation_rule": {
+          "$ref": "#/definitions/DelegationRuleObject"
+        }
+      }
+    },
+    "DelegationRuleObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "delegation_rule_info": {
+          "$ref": "#/definitions/DelegationRuleInfo"
+        }
+      }
+    },
+    "DelegationRulePreviewRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        },
+        "candidate": {
+          "$ref": "#/definitions/DelegationRuleInfo",
+          "description": "Preview a definition that has not been created yet."
+        }
+      }
+    },
+    "DelegationRulePreviewResponse": {
+      "type": "object",
+      "properties": {
+        "matched_namespaces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CatalogResourceObject"
+          },
+          "description": "Journey F11 requires Namespace and VM matches to be separable."
+        },
+        "matched_virtual_machines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CatalogResourceObject"
+          }
+        },
+        "matched_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "skipped": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceCatalogPreviewResponseSkippedResource"
+          }
+        }
+      }
+    },
+    "DelegationRuleUpdateOwnershipRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OwnershipAccessConfig"
+          }
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OwnershipAccessConfig"
+          }
+        },
+        "remove_users": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "remove_groups": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "DelegationRuleUpdateOwnershipResponse": {
+      "type": "object",
+      "properties": {
+        "delegation_rule": {
+          "$ref": "#/definitions/DelegationRuleObject"
+        }
+      }
+    },
+    "DelegationRuleUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/CreateMetadata"
+        },
+        "delegation_rule": {
+          "$ref": "#/definitions/DelegationRuleInfo"
+        }
+      }
+    },
+    "DelegationRuleUpdateResponse": {
+      "type": "object",
+      "properties": {
+        "delegation_rule": {
+          "$ref": "#/definitions/DelegationRuleObject"
+        },
+        "drift_count": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
     "DerivedSchedule": {
       "type": "object",
       "properties": {
@@ -12417,6 +13747,104 @@
         }
       },
       "description": "One derived schedule belonging to one Protection Intent.\n\nGroups the four values that BindingInfo already carries at 19 to 22 for the\nbaseline. Those four are NOT reshaped into this message: that would be a\nbreaking change for no gain."
+    },
+    "DriftEventEnumerateResponse": {
+      "type": "object",
+      "properties": {
+        "drift_events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DriftEventObject"
+          }
+        },
+        "next_page_token": {
+          "type": "string"
+        },
+        "may_be_incomplete": {
+          "type": "boolean",
+          "description": "True when the backing projection may have dropped records, so the caller\ndoes not present an incomplete list as complete -- journey D5."
+        }
+      }
+    },
+    "DriftEventInfo": {
+      "type": "object",
+      "properties": {
+        "rule_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "rule_kind": {
+          "$ref": "#/definitions/RuleKind"
+        },
+        "rule_owner_tier": {
+          "$ref": "#/definitions/OwnerTier",
+          "description": "The rule's captured tier, never its current owner's -- FR-074."
+        },
+        "resource_ref": {
+          "$ref": "#/definitions/ObjectRef"
+        },
+        "cycle_id": {
+          "type": "string",
+          "description": "Groups every event produced by one evaluation pass."
+        },
+        "evaluation_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "phase": {
+          "$ref": "#/definitions/DriftEventInfoPhase"
+        },
+        "outcome": {
+          "$ref": "#/definitions/ClaimOutcome"
+        },
+        "reason_detail": {
+          "type": "string",
+          "description": "Human detail. Prefer `outcome` for any decision."
+        },
+        "pre_state": {
+          "$ref": "#/definitions/ProtectionState"
+        },
+        "post_state": {
+          "$ref": "#/definitions/ProtectionState"
+        },
+        "winning_rule_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "Set when outcome is SkippedClaimedByOtherRule.\n\nREDACTED for a caller below the winning rule's owner tier. Naming it\nwould tell a scoped administrator that a stronger tier's rule exists and\nwhat it is called, which multi-tenancy isolation forbids -- journey F7."
+        },
+        "resulting_object_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "The assignment or Binding that resulted, or that was retained."
+        }
+      }
+    },
+    "DriftEventInfoPhase": {
+      "type": "string",
+      "enum": [
+        "PhaseInvalid",
+        "PlacementPhase",
+        "BindingPhase",
+        "DelegationPhase",
+        "DriftPhase"
+      ],
+      "default": "PhaseInvalid"
+    },
+    "DriftEventInspectResponse": {
+      "type": "object",
+      "properties": {
+        "drift_event": {
+          "$ref": "#/definitions/DriftEventObject"
+        }
+      }
+    },
+    "DriftEventObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "drift_event_info": {
+          "$ref": "#/definitions/DriftEventInfo"
+        }
+      }
     },
     "EmailConfig": {
       "type": "object",
@@ -13226,6 +14654,34 @@
       ],
       "default": "Invalid",
       "title": "Status hold if the cluster is already present in datastore or not"
+    },
+    "MaterializedResourceSet": {
+      "type": "object",
+      "properties": {
+        "resolved_from": {
+          "$ref": "#/definitions/ResourceFilter",
+          "description": "Kept so an operator can see what was asked for. NEVER re-evaluated."
+        },
+        "resource_uids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The frozen set. This, and only this, is the scope."
+        },
+        "materialized_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "overlapping_identities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Identities whose scope already covers one of these UIDs. Journey O2a\nwarns about the overlap and confirmation creates co-ownership rather\nthan blocking or silently transferring."
+        }
+      },
+      "description": "A resource set resolved ONCE, at the delegation operation, and then frozen.\n\nFR-123 and journey O2a: later label, filter-result, discovery or inventory\nchanges MUST NOT add or remove a resource. The filter is kept for audit only."
     },
     "MembershipInterval": {
       "type": "object",
@@ -14988,7 +16444,49 @@
           "type": "string"
         },
         "reason": {
+          "type": "string",
+          "description": "Free text for a human. Prefer `outcome` for any decision."
+        },
+        "outcome": {
+          "$ref": "#/definitions/ClaimOutcome"
+        },
+        "winning_rule_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "The rule that won, when outcome is SkippedClaimedByOtherRule.\n\nREDACTED for a caller whose tier is below the winning rule's owner:\nnaming it would reveal a stronger tier's rule to someone who may not\nsee it. The outcome still says the resource was claimed."
+        }
+      }
+    },
+    "ResourceCatalogReconstructRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
           "type": "string"
+        },
+        "backup_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "The backup holding the resource's metadata."
+        },
+        "resource_uid": {
+          "type": "string",
+          "description": "Which resource inside it. Its original Kubernetes UID."
+        },
+        "target_cluster_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "Where the reconstructed row is anchored. May differ from the original."
+        }
+      },
+      "description": "Journey M2: DR restore when the source cluster is gone.\n\nA recovery point is reached through its catalog resource, so a resource whose\ncluster no longer exists cannot be restored from. This recreates the catalog\nrow from a backup's stored metadata, with no live cluster to discover."
+    },
+    "ResourceCatalogReconstructResponse": {
+      "type": "object",
+      "properties": {
+        "resource": {
+          "$ref": "#/definitions/CatalogResourceObject"
+        },
+        "relinked_recovery_point_count": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Recovery points relinked to the reconstructed row."
         }
       }
     },
@@ -15027,6 +16525,10 @@
           "items": {
             "type": "string"
           }
+        },
+        "set_exclusion": {
+          "$ref": "#/definitions/AutoRuleExclusionInfo",
+          "description": "Set an auto-rule exclusion in the SAME call as the ownership change.\n\nA resource handed over deliberately unprotected, so the delegate can\nauthor and own its protection, is indistinguishable from any other\nunbound resource. The next auto Binding Rule cycle would claim it and\nproduce an enforced baseline the delegate cannot replace. Marking it\nhere closes that window atomically."
         }
       },
       "description": "Sharing a resource is how a persona boundary is crossed. An Infra or Super\nAdmin owns the inventory; an App Admin sees a namespace only once it has been\nshared with them.\n\nRead lets the grantee see the resource, its Bindings and what it can restore.\nWrite additionally lets them add a supplemental intent and edit hooks. Neither\nlets them rebind, unbind, weaken the baseline, or see a destination: those are\nrefused by tier, not by the access level.\n\nSharing carries through the read path. A grantee who can see a resource can\nsee that resource's Bindings, recovery points and backups, because a share\nthat showed the resource but not its history would be useless."
@@ -16290,6 +17792,17 @@
       },
       "title": "Define RuleInspectResponse struct"
     },
+    "RuleKind": {
+      "type": "string",
+      "enum": [
+        "RuleKindInvalid",
+        "PlacementRuleKind",
+        "BindingRuleKind",
+        "DelegationRuleKind"
+      ],
+      "default": "RuleKindInvalid",
+      "description": "Which kind of rule produced an outcome."
+    },
     "RuleObject": {
       "type": "object",
       "properties": {
@@ -16572,6 +18085,50 @@
         },
         "sla_policy_info": {
           "$ref": "#/definitions/SLAPolicyInfo"
+        }
+      }
+    },
+    "SLAPolicyPreviewMechanicsResponse": {
+      "type": "object",
+      "properties": {
+        "intents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SLAPolicyPreviewMechanicsResponseIntentMechanics"
+          }
+        }
+      }
+    },
+    "SLAPolicyPreviewMechanicsResponseIntentMechanics": {
+      "type": "object",
+      "properties": {
+        "intent_id": {
+          "type": "string"
+        },
+        "frequency": {
+          "type": "string",
+          "description": "Rendered for a human, for example \"every 15 minutes\"."
+        },
+        "recoverability_period": {
+          "type": "string"
+        },
+        "derived_retain_count": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The derived copy count: ceil(period / longest gap), floored at 1.\nA user states a business need and does not do this arithmetic --\n7 days at 15 minutes is 672 copies per resource."
+        },
+        "incremental_count": {
+          "type": "string",
+          "format": "int64"
+        },
+        "capture_mode": {
+          "$ref": "#/definitions/ProtectionIntentCaptureMode"
+        },
+        "require_snapshot_capture": {
+          "type": "boolean"
+        },
+        "classification": {
+          "$ref": "#/definitions/ProtectionIntentClassification"
         }
       }
     },

@@ -99,4 +99,10 @@ func init() {
 	golangproto.RegisterEnum("RecoveryPointInfo_Status", RecoveryPointInfo_Status_name, RecoveryPointInfo_Status_value)
 	golangproto.RegisterEnum("VolumeCaptureDetail_Method", VolumeCaptureDetail_Method_name, VolumeCaptureDetail_Method_value)
 	golangproto.RegisterEnum("ProtectionSummaryEnumerateRequest_GroupBy", ProtectionSummaryEnumerateRequest_GroupBy_name, ProtectionSummaryEnumerateRequest_GroupBy_value)
+
+	// ClaimOutcome is decoded from a query string by DriftEvent.Enumerate, so it
+	// fails without this. RuleKind and the Phase enum are mirrored for consistency.
+	golangproto.RegisterEnum("ClaimOutcome", ClaimOutcome_name, ClaimOutcome_value)
+	golangproto.RegisterEnum("RuleKind", RuleKind_name, RuleKind_value)
+	golangproto.RegisterEnum("DriftEventInfo_Phase", DriftEventInfo_Phase_name, DriftEventInfo_Phase_value)
 }

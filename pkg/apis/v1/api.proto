@@ -5128,6 +5128,43 @@ enum OwnerTier {
     User = 4;
 }
 
+// Why a rule did or did not act on one resource.
+//
+// ONE vocabulary, shared by every preview and every Drift Event -- journeys C4,
+// D5 and F11 each name an overlapping list, and three separate enums would drift
+// apart. A free-form string cannot be switched on by a client, cannot be counted,
+// and cannot be redacted per tier.
+enum ClaimOutcome {
+    ClaimOutcomeInvalid = 0;
+    // The rule acted.
+    Applied = 1;
+    // Preview only: what would happen if this rule ran now.
+    WouldPlace = 2;
+    WouldBind = 3;
+    WouldDelegate = 4;
+    // Skipped. Claiming only ever ADDS -- an existing assignment, Binding or
+    // delegation is never overwritten.
+    SkippedAlreadyPlaced = 5;
+    SkippedAlreadyBound = 6;
+    SkippedAlreadyDelegated = 7;
+    // Lost arbitration to a stronger tier, or to an equally ranked older rule.
+    SkippedClaimedByOtherRule = 8;
+    // Held out by an auto-rule exclusion.
+    SkippedExcluded = 9;
+    // Matched, but a Binding needs a placement first.
+    FailedNoPlacement = 10;
+    // Stopped matching. The assignment and Binding are RETAINED.
+    DepartedScopeAssignmentRetained = 11;
+}
+
+// Which kind of rule produced an outcome.
+enum RuleKind {
+    RuleKindInvalid = 0;
+    PlacementRuleKind = 1;
+    BindingRuleKind = 2;
+    DelegationRuleKind = 3;
+}
+
 // ---------------------------------------------------------------------------
 // Shared leaf types for the resource-centric model.
 //
@@ -5179,6 +5216,13 @@ message AutoRuleExclusionInfo {
     google.protobuf.Timestamp excluded_time = 5;
     // Unset means the exclusion does not expire.
     google.protobuf.Timestamp expires_time = 6;
+    // The setter's tier, captured at the time.
+    //
+    // Needed to decide HOW FAR the exclusion reaches. An App Admin may set one
+    // within their own resource scope, and a rule owned by a stronger tier may
+    // or may not honour it. Without this field neither behaviour can be
+    // expressed, because excluded_by is an identity whose tier can change.
+    OwnerTier excluded_by_tier = 7;
 }
 
 // How one volume was actually captured, and why -- FR-098.
@@ -5832,6 +5876,15 @@ service SLAPolicy {
         };
     }
 
+    // Journey B13. Read-only translated mechanics for a reusable SLA Policy:
+    // what the plain-language intents mean as schedules, copies and capture.
+    rpc PreviewMechanics(SLAPolicyPreviewMechanicsRequest)
+        returns (SLAPolicyPreviewMechanicsResponse) {
+        option (google.api.http) = {
+            get : "/v1/slapolicy/{org_id}/{name}/{uid}/mechanics"
+        };
+    }
+
     rpc UpdateOwnership(SLAPolicyUpdateOwnershipRequest)
         returns (SLAPolicyUpdateOwnershipResponse) {
         option (google.api.http) = {
@@ -5968,6 +6021,17 @@ service ResourceCatalog {
             body : "*"
         };
     }
+
+    // Journey M2. The ONE case where a client creates a catalog row: the
+    // source cluster is gone, so discovery can never produce it, and without
+    // a row its recovery points cannot be reached.
+    rpc Reconstruct(ResourceCatalogReconstructRequest)
+        returns (ResourceCatalogReconstructResponse) {
+        option (google.api.http) = {
+            post : "/v1/catalogresource/reconstruct/{org_id}"
+            body : "*"
+        };
+    }
 }
 
 message ResourceCatalogUpdateRequest {
@@ -5996,7 +6060,15 @@ message ResourceCatalogPreviewResponse {
     message SkippedResource {
         string resource_uid = 1;
         string resource_name = 2;
+        // Free text for a human. Prefer `outcome` for any decision.
         string reason = 3;
+        ClaimOutcome outcome = 4;
+        // The rule that won, when outcome is SkippedClaimedByOtherRule.
+        //
+        // REDACTED for a caller whose tier is below the winning rule's owner:
+        // naming it would reveal a stronger tier's rule to someone who may not
+        // see it. The outcome still says the resource was claimed.
+        ObjectRef winning_rule_ref = 5;
     }
 }
 
@@ -6022,6 +6094,15 @@ message ResourceCatalogUpdateOwnershipRequest {
     // Identities to revoke, by id. Applied after the grants above.
     repeated string remove_users = 5;
     repeated string remove_groups = 6;
+
+    // Set an auto-rule exclusion in the SAME call as the ownership change.
+    //
+    // A resource handed over deliberately unprotected, so the delegate can
+    // author and own its protection, is indistinguishable from any other
+    // unbound resource. The next auto Binding Rule cycle would claim it and
+    // produce an enforced baseline the delegate cannot replace. Marking it
+    // here closes that window atomically.
+    AutoRuleExclusionInfo set_exclusion = 7;
 }
 message ResourceCatalogUpdateOwnershipResponse {
     CatalogResourceObject resource = 1;
@@ -6816,6 +6897,16 @@ service BindingRule {
         };
     }
 
+    // Journey C4. A read, not an Apply with a flag: Apply answers "what would
+    // happen if I ran this", Preview answers "what does this select".
+    rpc Preview(BindingRulePreviewRequest)
+        returns (BindingRulePreviewResponse) {
+        option (google.api.http) = {
+            post : "/v1/bindingrule/preview/{org_id}"
+            body : "*"
+        };
+    }
+
     rpc Apply(BindingRuleApplyRequest) returns (BindingRuleApplyResponse) {
         option (google.api.http) = {
             post : "/v1/bindingrule/apply/{org_id}/{name}/{uid}"
@@ -7020,4 +7111,537 @@ service ProtectionSummary {
             get : "/v1/protectionsummary/enumerate/{org_id}"
         };
     }
+}
+
+// ---------------------------------------------------------------------------
+// AdminScope service -- journeys O2, O2a, O8. FR-122, FR-123.
+//
+// An administrator's own estate: the boundary of what that identity owns.
+// Nothing in this API carried it before. Ownership is recorded per object, which
+// answers "who may touch this resource" but never "what is this administrator's
+// estate", so the one-scope-form rule had no home.
+//
+// NOT a rule. An AdminScope never re-evaluates -- see MaterializedResourceSet.
+// ---------------------------------------------------------------------------
+
+// A resource set resolved ONCE, at the delegation operation, and then frozen.
+//
+// FR-123 and journey O2a: later label, filter-result, discovery or inventory
+// changes MUST NOT add or remove a resource. The filter is kept for audit only.
+message MaterializedResourceSet {
+    // Kept so an operator can see what was asked for. NEVER re-evaluated.
+    ResourceFilter resolved_from = 1;
+    // The frozen set. This, and only this, is the scope.
+    repeated string resource_uids = 2;
+    google.protobuf.Timestamp materialized_time = 3;
+    // Identities whose scope already covers one of these UIDs. Journey O2a
+    // warns about the overlap and confirmation creates co-ownership rather
+    // than blocking or silently transferring.
+    repeated string overlapping_identities = 4;
+}
+
+message AdminScopeInfo {
+    // The identity this scope belongs to, as it appears in the token.
+    string identity_id = 1;
+    // InfraAdmin in v1. Super Admin is unscoped and App Admin scope comes from
+    // resource ownership, not from this object.
+    OwnerTier tier = 2;
+
+    // EXACTLY ONE form. FR-122 forbids unioning the two, and forbids
+    // accumulating several scope grants for one identity.
+    oneof form {
+        // Journey O2: one or more complete clusters.
+        ObjectRefList whole_clusters = 3;
+        // Journey O2a: a filter-assisted set, resolved once.
+        MaterializedResourceSet materialized = 4;
+    }
+
+    // Super Admin only, both of them.
+    string granted_by = 5;
+    google.protobuf.Timestamp granted_time = 6;
+    // Each change needs a fresh Super-Admin preview and an explicit commit.
+    google.protobuf.Timestamp last_committed_time = 7;
+}
+
+message AdminScopeObject {
+    Metadata metadata = 1
+        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    AdminScopeInfo admin_scope_info = 2 [ (gogoproto.embed) = true ];
+}
+
+message AdminScopeCreateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    AdminScopeInfo admin_scope = 2;
+}
+message AdminScopeCreateResponse { AdminScopeObject admin_scope = 1; }
+
+message AdminScopeInspectRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+message AdminScopeInspectResponse { AdminScopeObject admin_scope = 1; }
+
+message AdminScopeEnumerateRequest {
+    string org_id = 1;
+    // Empty means every scoped identity.
+    string identity_id = 2;
+}
+message AdminScopeEnumerateResponse {
+    repeated AdminScopeObject admin_scopes = 1;
+}
+
+message AdminScopeUpdateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    AdminScopeInfo admin_scope = 2;
+    // Must carry the token from a preceding Preview. FR-123 requires a fresh
+    // Super-Admin-initiated preview and an explicit commit for every change.
+    string preview_token = 3;
+}
+message AdminScopeUpdateResponse { AdminScopeObject admin_scope = 1; }
+
+message AdminScopeDeleteRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+message AdminScopeDeleteResponse {}
+
+message AdminScopePreviewRequest {
+    string org_id = 1;
+    string identity_id = 2;
+    // The form being proposed. Exactly one, as on AdminScopeInfo.
+    ObjectRefList whole_clusters = 3;
+    ResourceFilter filter = 4;
+}
+message AdminScopePreviewResponse {
+    // The exact UIDs that would be materialized. Journey O2a requires the
+    // administrator to see them before committing.
+    repeated CatalogResourceObject matched = 1;
+    int32 matched_count = 2;
+    repeated string overlapping_identities = 3;
+    // Pass to AdminScope.Update to commit this exact set.
+    string preview_token = 4;
+}
+
+service AdminScope {
+    // Super Admin only, every call.
+    rpc Create(AdminScopeCreateRequest) returns (AdminScopeCreateResponse) {
+        option (google.api.http) = {
+            post : "/v1/adminscope"
+            body : "*"
+        };
+    }
+
+    rpc Inspect(AdminScopeInspectRequest) returns (AdminScopeInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/adminscope/{org_id}/{name}/{uid}"
+        };
+    }
+
+    rpc Enumerate(AdminScopeEnumerateRequest)
+        returns (AdminScopeEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/adminscope/{org_id}"
+        };
+    }
+
+    // Preview MUST precede Update. The returned token binds the commit to the
+    // exact set the administrator saw.
+    rpc Preview(AdminScopePreviewRequest) returns (AdminScopePreviewResponse) {
+        option (google.api.http) = {
+            post : "/v1/adminscope/preview/{org_id}"
+            body : "*"
+        };
+    }
+
+    rpc Update(AdminScopeUpdateRequest) returns (AdminScopeUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/adminscope"
+            body : "*"
+        };
+    }
+
+    rpc Delete(AdminScopeDeleteRequest) returns (AdminScopeDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/adminscope/{org_id}/{name}/{uid}"
+        };
+    }
+}
+
+// ---------------------------------------------------------------------------
+// DelegationRule service -- journey F11.
+//
+// Delegating resources to a lower-privileged identity, by filter, in static or
+// auto mode. Today a delegation writes collaborators onto each catalog row and
+// DISCARDS the filter, so nothing can re-evaluate it and auto mode is
+// impossible.
+//
+// This is NOT the same as an AdminScope. An AdminScope defines who an
+// administrator is and never re-evaluates -- O2a. A DelegationRule says which
+// resources a team looks after and MAY re-evaluate -- F11.
+// ---------------------------------------------------------------------------
+
+message DelegationRuleInfo {
+    ResourceFilter filter = 1;
+    // Who receives the access.
+    string delegate_id = 2;
+    Ownership.AccessType access = 3;
+    // The delegate's tier. Journey F11 delegates to a LOWER privileged role.
+    OwnerTier delegate_tier = 4;
+
+    // Reuses the Placement Rule's enum rather than declaring a third one.
+    PlacementRuleInfo.Mode mode = 5;
+    // Super Admin or Infra Admin only -- F11. Arbitration key 1.
+    OwnerTier owner_tier = 6;
+    // Arbitration key 2: the older rule wins at equal tier.
+    google.protobuf.Timestamp created_time = 7;
+    bool enabled = 8;
+    google.protobuf.Timestamp applied_time = 9;
+    // The creator's authority, frozen -- FR-074.
+    ResourceFilter captured_target_boundary = 10;
+
+    // Delegating a Namespace grants the Namespace graph and all current AND
+    // FUTURE child VMs. Delegating specific VMs grants neither the Namespace
+    // graph nor sibling VMs. Journey F10, and acceptance scenario 2 of
+    // User Story 8.
+    bool include_future_children = 11;
+
+    // Mark every delegated resource do-not-claim, so an auto Binding Rule
+    // cannot take it before the delegate binds their own SLA Policy.
+    bool exclude_from_auto_claim_on_delegate = 12;
+
+    // OUTPUT_ONLY.
+    google.protobuf.Timestamp last_evaluated_time = 13;
+    int32 delegation_count = 14;
+}
+
+message DelegationRuleObject {
+    Metadata metadata = 1
+        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    DelegationRuleInfo delegation_rule_info = 2 [ (gogoproto.embed) = true ];
+}
+
+message DelegationRuleCreateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    DelegationRuleInfo delegation_rule = 2;
+}
+message DelegationRuleCreateResponse { DelegationRuleObject delegation_rule = 1; }
+
+message DelegationRuleInspectRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+message DelegationRuleInspectResponse { DelegationRuleObject delegation_rule = 1; }
+
+message DelegationRuleEnumerateRequest {
+    string org_id = 1;
+    // Empty means every delegate.
+    string delegate_id = 2;
+    repeated PlacementRuleInfo.Mode modes = 3;
+}
+message DelegationRuleEnumerateResponse {
+    repeated DelegationRuleObject delegation_rules = 1;
+}
+
+message DelegationRuleUpdateRequest {
+    CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
+    DelegationRuleInfo delegation_rule = 2;
+}
+message DelegationRuleUpdateResponse {
+    DelegationRuleObject delegation_rule = 1;
+    int32 drift_count = 2;
+}
+
+message DelegationRuleDeleteRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+// Deleting the rule does NOT revoke what it already delegated, exactly as
+// deleting a Binding Rule leaves its Bindings intact -- FR-080.
+message DelegationRuleDeleteResponse {}
+
+message DelegationRulePreviewRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    // Preview a definition that has not been created yet.
+    DelegationRuleInfo candidate = 4;
+}
+message DelegationRulePreviewResponse {
+    // Journey F11 requires Namespace and VM matches to be separable.
+    repeated CatalogResourceObject matched_namespaces = 1;
+    repeated CatalogResourceObject matched_virtual_machines = 2;
+    int32 matched_count = 3;
+    repeated ResourceCatalogPreviewResponse.SkippedResource skipped = 4;
+}
+
+message DelegationRuleApplyRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    bool dry_run = 4;
+}
+message DelegationRuleApplyResponse {
+    int32 delegated_count = 1;
+    repeated ResourceCatalogPreviewResponse.SkippedResource skipped = 2;
+}
+
+message DelegationRuleUpdateOwnershipRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    repeated Ownership.AccessConfig users = 4;
+    repeated Ownership.AccessConfig groups = 5;
+    repeated string remove_users = 6;
+    repeated string remove_groups = 7;
+}
+message DelegationRuleUpdateOwnershipResponse {
+    DelegationRuleObject delegation_rule = 1;
+}
+
+service DelegationRule {
+    rpc Create(DelegationRuleCreateRequest)
+        returns (DelegationRuleCreateResponse) {
+        option (google.api.http) = {
+            post : "/v1/delegationrule"
+            body : "*"
+        };
+    }
+
+    rpc Inspect(DelegationRuleInspectRequest)
+        returns (DelegationRuleInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/delegationrule/{org_id}/{name}/{uid}"
+        };
+    }
+
+    rpc Enumerate(DelegationRuleEnumerateRequest)
+        returns (DelegationRuleEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/delegationrule/{org_id}"
+        };
+    }
+
+    // Journey F11: shows Would delegate, Already delegated, Excluded, and for
+    // auto mode Claimed by a higher or older rule.
+    rpc Preview(DelegationRulePreviewRequest)
+        returns (DelegationRulePreviewResponse) {
+        option (google.api.http) = {
+            post : "/v1/delegationrule/preview/{org_id}"
+            body : "*"
+        };
+    }
+
+    rpc Update(DelegationRuleUpdateRequest)
+        returns (DelegationRuleUpdateResponse) {
+        option (google.api.http) = {
+            put : "/v1/delegationrule"
+            body : "*"
+        };
+    }
+
+    rpc Delete(DelegationRuleDeleteRequest)
+        returns (DelegationRuleDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/delegationrule/{org_id}/{name}/{uid}"
+        };
+    }
+
+    // Static mode applies once on confirmation. Auto mode runs on the cycle
+    // and this forces it.
+    rpc Apply(DelegationRuleApplyRequest)
+        returns (DelegationRuleApplyResponse) {
+        option (google.api.http) = {
+            post : "/v1/delegationrule/apply/{org_id}/{name}/{uid}"
+            body : "*"
+        };
+    }
+
+    rpc UpdateOwnership(DelegationRuleUpdateOwnershipRequest)
+        returns (DelegationRuleUpdateOwnershipResponse) {
+        option (google.api.http) = {
+            put : "/v1/delegationrule/updateownership/{org_id}/{name}/{uid}"
+            body : "*"
+        };
+    }
+}
+
+// ---------------------------------------------------------------------------
+// DriftEvent service -- journey D5. Read only.
+//
+// One immutable row per rule, resource, cycle and evaluation time.
+//
+// Journey D5 calls this "a projection of successfully ingested Prometheus
+// records, not a guaranteed complete transaction log". It is therefore NOT a
+// durable audit trail, and a caller must not assume completeness. The contract
+// is the same either way: whether the server backs this with a collection or
+// with a metrics query is an implementation choice.
+//
+// Journey H5: an event cannot be accepted, ignored, acknowledged or resolved.
+// There is deliberately no Update, no Delete and no acknowledge call.
+// ---------------------------------------------------------------------------
+
+message DriftEventInfo {
+    ObjectRef rule_ref = 1;
+    RuleKind rule_kind = 2;
+    // The rule's captured tier, never its current owner's -- FR-074.
+    OwnerTier rule_owner_tier = 3;
+    ObjectRef resource_ref = 4;
+
+    // Groups every event produced by one evaluation pass.
+    string cycle_id = 5;
+    google.protobuf.Timestamp evaluation_time = 6;
+    Phase phase = 7;
+
+    ClaimOutcome outcome = 8;
+    // Human detail. Prefer `outcome` for any decision.
+    string reason_detail = 9;
+
+    ProtectionState pre_state = 10;
+    ProtectionState post_state = 11;
+
+    // Set when outcome is SkippedClaimedByOtherRule.
+    //
+    // REDACTED for a caller below the winning rule's owner tier. Naming it
+    // would tell a scoped administrator that a stronger tier's rule exists and
+    // what it is called, which multi-tenancy isolation forbids -- journey F7.
+    ObjectRef winning_rule_ref = 12;
+    // The assignment or Binding that resulted, or that was retained.
+    ObjectRef resulting_object_ref = 13;
+
+    enum Phase {
+        PhaseInvalid = 0;
+        PlacementPhase = 1;
+        BindingPhase = 2;
+        DelegationPhase = 3;
+        DriftPhase = 4;
+    }
+}
+
+message DriftEventObject {
+    Metadata metadata = 1
+        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    DriftEventInfo drift_event_info = 2 [ (gogoproto.embed) = true ];
+}
+
+message DriftEventEnumerateRequest {
+    string org_id = 1;
+    // Any combination. Empty means no filter on that dimension.
+    ObjectRef rule_ref = 2;
+    string resource_uid = 3;
+    string cycle_id = 4;
+    repeated ClaimOutcome outcomes = 5;
+    google.protobuf.Timestamp from_time = 6;
+    google.protobuf.Timestamp to_time = 7;
+    int32 page_size = 8;
+    string page_token = 9;
+}
+message DriftEventEnumerateResponse {
+    repeated DriftEventObject drift_events = 1;
+    string next_page_token = 2;
+    // True when the backing projection may have dropped records, so the caller
+    // does not present an incomplete list as complete -- journey D5.
+    bool may_be_incomplete = 3;
+}
+
+message DriftEventInspectRequest {
+    string org_id = 1;
+    string uid = 2;
+}
+message DriftEventInspectResponse { DriftEventObject drift_event = 1; }
+
+service DriftEvent {
+    rpc Enumerate(DriftEventEnumerateRequest)
+        returns (DriftEventEnumerateResponse) {
+        option (google.api.http) = {
+            get : "/v1/driftevent/{org_id}"
+        };
+    }
+
+    rpc Inspect(DriftEventInspectRequest) returns (DriftEventInspectResponse) {
+        option (google.api.http) = {
+            get : "/v1/driftevent/{org_id}/{uid}"
+        };
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Three calls that existing services were missing.
+// ---------------------------------------------------------------------------
+
+// Journey C4: preview and review a Binding Rule's target set.
+message BindingRulePreviewRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+    // Preview a definition that has not been created yet.
+    BindingRuleInfo candidate = 4;
+}
+message BindingRulePreviewResponse {
+    // C4 requires Namespace and VM matches to be shown apart -- FR-093.
+    repeated CatalogResourceObject matched_namespaces = 1;
+    repeated CatalogResourceObject matched_virtual_machines = 2;
+    int32 matched_count = 3;
+    // Classified, not free text. Already bound always means skip.
+    repeated ResourceCatalogPreviewResponse.SkippedResource skipped = 4;
+    // C4: show every VM's parent Namespace, and identify graph ownership,
+    // so an operator can see what a VM match really covers.
+    repeated VirtualMachineParent vm_parents = 5;
+
+    message VirtualMachineParent {
+        string vm_resource_uid = 1;
+        string parent_namespace_uid = 2;
+        string parent_namespace_name = 3;
+        // True when the parent Namespace is also in this match set.
+        bool parent_also_matched = 4;
+    }
+}
+
+// Journey B13: a read-only translated-mechanics preview of a reusable SLA
+// Policy. What the plain-language intents mean in schedules, copies and capture.
+message SLAPolicyPreviewMechanicsRequest {
+    string org_id = 1;
+    string name = 2;
+    string uid = 3;
+}
+message SLAPolicyPreviewMechanicsResponse {
+    repeated IntentMechanics intents = 1;
+
+    message IntentMechanics {
+        string intent_id = 1;
+        // Rendered for a human, for example "every 15 minutes".
+        string frequency = 2;
+        google.protobuf.Duration recoverability_period = 3;
+        // The derived copy count: ceil(period / longest gap), floored at 1.
+        // A user states a business need and does not do this arithmetic --
+        // 7 days at 15 minutes is 672 copies per resource.
+        int32 derived_retain_count = 4;
+        int64 incremental_count = 5;
+        ProtectionIntent.CaptureMode capture_mode = 6;
+        bool require_snapshot_capture = 7;
+        ProtectionIntent.Classification classification = 8;
+    }
+}
+
+// Journey M2: DR restore when the source cluster is gone.
+//
+// A recovery point is reached through its catalog resource, so a resource whose
+// cluster no longer exists cannot be restored from. This recreates the catalog
+// row from a backup's stored metadata, with no live cluster to discover.
+message ResourceCatalogReconstructRequest {
+    string org_id = 1;
+    // The backup holding the resource's metadata.
+    ObjectRef backup_ref = 2;
+    // Which resource inside it. Its original Kubernetes UID.
+    string resource_uid = 3;
+    // Where the reconstructed row is anchored. May differ from the original.
+    ObjectRef target_cluster_ref = 4;
+}
+message ResourceCatalogReconstructResponse {
+    CatalogResourceObject resource = 1;
+    // Recovery points relinked to the reconstructed row.
+    int32 relinked_recovery_point_count = 2;
 }
