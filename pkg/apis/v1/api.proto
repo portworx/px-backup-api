@@ -1155,6 +1155,11 @@ message BackupInfo {
         // cleanup_details carries per-volume GC state. Absent on volumes that
         // have not yet been picked up by the deletion sweeper.
         CleanupDetails cleanup_details = 18;
+        // Reconcile-observation times, not data-mover timings. Either may be
+        // unset, and finish_time can be set without start_time, so check both
+        // before subtracting and never substitute a zero or epoch value.
+        google.protobuf.Timestamp start_time = 19;
+        google.protobuf.Timestamp finish_time = 20;
 
         message JobSecurityContext {
             int64 runAsUser = 1;
@@ -1449,6 +1454,9 @@ message RestoreInfo {
         repeated string zones = 7;
         map<string, string> options = 8;
         uint64 total_size = 9;
+        // Same semantics and caveats as BackupInfo.Volume.start_time/finish_time.
+        google.protobuf.Timestamp start_time = 10;
+        google.protobuf.Timestamp finish_time = 11;
     }
 
     // Message for maintaining status of the object.
