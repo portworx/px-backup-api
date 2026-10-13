@@ -5223,6 +5223,18 @@ message AutoRuleExclusionInfo {
     // or may not honour it. Without this field neither behaviour can be
     // expressed, because excluded_by is an identity whose tier can change.
     OwnerTier excluded_by_tier = 7;
+
+    // Who the hold is held FOR, when it was set by a delegation handover.
+    //
+    // Without this the hold blocks the very delegate it protects. A handover
+    // sets the hold at the HANDOVER's tier, and excluded_by_tier then outranks
+    // the delegate, so the delegate's own auto Binding Rule is skipped --
+    // journey F5 asks for exactly that rule to work. A rule owned by this
+    // identity is therefore exempt.
+    //
+    // Empty for an ordinary exclusion, which holds every tier at or below the
+    // setter's -- journey X2.
+    string held_for = 8;
 }
 
 // How one volume was actually captured, and why -- FR-098.

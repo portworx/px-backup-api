@@ -9039,6 +9039,10 @@
         "excluded_by_tier": {
           "$ref": "#/definitions/OwnerTier",
           "description": "The setter's tier, captured at the time.\n\nNeeded to decide HOW FAR the exclusion reaches. An App Admin may set one\nwithin their own resource scope, and a rule owned by a stronger tier may\nor may not honour it. Without this field neither behaviour can be\nexpressed, because excluded_by is an identity whose tier can change."
+        },
+        "held_for": {
+          "type": "string",
+          "description": "Who the hold is held FOR, when it was set by a delegation handover.\n\nWithout this the hold blocks the very delegate it protects. A handover\nsets the hold at the HANDOVER's tier, and excluded_by_tier then outranks\nthe delegate, so the delegate's own auto Binding Rule is skipped --\njourney F5 asks for exactly that rule to work. A rule owned by this\nidentity is therefore exempt.\n\nEmpty for an ordinary exclusion, which holds every tier at or below the\nsetter's -- journey X2."
         }
       },
       "description": "Why a resource is held out of auto-rule claiming -- FR-014, FR-016.\nAn exclusion needs a reason, an author and a time; no existing field holds\nany of these."
