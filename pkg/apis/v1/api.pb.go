@@ -33911,7 +33911,14 @@ type RecoveryPointInfo struct {
 	// Drives reference-counted deletion: the shared backup may only be removed
 	// once the last recovery point referencing it is gone.
 	ExpiryTime *types.Timestamp `protobuf:"bytes,9,opt,name=expiry_time,json=expiryTime,proto3" json:"expiry_time,omitempty"`
-	// Populated when the resource did not succeed, for the timeline gap.
+	// NOT a failed execution. A failed or cancelled execution publishes NO
+	// recovery point at all, so no row exists to carry a reason -- journeys E5
+	// and E13 make publication atomic per resource.
+	//
+	// This records a point that SUCCEEDED and later became unreachable: its
+	// backup objects were deleted at the location, or the location went away.
+	// Journey D1 keeps such a point visible while excluding it from SLA
+	// qualification, and this says why it stopped qualifying.
 	FailureReason string `protobuf:"bytes,10,opt,name=failure_reason,json=failureReason,proto3" json:"failure_reason,omitempty"`
 	// OUTPUT_ONLY, computed per caller and never stored. Separates "this point
 	// exists but is not yours" from "this point does not exist" -- FR-105.

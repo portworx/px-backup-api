@@ -6378,7 +6378,14 @@ message RecoveryPointInfo {
     // Drives reference-counted deletion: the shared backup may only be removed
     // once the last recovery point referencing it is gone.
     google.protobuf.Timestamp expiry_time = 9;
-    // Populated when the resource did not succeed, for the timeline gap.
+    // NOT a failed execution. A failed or cancelled execution publishes NO
+    // recovery point at all, so no row exists to carry a reason -- journeys E5
+    // and E13 make publication atomic per resource.
+    //
+    // This records a point that SUCCEEDED and later became unreachable: its
+    // backup objects were deleted at the location, or the location went away.
+    // Journey D1 keeps such a point visible while excluding it from SLA
+    // qualification, and this says why it stopped qualifying.
     string failure_reason = 10;
 
     // OUTPUT_ONLY, computed per caller and never stored. Separates "this point

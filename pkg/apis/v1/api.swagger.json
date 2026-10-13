@@ -16232,7 +16232,7 @@
         },
         "failure_reason": {
           "type": "string",
-          "description": "Populated when the resource did not succeed, for the timeline gap."
+          "description": "NOT a failed execution. A failed or cancelled execution publishes NO\nrecovery point at all, so no row exists to carry a reason -- journeys E5\nand E13 make publication atomic per resource.\n\nThis records a point that SUCCEEDED and later became unreachable: its\nbackup objects were deleted at the location, or the location went away.\nJourney D1 keeps such a point visible while excluding it from SLA\nqualification, and this says why it stopped qualifying."
         },
         "accessible": {
           "type": "boolean",
