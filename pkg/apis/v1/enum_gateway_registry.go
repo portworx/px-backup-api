@@ -80,4 +80,29 @@ func init() {
 	golangproto.RegisterEnum("Ownership_AccessType", Ownership_AccessType_name, Ownership_AccessType_value)
 	golangproto.RegisterEnum("SortOption_SortByType_Type", SortOption_SortByType_Type_name, SortOption_SortByType_Type_value)
 	golangproto.RegisterEnum("SortOption_SortOrderType_Type", SortOption_SortOrderType_Type_name, SortOption_SortOrderType_Type_value)
+
+	// Resource-Centric Backup. ProtectionState, CatalogResourceInfo_Kind,
+	// PlacementRuleInfo_Mode and ProtectionSummaryEnumerateRequest_GroupBy are
+	// decoded from query strings by ResourceCatalog.Enumerate,
+	// BindingRule.Enumerate and ProtectionSummary.Enumerate, so they fail
+	// without this. The rest are mirrored for consistency.
+	golangproto.RegisterEnum("ProtectionState", ProtectionState_name, ProtectionState_value)
+	golangproto.RegisterEnum("OwnerTier", OwnerTier_name, OwnerTier_value)
+	golangproto.RegisterEnum("CatalogResourceInfo_Kind", CatalogResourceInfo_Kind_name, CatalogResourceInfo_Kind_value)
+	golangproto.RegisterEnum("CatalogResourceInfo_Lifecycle", CatalogResourceInfo_Lifecycle_name, CatalogResourceInfo_Lifecycle_value)
+	golangproto.RegisterEnum("CatalogResourceInfo_ContentBadge", CatalogResourceInfo_ContentBadge_name, CatalogResourceInfo_ContentBadge_value)
+	golangproto.RegisterEnum("PlacementRuleInfo_Mode", PlacementRuleInfo_Mode_name, PlacementRuleInfo_Mode_value)
+	golangproto.RegisterEnum("BindingInfo_Governance", BindingInfo_Governance_name, BindingInfo_Governance_value)
+	golangproto.RegisterEnum("ProtectionIntent_CaptureMode", ProtectionIntent_CaptureMode_name, ProtectionIntent_CaptureMode_value)
+	golangproto.RegisterEnum("ProtectionIntent_Classification", ProtectionIntent_Classification_name, ProtectionIntent_Classification_value)
+	golangproto.RegisterEnum("ProtectionIntent_MonthlyPolicy_RelativeMonthlyPolicy_WeeklyIndex", ProtectionIntent_MonthlyPolicy_RelativeMonthlyPolicy_WeeklyIndex_name, ProtectionIntent_MonthlyPolicy_RelativeMonthlyPolicy_WeeklyIndex_value)
+	golangproto.RegisterEnum("RecoveryPointInfo_Status", RecoveryPointInfo_Status_name, RecoveryPointInfo_Status_value)
+	golangproto.RegisterEnum("VolumeCaptureDetail_Method", VolumeCaptureDetail_Method_name, VolumeCaptureDetail_Method_value)
+	golangproto.RegisterEnum("ProtectionSummaryEnumerateRequest_GroupBy", ProtectionSummaryEnumerateRequest_GroupBy_name, ProtectionSummaryEnumerateRequest_GroupBy_value)
+
+	// ClaimOutcome is decoded from a query string by DriftEvent.Enumerate, so it
+	// fails without this. RuleKind and the Phase enum are mirrored for consistency.
+	golangproto.RegisterEnum("ClaimOutcome", ClaimOutcome_name, ClaimOutcome_value)
+	golangproto.RegisterEnum("RuleKind", RuleKind_name, RuleKind_value)
+	golangproto.RegisterEnum("DriftEventInfo_Phase", DriftEventInfo_Phase_name, DriftEventInfo_Phase_value)
 }
