@@ -6413,6 +6413,14 @@ message RecoveryPointInfo {
     // A VM's point refers to its namespace's point from the same run, when one
     // exists. A VM point may publish where the parent point failed.
     ObjectRef parent_recovery_point_ref = 13;
+    // True for a point made by Binding.CreateIndependentCheckpoint. Such a
+    // point has no intent_id, sits outside every intent chain and every SLA
+    // evaluation, and expires at expiry_time -- journey M6, FR-141.
+    bool independent_checkpoint = 14;
+    // The capture contract the run used. Export eligibility reads it, so a
+    // GenericCrossCloud checkpoint can be exported across clouds even though
+    // it has no intent -- journeys M6 and M3, FR-141.
+    ProtectionIntent.CaptureMode capture_mode = 15;
 
     enum Status {
         StatusInvalid = 0;
@@ -6663,11 +6671,26 @@ service Binding {
     }
 
     // TriggerNow runs one intent immediately, against this Binding's own
-    // destination and capture settings -- FR-060.
+    // destination and capture settings. The run joins only that intent's
+    // chain and does not move its next scheduled run. The UI calls this
+    // "Run Policy Now" -- journey M5, FR-137, FR-139, FR-140.
     rpc TriggerNow(BindingTriggerNowRequest)
         returns (BindingTriggerNowResponse) {
         option (google.api.http) = {
             post : "/v1/binding/triggernow/{org_id}/{catalog_resource_uid}"
+            body : "*"
+        };
+    }
+
+    // CreateIndependentCheckpoint makes one full recovery point outside every
+    // intent chain and every SLA evaluation. It uses the Binding's default
+    // placement and encryption, and the Binding-wide hooks current at start.
+    // It expires by itself and changes no scheduled run. Super Admin and
+    // Infra Admin only -- journey M6, FR-141, FR-142.
+    rpc CreateIndependentCheckpoint(BindingCreateIndependentCheckpointRequest)
+        returns (BindingCreateIndependentCheckpointResponse) {
+        option (google.api.http) = {
+            post : "/v1/binding/checkpoint/{org_id}/{catalog_resource_uid}"
             body : "*"
         };
     }
@@ -6728,6 +6751,21 @@ message BindingTriggerNowRequest {
 }
 message BindingTriggerNowResponse {
     // The backup this run produced, once it has been created.
+    ObjectRef backup_ref = 1;
+}
+
+message BindingCreateIndependentCheckpointRequest {
+    string org_id = 1;
+    string catalog_resource_uid = 2;
+    // Required and finite. The point expires this long after it is taken.
+    // There is no intent, so there is no recoverability_period to inherit.
+    google.protobuf.Duration retention_period = 3;
+    // Required. The capture contract for this one run. There is no intent
+    // to inherit it from, so the caller states it -- FR-141.
+    ProtectionIntent.CaptureMode capture_mode = 4;
+}
+message BindingCreateIndependentCheckpointResponse {
+    // The backup this checkpoint produced, once it has been created.
     ObjectRef backup_ref = 1;
 }
 

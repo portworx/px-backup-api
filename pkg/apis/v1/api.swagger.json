@@ -1811,6 +1811,51 @@
         ]
       }
     },
+    "/v1/binding/checkpoint/{org_id}/{catalog_resource_uid}": {
+      "post": {
+        "summary": "CreateIndependentCheckpoint makes one full recovery point outside every\nintent chain and every SLA evaluation. It uses the Binding's default\nplacement and encryption, and the Binding-wide hooks current at start.\nIt expires by itself and changes no scheduled run. Super Admin and\nInfra Admin only -- journey M6, FR-141, FR-142.",
+        "operationId": "Binding_CreateIndependentCheckpoint",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BindingCreateIndependentCheckpointResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "catalog_resource_uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BindingCreateIndependentCheckpointRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Binding"
+        ]
+      }
+    },
     "/v1/binding/previewschedule/{org_id}/{catalog_resource_uid}": {
       "get": {
         "summary": "PreviewSchedule returns the next N run times across every intent --\nFR-061. A recoverability period hides a copy count, and this is how a\nclient shows the real cadence before committing.",
@@ -1947,7 +1992,7 @@
     },
     "/v1/binding/triggernow/{org_id}/{catalog_resource_uid}": {
       "post": {
-        "summary": "TriggerNow runs one intent immediately, against this Binding's own\ndestination and capture settings -- FR-060.",
+        "summary": "TriggerNow runs one intent immediately, against this Binding's own\ndestination and capture settings. The run joins only that intent's\nchain and does not move its next scheduled run. The UI calls this\n\"Run Policy Now\" -- journey M5, FR-137, FR-139, FR-140.",
         "operationId": "Binding_TriggerNow",
         "responses": {
           "200": {
@@ -11536,6 +11581,34 @@
         }
       }
     },
+    "BindingCreateIndependentCheckpointRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "catalog_resource_uid": {
+          "type": "string"
+        },
+        "retention_period": {
+          "type": "string",
+          "description": "Required and finite. The point expires this long after it is taken.\nThere is no intent, so there is no recoverability_period to inherit."
+        },
+        "capture_mode": {
+          "$ref": "#/definitions/ProtectionIntentCaptureMode",
+          "description": "Required. The capture contract for this one run. There is no intent\nto inherit it from, so the caller states it -- FR-141."
+        }
+      }
+    },
+    "BindingCreateIndependentCheckpointResponse": {
+      "type": "object",
+      "properties": {
+        "backup_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "The backup this checkpoint produced, once it has been created."
+        }
+      }
+    },
     "BindingCreateRequest": {
       "type": "object",
       "properties": {
@@ -16236,6 +16309,14 @@
         "parent_recovery_point_ref": {
           "$ref": "#/definitions/ObjectRef",
           "description": "A VM's point refers to its namespace's point from the same run, when one\nexists. A VM point may publish where the parent point failed."
+        },
+        "independent_checkpoint": {
+          "type": "boolean",
+          "description": "True for a point made by Binding.CreateIndependentCheckpoint. Such a\npoint has no intent_id, sits outside every intent chain and every SLA\nevaluation, and expires at expiry_time -- journey M6, FR-141."
+        },
+        "capture_mode": {
+          "$ref": "#/definitions/ProtectionIntentCaptureMode",
+          "description": "The capture contract the run used. Export eligibility reads it, so a\nGenericCrossCloud checkpoint can be exported across clouds even though\nit has no intent -- journeys M6 and M3, FR-141."
         }
       },
       "description": "One resource's entry in one run of a shared backup.\n\nA backup now covers many resources, so the backup alone cannot answer \"what\ncan I restore for this namespace\". This can NOT be derived by querying\nstork's per-namespace array inside the backup document, because that array\nis keyed by namespace NAME while identity here is the Kubernetes UID. A\nnamespace deleted and recreated under the same name is a different resource,\nand a name-keyed lookup would hand it the earlier resource's history.\n\nA recovery point exists only for a resource that actually succeeded. A\nresource that failed inside a partially successful backup gets none, so its\ntimeline shows a gap and the SLA engine reports it out of SLA. That is how\nper-resource failure isolation survives a shared execution."
