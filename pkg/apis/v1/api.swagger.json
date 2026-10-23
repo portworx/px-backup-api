@@ -74,45 +74,6 @@
         ]
       }
     },
-    "/v1/adminscope/preview/{org_id}": {
-      "post": {
-        "summary": "Preview MUST precede Update. The returned token binds the commit to the\nexact set the administrator saw.",
-        "operationId": "AdminScope_Preview",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/AdminScopePreviewResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/AdminScopePreviewRequest"
-            }
-          }
-        ],
-        "tags": [
-          "AdminScope"
-        ]
-      }
-    },
     "/v1/adminscope/{org_id}": {
       "get": {
         "operationId": "AdminScope_Enumerate",
@@ -1856,140 +1817,6 @@
         ]
       }
     },
-    "/v1/binding/previewschedule/{org_id}/{catalog_resource_uid}": {
-      "get": {
-        "summary": "PreviewSchedule returns the next N run times across every intent --\nFR-061. A recoverability period hides a copy count, and this is how a\nclient shows the real cadence before committing.",
-        "operationId": "Binding_PreviewSchedule",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/BindingPreviewScheduleResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "catalog_resource_uid",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "count",
-            "description": "How many future run times to return per intent. Default 10.",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "Binding"
-        ]
-      }
-    },
-    "/v1/binding/supplementalintent/{org_id}/{catalog_resource_uid}": {
-      "put": {
-        "summary": "AddSupplementalIntent extends ONE Binding without touching the SLA\nPolicy that governs it.",
-        "operationId": "Binding_AddSupplementalIntent",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/BindingAddSupplementalIntentResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "catalog_resource_uid",
-            "description": "The resource whose Binding gains the intent.",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/BindingAddSupplementalIntentRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Binding"
-        ]
-      }
-    },
-    "/v1/binding/supplementalintent/{org_id}/{catalog_resource_uid}/{intent_id}": {
-      "delete": {
-        "summary": "RemoveSupplementalIntent is the pair of AddSupplementalIntent.",
-        "operationId": "Binding_RemoveSupplementalIntent",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/BindingRemoveSupplementalIntentResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "catalog_resource_uid",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "intent_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Binding"
-        ]
-      }
-    },
     "/v1/binding/triggernow/{org_id}": {
       "post": {
         "summary": "TriggerNow runs one intent immediately, against this Binding's own\ndestination and capture settings. The run joins only that intent's\nchain and does not move its next scheduled run. The UI calls this\n\"Run Policy Now\" -- journey M5, FR-137, FR-139, FR-140.",
@@ -2341,45 +2168,6 @@
         ]
       }
     },
-    "/v1/bindingrule/preview/{org_id}": {
-      "post": {
-        "summary": "Journey C4. A read, not an Apply with a flag: Apply answers \"what would\nhappen if I ran this\", Preview answers \"what does this select\".",
-        "operationId": "BindingRule_Preview",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/BindingRulePreviewResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/BindingRulePreviewRequest"
-            }
-          }
-        ],
-        "tags": [
-          "BindingRule"
-        ]
-      }
-    },
     "/v1/bindingrule/updateownership/{org_id}/{name}/{uid}": {
       "put": {
         "operationId": "BindingRule_UpdateOwnership",
@@ -2559,45 +2347,6 @@
         ]
       }
     },
-    "/v1/catalogresource/preview/{org_id}": {
-      "post": {
-        "summary": "Preview resolves a ResourceFilter and returns what it WOULD select,\nwithout writing anything -- FR-011. Required before a rule is created,\nbecause scope is applied by intersection and two callers writing the\nsame filter legitimately see different sets -- FR-074a.",
-        "operationId": "ResourceCatalog_Preview",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/ResourceCatalogPreviewResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ResourceCatalogPreviewRequest"
-            }
-          }
-        ],
-        "tags": [
-          "ResourceCatalog"
-        ]
-      }
-    },
     "/v1/catalogresource/reconstruct/{org_id}": {
       "post": {
         "summary": "Journey M2. The ONE case where a client creates a catalog row: the\nsource cluster is gone, so discovery can never produce it, and without\na row its recovery points cannot be reached.",
@@ -2762,6 +2511,44 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "filter.target_kinds",
+            "description": "Must be stated explicitly; there is no implicit \"everything\".",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "KindInvalid",
+                "AppNamespace",
+                "VirtualMachine"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "filter.resource_uids",
+            "description": "A hand-picked set of catalog resource UIDs.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "filter.namespaces",
+            "description": "Explicit namespace names, scoped by cluster_refs.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
           }
         ],
         "tags": [
@@ -2806,8 +2593,51 @@
           "ResourceCatalog"
         ]
       },
+      "delete": {
+        "summary": "Journey H2a. Permanently removes a TOMBSTONED row and everything that\nhangs off it. Super Admin only. Discovery never writes this row again,\nbecause the source namespace or VM is gone. Named Delete rather than\nCleanupTombstone to match every other service in this API.",
+        "operationId": "ResourceCatalog_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ResourceCatalogDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "description": "The catalog resource's Kubernetes UID.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "delete_recovery_points",
+            "description": "Remove the recovery points too. Without it the call is refused while any\nrecovery point still points at the row, so an operator cannot destroy\nrestorable data by accident -- journey H2a.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "ResourceCatalog"
+        ]
+      },
       "put": {
-        "summary": "Update is the ONLY mutable part of a catalog row. Everything else is\nwritten by discovery, so there is no Create and no Delete here: a client\ncannot invent a namespace.",
+        "summary": "Update is the ONLY mutable part of a catalog row. Everything else is\nwritten by discovery, so a client cannot invent a namespace.",
         "operationId": "ResourceCatalog_Update",
         "responses": {
           "200": {
@@ -4163,45 +3993,6 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/DelegationRuleApplyRequest"
-            }
-          }
-        ],
-        "tags": [
-          "DelegationRule"
-        ]
-      }
-    },
-    "/v1/delegationrule/preview/{org_id}": {
-      "post": {
-        "summary": "Journey F11: shows Would delegate, Already delegated, Excluded, and for\nauto mode Claimed by a higher or older rule.",
-        "operationId": "DelegationRule_Preview",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/DelegationRulePreviewResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/DelegationRulePreviewRequest"
             }
           }
         ],
@@ -5789,6 +5580,7 @@
           },
           {
             "name": "group_by",
+            "description": "How to group the counts. GroupByInvalid returns a single group whose key\nis empty, which is the whole-scope total the separate Get call used to\nreturn -- journeys A9, H1.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -5798,40 +5590,10 @@
               "Owner"
             ],
             "default": "GroupByInvalid"
-          }
-        ],
-        "tags": [
-          "ProtectionSummary"
-        ]
-      }
-    },
-    "/v1/protectionsummary/{org_id}": {
-      "get": {
-        "operationId": "ProtectionSummary_Get",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/ProtectionSummaryGetResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
           },
           {
             "name": "cluster_name",
-            "description": "Empty means every cluster in the caller's boundary.",
+            "description": "Restrict the counts to one cluster. Empty means every cluster in the\ncaller's boundary.",
             "in": "query",
             "required": false,
             "type": "string"
@@ -6270,113 +6032,6 @@
         ]
       }
     },
-    "/v1/recoverypoint/forrestore/{org_id}/{catalog_resource_uid}": {
-      "get": {
-        "summary": "EnumerateForRestore returns only the points that are both restorable and\naccessible to the caller, for one resource at one target time.",
-        "operationId": "RecoveryPoint_EnumerateForRestore",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/RecoveryPointEnumerateForRestoreResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "catalog_resource_uid",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "target_time",
-            "description": "The newest point at or before this time. Unset means the newest point.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "date-time"
-          }
-        ],
-        "tags": [
-          "RecoveryPoint"
-        ]
-      }
-    },
-    "/v1/recoverypoint/timeline/{org_id}/{catalog_resource_uid}": {
-      "get": {
-        "summary": "Timeline returns the points for one resource in time order WITH THE GAPS\nNAMED -- FR-108. A timeline that shows only successes is misleading: a\nmissing run is what puts a resource out of SLA.",
-        "operationId": "RecoveryPoint_Timeline",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/RecoveryPointTimelineResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "catalog_resource_uid",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "from_time",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "date-time"
-          },
-          {
-            "name": "to_time",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "date-time"
-          },
-          {
-            "name": "intent_ids",
-            "description": "Empty means every intent.",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
-          }
-        ],
-        "tags": [
-          "RecoveryPoint"
-        ]
-      }
-    },
     "/v1/recoverypoint/{org_id}": {
       "get": {
         "summary": "Enumerate returns one resource's timeline, newest first.",
@@ -6411,9 +6066,20 @@
           },
           {
             "name": "intent_id",
+            "description": "One intent, or several. intent_ids wins when both are set.",
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "intent_ids",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
           },
           {
             "name": "restorable_only",
@@ -6421,6 +6087,36 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "from_time",
+            "description": "Timeline shaping. Absent means every point.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "to_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "include_gaps",
+            "description": "Return the gaps as well as the points. A gap is a run that published\nnothing, and journey E12 requires it to be visible. Its reason is read\nfrom the backup object's status, never from a recovery point.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "target_time",
+            "description": "Restore shaping. Returns the points that recover the resource as it stood\nat this time, which is what a target-time restore needs.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
           }
         ],
         "tags": [
@@ -8139,105 +7835,7 @@
         ]
       }
     },
-    "/v1/slapolicy/{org_id}/{name}/{uid}/intent": {
-      "post": {
-        "summary": "AddIntent adds one baseline intent and reports what it reaches.",
-        "operationId": "SLAPolicy_AddIntent",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/SLAPolicyAddIntentResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "uid",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/SLAPolicyAddIntentRequest"
-            }
-          }
-        ],
-        "tags": [
-          "SLAPolicy"
-        ]
-      }
-    },
     "/v1/slapolicy/{org_id}/{name}/{uid}/intent/{intent_id}": {
-      "delete": {
-        "summary": "RemoveIntent is the pair of AddIntent. Without it an intent can only be\nremoved by a whole-list Update.",
-        "operationId": "SLAPolicy_RemoveIntent",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/SLAPolicyRemoveIntentResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "uid",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "intent_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "SLAPolicy"
-        ]
-      },
       "put": {
         "summary": "UpdateIntent edits ONE intent in place, so a client does not have to\nsend the whole list and risk dropping a concurrent editor's change.",
         "operationId": "SLAPolicy_UpdateIntent",
@@ -8286,152 +7884,6 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/SLAPolicyUpdateIntentRequest"
-            }
-          }
-        ],
-        "tags": [
-          "SLAPolicy"
-        ]
-      }
-    },
-    "/v1/slapolicy/{org_id}/{name}/{uid}/mechanics": {
-      "get": {
-        "summary": "Journey B13. Read-only translated mechanics for a reusable SLA Policy:\nwhat the plain-language intents mean as schedules, copies and capture.",
-        "operationId": "SLAPolicy_PreviewMechanics",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/SLAPolicyPreviewMechanicsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "uid",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "SLAPolicy"
-        ]
-      }
-    },
-    "/v1/slapolicy/{org_id}/{name}/{uid}/resume": {
-      "post": {
-        "summary": "Resume lets the scheduled runs start again.",
-        "description": "Suspend and Resume MUST walk every derived schedule, baseline and\nsupplemental -- FR-047. Addressing the baseline key alone leaves a\nsupplemental schedule running through a suspend, and reports success.",
-        "operationId": "SLAPolicy_Resume",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/SLAPolicyResumeResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "uid",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/SLAPolicyResumeRequest"
-            }
-          }
-        ],
-        "tags": [
-          "SLAPolicy"
-        ]
-      }
-    },
-    "/v1/slapolicy/{org_id}/{name}/{uid}/suspend": {
-      "post": {
-        "summary": "Suspend stops new scheduled runs across every Binding on this SLA policy.",
-        "operationId": "SLAPolicy_Suspend",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/SLAPolicySuspendResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "uid",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/SLAPolicySuspendRequest"
             }
           }
         ],
@@ -8905,6 +8357,10 @@
         },
         "admin_scope": {
           "$ref": "#/definitions/AdminScopeInfo"
+        },
+        "dry_run": {
+          "type": "boolean",
+          "description": "Validate and report what WOULD happen, writing nothing. This replaces the\nseparate Preview call: a preview is this call with no writes."
         }
       }
     },
@@ -8983,50 +8439,6 @@
         }
       }
     },
-    "AdminScopePreviewRequest": {
-      "type": "object",
-      "properties": {
-        "org_id": {
-          "type": "string"
-        },
-        "identity_id": {
-          "type": "string"
-        },
-        "whole_clusters": {
-          "$ref": "#/definitions/ObjectRefList",
-          "description": "The form being proposed. Exactly one, as on AdminScopeInfo."
-        },
-        "filter": {
-          "$ref": "#/definitions/ResourceFilter"
-        }
-      }
-    },
-    "AdminScopePreviewResponse": {
-      "type": "object",
-      "properties": {
-        "matched": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/CatalogResourceObject"
-          },
-          "description": "The exact UIDs that would be materialized. Journey O2a requires the\nadministrator to see them before committing."
-        },
-        "matched_count": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "overlapping_identities": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "preview_token": {
-          "type": "string",
-          "description": "Pass to AdminScope.Update to commit this exact set."
-        }
-      }
-    },
     "AdminScopeUpdateRequest": {
       "type": "object",
       "properties": {
@@ -9039,6 +8451,10 @@
         "preview_token": {
           "type": "string",
           "description": "Must carry the token from a preceding Preview. FR-123 requires a fresh\nSuper-Admin-initiated preview and an explicit commit for every change."
+        },
+        "dry_run": {
+          "type": "boolean",
+          "description": "Validate and report what WOULD happen, writing nothing. This replaces the\nseparate Preview call: a preview is this call with no writes."
         }
       }
     },
@@ -11544,37 +10960,6 @@
       "type": "object",
       "title": "Define BackupUpdateResponse struct"
     },
-    "BindingAddSupplementalIntentRequest": {
-      "type": "object",
-      "properties": {
-        "org_id": {
-          "type": "string"
-        },
-        "catalog_resource_uid": {
-          "type": "string",
-          "description": "The resource whose Binding gains the intent."
-        },
-        "intent": {
-          "$ref": "#/definitions/ProtectionIntent",
-          "description": "The intent to add. Its owner, tier and classification are stamped by the\nserver from the caller's token and cannot be set by the request."
-        }
-      },
-      "description": "A supplemental intent is Binding-local (FR-063). It extends the one Binding\nit is added to, and creates no second SLA Policy and no second Binding.\n\nThis is why it cannot go on the SLA Policy instead: a policy is shared, so an\nintent placed there fans out to every resource bound to it. An App Admin\ngiven one namespace would then impose their chosen cadence, and its cost, on\nresources they were never given."
-    },
-    "BindingAddSupplementalIntentResponse": {
-      "type": "object",
-      "properties": {
-        "backup_schedule_cr_name": {
-          "type": "string",
-          "description": "The schedule this intent will execute on. It is a new shared schedule\nwhenever no existing one carries the same schedule key."
-        },
-        "intent_count": {
-          "type": "string",
-          "format": "int64",
-          "description": "How many intents the Binding now carries, baseline included."
-        }
-      }
-    },
     "BindingCreateIndependentCheckpointRequest": {
       "type": "object",
       "properties": {
@@ -11630,6 +11015,14 @@
         },
         "backup_object_type": {
           "$ref": "#/definitions/BackupScheduleInfoBackupObjectType"
+        },
+        "dry_run": {
+          "type": "boolean",
+          "description": "Validate and report what WOULD happen, writing nothing. This replaces the\nseparate Preview call: a preview is this call with no writes."
+        },
+        "skip_already_bound": {
+          "type": "boolean",
+          "description": "Bulk bind -- journey C6. Skip every listed resource that already holds a\nBinding instead of failing the whole call. This replaces the separate\nBulkCreate call, because the list is already repeated."
         }
       },
       "description": "Create is create-if-absent. It fails when the resource has no placement,\nbecause then there is nowhere to send the backups, and there is no override\nfor any tier."
@@ -11827,48 +11220,6 @@
         }
       }
     },
-    "BindingPreviewScheduleResponse": {
-      "type": "object",
-      "properties": {
-        "schedules": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/BindingPreviewScheduleResponseIntentSchedule"
-          }
-        }
-      }
-    },
-    "BindingPreviewScheduleResponseIntentSchedule": {
-      "type": "object",
-      "properties": {
-        "intent_id": {
-          "type": "string"
-        },
-        "schedule_key": {
-          "type": "string"
-        },
-        "next_run_times": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "format": "date-time"
-          }
-        },
-        "derived_retain_count": {
-          "type": "integer",
-          "format": "int32",
-          "description": "The count derived from the recoverability period:\nceil(period / longest gap), floored at 1. Shown because a user\nstates a business need and does not do this arithmetic."
-        }
-      }
-    },
-    "BindingRemoveSupplementalIntentResponse": {
-      "type": "object",
-      "properties": {
-        "binding": {
-          "$ref": "#/definitions/BindingObject"
-        }
-      }
-    },
     "BindingRuleApplyRequest": {
       "type": "object",
       "properties": {
@@ -11896,7 +11247,7 @@
         "skipped": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ResourceCatalogPreviewResponseSkippedResource"
+            "$ref": "#/definitions/SkippedResource"
           }
         }
       }
@@ -12034,79 +11385,6 @@
         },
         "binding_rule_info": {
           "$ref": "#/definitions/BindingRuleInfo"
-        }
-      }
-    },
-    "BindingRulePreviewRequest": {
-      "type": "object",
-      "properties": {
-        "org_id": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "uid": {
-          "type": "string"
-        },
-        "candidate": {
-          "$ref": "#/definitions/BindingRuleInfo",
-          "description": "Preview a definition that has not been created yet."
-        }
-      },
-      "description": "Journey C4: preview and review a Binding Rule's target set."
-    },
-    "BindingRulePreviewResponse": {
-      "type": "object",
-      "properties": {
-        "matched_namespaces": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/CatalogResourceObject"
-          },
-          "description": "C4 requires Namespace and VM matches to be shown apart -- FR-093."
-        },
-        "matched_virtual_machines": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/CatalogResourceObject"
-          }
-        },
-        "matched_count": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "skipped": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ResourceCatalogPreviewResponseSkippedResource"
-          },
-          "description": "Classified, not free text. Already bound always means skip."
-        },
-        "vm_parents": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/BindingRulePreviewResponseVirtualMachineParent"
-          },
-          "description": "C4: show every VM's parent Namespace, and identify graph ownership,\nso an operator can see what a VM match really covers."
-        }
-      }
-    },
-    "BindingRulePreviewResponseVirtualMachineParent": {
-      "type": "object",
-      "properties": {
-        "vm_resource_uid": {
-          "type": "string"
-        },
-        "parent_namespace_uid": {
-          "type": "string"
-        },
-        "parent_namespace_name": {
-          "type": "string"
-        },
-        "parent_also_matched": {
-          "type": "boolean",
-          "description": "True when the parent Namespace is also in this match set."
         }
       }
     },
@@ -12298,9 +11576,38 @@
           "items": {
             "$ref": "#/definitions/IntentDestination"
           },
-          "description": "Super and Infra only. Never accepted from an App Admin -- FR-028."
+          "description": "Super and Infra only. Never accepted from an App Admin -- FR-028. This\nreplaces the separate UpdateIntentDestination call."
+        },
+        "dry_run": {
+          "type": "boolean",
+          "description": "Validate and report what WOULD happen, writing nothing. This replaces the\nseparate Preview call: a preview is this call with no writes."
+        },
+        "action": {
+          "$ref": "#/definitions/BindingUpdateRequestAction",
+          "description": "Which part of the Binding to change. The server applies only the fields\nthat belong to the chosen action, and refuses the request when another\nfield is set. ActionUpdateSettings is the zero value, so a caller that\nchanges hooks or capture settings sends no action at all."
+        },
+        "supplemental_intent_id": {
+          "type": "string",
+          "description": "Which supplemental intent to replace. Read only under\nActionUpdateSupplementalIntent."
+        },
+        "sla_policy_name": {
+          "type": "string",
+          "description": "The replacement baseline. Read only under ActionRebindBaseline."
+        },
+        "sla_policy_uid": {
+          "type": "string"
         }
       }
+    },
+    "BindingUpdateRequestAction": {
+      "type": "string",
+      "enum": [
+        "ActionUpdateSettings",
+        "ActionUpdateSupplementalIntent",
+        "ActionRebindBaseline"
+      ],
+      "default": "ActionUpdateSettings",
+      "description": " - ActionUpdateSettings: Hooks, capture settings and intent destinations. A Scoped App Admin\nmay call this with only pre_exec_rule_ref and post_exec_rule_ref set,\neven under an enforced baseline -- journeys K1 and F5. This replaces\nthe separate UpdateHooks call.\n - ActionUpdateSupplementalIntent: Replace one supplemental intent, or the whole list when\nsupplemental_intent_id is empty -- journey C15. This replaces the\nseparate AddSupplementalIntent, RemoveSupplementalIntent and\nEditSupplementalIntent calls: an empty intent removes it.\n - ActionRebindBaseline: Replace the enforced baseline Policy/SLA -- journey C7. This is the\nONLY path that changes a baseline, and it replaces the separate\nRebindBaseline call. Owner only."
     },
     "BindingUpdateResponse": {
       "type": "object",
@@ -13568,7 +12875,7 @@
         "skipped": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ResourceCatalogPreviewResponseSkippedResource"
+            "$ref": "#/definitions/SkippedResource"
           }
         }
       }
@@ -13683,52 +12990,6 @@
         },
         "delegation_rule_info": {
           "$ref": "#/definitions/DelegationRuleInfo"
-        }
-      }
-    },
-    "DelegationRulePreviewRequest": {
-      "type": "object",
-      "properties": {
-        "org_id": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "uid": {
-          "type": "string"
-        },
-        "candidate": {
-          "$ref": "#/definitions/DelegationRuleInfo",
-          "description": "Preview a definition that has not been created yet."
-        }
-      }
-    },
-    "DelegationRulePreviewResponse": {
-      "type": "object",
-      "properties": {
-        "matched_namespaces": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/CatalogResourceObject"
-          },
-          "description": "Journey F11 requires Namespace and VM matches to be separable."
-        },
-        "matched_virtual_machines": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/CatalogResourceObject"
-          }
-        },
-        "matched_count": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "skipped": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ResourceCatalogPreviewResponseSkippedResource"
-          }
         }
       }
     },
@@ -15510,7 +14771,7 @@
         "skipped": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ResourceCatalogPreviewResponseSkippedResource"
+            "$ref": "#/definitions/SkippedResource"
           }
         }
       }
@@ -15911,6 +15172,11 @@
           "items": {
             "$ref": "#/definitions/ProtectionSummaryEnumerateResponseGroup"
           }
+        },
+        "namespaces_with_virtual_machines": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Namespaces that hold at least one VM, so a caller can tell a mixed\nfleet from a conventional one. Counted over the whole requested scope,\nnot per group."
         }
       }
     },
@@ -15929,22 +15195,6 @@
           "items": {
             "$ref": "#/definitions/ProtectionStateCount"
           }
-        }
-      }
-    },
-    "ProtectionSummaryGetResponse": {
-      "type": "object",
-      "properties": {
-        "counts": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ProtectionStateCount"
-          }
-        },
-        "namespaces_with_virtual_machines": {
-          "type": "integer",
-          "format": "int32",
-          "description": "Namespaces that hold at least one VM, so a caller can tell a mixed\nfleet from a conventional one."
         }
       }
     },
@@ -16224,24 +15474,6 @@
         }
       }
     },
-    "RecoveryPointEnumerateForRestoreResponse": {
-      "type": "object",
-      "properties": {
-        "recovery_points": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/RecoveryPointObject"
-          }
-        },
-        "member_resource_uids_at_target_time": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "VMs that belonged to this namespace AT target_time -- FR-008, FR-110.\nPresent membership is the wrong answer for a past restore."
-        }
-      }
-    },
     "RecoveryPointEnumerateResponse": {
       "type": "object",
       "properties": {
@@ -16347,39 +15579,6 @@
         }
       }
     },
-    "RecoveryPointTimelineResponse": {
-      "type": "object",
-      "properties": {
-        "recovery_points": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/RecoveryPointObject"
-          }
-        },
-        "gaps": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/RecoveryPointTimelineResponseGap"
-          },
-          "description": "A run that was expected and did not produce a point. As important as a\npoint, and the reason a resource falls out of SLA."
-        }
-      }
-    },
-    "RecoveryPointTimelineResponseGap": {
-      "type": "object",
-      "properties": {
-        "intent_id": {
-          "type": "string"
-        },
-        "expected_time": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "reason": {
-          "type": "string"
-        }
-      }
-    },
     "RefreshStatusInfoRefreshStatus": {
       "type": "string",
       "enum": [
@@ -16443,6 +15642,9 @@
       ],
       "default": "Invalid"
     },
+    "ResourceCatalogDeleteResponse": {
+      "type": "object"
+    },
     "ResourceCatalogEnumerateResponse": {
       "type": "object",
       "properties": {
@@ -16467,62 +15669,6 @@
       "properties": {
         "resource": {
           "$ref": "#/definitions/CatalogResourceObject"
-        }
-      }
-    },
-    "ResourceCatalogPreviewRequest": {
-      "type": "object",
-      "properties": {
-        "org_id": {
-          "type": "string"
-        },
-        "filter": {
-          "$ref": "#/definitions/ResourceFilter"
-        }
-      }
-    },
-    "ResourceCatalogPreviewResponse": {
-      "type": "object",
-      "properties": {
-        "matched": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/CatalogResourceObject"
-          },
-          "description": "What the filter selects for THIS caller, after their scope is applied."
-        },
-        "matched_count": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "skipped": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ResourceCatalogPreviewResponseSkippedResource"
-          },
-          "description": "Resources the filter matched but that cannot be claimed, with a reason\nsuch as \"Claimed by \u003crule\u003e\" or \"Excluded\"."
-        }
-      }
-    },
-    "ResourceCatalogPreviewResponseSkippedResource": {
-      "type": "object",
-      "properties": {
-        "resource_uid": {
-          "type": "string"
-        },
-        "resource_name": {
-          "type": "string"
-        },
-        "reason": {
-          "type": "string",
-          "description": "Free text for a human. Prefer `outcome` for any decision."
-        },
-        "outcome": {
-          "$ref": "#/definitions/ClaimOutcome"
-        },
-        "winning_rule_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "description": "The rule that won, when outcome is SkippedClaimedByOtherRule.\n\nREDACTED for a caller whose tier is below the winning rule's owner:\nnaming it would reveal a stronger tier's rule to someone who may not\nsee it. The outcome still says the resource was claimed."
         }
       }
     },
@@ -18043,40 +17189,6 @@
       "default": "Invalid",
       "title": "- SSE_S3: Server-side encryption with AWS S3 managed keys\n - SSE_KMS: Server-side encryption with AWS Key Management Service"
     },
-    "SLAPolicyAddIntentRequest": {
-      "type": "object",
-      "properties": {
-        "org_id": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "uid": {
-          "type": "string"
-        },
-        "intent": {
-          "$ref": "#/definitions/ProtectionIntent"
-        }
-      },
-      "description": "One intent at a time, deliberately. A whole-object update could not tell\n\"one intent added\" from \"three rewritten\", and the impact review needs the\nexact change before it touches every Binding on this SLA Policy."
-    },
-    "SLAPolicyAddIntentResponse": {
-      "type": "object",
-      "properties": {
-        "revision": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "affected_bindings": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ObjectRef"
-          },
-          "description": "Every Binding this addition reaches."
-        }
-      }
-    },
     "SLAPolicyCreateRequest": {
       "type": "object",
       "properties": {
@@ -18085,6 +17197,10 @@
         },
         "sla_policy": {
           "$ref": "#/definitions/SLAPolicyInfo"
+        },
+        "dry_run": {
+          "type": "boolean",
+          "description": "Validate and report what WOULD happen, writing nothing. This replaces the\nseparate Preview call: a preview is this call with no writes."
         }
       }
     },
@@ -18155,117 +17271,6 @@
         },
         "sla_policy_info": {
           "$ref": "#/definitions/SLAPolicyInfo"
-        }
-      }
-    },
-    "SLAPolicyPreviewMechanicsResponse": {
-      "type": "object",
-      "properties": {
-        "intents": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/SLAPolicyPreviewMechanicsResponseIntentMechanics"
-          }
-        }
-      }
-    },
-    "SLAPolicyPreviewMechanicsResponseIntentMechanics": {
-      "type": "object",
-      "properties": {
-        "intent_id": {
-          "type": "string"
-        },
-        "frequency": {
-          "type": "string",
-          "description": "Rendered for a human, for example \"every 15 minutes\"."
-        },
-        "recoverability_period": {
-          "type": "string"
-        },
-        "derived_retain_count": {
-          "type": "integer",
-          "format": "int32",
-          "description": "The derived copy count: ceil(period / longest gap), floored at 1.\nA user states a business need and does not do this arithmetic --\n7 days at 15 minutes is 672 copies per resource."
-        },
-        "incremental_count": {
-          "type": "string",
-          "format": "int64"
-        },
-        "capture_mode": {
-          "$ref": "#/definitions/ProtectionIntentCaptureMode"
-        },
-        "require_snapshot_capture": {
-          "type": "boolean"
-        },
-        "classification": {
-          "$ref": "#/definitions/ProtectionIntentClassification"
-        }
-      }
-    },
-    "SLAPolicyRemoveIntentResponse": {
-      "type": "object",
-      "properties": {
-        "sla_policy": {
-          "$ref": "#/definitions/SLAPolicyObject"
-        },
-        "affected_resources": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ObjectRef"
-          },
-          "description": "Resources that lose coverage when this intent goes. Returned so the\ncaller can review the blast radius."
-        }
-      }
-    },
-    "SLAPolicyResumeRequest": {
-      "type": "object",
-      "properties": {
-        "org_id": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "uid": {
-          "type": "string"
-        }
-      }
-    },
-    "SLAPolicyResumeResponse": {
-      "type": "object",
-      "properties": {
-        "resumed_bindings": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ObjectRef"
-          }
-        }
-      }
-    },
-    "SLAPolicySuspendRequest": {
-      "type": "object",
-      "properties": {
-        "org_id": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "uid": {
-          "type": "string"
-        }
-      },
-      "description": "Suspend stops new scheduled runs for every Binding on this SLA policy. It\nremoves nothing: the Bindings, the placements and every recovery point stay."
-    },
-    "SLAPolicySuspendResponse": {
-      "type": "object",
-      "properties": {
-        "suspended_bindings": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ObjectRef"
-          },
-          "description": "The Bindings whose schedules were suspended."
         }
       }
     },
@@ -18355,6 +17360,17 @@
         },
         "sla_policy": {
           "$ref": "#/definitions/SLAPolicyInfo"
+        },
+        "dry_run": {
+          "type": "boolean",
+          "description": "Validate and report what WOULD happen, writing nothing. This replaces the\nseparate Preview call: a preview is this call with no writes."
+        },
+        "paused": {
+          "type": "boolean",
+          "description": "Pause or resume the policy. Pause suppresses new SCHEDULED executions and\nleaves expiry and SLA evaluation running -- journey B15. It replaces the\nseparate Suspend and Resume calls, which were two RPCs for one boolean."
+        },
+        "paused_set": {
+          "type": "boolean"
         }
       }
     },
@@ -18740,6 +17756,29 @@
         }
       },
       "description": "Signed URL access details returned for S3 / Azure / Google -backed\nBackupLocations. Client fetches bytes directly from the storage\nbackend via HTTP GET on the URL."
+    },
+    "SkippedResource": {
+      "type": "object",
+      "properties": {
+        "resource_uid": {
+          "type": "string"
+        },
+        "resource_name": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Free text for a human. Prefer `outcome` for any decision."
+        },
+        "outcome": {
+          "$ref": "#/definitions/ClaimOutcome"
+        },
+        "winning_rule_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "The rule that won, when outcome is SkippedClaimedByOtherRule.\n\nREDACTED for a caller whose tier is below the winning rule's owner:\nnaming it would reveal a stronger tier's rule to someone who may not\nsee it. The outcome still says the resource was claimed."
+        }
+      },
+      "description": "One resource an Apply or a dry run did not claim, with the reason. Shared by\nevery rule type's Apply response."
     },
     "SortOption": {
       "type": "object",

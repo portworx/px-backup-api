@@ -5741,6 +5741,10 @@ message BindingObject {
 message SLAPolicyCreateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
     SLAPolicyInfo sla_policy = 2;
+
+    // Validate and report what WOULD happen, writing nothing. This replaces the
+    // separate Preview call: a preview is this call with no writes.
+    bool dry_run = 3;
 }
 message SLAPolicyCreateResponse {}
 
@@ -5763,42 +5767,6 @@ message SLAPolicyDeleteRequest {
     string uid = 3;
 }
 message SLAPolicyDeleteResponse {}
-
-// One intent at a time, deliberately. A whole-object update could not tell
-// "one intent added" from "three rewritten", and the impact review needs the
-// exact change before it touches every Binding on this SLA Policy.
-message SLAPolicyAddIntentRequest {
-    string org_id = 1;
-    string name = 2;
-    string uid = 3;
-    ProtectionIntent intent = 4;
-}
-message SLAPolicyAddIntentResponse {
-    uint64 revision = 1;
-    // Every Binding this addition reaches.
-    repeated ObjectRef affected_bindings = 2;
-}
-
-// Suspend stops new scheduled runs for every Binding on this SLA policy. It
-// removes nothing: the Bindings, the placements and every recovery point stay.
-message SLAPolicySuspendRequest {
-    string org_id = 1;
-    string name = 2;
-    string uid = 3;
-}
-message SLAPolicySuspendResponse {
-    // The Bindings whose schedules were suspended.
-    repeated ObjectRef suspended_bindings = 1;
-}
-
-message SLAPolicyResumeRequest {
-    string org_id = 1;
-    string name = 2;
-    string uid = 3;
-}
-message SLAPolicyResumeResponse {
-    repeated ObjectRef resumed_bindings = 1;
-}
 
 service SLAPolicy {
     // Create an SLA Policy with zero or more baseline intents.
@@ -5831,34 +5799,8 @@ service SLAPolicy {
         };
     }
 
-    // AddIntent adds one baseline intent and reports what it reaches.
-    rpc AddIntent(SLAPolicyAddIntentRequest)
-        returns (SLAPolicyAddIntentResponse) {
-        option (google.api.http) = {
-            post : "/v1/slapolicy/{org_id}/{name}/{uid}/intent"
-            body : "*"
-        };
-    }
 
-    // Suspend stops new scheduled runs across every Binding on this SLA policy.
-    rpc Suspend(SLAPolicySuspendRequest) returns (SLAPolicySuspendResponse) {
-        option (google.api.http) = {
-            post : "/v1/slapolicy/{org_id}/{name}/{uid}/suspend"
-            body : "*"
-        };
-    }
 
-    // Resume lets the scheduled runs start again.
-    //
-    // Suspend and Resume MUST walk every derived schedule, baseline and
-    // supplemental -- FR-047. Addressing the baseline key alone leaves a
-    // supplemental schedule running through a suspend, and reports success.
-    rpc Resume(SLAPolicyResumeRequest) returns (SLAPolicyResumeResponse) {
-        option (google.api.http) = {
-            post : "/v1/slapolicy/{org_id}/{name}/{uid}/resume"
-            body : "*"
-        };
-    }
 
     // Update replaces the intent list wholesale. It refuses to touch an intent
     // whose classification is Supplemental, because those live on a Binding.
@@ -5881,23 +5823,7 @@ service SLAPolicy {
         };
     }
 
-    // RemoveIntent is the pair of AddIntent. Without it an intent can only be
-    // removed by a whole-list Update.
-    rpc RemoveIntent(SLAPolicyRemoveIntentRequest)
-        returns (SLAPolicyRemoveIntentResponse) {
-        option (google.api.http) = {
-            delete : "/v1/slapolicy/{org_id}/{name}/{uid}/intent/{intent_id}"
-        };
-    }
 
-    // Journey B13. Read-only translated mechanics for a reusable SLA Policy:
-    // what the plain-language intents mean as schedules, copies and capture.
-    rpc PreviewMechanics(SLAPolicyPreviewMechanicsRequest)
-        returns (SLAPolicyPreviewMechanicsResponse) {
-        option (google.api.http) = {
-            get : "/v1/slapolicy/{org_id}/{name}/{uid}/mechanics"
-        };
-    }
 
     rpc UpdateOwnership(SLAPolicyUpdateOwnershipRequest)
         returns (SLAPolicyUpdateOwnershipResponse) {
@@ -5911,6 +5837,16 @@ service SLAPolicy {
 message SLAPolicyUpdateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
     SLAPolicyInfo sla_policy = 2;
+
+    // Validate and report what WOULD happen, writing nothing. This replaces the
+    // separate Preview call: a preview is this call with no writes.
+    bool dry_run = 3;
+
+    // Pause or resume the policy. Pause suppresses new SCHEDULED executions and
+    // leaves expiry and SLA evaluation running -- journey B15. It replaces the
+    // separate Suspend and Resume calls, which were two RPCs for one boolean.
+    bool paused = 4;
+    bool paused_set = 5;
 }
 message SLAPolicyUpdateResponse {
     SLAPolicyObject sla_policy = 1;
@@ -5928,19 +5864,6 @@ message SLAPolicyUpdateIntentRequest {
 message SLAPolicyUpdateIntentResponse {
     SLAPolicyObject sla_policy = 1;
     int32 regrouped_binding_count = 2;
-}
-
-message SLAPolicyRemoveIntentRequest {
-    string org_id = 1;
-    string name = 2;
-    string uid = 3;
-    string intent_id = 4;
-}
-message SLAPolicyRemoveIntentResponse {
-    SLAPolicyObject sla_policy = 1;
-    // Resources that lose coverage when this intent goes. Returned so the
-    // caller can review the blast radius.
-    repeated ObjectRef affected_resources = 2;
 }
 
 message SLAPolicyUpdateOwnershipRequest {
@@ -5971,6 +5894,10 @@ message ResourceCatalogEnumerateRequest {
     repeated ProtectionState states = 5;
     // Tombstoned rows are hidden unless this is set.
     bool include_tombstoned = 6;
+
+    // Narrow the listing to what this filter selects. This replaces the separate
+    // Preview call, which evaluated a filter the caller had not saved.
+    ResourceFilter filter = 7;
 }
 message ResourceCatalogEnumerateResponse {
     repeated CatalogResourceObject resources = 1;
@@ -6014,8 +5941,7 @@ service ResourceCatalog {
     }
 
     // Update is the ONLY mutable part of a catalog row. Everything else is
-    // written by discovery, so there is no Create and no Delete here: a client
-    // cannot invent a namespace.
+    // written by discovery, so a client cannot invent a namespace.
     rpc Update(ResourceCatalogUpdateRequest)
         returns (ResourceCatalogUpdateResponse) {
         option (google.api.http) = {
@@ -6024,17 +5950,6 @@ service ResourceCatalog {
         };
     }
 
-    // Preview resolves a ResourceFilter and returns what it WOULD select,
-    // without writing anything -- FR-011. Required before a rule is created,
-    // because scope is applied by intersection and two callers writing the
-    // same filter legitimately see different sets -- FR-074a.
-    rpc Preview(ResourceCatalogPreviewRequest)
-        returns (ResourceCatalogPreviewResponse) {
-        option (google.api.http) = {
-            post : "/v1/catalogresource/preview/{org_id}"
-            body : "*"
-        };
-    }
 
     // Journey M2. The ONE case where a client creates a catalog row: the
     // source cluster is gone, so discovery can never produce it, and without
@@ -6044,6 +5959,17 @@ service ResourceCatalog {
         option (google.api.http) = {
             post : "/v1/catalogresource/reconstruct/{org_id}"
             body : "*"
+        };
+    }
+
+    // Journey H2a. Permanently removes a TOMBSTONED row and everything that
+    // hangs off it. Super Admin only. Discovery never writes this row again,
+    // because the source namespace or VM is gone. Named Delete rather than
+    // CleanupTombstone to match every other service in this API.
+    rpc Delete(ResourceCatalogDeleteRequest)
+        returns (ResourceCatalogDeleteResponse) {
+        option (google.api.http) = {
+            delete : "/v1/catalogresource/{org_id}/{uid}"
         };
     }
 }
@@ -6059,31 +5985,34 @@ message ResourceCatalogUpdateResponse {
     CatalogResourceObject resource = 1;
 }
 
-message ResourceCatalogPreviewRequest {
-    string org_id = 1;
-    ResourceFilter filter = 2;
-}
-message ResourceCatalogPreviewResponse {
-    // What the filter selects for THIS caller, after their scope is applied.
-    repeated CatalogResourceObject matched = 1;
-    int32 matched_count = 2;
-    // Resources the filter matched but that cannot be claimed, with a reason
-    // such as "Claimed by <rule>" or "Excluded".
-    repeated SkippedResource skipped = 3;
 
-    message SkippedResource {
-        string resource_uid = 1;
-        string resource_name = 2;
-        // Free text for a human. Prefer `outcome` for any decision.
-        string reason = 3;
-        ClaimOutcome outcome = 4;
-        // The rule that won, when outcome is SkippedClaimedByOtherRule.
-        //
-        // REDACTED for a caller whose tier is below the winning rule's owner:
-        // naming it would reveal a stronger tier's rule to someone who may not
-        // see it. The outcome still says the resource was claimed.
-        ObjectRef winning_rule_ref = 5;
-    }
+message ResourceCatalogDeleteRequest {
+    string org_id = 1;
+    // The catalog resource's Kubernetes UID.
+    string uid = 2;
+    // Remove the recovery points too. Without it the call is refused while any
+    // recovery point still points at the row, so an operator cannot destroy
+    // restorable data by accident -- journey H2a.
+    bool delete_recovery_points = 3;
+}
+
+
+message ResourceCatalogDeleteResponse {}
+
+// One resource an Apply or a dry run did not claim, with the reason. Shared by
+// every rule type's Apply response.
+message SkippedResource {
+    string resource_uid = 1;
+    string resource_name = 2;
+    // Free text for a human. Prefer `outcome` for any decision.
+    string reason = 3;
+    ClaimOutcome outcome = 4;
+    // The rule that won, when outcome is SkippedClaimedByOtherRule.
+    //
+    // REDACTED for a caller whose tier is below the winning rule's owner:
+    // naming it would reveal a stronger tier's rule to someone who may not
+    // see it. The outcome still says the resource was claimed.
+    ObjectRef winning_rule_ref = 5;
 }
 
 // Sharing a resource is how a persona boundary is crossed. An Infra or Super
@@ -6249,7 +6178,7 @@ message PlacementRuleApplyRequest {
 }
 message PlacementRuleApplyResponse {
     int32 claimed_count = 1;
-    repeated ResourceCatalogPreviewResponse.SkippedResource skipped = 2;
+    repeated SkippedResource skipped = 2;
 }
 
 // ---------------------------------------------------------------------------
@@ -6310,7 +6239,7 @@ message PlacementAssignmentUpdateRequest {
     // Ignored when refresh_from_rule is set.
     ObjectRef backup_location_ref = 4;
     ObjectRef local_snapshot_ref = 5;
-    // 6 held a per-intent destination override. Use Binding.UpdateIntentDestination.
+    // 6 held a per-intent destination override. Use Binding.Update instead.
     reserved 6;
 }
 message PlacementAssignmentUpdateResponse {
@@ -6439,9 +6368,21 @@ message RecoveryPointEnumerateRequest {
     string org_id = 1;
     // The catalog resource UID. Empty returns every recovery point in the org.
     string catalog_resource_uid = 2;
+    // One intent, or several. intent_ids wins when both are set.
     string intent_id = 3;
+    repeated string intent_ids = 8;
     // Only points that can actually be restored.
     bool restorable_only = 4;
+    // Timeline shaping. Absent means every point.
+    google.protobuf.Timestamp from_time = 5;
+    google.protobuf.Timestamp to_time = 6;
+    // Return the gaps as well as the points. A gap is a run that published
+    // nothing, and journey E12 requires it to be visible. Its reason is read
+    // from the backup object's status, never from a recovery point.
+    bool include_gaps = 7;
+    // Restore shaping. Returns the points that recover the resource as it stood
+    // at this time, which is what a target-time restore needs.
+    google.protobuf.Timestamp target_time = 9;
 }
 message RecoveryPointEnumerateResponse {
     repeated RecoveryPointObject recovery_points = 1;
@@ -6473,24 +6414,7 @@ service RecoveryPoint {
         };
     }
 
-    // Timeline returns the points for one resource in time order WITH THE GAPS
-    // NAMED -- FR-108. A timeline that shows only successes is misleading: a
-    // missing run is what puts a resource out of SLA.
-    rpc Timeline(RecoveryPointTimelineRequest)
-        returns (RecoveryPointTimelineResponse) {
-        option (google.api.http) = {
-            get : "/v1/recoverypoint/timeline/{org_id}/{catalog_resource_uid}"
-        };
-    }
 
-    // EnumerateForRestore returns only the points that are both restorable and
-    // accessible to the caller, for one resource at one target time.
-    rpc EnumerateForRestore(RecoveryPointEnumerateForRestoreRequest)
-        returns (RecoveryPointEnumerateForRestoreResponse) {
-        option (google.api.http) = {
-            get : "/v1/recoverypoint/forrestore/{org_id}/{catalog_resource_uid}"
-        };
-    }
 
     // Delete is for retention only, and is refused until expiry_time is
     // written. The shared backup is reference-counted: it may be removed only
@@ -6501,40 +6425,6 @@ service RecoveryPoint {
             delete : "/v1/recoverypoint/{org_id}/{catalog_resource_uid}/{backup_name}"
         };
     }
-}
-
-message RecoveryPointTimelineRequest {
-    string org_id = 1;
-    string catalog_resource_uid = 2;
-    google.protobuf.Timestamp from_time = 3;
-    google.protobuf.Timestamp to_time = 4;
-    // Empty means every intent.
-    repeated string intent_ids = 5;
-}
-message RecoveryPointTimelineResponse {
-    repeated RecoveryPointObject recovery_points = 1;
-    // A run that was expected and did not produce a point. As important as a
-    // point, and the reason a resource falls out of SLA.
-    repeated Gap gaps = 2;
-
-    message Gap {
-        string intent_id = 1;
-        google.protobuf.Timestamp expected_time = 2;
-        string reason = 3;
-    }
-}
-
-message RecoveryPointEnumerateForRestoreRequest {
-    string org_id = 1;
-    string catalog_resource_uid = 2;
-    // The newest point at or before this time. Unset means the newest point.
-    google.protobuf.Timestamp target_time = 3;
-}
-message RecoveryPointEnumerateForRestoreResponse {
-    repeated RecoveryPointObject recovery_points = 1;
-    // VMs that belonged to this namespace AT target_time -- FR-008, FR-110.
-    // Present membership is the wrong answer for a past restore.
-    repeated string member_resource_uids_at_target_time = 2;
 }
 
 message RecoveryPointDeleteRequest {
@@ -6566,6 +6456,14 @@ message BindingCreateRequest {
     ObjectRef pre_exec_rule_ref = 5;
     ObjectRef post_exec_rule_ref = 6;
     BackupScheduleInfo.BackupObjectType backup_object_type = 7;
+
+    // Validate and report what WOULD happen, writing nothing. This replaces the
+    // separate Preview call: a preview is this call with no writes.
+    bool dry_run = 8;
+    // Bulk bind -- journey C6. Skip every listed resource that already holds a
+    // Binding instead of failing the whole call. This replaces the separate
+    // BulkCreate call, because the list is already repeated.
+    bool skip_already_bound = 9;
 }
 message BindingCreateResponse {
     repeated ObjectRef created = 1;
@@ -6594,29 +6492,6 @@ message BindingDeleteRequest {
 }
 message BindingDeleteResponse {}
 
-// A supplemental intent is Binding-local (FR-063). It extends the one Binding
-// it is added to, and creates no second SLA Policy and no second Binding.
-//
-// This is why it cannot go on the SLA Policy instead: a policy is shared, so an
-// intent placed there fans out to every resource bound to it. An App Admin
-// given one namespace would then impose their chosen cadence, and its cost, on
-// resources they were never given.
-message BindingAddSupplementalIntentRequest {
-    string org_id = 1;
-    // The resource whose Binding gains the intent.
-    string catalog_resource_uid = 2;
-    // The intent to add. Its owner, tier and classification are stamped by the
-    // server from the caller's token and cannot be set by the request.
-    ProtectionIntent intent = 3;
-}
-message BindingAddSupplementalIntentResponse {
-    // The schedule this intent will execute on. It is a new shared schedule
-    // whenever no existing one carries the same schedule key.
-    string backup_schedule_cr_name = 1;
-    // How many intents the Binding now carries, baseline included.
-    int64 intent_count = 2;
-}
-
 service Binding {
     rpc Create(BindingCreateRequest) returns (BindingCreateResponse) {
         option (google.api.http) = {
@@ -6637,15 +6512,6 @@ service Binding {
         };
     }
 
-    // AddSupplementalIntent extends ONE Binding without touching the SLA
-    // Policy that governs it.
-    rpc AddSupplementalIntent(BindingAddSupplementalIntentRequest)
-        returns (BindingAddSupplementalIntentResponse) {
-        option (google.api.http) = {
-            put : "/v1/binding/supplementalintent/{org_id}/{catalog_resource_uid}"
-            body : "*"
-        };
-    }
 
     rpc Delete(BindingDeleteRequest) returns (BindingDeleteResponse) {
         option (google.api.http) = {
@@ -6662,13 +6528,6 @@ service Binding {
         };
     }
 
-    // RemoveSupplementalIntent is the pair of AddSupplementalIntent.
-    rpc RemoveSupplementalIntent(BindingRemoveSupplementalIntentRequest)
-        returns (BindingRemoveSupplementalIntentResponse) {
-        option (google.api.http) = {
-            delete : "/v1/binding/supplementalintent/{org_id}/{catalog_resource_uid}/{intent_id}"
-        };
-    }
 
     // TriggerNow runs one intent immediately, against this Binding's own
     // destination and capture settings. The run joins only that intent's
@@ -6695,15 +6554,6 @@ service Binding {
         };
     }
 
-    // PreviewSchedule returns the next N run times across every intent --
-    // FR-061. A recoverability period hides a copy count, and this is how a
-    // client shows the real cadence before committing.
-    rpc PreviewSchedule(BindingPreviewScheduleRequest)
-        returns (BindingPreviewScheduleResponse) {
-        option (google.api.http) = {
-            get : "/v1/binding/previewschedule/{org_id}/{catalog_resource_uid}"
-        };
-    }
 
     rpc UpdateOwnership(BindingUpdateOwnershipRequest)
         returns (BindingUpdateOwnershipResponse) {
@@ -6727,19 +6577,43 @@ message BindingUpdateRequest {
     repeated string exclude_resource_types = 8;
     bool parallel_backup = 9;
     bool keep_cr_status = 10;
-    // Super and Infra only. Never accepted from an App Admin -- FR-028.
+    // Super and Infra only. Never accepted from an App Admin -- FR-028. This
+    // replaces the separate UpdateIntentDestination call.
     repeated IntentDestination intent_destinations = 11;
+
+    // Validate and report what WOULD happen, writing nothing. This replaces the
+    // separate Preview call: a preview is this call with no writes.
+    bool dry_run = 12;
+
+    // Which part of the Binding to change. The server applies only the fields
+    // that belong to the chosen action, and refuses the request when another
+    // field is set. ActionUpdateSettings is the zero value, so a caller that
+    // changes hooks or capture settings sends no action at all.
+    Action action = 13;
+    enum Action {
+        // Hooks, capture settings and intent destinations. A Scoped App Admin
+        // may call this with only pre_exec_rule_ref and post_exec_rule_ref set,
+        // even under an enforced baseline -- journeys K1 and F5. This replaces
+        // the separate UpdateHooks call.
+        ActionUpdateSettings = 0;
+        // Replace one supplemental intent, or the whole list when
+        // supplemental_intent_id is empty -- journey C15. This replaces the
+        // separate AddSupplementalIntent, RemoveSupplementalIntent and
+        // EditSupplementalIntent calls: an empty intent removes it.
+        ActionUpdateSupplementalIntent = 1;
+        // Replace the enforced baseline Policy/SLA -- journey C7. This is the
+        // ONLY path that changes a baseline, and it replaces the separate
+        // RebindBaseline call. Owner only.
+        ActionRebindBaseline = 2;
+    }
+    // Which supplemental intent to replace. Read only under
+    // ActionUpdateSupplementalIntent.
+    string supplemental_intent_id = 14;
+    // The replacement baseline. Read only under ActionRebindBaseline.
+    string sla_policy_name = 15;
+    string sla_policy_uid = 16;
 }
 message BindingUpdateResponse {
-    BindingObject binding = 1;
-}
-
-message BindingRemoveSupplementalIntentRequest {
-    string org_id = 1;
-    string catalog_resource_uid = 2;
-    string intent_id = 3;
-}
-message BindingRemoveSupplementalIntentResponse {
     BindingObject binding = 1;
 }
 
@@ -6777,26 +6651,6 @@ message BindingCreateIndependentCheckpointRequest {
 message BindingCreateIndependentCheckpointResponse {
     // The backup this checkpoint produced, once it has been created.
     ObjectRef backup_ref = 1;
-}
-
-message BindingPreviewScheduleRequest {
-    string org_id = 1;
-    string catalog_resource_uid = 2;
-    // How many future run times to return per intent. Default 10.
-    int32 count = 3;
-}
-message BindingPreviewScheduleResponse {
-    repeated IntentSchedule schedules = 1;
-
-    message IntentSchedule {
-        string intent_id = 1;
-        string schedule_key = 2;
-        repeated google.protobuf.Timestamp next_run_times = 3;
-        // The count derived from the recoverability period:
-        // ceil(period / longest gap), floored at 1. Shown because a user
-        // states a business need and does not do this arithmetic.
-        int32 derived_retain_count = 4;
-    }
 }
 
 message BindingUpdateOwnershipRequest {
@@ -6909,7 +6763,7 @@ message BindingRuleApplyRequest {
 }
 message BindingRuleApplyResponse {
     int32 bound_count = 1;
-    repeated ResourceCatalogPreviewResponse.SkippedResource skipped = 2;
+    repeated SkippedResource skipped = 2;
 }
 
 message BindingRuleUpdateOwnershipRequest {
@@ -6967,15 +6821,6 @@ service BindingRule {
         };
     }
 
-    // Journey C4. A read, not an Apply with a flag: Apply answers "what would
-    // happen if I ran this", Preview answers "what does this select".
-    rpc Preview(BindingRulePreviewRequest)
-        returns (BindingRulePreviewResponse) {
-        option (google.api.http) = {
-            post : "/v1/bindingrule/preview/{org_id}"
-            body : "*"
-        };
-    }
 
     rpc Apply(BindingRuleApplyRequest) returns (BindingRuleApplyResponse) {
         option (google.api.http) = {
@@ -7133,21 +6978,11 @@ service ExclusionReasonTemplate {
 // read -- FR-013.
 // ---------------------------------------------------------------------------
 
-message ProtectionSummaryGetRequest {
-    string org_id = 1;
-    // Empty means every cluster in the caller's boundary.
-    string cluster_name = 2;
-    string cluster_uid = 3;
-}
-message ProtectionSummaryGetResponse {
-    repeated ProtectionStateCount counts = 1;
-    // Namespaces that hold at least one VM, so a caller can tell a mixed
-    // fleet from a conventional one.
-    int32 namespaces_with_virtual_machines = 2;
-}
-
 message ProtectionSummaryEnumerateRequest {
     string org_id = 1;
+    // How to group the counts. GroupByInvalid returns a single group whose key
+    // is empty, which is the whole-scope total the separate Get call used to
+    // return -- journeys A9, H1.
     GroupBy group_by = 2;
 
     enum GroupBy {
@@ -7155,9 +6990,18 @@ message ProtectionSummaryEnumerateRequest {
         Cluster = 1;
         Owner = 2;
     }
+
+    // Restrict the counts to one cluster. Empty means every cluster in the
+    // caller's boundary.
+    string cluster_name = 3;
+    string cluster_uid = 4;
 }
 message ProtectionSummaryEnumerateResponse {
     repeated Group groups = 1;
+    // Namespaces that hold at least one VM, so a caller can tell a mixed
+    // fleet from a conventional one. Counted over the whole requested scope,
+    // not per group.
+    int32 namespaces_with_virtual_machines = 2;
 
     message Group {
         // The cluster UID or the owner id, per the requested grouping.
@@ -7168,13 +7012,6 @@ message ProtectionSummaryEnumerateResponse {
 }
 
 service ProtectionSummary {
-    rpc Get(ProtectionSummaryGetRequest)
-        returns (ProtectionSummaryGetResponse) {
-        option (google.api.http) = {
-            get : "/v1/protectionsummary/{org_id}"
-        };
-    }
-
     rpc Enumerate(ProtectionSummaryEnumerateRequest)
         returns (ProtectionSummaryEnumerateResponse) {
         option (google.api.http) = {
@@ -7242,6 +7079,10 @@ message AdminScopeObject {
 message AdminScopeCreateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
     AdminScopeInfo admin_scope = 2;
+
+    // Validate and report what WOULD happen, writing nothing. This replaces the
+    // separate Preview call: a preview is this call with no writes.
+    bool dry_run = 3;
 }
 message AdminScopeCreateResponse { AdminScopeObject admin_scope = 1; }
 
@@ -7267,6 +7108,10 @@ message AdminScopeUpdateRequest {
     // Must carry the token from a preceding Preview. FR-123 requires a fresh
     // Super-Admin-initiated preview and an explicit commit for every change.
     string preview_token = 3;
+
+    // Validate and report what WOULD happen, writing nothing. This replaces the
+    // separate Preview call: a preview is this call with no writes.
+    bool dry_run = 4;
 }
 message AdminScopeUpdateResponse { AdminScopeObject admin_scope = 1; }
 
@@ -7276,23 +7121,6 @@ message AdminScopeDeleteRequest {
     string uid = 3;
 }
 message AdminScopeDeleteResponse {}
-
-message AdminScopePreviewRequest {
-    string org_id = 1;
-    string identity_id = 2;
-    // The form being proposed. Exactly one, as on AdminScopeInfo.
-    ObjectRefList whole_clusters = 3;
-    ResourceFilter filter = 4;
-}
-message AdminScopePreviewResponse {
-    // The exact UIDs that would be materialized. Journey O2a requires the
-    // administrator to see them before committing.
-    repeated CatalogResourceObject matched = 1;
-    int32 matched_count = 2;
-    repeated string overlapping_identities = 3;
-    // Pass to AdminScope.Update to commit this exact set.
-    string preview_token = 4;
-}
 
 service AdminScope {
     // Super Admin only, every call.
@@ -7316,14 +7144,6 @@ service AdminScope {
         };
     }
 
-    // Preview MUST precede Update. The returned token binds the commit to the
-    // exact set the administrator saw.
-    rpc Preview(AdminScopePreviewRequest) returns (AdminScopePreviewResponse) {
-        option (google.api.http) = {
-            post : "/v1/adminscope/preview/{org_id}"
-            body : "*"
-        };
-    }
 
     rpc Update(AdminScopeUpdateRequest) returns (AdminScopeUpdateResponse) {
         option (google.api.http) = {
@@ -7433,21 +7253,6 @@ message DelegationRuleDeleteRequest {
 // deleting a Binding Rule leaves its Bindings intact -- FR-080.
 message DelegationRuleDeleteResponse {}
 
-message DelegationRulePreviewRequest {
-    string org_id = 1;
-    string name = 2;
-    string uid = 3;
-    // Preview a definition that has not been created yet.
-    DelegationRuleInfo candidate = 4;
-}
-message DelegationRulePreviewResponse {
-    // Journey F11 requires Namespace and VM matches to be separable.
-    repeated CatalogResourceObject matched_namespaces = 1;
-    repeated CatalogResourceObject matched_virtual_machines = 2;
-    int32 matched_count = 3;
-    repeated ResourceCatalogPreviewResponse.SkippedResource skipped = 4;
-}
-
 message DelegationRuleApplyRequest {
     string org_id = 1;
     string name = 2;
@@ -7456,7 +7261,7 @@ message DelegationRuleApplyRequest {
 }
 message DelegationRuleApplyResponse {
     int32 delegated_count = 1;
-    repeated ResourceCatalogPreviewResponse.SkippedResource skipped = 2;
+    repeated SkippedResource skipped = 2;
 }
 
 message DelegationRuleUpdateOwnershipRequest {
@@ -7495,15 +7300,6 @@ service DelegationRule {
         };
     }
 
-    // Journey F11: shows Would delegate, Already delegated, Excluded, and for
-    // auto mode Claimed by a higher or older rule.
-    rpc Preview(DelegationRulePreviewRequest)
-        returns (DelegationRulePreviewResponse) {
-        option (google.api.http) = {
-            post : "/v1/delegationrule/preview/{org_id}"
-            body : "*"
-        };
-    }
 
     rpc Update(DelegationRuleUpdateRequest)
         returns (DelegationRuleUpdateResponse) {
@@ -7641,60 +7437,6 @@ service DriftEvent {
 // ---------------------------------------------------------------------------
 // Three calls that existing services were missing.
 // ---------------------------------------------------------------------------
-
-// Journey C4: preview and review a Binding Rule's target set.
-message BindingRulePreviewRequest {
-    string org_id = 1;
-    string name = 2;
-    string uid = 3;
-    // Preview a definition that has not been created yet.
-    BindingRuleInfo candidate = 4;
-}
-message BindingRulePreviewResponse {
-    // C4 requires Namespace and VM matches to be shown apart -- FR-093.
-    repeated CatalogResourceObject matched_namespaces = 1;
-    repeated CatalogResourceObject matched_virtual_machines = 2;
-    int32 matched_count = 3;
-    // Classified, not free text. Already bound always means skip.
-    repeated ResourceCatalogPreviewResponse.SkippedResource skipped = 4;
-    // C4: show every VM's parent Namespace, and identify graph ownership,
-    // so an operator can see what a VM match really covers.
-    repeated VirtualMachineParent vm_parents = 5;
-
-    message VirtualMachineParent {
-        string vm_resource_uid = 1;
-        string parent_namespace_uid = 2;
-        string parent_namespace_name = 3;
-        // True when the parent Namespace is also in this match set.
-        bool parent_also_matched = 4;
-    }
-}
-
-// Journey B13: a read-only translated-mechanics preview of a reusable SLA
-// Policy. What the plain-language intents mean in schedules, copies and capture.
-message SLAPolicyPreviewMechanicsRequest {
-    string org_id = 1;
-    string name = 2;
-    string uid = 3;
-}
-message SLAPolicyPreviewMechanicsResponse {
-    repeated IntentMechanics intents = 1;
-
-    message IntentMechanics {
-        string intent_id = 1;
-        // Rendered for a human, for example "every 15 minutes".
-        string frequency = 2;
-        google.protobuf.Duration recoverability_period = 3;
-        // The derived copy count: ceil(period / longest gap), floored at 1.
-        // A user states a business need and does not do this arithmetic --
-        // 7 days at 15 minutes is 672 copies per resource.
-        int32 derived_retain_count = 4;
-        int64 incremental_count = 5;
-        ProtectionIntent.CaptureMode capture_mode = 6;
-        bool require_snapshot_capture = 7;
-        ProtectionIntent.Classification classification = 8;
-    }
-}
 
 // Journey M2: DR restore when the source cluster is gone.
 //
