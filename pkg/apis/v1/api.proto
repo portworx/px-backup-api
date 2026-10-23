@@ -6677,7 +6677,7 @@ service Binding {
     rpc TriggerNow(BindingTriggerNowRequest)
         returns (BindingTriggerNowResponse) {
         option (google.api.http) = {
-            post : "/v1/binding/triggernow/{org_id}/{catalog_resource_uid}"
+            post : "/v1/binding/triggernow/{org_id}"
             body : "*"
         };
     }

@@ -1990,7 +1990,7 @@
         ]
       }
     },
-    "/v1/binding/triggernow/{org_id}/{catalog_resource_uid}": {
+    "/v1/binding/triggernow/{org_id}": {
       "post": {
         "summary": "TriggerNow runs one intent immediately, against this Binding's own\ndestination and capture settings. The run joins only that intent's\nchain and does not move its next scheduled run. The UI calls this\n\"Run Policy Now\" -- journey M5, FR-137, FR-139, FR-140.",
         "operationId": "Binding_TriggerNow",
@@ -2011,12 +2011,6 @@
         "parameters": [
           {
             "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "catalog_resource_uid",
             "in": "path",
             "required": true,
             "type": "string"
@@ -12191,12 +12185,16 @@
         "org_id": {
           "type": "string"
         },
-        "catalog_resource_uid": {
-          "type": "string"
+        "catalog_resource_uids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Which resources to run the intent for. EMPTY MEANS EVERY RESOURCE THE\nINTENT COVERS that the caller is authorised for.\n\nAn intent is shared. An auto Binding Rule binds every matching namespace\nto one SLA Policy, and the schedule key then puts them in one CR, so a\nscheduled run of the intent already covers all of them. An on-demand run\nof the same intent must be able to do the same -- journey M5.\n\nA non-empty list narrows the run to those resources. Authorisation stays\nper resource, so a caller only ever runs what they hold."
         },
         "intent_id": {
           "type": "string",
-          "description": "Which intent to run. Required: a Binding may carry several."
+          "description": "Which intent to run. Required, and exactly one -- journey M5."
         }
       }
     },
