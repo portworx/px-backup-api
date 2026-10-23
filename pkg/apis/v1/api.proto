@@ -6745,8 +6745,18 @@ message BindingRemoveSupplementalIntentResponse {
 
 message BindingTriggerNowRequest {
     string org_id = 1;
-    string catalog_resource_uid = 2;
-    // Which intent to run. Required: a Binding may carry several.
+    // Which resources to run the intent for. EMPTY MEANS EVERY RESOURCE THE
+    // INTENT COVERS that the caller is authorised for.
+    //
+    // An intent is shared. An auto Binding Rule binds every matching namespace
+    // to one SLA Policy, and the schedule key then puts them in one CR, so a
+    // scheduled run of the intent already covers all of them. An on-demand run
+    // of the same intent must be able to do the same -- journey M5.
+    //
+    // A non-empty list narrows the run to those resources. Authorisation stays
+    // per resource, so a caller only ever runs what they hold.
+    repeated string catalog_resource_uids = 2;
+    // Which intent to run. Required, and exactly one -- journey M5.
     string intent_id = 3;
 }
 message BindingTriggerNowResponse {
