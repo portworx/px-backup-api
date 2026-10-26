@@ -5754,9 +5754,15 @@ message BindingInfo {
     // a catalog row and a config-map has no row. Narrowing an already-selected
     // namespace is a different thing and is allowed -- question 64.
     //
-    // BOTH ARE PART OF THE SCHEDULE KEY. Two resources whose selectors differ
-    // must not share one ApplicationBackupSchedule, because the CR holds one
-    // selector for every member.
+    // BOTH ARE PART OF THE SCHEDULE KEY, and that costs nothing when the
+    // selector is uniform. ApplicationBackupSpec.Namespaces is a list but
+    // ApplicationBackupSpec.Selectors is ONE map for every namespace in the CR.
+    // So ten resources carrying the same selector still share one CR, exactly
+    // as ten resources sharing one backup location do.
+    //
+    // The key part exists for the case where members DISAGREE. Without it, two
+    // different selectors would land on one CR, the last Binding written would
+    // win, and every other member would be captured with the wrong filter.
     map<string, string> label_selectors = 30;
     // The string form, which supports operators. BackupScheduleInfo carries
     // both because the map form cannot express them.
