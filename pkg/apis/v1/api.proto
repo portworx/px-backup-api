@@ -5618,7 +5618,19 @@ message PlacementAssignmentInfo {
     ObjectRef backup_location_ref = 2;
     ObjectRef local_snapshot_ref = 3;
     google.protobuf.Timestamp applied_time = 4;
-    // Frozen at apply time.
+    // The rule's definition, frozen at apply time -- FR-025.
+    //
+    // resource_uids IS NEVER COPIED INTO THIS FIELD. A static rule's filter is
+    // the hand-picked list itself, so copying it onto every assignment
+    // multiplies it by the number of resources: 1,000 resources freeze a
+    // 1,000-uid list 1,000 times, about 40 MB for one rule. It also says
+    // nothing, because the existence of this assignment already states that
+    // the resource was in the list.
+    //
+    // What is kept is the part that governs behaviour and cannot be recovered
+    // from the assignments: the mode, the target kinds, and any label selector.
+    // An auto rule's selector is small and meaningful -- "placed because it
+    // matched tier=gold" -- and is why the field exists at all.
     ResourceFilter captured_rule_definition = 5;
 
     // Rule provenance.

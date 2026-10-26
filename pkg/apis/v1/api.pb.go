@@ -30240,7 +30240,19 @@ type PlacementAssignmentInfo struct {
 	BackupLocationRef *ObjectRef       `protobuf:"bytes,2,opt,name=backup_location_ref,json=backupLocationRef,proto3" json:"backup_location_ref,omitempty"`
 	LocalSnapshotRef  *ObjectRef       `protobuf:"bytes,3,opt,name=local_snapshot_ref,json=localSnapshotRef,proto3" json:"local_snapshot_ref,omitempty"`
 	AppliedTime       *types.Timestamp `protobuf:"bytes,4,opt,name=applied_time,json=appliedTime,proto3" json:"applied_time,omitempty"`
-	// Frozen at apply time.
+	// The rule's definition, frozen at apply time -- FR-025.
+	//
+	// resource_uids IS NEVER COPIED INTO THIS FIELD. A static rule's filter is
+	// the hand-picked list itself, so copying it onto every assignment
+	// multiplies it by the number of resources: 1,000 resources freeze a
+	// 1,000-uid list 1,000 times, about 40 MB for one rule. It also says
+	// nothing, because the existence of this assignment already states that
+	// the resource was in the list.
+	//
+	// What is kept is the part that governs behaviour and cannot be recovered
+	// from the assignments: the mode, the target kinds, and any label selector.
+	// An auto rule's selector is small and meaningful -- "placed because it
+	// matched tier=gold" -- and is why the field exists at all.
 	CapturedRuleDefinition *ResourceFilter `protobuf:"bytes,5,opt,name=captured_rule_definition,json=capturedRuleDefinition,proto3" json:"captured_rule_definition,omitempty"`
 	// Rule provenance.
 	SourceRuleRef          *ObjectRef       `protobuf:"bytes,6,opt,name=source_rule_ref,json=sourceRuleRef,proto3" json:"source_rule_ref,omitempty"`
