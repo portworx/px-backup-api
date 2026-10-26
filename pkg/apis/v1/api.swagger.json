@@ -14655,7 +14655,7 @@
         },
         "captured_rule_definition": {
           "$ref": "#/definitions/ResourceFilter",
-          "description": "Frozen at apply time."
+          "description": "The rule's definition, frozen at apply time -- FR-025.\n\nresource_uids IS NEVER COPIED INTO THIS FIELD. A static rule's filter is\nthe hand-picked list itself, so copying it onto every assignment\nmultiplies it by the number of resources: 1,000 resources freeze a\n1,000-uid list 1,000 times, about 40 MB for one rule. It also says\nnothing, because the existence of this assignment already states that\nthe resource was in the list.\n\nWhat is kept is the part that governs behaviour and cannot be recovered\nfrom the assignments: the mode, the target kinds, and any label selector.\nAn auto rule's selector is small and meaningful -- \"placed because it\nmatched tier=gold\" -- and is why the field exists at all."
         },
         "source_rule_ref": {
           "$ref": "#/definitions/ObjectRef",
