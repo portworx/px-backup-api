@@ -3116,7 +3116,14 @@ func (m *GoogleConfig) GetJsonKey() string {
 }
 
 type CloudCredentialInfo struct {
+	// Cloud provider type. Not editable via Update: the provider a
+	// credential was created for cannot be switched to a different one
+	// (create a new credential instead). Enforced by the server, which
+	// rejects an Update whose type differs from the stored value.
 	Type CloudCredentialInfo_Type `protobuf:"varint,1,opt,name=type,proto3,enum=CloudCredentialInfo_Type" json:"type,omitempty"`
+	// Editable. Must match `type`; send the complete config for that
+	// provider back on Update, not just the changed values.
+	//
 	// Types that are valid to be assigned to Config:
 	//	*CloudCredentialInfo_AwsConfig
 	//	*CloudCredentialInfo_AzureConfig
@@ -3293,6 +3300,7 @@ func (m *CloudCredentialObject) GetCloudCredentialInfo() *CloudCredentialInfo {
 	return nil
 }
 
+// VolumeResourceOnlyPolicyInfo fields are all editable via Update.
 type VolumeResourceOnlyPolicyInfo struct {
 	// List of volumeType to be skipped for backing up the volume data
 	VolumeTypes []VolumeResourceOnlyPolicyInfo_VolumeType `protobuf:"varint,1,rep,packed,name=volume_types,json=volumeTypes,proto3,enum=VolumeResourceOnlyPolicyInfo_VolumeType" json:"volume_types,omitempty"`
@@ -5083,14 +5091,31 @@ type BackupLocationInfo struct {
 	//   - Specifies the type of cloud provider (S3, Azure, Google, NFS).
 	//   - In Federated Identity mode, this field is used to identify the cloud provider type
 	//     even though no cloud credential object is referenced.
-	Type          BackupLocationInfo_Type `protobuf:"varint,1,opt,name=type,proto3,enum=BackupLocationInfo_Type" json:"type,omitempty"`
-	Path          string                  `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
-	EncryptionKey string                  `protobuf:"bytes,3,opt,name=encryption_key,json=encryptionKey,proto3" json:"encryptionkey" secure:"true"`
+	//
+	// Not editable via Update: the provider a backup location was created
+	// for cannot be switched to a different one.
+	Type BackupLocationInfo_Type `protobuf:"varint,1,opt,name=type,proto3,enum=BackupLocationInfo_Type" json:"type,omitempty"`
+	// Not editable via Update: the path a backup location was created
+	// with cannot be changed. Enforced by the server, which rejects an
+	// Update with a non-empty path that differs from the stored value.
+	Path string `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
+	// Not editable via Update: the encryption key cannot be changed once
+	// set. Enforced by the server, which rejects an Update with a
+	// non-empty key that differs from the stored value.
+	EncryptionKey string `protobuf:"bytes,3,opt,name=encryption_key,json=encryptionKey,proto3" json:"encryptionkey" secure:"true"`
 	// cloud_credential is deprecated, not to be used.
-	CloudCredential         string                         `protobuf:"bytes,4,opt,name=cloud_credential,json=cloudCredential,proto3" json:"cloud_credential,omitempty"`
-	Status                  *BackupLocationInfo_StatusInfo `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
-	DeleteBackups           bool                           `protobuf:"varint,6,opt,name=delete_backups,json=deleteBackups,proto3" json:"delete_backups,omitempty"`
-	ValidateCloudCredential bool                           `protobuf:"varint,7,opt,name=validate_cloud_credential,json=validateCloudCredential,proto3" json:"validate_cloud_credential,omitempty"`
+	CloudCredential string `protobuf:"bytes,4,opt,name=cloud_credential,json=cloudCredential,proto3" json:"cloud_credential,omitempty"`
+	// System-managed field (OUTPUT) - reflects validation status. Not
+	// editable; any value set in the request is ignored.
+	Status *BackupLocationInfo_StatusInfo `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	// Delete-only flag, not used by Update: BackupLocationDeleteRequest
+	// reads this to decide whether to also delete the backups stored at
+	// this location. Deprecated — the server currently rejects Delete
+	// requests that set this flag ("deleteBackups flag is deprecated
+	// and not supported for backup location delete").
+	DeleteBackups bool `protobuf:"varint,6,opt,name=delete_backups,json=deleteBackups,proto3" json:"delete_backups,omitempty"`
+	// Editable. Triggers (re-)validation of the backup location on Update.
+	ValidateCloudCredential bool `protobuf:"varint,7,opt,name=validate_cloud_credential,json=validateCloudCredential,proto3" json:"validate_cloud_credential,omitempty"`
 	// Reference to the cloud credential object.
 	// For Non-Federated Identity: Required for Non NFS provider.
 	//   - Must reference a valid CloudCredentialObject that contains the authentication credentials
@@ -7952,6 +7977,7 @@ func (*BackupObject) XXX_OneofWrappers() []interface{} {
 }
 
 // Message for passing pre and post exec rules for backup
+// RulesInfo fields are all editable via Update.
 type RulesInfo struct {
 	Rules []*RulesInfo_RuleItem `protobuf:"bytes,1,rep,name=rules,proto3" json:"rules,omitempty" yaml:"rules"`
 }
@@ -10325,8 +10351,16 @@ func (m *VolumeResourceOnlyPolicyCreateResponse) GetVolumeResourceOnlyPolicy() *
 }
 
 // Define VolumeResourceOnlyPolicyUpdateRequest struct
+// VolumeResourceOnlyPolicyUpdateRequest performs a full-object replace:
+// fetch the current policy via Inspect, modify only the fields you need to
+// change, and send the complete request back.
 type VolumeResourceOnlyPolicyUpdateRequest struct {
-	*CreateMetadata          `protobuf:"bytes,1,opt,name=metadata,proto3,embedded=metadata" json:"metadata,omitempty"`
+	// See CreateMetadata: name/org_id/uid identify the policy and are
+	// immutable via Update. labels are editable; ownership is not
+	// editable via this Update — use
+	// VolumeResourceOnlyPolicyOwnershipUpdateRequest instead.
+	*CreateMetadata `protobuf:"bytes,1,opt,name=metadata,proto3,embedded=metadata" json:"metadata,omitempty"`
+	// Editable. Must be sent in full; omitted sub-fields may be reset.
 	VolumeResourceOnlyPolicy *VolumeResourceOnlyPolicyInfo `protobuf:"bytes,2,opt,name=volume_resource_only_policy,json=volumeResourceOnlyPolicy,proto3" json:"volume_resource_only_policy,omitempty"`
 }
 
@@ -10749,6 +10783,8 @@ func (m *VolumeResourceOnlyPolicyDeleteResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_VolumeResourceOnlyPolicyDeleteResponse proto.InternalMessageInfo
 
+// Ownership-only partial update: org_id/name/uid select the policy;
+// ownership is the only editable field.
 type VolumeResourceOnlyPolicyOwnershipUpdateRequest struct {
 	OrgId     string     `protobuf:"bytes,1,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
 	Name      string     `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
@@ -10953,9 +10989,17 @@ func (m *SchedulePolicyCreateResponse) GetSchedulePolicy() *SchedulePolicyObject
 }
 
 // Define SchedulePolicyUpdateRequest struct
+// SchedulePolicyUpdateRequest performs a full-object replace: fetch the
+// current schedule policy via Inspect, modify only the fields you need to
+// change, and send the complete request back.
 type SchedulePolicyUpdateRequest struct {
+	// See CreateMetadata: name/org_id/uid identify the policy and are
+	// immutable via Update. labels are editable; ownership is not
+	// editable via this Update — use SchedulePolicyOwnershipUpdateRequest
+	// instead.
 	*CreateMetadata `protobuf:"bytes,1,opt,name=metadata,proto3,embedded=metadata" json:"metadata,omitempty"`
-	SchedulePolicy  *SchedulePolicyInfo `protobuf:"bytes,2,opt,name=schedule_policy,json=schedulePolicy,proto3" json:"schedule_policy,omitempty"`
+	// Editable. Must be sent in full; omitted sub-fields may be reset.
+	SchedulePolicy *SchedulePolicyInfo `protobuf:"bytes,2,opt,name=schedule_policy,json=schedulePolicy,proto3" json:"schedule_policy,omitempty"`
 }
 
 func (m *SchedulePolicyUpdateRequest) Reset()         { *m = SchedulePolicyUpdateRequest{} }
@@ -11337,6 +11381,8 @@ func (m *SchedulePolicyDeleteResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_SchedulePolicyDeleteResponse proto.InternalMessageInfo
 
+// Ownership-only partial update: org_id/name/uid select the policy;
+// ownership is the only editable field.
 type SchedulePolicyOwnershipUpdateRequest struct {
 	OrgId     string     `protobuf:"bytes,1,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
 	Name      string     `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
@@ -11989,8 +12035,21 @@ func (m *BackupScheduleDeleteFilterOptions) GetStatus() BackupScheduleRunState {
 	return BackupScheduleRunState_BackupScheduleRunStateInvalid
 }
 
-// Define BackupScheduleUpdateRequest struct
+// BackupScheduleUpdateRequest fields fall into two groups:
+//   - Selector fields identify which schedule(s) to update: metadata
+//     (name/org_id/uid, for a single schedule), or include_objects/
+//     exclude_objects/include_filter/exclude_filter/filter_options/
+//     cluster_scope/bulk_uid_check_relaxation (for a bulk update across
+//     multiple schedules).
+//   - Value fields (namespaces, label_selectors, suspend, include_resources,
+//     reclaim_policy, schedule_policy_ref, backup_location_ref,
+//     pre_exec_rule_ref, post_exec_rule_ref, etc.) are the new values
+//     applied to every selected schedule; send the complete set you want,
+//     since fields left unset may reset the corresponding setting.
 type BackupScheduleUpdateRequest struct {
+	// Selector: identifies the schedule (single-object case). See
+	// CreateMetadata; name/org_id/uid are immutable identifiers,
+	// labels are editable; ownership is not editable via Update.
 	*CreateMetadata `protobuf:"bytes,1,opt,name=metadata,proto3,embedded=metadata" json:"metadata,omitempty"`
 	// schedule_policy is deprecated, not to be used
 	SchedulePolicy string                               `protobuf:"bytes,2,opt,name=schedule_policy,json=schedulePolicy,proto3" json:"schedule_policy,omitempty"`
@@ -12788,6 +12847,9 @@ func (m *BackupScheduleDeleteResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_BackupScheduleDeleteResponse proto.InternalMessageInfo
 
+// Incremental partial update: org_id/name/uid select the cluster;
+// add_backup_share/del_backup_share are applied as additive/subtractive
+// diffs to the existing share list, not a full-list replace.
 type ClusterBackupShareUpdateRequest struct {
 	OrgId          string       `protobuf:"bytes,1,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
 	Name           string       `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
@@ -13062,13 +13124,24 @@ func (m *ClusterCreateResponse) GetCluster() *ClusterObject {
 }
 
 // Define ClusterUpdateRequest struct
+// ClusterUpdateRequest performs a full-object replace of the cluster: fetch
+// the current cluster via Inspect, modify only the fields you need to
+// change, and send the complete request back, including nested fields
+// (e.g. px_config) that did not change.
 type ClusterUpdateRequest struct {
+	// See CreateMetadata: name/org_id/uid identify the cluster and are
+	// immutable via Update. labels are editable; ownership is not
+	// editable via Update.
 	*CreateMetadata `protobuf:"bytes,1,opt,name=metadata,proto3,embedded=metadata" json:"metadata,omitempty"`
-	PxConfig        *PXConfig `protobuf:"bytes,2,opt,name=px_config,json=pxConfig,proto3" json:"pxconfig"`
-	Kubeconfig      string    `protobuf:"bytes,3,opt,name=kubeconfig,proto3" json:"kubeconfig" secure:"true"`
+	// Editable. Must be sent in full; omitted sub-fields may be reset.
+	PxConfig *PXConfig `protobuf:"bytes,2,opt,name=px_config,json=pxConfig,proto3" json:"pxconfig"`
+	// Editable.
+	Kubeconfig string `protobuf:"bytes,3,opt,name=kubeconfig,proto3" json:"kubeconfig" secure:"true"`
 	// cloud_credential is deprecated, not to be used.
-	CloudCredential       string     `protobuf:"bytes,4,opt,name=cloud_credential,json=cloudCredential,proto3" json:"cloud_credential,omitempty"`
-	CloudCredentialRef    *ObjectRef `protobuf:"bytes,5,opt,name=cloud_credential_ref,json=cloudCredentialRef,proto3" json:"cloud_credential_ref,omitempty"`
+	CloudCredential string `protobuf:"bytes,4,opt,name=cloud_credential,json=cloudCredential,proto3" json:"cloud_credential,omitempty"`
+	// Editable.
+	CloudCredentialRef *ObjectRef `protobuf:"bytes,5,opt,name=cloud_credential_ref,json=cloudCredentialRef,proto3" json:"cloud_credential_ref,omitempty"`
+	// Editable.
 	PlatformCredentialRef *ObjectRef `protobuf:"bytes,6,opt,name=platform_credential_ref,json=platformCredentialRef,proto3" json:"platform_credential_ref,omitempty"`
 }
 
@@ -14010,8 +14083,23 @@ func (m *CloudCredentialCreateResponse) GetCloudCredential() *CloudCredentialObj
 }
 
 // Define CloudCredentialUpdateRequest struct
+// CloudCredentialUpdateRequest performs a full-object replace: fetch the
+// current cloud credential via Inspect, modify only the fields you need to
+// change, and send the complete request back.
+//
+// cloud_credential field breakdown (see CloudCredentialInfo for full
+// per-field detail): config is editable and must match type. type is
+// not editable — the server rejects an Update whose type differs from
+// the stored value (create a new credential instead).
 type CloudCredentialUpdateRequest struct {
+	// See CreateMetadata: name/org_id/uid identify the credential and are
+	// immutable via Update. labels are editable; ownership is not
+	// editable via this Update — use CloudCredentialOwnershipUpdateRequest
+	// instead.
 	*CreateMetadata `protobuf:"bytes,1,opt,name=metadata,proto3,embedded=metadata" json:"metadata,omitempty"`
+	// Editable, except `type` (see message-level summary above and
+	// CloudCredentialInfo for detail). Must be sent in full; omitted
+	// sub-fields may be reset.
 	CloudCredential *CloudCredentialInfo `protobuf:"bytes,2,opt,name=cloud_credential,json=cloudCredential,proto3" json:"cloud_credential,omitempty"`
 }
 
@@ -14427,6 +14515,8 @@ func (m *CloudCredentialDeleteResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CloudCredentialDeleteResponse proto.InternalMessageInfo
 
+// Ownership-only partial update: org_id/name/uid select the credential;
+// ownership is the only editable field.
 type CloudCredentialOwnershipUpdateRequest struct {
 	OrgId string `protobuf:"bytes,1,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
 	// Cloud credential name to be updated.
@@ -14658,7 +14748,14 @@ func (m *EmailConfig) GetTlsConfig() *TlsConfig {
 }
 
 type ReceiverInfo struct {
+	// Used together with org_id/ownership to look up the receiver on
+	// Update — name/uid are not part of that lookup. Sending a
+	// different type does not change this receiver's type in place; it
+	// targets a different receiver (or matches none) instead.
 	Type ReceiverInfo_Type `protobuf:"varint,1,opt,name=type,proto3,enum=ReceiverInfo_Type" json:"type,omitempty"`
+	// Editable. Must match `type`; send the complete config for that type
+	// back on Update, not just the changed values.
+	//
 	// Types that are valid to be assigned to Config:
 	//
 	//	*ReceiverInfo_EmailConfig
@@ -15089,9 +15186,24 @@ func (m *ReceiverInspectResponse) GetReceiver() *ReceiverObject {
 	return nil
 }
 
+// ReceiverUpdateRequest performs a full-object replace: fetch the current
+// receiver via Inspect, modify only the fields you need to change, and send
+// the complete request back.
+//
+// receiver_info field breakdown (see ReceiverInfo for full per-field
+// detail): type is not a free-form edit — it is used together with
+// org_id/ownership to look up the receiver being updated (name/uid are
+// not part of that lookup), so sending a different type targets a
+// different receiver instead of changing this one's type. config is
+// editable and must match type.
 type ReceiverUpdateRequest struct {
+	// See CreateMetadata: name/org_id/uid identify the receiver and are
+	// immutable via Update. labels are editable; ownership is not
+	// editable via Update.
 	*CreateMetadata `protobuf:"bytes,1,opt,name=metadata,proto3,embedded=metadata" json:"metadata,omitempty"`
-	ReceiverInfo    *ReceiverInfo `protobuf:"bytes,2,opt,name=receiver_info,json=receiverInfo,proto3" json:"receiver_info,omitempty"`
+	// See message-level summary above and ReceiverInfo for per-field
+	// detail. Must be sent in full; omitted sub-fields may be reset.
+	ReceiverInfo *ReceiverInfo `protobuf:"bytes,2,opt,name=receiver_info,json=receiverInfo,proto3" json:"receiver_info,omitempty"`
 }
 
 func (m *ReceiverUpdateRequest) Reset()         { *m = ReceiverUpdateRequest{} }
@@ -15444,15 +15556,17 @@ func (m *RecipientObject) GetRecipientInfo() *RecipientInfo {
 }
 
 type RecipientInfo struct {
-	// Type of notification on user level
+	// Type of notification on user level.
+	// Editable — the server does not enforce immutability here:
+	// sending a different type overwrites the stored value.
 	Type RecipientInfo_Type `protobuf:"varint,1,opt,name=type,proto3,enum=RecipientInfo_Type" json:"type,omitempty"`
-	// Based on type recipient list is added
+	// Based on type recipient list is added. Editable.
 	RecipientId []string `protobuf:"bytes,2,rep,name=recipient_id,json=recipientId,proto3" json:"recipient_id,omitempty"`
-	// current status set by user
+	// current status set by user. Editable.
 	Active bool `protobuf:"varint,3,opt,name=active,proto3" json:"active,omitempty"`
-	// Link receiver object
+	// Link receiver object. Editable.
 	ReceiverRef *ObjectRef `protobuf:"bytes,4,opt,name=receiver_ref,json=receiverRef,proto3" json:"receiver_ref,omitempty"`
-	// Filter level of alert by severity
+	// Filter level of alert by severity. Editable.
 	Severity RecipientInfo_Severity `protobuf:"varint,5,opt,name=severity,proto3,enum=RecipientInfo_Severity" json:"severity,omitempty"`
 }
 
@@ -15823,9 +15937,22 @@ func (m *RecipientInspectResponse) GetRecipient() *RecipientObject {
 	return nil
 }
 
+// RecipientUpdateRequest performs a full-object replace: fetch the current
+// recipient via Inspect, modify only the fields you need to change, and
+// send the complete request back.
+//
+// recipient_info field breakdown (see RecipientInfo for full per-field
+// detail): every field is editable, including type — changing it
+// overwrites the stored value, the server does not enforce immutability.
 type RecipientUpdateRequest struct {
+	// See CreateMetadata: name/org_id/uid identify the recipient and are
+	// immutable via Update. labels are editable; ownership is not
+	// editable via Update.
 	*CreateMetadata `protobuf:"bytes,1,opt,name=metadata,proto3,embedded=metadata" json:"metadata,omitempty"`
-	RecipientInfo   *RecipientInfo `protobuf:"bytes,2,opt,name=recipient_info,json=recipientInfo,proto3" json:"recipient_info,omitempty"`
+	// Editable, including `type` (see message-level summary above and
+	// RecipientInfo for detail). Must be sent in full; omitted sub-fields
+	// may be reset.
+	RecipientInfo *RecipientInfo `protobuf:"bytes,2,opt,name=recipient_info,json=recipientInfo,proto3" json:"recipient_info,omitempty"`
 }
 
 func (m *RecipientUpdateRequest) Reset()         { *m = RecipientUpdateRequest{} }
@@ -16092,9 +16219,35 @@ func (m *BackupLocationCreateResponse) GetBackupLocation() *BackupLocationObject
 }
 
 // Define BackupLocationUpdateRequest struct
+// BackupLocationUpdateRequest performs a full-object replace: fetch the
+// current backup location via Inspect, modify only the fields you need to
+// change, and send the complete request back.
+//
+// backup_location field breakdown (see BackupLocationInfo for full
+// per-field detail):
+//   - Editable: validate_cloud_credential (triggers re-validation),
+//     cloud_credential_ref, use_workload_identity, cluster_refs, sync
+//     (triggers a one-off sync; reset by the server once it completes).
+//   - Not editable: type (the provider a backup location was created for
+//     cannot be switched to a different one), path, encryption_key
+//     (neither can be changed once set) — all three are enforced by the
+//     server, which rejects an Update that attempts to change them.
+//   - Deprecated, not to be used: cloud_credential.
+//   - Delete-only, not used by Update (see BackupLocationInfo):
+//     delete_backups.
+//   - System-managed / output-only (any value sent is ignored): status,
+//     object_lock_enabled, cluster_status, validation_started_at,
+//     sync_info.
 type BackupLocationUpdateRequest struct {
+	// See CreateMetadata: name/org_id/uid identify the backup location and
+	// are immutable via Update. labels are editable; ownership is not
+	// editable via this Update — use BackupLocationOwnershipUpdateRequest
+	// instead.
 	*CreateMetadata `protobuf:"bytes,1,opt,name=metadata,proto3,embedded=metadata" json:"metadata,omitempty"`
-	BackupLocation  *BackupLocationInfo `protobuf:"bytes,2,opt,name=backup_location,json=backupLocation,proto3" json:"backup_location,omitempty"`
+	// See message-level summary above and BackupLocationInfo for
+	// per-field detail. Must be sent in full; omitted sub-fields may be
+	// reset.
+	BackupLocation *BackupLocationInfo `protobuf:"bytes,2,opt,name=backup_location,json=backupLocation,proto3" json:"backup_location,omitempty"`
 }
 
 func (m *BackupLocationUpdateRequest) Reset()         { *m = BackupLocationUpdateRequest{} }
@@ -16746,6 +16899,8 @@ func (m *BackupLocationValidateResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_BackupLocationValidateResponse proto.InternalMessageInfo
 
 // Define BackupLocationOwnershipUpdateRequest struct
+// Ownership-only partial update: org_id/name/uid select the backup
+// location; ownership is the only editable field.
 type BackupLocationOwnershipUpdateRequest struct {
 	OrgId string `protobuf:"bytes,1,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
 	// Backup location to be updated
@@ -17536,11 +17691,19 @@ func (m *BackupCreateResponse) GetBackup() *BackupObject {
 }
 
 // Define BackupUpdateRequest struct
+// BackupUpdateRequest only allows updating cloud_credential_ref and
+// metadata.labels/ownership; all other Backup fields (e.g. namespaces,
+// resources, backup_location_ref) are set at Create time and are immutable
+// via Update.
 type BackupUpdateRequest struct {
+	// See CreateMetadata: name/org_id/uid identify the backup and are
+	// immutable via Update. labels are editable; ownership is not
+	// editable via Update.
 	*CreateMetadata `protobuf:"bytes,1,opt,name=metadata,proto3,embedded=metadata" json:"metadata,omitempty"`
 	// Reference to cloud credential object used for backup
 	// cloud_credential is deprecated, not to be used.
-	CloudCredential    string     `protobuf:"bytes,2,opt,name=cloud_credential,json=cloudCredential,proto3" json:"cloud_credential,omitempty"`
+	CloudCredential string `protobuf:"bytes,2,opt,name=cloud_credential,json=cloudCredential,proto3" json:"cloud_credential,omitempty"`
+	// Editable.
 	CloudCredentialRef *ObjectRef `protobuf:"bytes,3,opt,name=cloud_credential_ref,json=cloudCredentialRef,proto3" json:"cloud_credential_ref,omitempty"`
 }
 
@@ -18220,6 +18383,10 @@ func (m *BackupDeleteResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_BackupDeleteResponse proto.InternalMessageInfo
 
 // Request message for backup share update request
+// Partial update: org_id/name/uid select the backup; backupshare is the
+// only editable field. Unlike ClusterBackupShareUpdateRequest, this does
+// not split add/del shares — confirmed: `backupshare` replaces the
+// existing share list wholesale, it does not merge/append.
 type BackupShareUpdateRequest struct {
 	OrgId string `protobuf:"bytes,1,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
 	// Backup to be updated
@@ -20988,7 +21155,12 @@ func (m *RestoreCreateResponse) GetRestore() *RestoreObject {
 }
 
 // Define RestoreUpdateRequest struct
+// RestoreUpdateRequest only allows updating metadata.labels/ownership; a
+// restore's other properties are fixed at Create time.
 type RestoreUpdateRequest struct {
+	// See CreateMetadata: name/org_id/uid identify the restore and are
+	// immutable via Update. labels are editable; ownership is not
+	// editable via Update.
 	*CreateMetadata `protobuf:"bytes,1,opt,name=metadata,proto3,embedded=metadata" json:"metadata,omitempty"`
 }
 
@@ -21797,9 +21969,17 @@ func (m *RuleCreateResponse) GetRule() *RuleObject {
 	return nil
 }
 
+// RuleUpdateRequest performs a full-object replace: fetch the current rule
+// via Inspect, modify only the fields you need to change, and send the
+// complete request back.
 type RuleUpdateRequest struct {
+	// See CreateMetadata: name/org_id/uid identify the rule and are
+	// immutable via Update. labels are editable; ownership is not
+	// editable via this Update — use RuleOwnershipUpdateRequest
+	// instead.
 	*CreateMetadata `protobuf:"bytes,1,opt,name=metadata,proto3,embedded=metadata" json:"metadata,omitempty"`
-	RulesInfo       *RulesInfo `protobuf:"bytes,2,opt,name=rules_info,json=rulesInfo,proto3" json:"rules_info,omitempty"`
+	// Editable. Must be sent in full; omitted sub-fields may be reset.
+	RulesInfo *RulesInfo `protobuf:"bytes,2,opt,name=rules_info,json=rulesInfo,proto3" json:"rules_info,omitempty"`
 }
 
 func (m *RuleUpdateRequest) Reset()         { *m = RuleUpdateRequest{} }
@@ -22174,6 +22354,8 @@ func (m *RuleDeleteResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_RuleDeleteResponse proto.InternalMessageInfo
 
 // Define RuleOwnershipUpdateRequest struct
+// Ownership-only partial update: org_id/name/uid select the rule;
+// ownership is the only editable field.
 type RuleOwnershipUpdateRequest struct {
 	OrgId string `protobuf:"bytes,1,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
 	// Rule to be updated
@@ -22595,9 +22777,13 @@ func (m *LicenseActivateResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_LicenseActivateResponse proto.InternalMessageInfo
 
+// LicenseUpdateRequest is a narrow, explicit-field update: only
+// usage_based_id can be changed via this API.
 type LicenseUpdateRequest struct {
+	// metadata.org_id identifies the org whose license is updated.
 	*CreateMetadata `protobuf:"bytes,1,opt,name=metadata,proto3,embedded=metadata" json:"metadata,omitempty"`
-	UsageBasedId    string `protobuf:"bytes,2,opt,name=usage_based_id,json=usageBasedId,proto3" json:"usage_based_id,omitempty"`
+	// Editable.
+	UsageBasedId string `protobuf:"bytes,2,opt,name=usage_based_id,json=usageBasedId,proto3" json:"usage_based_id,omitempty"`
 }
 
 func (m *LicenseUpdateRequest) Reset()         { *m = LicenseUpdateRequest{} }
@@ -24894,10 +25080,21 @@ func (m *RoleCreateResponse) GetRole() *RoleObject {
 }
 
 // RoleUpdateRequest defines roleobject update structure
+// RoleUpdateRequest performs a full-object replace: fetch the current role
+// via Inspect, modify only the fields you need to change, and send the
+// complete request back.
 type RoleUpdateRequest struct {
+	// See CreateMetadata: name/org_id/uid identify the role and are
+	// immutable via Update. labels are editable; ownership is not
+	// editable via Update.
 	*CreateMetadata `protobuf:"bytes,1,opt,name=metadata,proto3,embedded=metadata" json:"metadata,omitempty"`
-	Rules           []*RoleConfig `protobuf:"bytes,2,rep,name=rules,proto3" json:"rules,omitempty"`
-	// Keyclock UID associated with role
+	// Editable. Must be sent in full; omitted entries are removed.
+	Rules []*RoleConfig `protobuf:"bytes,2,rep,name=rules,proto3" json:"rules,omitempty"`
+	// Keyclock UID associated with role.
+	// Intended to be a system-managed identifier assigned by Keycloak
+	// at creation, but the server does not currently enforce
+	// immutability here: whatever value is sent overwrites the stored
+	// role_id. Callers should echo the existing value back unchanged.
 	RoleId string `protobuf:"bytes,3,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
 }
 
@@ -26809,10 +27006,15 @@ func (m *ClusterDiscoveryConfigCreateResponse) GetClusterDiscoveryConfig() *Clus
 	return nil
 }
 
+// ClusterDiscoveryConfigUpdateRequest is a true partial/PATCH-style update
+// (unlike most other Update APIs in this service): unset fields are left
+// unchanged rather than being reset. Fields using a wrapper type (e.g.
+// BoolValue) distinguish "not provided" from an explicit zero value; plain
+// scalar/message fields are only applied when non-empty.
 type ClusterDiscoveryConfigUpdateRequest struct {
-	// Organization ID of the cluster discovery config to update.
+	// Selector: organization ID of the cluster discovery config to update.
 	OrgId string `protobuf:"bytes,1,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
-	// Reference to the cluster discovery config to update (name is required, uid is optional for exact match).
+	// Selector: reference to the cluster discovery config to update (name is required, uid is optional for exact match).
 	ConfigRef *ObjectRef `protobuf:"bytes,2,opt,name=config_ref,json=configRef,proto3" json:"config_ref,omitempty"`
 	// Updated Gardener kubeconfig containing the token, certificate, and other
 	// auth credentials for the Gardener API server. The server/API endpoint
@@ -43458,7 +43660,10 @@ var _Health_serviceDesc = grpc.ServiceDesc{
 type VolumeResourceOnlyPolicyClient interface {
 	// Creates new VolumeResourceOnly Policy.
 	Create(ctx context.Context, in *VolumeResourceOnlyPolicyCreateRequest, opts ...grpc.CallOption) (*VolumeResourceOnlyPolicyCreateResponse, error)
-	// Update given volumeResourceOnly policy details
+	// Update given volumeResourceOnly policy details.
+	// This is a full-object replace, not a partial/delta update: first
+	// Inspect the policy, modify only the fields that need to change, and
+	// send the complete VolumeResourceOnlyPolicyUpdateRequest back.
 	Update(ctx context.Context, in *VolumeResourceOnlyPolicyUpdateRequest, opts ...grpc.CallOption) (*VolumeResourceOnlyPolicyUpdateResponse, error)
 	// Enumerate returns a list of volumeResourceOnly policy
 	Enumerate(ctx context.Context, in *VolumeResourceOnlyPolicyEnumerateRequest, opts ...grpc.CallOption) (*VolumeResourceOnlyPolicyEnumerateResponse, error)
@@ -43536,7 +43741,10 @@ func (c *volumeResourceOnlyPolicyClient) UpdateOwnership(ctx context.Context, in
 type VolumeResourceOnlyPolicyServer interface {
 	// Creates new VolumeResourceOnly Policy.
 	Create(context.Context, *VolumeResourceOnlyPolicyCreateRequest) (*VolumeResourceOnlyPolicyCreateResponse, error)
-	// Update given volumeResourceOnly policy details
+	// Update given volumeResourceOnly policy details.
+	// This is a full-object replace, not a partial/delta update: first
+	// Inspect the policy, modify only the fields that need to change, and
+	// send the complete VolumeResourceOnlyPolicyUpdateRequest back.
 	Update(context.Context, *VolumeResourceOnlyPolicyUpdateRequest) (*VolumeResourceOnlyPolicyUpdateResponse, error)
 	// Enumerate returns a list of volumeResourceOnly policy
 	Enumerate(context.Context, *VolumeResourceOnlyPolicyEnumerateRequest) (*VolumeResourceOnlyPolicyEnumerateResponse, error)
@@ -43722,7 +43930,10 @@ var _VolumeResourceOnlyPolicy_serviceDesc = grpc.ServiceDesc{
 type SchedulePolicyClient interface {
 	// Creates new schedule policy.
 	Create(ctx context.Context, in *SchedulePolicyCreateRequest, opts ...grpc.CallOption) (*SchedulePolicyCreateResponse, error)
-	// Update given schedule policy details
+	// Update given schedule policy details.
+	// This is a full-object replace, not a partial/delta update: first
+	// Inspect the schedule policy, modify only the fields that need to
+	// change, and send the complete SchedulePolicyUpdateRequest back.
 	Update(ctx context.Context, in *SchedulePolicyUpdateRequest, opts ...grpc.CallOption) (*SchedulePolicyUpdateResponse, error)
 	// Enumerate returns a list of schedule policy
 	Enumerate(ctx context.Context, in *SchedulePolicyEnumerateRequest, opts ...grpc.CallOption) (*SchedulePolicyEnumerateResponse, error)
@@ -43800,7 +44011,10 @@ func (c *schedulePolicyClient) UpdateOwnership(ctx context.Context, in *Schedule
 type SchedulePolicyServer interface {
 	// Creates new schedule policy.
 	Create(context.Context, *SchedulePolicyCreateRequest) (*SchedulePolicyCreateResponse, error)
-	// Update given schedule policy details
+	// Update given schedule policy details.
+	// This is a full-object replace, not a partial/delta update: first
+	// Inspect the schedule policy, modify only the fields that need to
+	// change, and send the complete SchedulePolicyUpdateRequest back.
 	Update(context.Context, *SchedulePolicyUpdateRequest) (*SchedulePolicyUpdateResponse, error)
 	// Enumerate returns a list of schedule policy
 	Enumerate(context.Context, *SchedulePolicyEnumerateRequest) (*SchedulePolicyEnumerateResponse, error)
@@ -43986,7 +44200,14 @@ var _SchedulePolicy_serviceDesc = grpc.ServiceDesc{
 type BackupScheduleClient interface {
 	// Creates new backup schedule
 	Create(ctx context.Context, in *BackupScheduleCreateRequest, opts ...grpc.CallOption) (*BackupScheduleCreateResponse, error)
-	// Updates a backup schedule
+	// Updates a backup schedule, or a bulk-selected set of backup
+	// schedules (see BackupScheduleUpdateFilterOptions).
+	// Unlike most Update APIs, this takes an explicit, flat set of fields
+	// rather than the full BackupSchedule object. Inspect the schedule(s)
+	// first and send back the complete set of value fields you want the
+	// schedule(s) to have, since fields left at their zero value may reset
+	// the corresponding setting. See BackupScheduleUpdateRequest for which
+	// fields select the target schedule(s) vs. supply new values.
 	Update(ctx context.Context, in *BackupScheduleUpdateRequest, opts ...grpc.CallOption) (*BackupScheduleUpdateResponse, error)
 	// Enumerate returns a list of backup schedule
 	Enumerate(ctx context.Context, in *BackupScheduleEnumerateRequest, opts ...grpc.CallOption) (*BackupScheduleEnumerateResponse, error)
@@ -44053,7 +44274,14 @@ func (c *backupScheduleClient) Delete(ctx context.Context, in *BackupScheduleDel
 type BackupScheduleServer interface {
 	// Creates new backup schedule
 	Create(context.Context, *BackupScheduleCreateRequest) (*BackupScheduleCreateResponse, error)
-	// Updates a backup schedule
+	// Updates a backup schedule, or a bulk-selected set of backup
+	// schedules (see BackupScheduleUpdateFilterOptions).
+	// Unlike most Update APIs, this takes an explicit, flat set of fields
+	// rather than the full BackupSchedule object. Inspect the schedule(s)
+	// first and send back the complete set of value fields you want the
+	// schedule(s) to have, since fields left at their zero value may reset
+	// the corresponding setting. See BackupScheduleUpdateRequest for which
+	// fields select the target schedule(s) vs. supply new values.
 	Update(context.Context, *BackupScheduleUpdateRequest) (*BackupScheduleUpdateResponse, error)
 	// Enumerate returns a list of backup schedule
 	Enumerate(context.Context, *BackupScheduleEnumerateRequest) (*BackupScheduleEnumerateResponse, error)
@@ -44212,7 +44440,12 @@ var _BackupSchedule_serviceDesc = grpc.ServiceDesc{
 type ClusterClient interface {
 	// Creates a new cluster
 	Create(ctx context.Context, in *ClusterCreateRequest, opts ...grpc.CallOption) (*ClusterCreateResponse, error)
-	// Update given cluster details
+	// Update given cluster details.
+	// This is a full-object replace, not a partial/delta update: first
+	// Inspect the cluster, modify only the fields that need to change, and
+	// send the complete ClusterUpdateRequest (including unchanged nested
+	// fields such as px_config) back. See ClusterUpdateRequest for which
+	// fields are editable vs immutable.
 	Update(ctx context.Context, in *ClusterUpdateRequest, opts ...grpc.CallOption) (*ClusterUpdateResponse, error)
 	// Enumerate returns a list of clusters
 	Enumerate(ctx context.Context, in *ClusterEnumerateRequest, opts ...grpc.CallOption) (*ClusterEnumerateResponse, error)
@@ -44313,7 +44546,12 @@ func (c *clusterClient) UnShareCluster(ctx context.Context, in *UnShareClusterRe
 type ClusterServer interface {
 	// Creates a new cluster
 	Create(context.Context, *ClusterCreateRequest) (*ClusterCreateResponse, error)
-	// Update given cluster details
+	// Update given cluster details.
+	// This is a full-object replace, not a partial/delta update: first
+	// Inspect the cluster, modify only the fields that need to change, and
+	// send the complete ClusterUpdateRequest (including unchanged nested
+	// fields such as px_config) back. See ClusterUpdateRequest for which
+	// fields are editable vs immutable.
 	Update(context.Context, *ClusterUpdateRequest) (*ClusterUpdateResponse, error)
 	// Enumerate returns a list of clusters
 	Enumerate(context.Context, *ClusterEnumerateRequest) (*ClusterEnumerateResponse, error)
@@ -44554,7 +44792,12 @@ var _Cluster_serviceDesc = grpc.ServiceDesc{
 type CloudCredentialClient interface {
 	// Creates new cloud credential
 	Create(ctx context.Context, in *CloudCredentialCreateRequest, opts ...grpc.CallOption) (*CloudCredentialCreateResponse, error)
-	// Update given cloud credential details
+	// Update given cloud credential details.
+	// This is a full-object replace, not a partial/delta update: first
+	// Inspect the cloud credential, modify only the fields that need to
+	// change, and send the complete CloudCredentialUpdateRequest back. See
+	// CloudCredentialUpdateRequest and CloudCredentialInfo for which fields
+	// are editable vs immutable.
 	Update(ctx context.Context, in *CloudCredentialUpdateRequest, opts ...grpc.CallOption) (*CloudCredentialUpdateResponse, error)
 	// Enumerate returns a list of cloud credentials
 	Enumerate(ctx context.Context, in *CloudCredentialEnumerateRequest, opts ...grpc.CallOption) (*CloudCredentialEnumerateResponse, error)
@@ -44632,7 +44875,12 @@ func (c *cloudCredentialClient) UpdateOwnership(ctx context.Context, in *CloudCr
 type CloudCredentialServer interface {
 	// Creates new cloud credential
 	Create(context.Context, *CloudCredentialCreateRequest) (*CloudCredentialCreateResponse, error)
-	// Update given cloud credential details
+	// Update given cloud credential details.
+	// This is a full-object replace, not a partial/delta update: first
+	// Inspect the cloud credential, modify only the fields that need to
+	// change, and send the complete CloudCredentialUpdateRequest back. See
+	// CloudCredentialUpdateRequest and CloudCredentialInfo for which fields
+	// are editable vs immutable.
 	Update(context.Context, *CloudCredentialUpdateRequest) (*CloudCredentialUpdateResponse, error)
 	// Enumerate returns a list of cloud credentials
 	Enumerate(context.Context, *CloudCredentialEnumerateRequest) (*CloudCredentialEnumerateResponse, error)
@@ -44822,7 +45070,10 @@ type ReceiverClient interface {
 	Enumerate(ctx context.Context, in *ReceiverEnumerateRequest, opts ...grpc.CallOption) (*ReceiverEnumerateResponse, error)
 	// Returns the details of a specific alert manager receiver
 	Inspect(ctx context.Context, in *ReceiverInspectRequest, opts ...grpc.CallOption) (*ReceiverInspectResponse, error)
-	// Update the details of a alert manager receiver
+	// Update the details of a alert manager receiver.
+	// This is a full-object replace, not a partial/delta update: first
+	// Inspect the receiver, modify only the fields that need to change, and
+	// send the complete ReceiverUpdateRequest back.
 	Update(ctx context.Context, in *ReceiverUpdateRequest, opts ...grpc.CallOption) (*ReceiverUpdateResponse, error)
 	// Delete a specific alert manager receiver
 	Delete(ctx context.Context, in *ReceiverDeleteRequest, opts ...grpc.CallOption) (*ReceiverDeleteResponse, error)
@@ -44900,7 +45151,10 @@ type ReceiverServer interface {
 	Enumerate(context.Context, *ReceiverEnumerateRequest) (*ReceiverEnumerateResponse, error)
 	// Returns the details of a specific alert manager receiver
 	Inspect(context.Context, *ReceiverInspectRequest) (*ReceiverInspectResponse, error)
-	// Update the details of a alert manager receiver
+	// Update the details of a alert manager receiver.
+	// This is a full-object replace, not a partial/delta update: first
+	// Inspect the receiver, modify only the fields that need to change, and
+	// send the complete ReceiverUpdateRequest back.
 	Update(context.Context, *ReceiverUpdateRequest) (*ReceiverUpdateResponse, error)
 	// Delete a specific alert manager receiver
 	Delete(context.Context, *ReceiverDeleteRequest) (*ReceiverDeleteResponse, error)
@@ -45085,7 +45339,10 @@ type RecipientClient interface {
 	Enumerate(ctx context.Context, in *RecipientEnumerateRequest, opts ...grpc.CallOption) (*RecipientEnumerateResponse, error)
 	// Returns the details of a specific recipient
 	Inspect(ctx context.Context, in *RecipientInspectRequest, opts ...grpc.CallOption) (*RecipientInspectResponse, error)
-	// Update the details of a recipient
+	// Update the details of a recipient.
+	// This is a full-object replace, not a partial/delta update: first
+	// Inspect the recipient, modify only the fields that need to change,
+	// and send the complete RecipientUpdateRequest back.
 	Update(ctx context.Context, in *RecipientUpdateRequest, opts ...grpc.CallOption) (*RecipientUpdateResponse, error)
 	// Delete a specific recipient
 	Delete(ctx context.Context, in *RecipientDeleteRequest, opts ...grpc.CallOption) (*RecipientDeleteResponse, error)
@@ -45151,7 +45408,10 @@ type RecipientServer interface {
 	Enumerate(context.Context, *RecipientEnumerateRequest) (*RecipientEnumerateResponse, error)
 	// Returns the details of a specific recipient
 	Inspect(context.Context, *RecipientInspectRequest) (*RecipientInspectResponse, error)
-	// Update the details of a recipient
+	// Update the details of a recipient.
+	// This is a full-object replace, not a partial/delta update: first
+	// Inspect the recipient, modify only the fields that need to change,
+	// and send the complete RecipientUpdateRequest back.
 	Update(context.Context, *RecipientUpdateRequest) (*RecipientUpdateResponse, error)
 	// Delete a specific recipient
 	Delete(context.Context, *RecipientDeleteRequest) (*RecipientDeleteResponse, error)
@@ -45306,7 +45566,12 @@ var _Recipient_serviceDesc = grpc.ServiceDesc{
 type BackupLocationClient interface {
 	// Creates new backup location
 	Create(ctx context.Context, in *BackupLocationCreateRequest, opts ...grpc.CallOption) (*BackupLocationCreateResponse, error)
-	// Update given backup location details
+	// Update given backup location details.
+	// This is a full-object replace, not a partial/delta update: first
+	// Inspect the backup location, modify only the fields that need to
+	// change, and send the complete BackupLocationUpdateRequest back. See
+	// BackupLocationUpdateRequest and BackupLocationInfo for which fields
+	// are editable vs immutable.
 	Update(ctx context.Context, in *BackupLocationUpdateRequest, opts ...grpc.CallOption) (*BackupLocationUpdateResponse, error)
 	// Enumerate returns a list of backup locations
 	Enumerate(ctx context.Context, in *BackupLocationEnumerateRequest, opts ...grpc.CallOption) (*BackupLocationEnumerateResponse, error)
@@ -45395,7 +45660,12 @@ func (c *backupLocationClient) UpdateOwnership(ctx context.Context, in *BackupLo
 type BackupLocationServer interface {
 	// Creates new backup location
 	Create(context.Context, *BackupLocationCreateRequest) (*BackupLocationCreateResponse, error)
-	// Update given backup location details
+	// Update given backup location details.
+	// This is a full-object replace, not a partial/delta update: first
+	// Inspect the backup location, modify only the fields that need to
+	// change, and send the complete BackupLocationUpdateRequest back. See
+	// BackupLocationUpdateRequest and BackupLocationInfo for which fields
+	// are editable vs immutable.
 	Update(context.Context, *BackupLocationUpdateRequest) (*BackupLocationUpdateResponse, error)
 	// Enumerate returns a list of backup locations
 	Enumerate(context.Context, *BackupLocationEnumerateRequest) (*BackupLocationEnumerateResponse, error)
@@ -45720,7 +45990,11 @@ var _Metrics_serviceDesc = grpc.ServiceDesc{
 type BackupClient interface {
 	// Creates a new backup object
 	Create(ctx context.Context, in *BackupCreateRequest, opts ...grpc.CallOption) (*BackupCreateResponse, error)
-	// Update given backup details
+	// Update given backup details.
+	// Unlike most Update APIs, this is a narrow, explicit-field update, not
+	// a full-object replace: only the fields declared on
+	// BackupUpdateRequest can be changed; other Backup fields are
+	// immutable via this API.
 	Update(ctx context.Context, in *BackupUpdateRequest, opts ...grpc.CallOption) (*BackupUpdateResponse, error)
 	// Enumerate returns a list of objects
 	Enumerate(ctx context.Context, in *BackupEnumerateRequest, opts ...grpc.CallOption) (*BackupEnumerateResponse, error)
@@ -45820,7 +46094,11 @@ func (c *backupClient) RetryBackupResources(ctx context.Context, in *BackupRetry
 type BackupServer interface {
 	// Creates a new backup object
 	Create(context.Context, *BackupCreateRequest) (*BackupCreateResponse, error)
-	// Update given backup details
+	// Update given backup details.
+	// Unlike most Update APIs, this is a narrow, explicit-field update, not
+	// a full-object replace: only the fields declared on
+	// BackupUpdateRequest can be changed; other Backup fields are
+	// immutable via this API.
 	Update(context.Context, *BackupUpdateRequest) (*BackupUpdateResponse, error)
 	// Enumerate returns a list of objects
 	Enumerate(context.Context, *BackupEnumerateRequest) (*BackupEnumerateResponse, error)
@@ -46061,7 +46339,10 @@ type RestoreClient interface {
 	// Creates new restore object in datastore
 	// It will also trigger a restore operation on the target cluster
 	Create(ctx context.Context, in *RestoreCreateRequest, opts ...grpc.CallOption) (*RestoreCreateResponse, error)
-	// Update given restore details
+	// Update given restore details.
+	// Unlike most Update APIs, this only supports updating
+	// metadata.labels/ownership; all other Restore fields are set at
+	// Create time and are immutable via Update.
 	Update(ctx context.Context, in *RestoreUpdateRequest, opts ...grpc.CallOption) (*RestoreUpdateResponse, error)
 	// Enumerate returns a list of restore objects
 	Enumerate(ctx context.Context, in *RestoreEnumerateRequest, opts ...grpc.CallOption) (*RestoreEnumerateResponse, error)
@@ -46167,7 +46448,10 @@ type RestoreServer interface {
 	// Creates new restore object in datastore
 	// It will also trigger a restore operation on the target cluster
 	Create(context.Context, *RestoreCreateRequest) (*RestoreCreateResponse, error)
-	// Update given restore details
+	// Update given restore details.
+	// Unlike most Update APIs, this only supports updating
+	// metadata.labels/ownership; all other Restore fields are set at
+	// Create time and are immutable via Update.
 	Update(context.Context, *RestoreUpdateRequest) (*RestoreUpdateResponse, error)
 	// Enumerate returns a list of restore objects
 	Enumerate(context.Context, *RestoreEnumerateRequest) (*RestoreEnumerateResponse, error)
@@ -46582,7 +46866,10 @@ var _Organization_serviceDesc = grpc.ServiceDesc{
 type RulesClient interface {
 	// Creates new rule
 	Create(ctx context.Context, in *RuleCreateRequest, opts ...grpc.CallOption) (*RuleCreateResponse, error)
-	// Update given rule details
+	// Update given rule details.
+	// This is a full-object replace, not a partial/delta update: first
+	// Inspect the rule, modify only the fields that need to change, and
+	// send the complete RuleUpdateRequest back.
 	Update(ctx context.Context, in *RuleUpdateRequest, opts ...grpc.CallOption) (*RuleUpdateResponse, error)
 	// Enumerate returns a list of rules
 	Enumerate(ctx context.Context, in *RuleEnumerateRequest, opts ...grpc.CallOption) (*RuleEnumerateResponse, error)
@@ -46660,7 +46947,10 @@ func (c *rulesClient) UpdateOwnership(ctx context.Context, in *RuleOwnershipUpda
 type RulesServer interface {
 	// Creates new rule
 	Create(context.Context, *RuleCreateRequest) (*RuleCreateResponse, error)
-	// Update given rule details
+	// Update given rule details.
+	// This is a full-object replace, not a partial/delta update: first
+	// Inspect the rule, modify only the fields that need to change, and
+	// send the complete RuleUpdateRequest back.
 	Update(context.Context, *RuleUpdateRequest) (*RuleUpdateResponse, error)
 	// Enumerate returns a list of rules
 	Enumerate(context.Context, *RuleEnumerateRequest) (*RuleEnumerateResponse, error)
@@ -46922,7 +47212,9 @@ type LicenseClient interface {
 	Activate(ctx context.Context, in *LicenseActivateRequest, opts ...grpc.CallOption) (*LicenseActivateResponse, error)
 	// Enumerate returns a list of license for given cluster
 	Inspect(ctx context.Context, in *LicenseInspectRequest, opts ...grpc.CallOption) (*LicenseInspectResponse, error)
-	// Updates Usage Based activation ID
+	// Updates Usage Based activation ID.
+	// Narrow, explicit-field update: only usage_based_id can be changed via
+	// this API.
 	Update(ctx context.Context, in *LicenseUpdateRequest, opts ...grpc.CallOption) (*LicenseUpdateResponse, error)
 	EnumerateLicenseUsageAirGapped(ctx context.Context, in *LicenseUsageAirgappedRequest, opts ...grpc.CallOption) (*LicenseUsageAirgappedResponse, error)
 }
@@ -46977,7 +47269,9 @@ type LicenseServer interface {
 	Activate(context.Context, *LicenseActivateRequest) (*LicenseActivateResponse, error)
 	// Enumerate returns a list of license for given cluster
 	Inspect(context.Context, *LicenseInspectRequest) (*LicenseInspectResponse, error)
-	// Updates Usage Based activation ID
+	// Updates Usage Based activation ID.
+	// Narrow, explicit-field update: only usage_based_id can be changed via
+	// this API.
 	Update(context.Context, *LicenseUpdateRequest) (*LicenseUpdateResponse, error)
 	EnumerateLicenseUsageAirGapped(context.Context, *LicenseUsageAirgappedRequest) (*LicenseUsageAirgappedResponse, error)
 }
@@ -47344,7 +47638,10 @@ type RoleClient interface {
 	Enumerate(ctx context.Context, in *RoleEnumerateRequest, opts ...grpc.CallOption) (*RoleEnumerateResponse, error)
 	// Inspect returns detailed information about requested role object
 	Inspect(ctx context.Context, in *RoleInspectRequest, opts ...grpc.CallOption) (*RoleInspectResponse, error)
-	// Update given role information
+	// Update given role information.
+	// This is a full-object replace, not a partial/delta update: first
+	// Inspect the role, modify only the fields that need to change, and
+	// send the complete RoleUpdateRequest back.
 	Update(ctx context.Context, in *RoleUpdateRequest, opts ...grpc.CallOption) (*RoleUpdateResponse, error)
 	// Delete removes given role from px-backup
 	Delete(ctx context.Context, in *RoleDeleteRequest, opts ...grpc.CallOption) (*RoleDeleteResponse, error)
@@ -47422,7 +47719,10 @@ type RoleServer interface {
 	Enumerate(context.Context, *RoleEnumerateRequest) (*RoleEnumerateResponse, error)
 	// Inspect returns detailed information about requested role object
 	Inspect(context.Context, *RoleInspectRequest) (*RoleInspectResponse, error)
-	// Update given role information
+	// Update given role information.
+	// This is a full-object replace, not a partial/delta update: first
+	// Inspect the role, modify only the fields that need to change, and
+	// send the complete RoleUpdateRequest back.
 	Update(context.Context, *RoleUpdateRequest) (*RoleUpdateResponse, error)
 	// Delete removes given role from px-backup
 	Delete(context.Context, *RoleDeleteRequest) (*RoleDeleteResponse, error)
