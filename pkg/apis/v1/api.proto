@@ -6070,8 +6070,25 @@ message ResourceCatalogUpdateOwnershipResponse {
 message PlacementRuleCreateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
     PlacementRuleInfo placement_rule = 2;
+    // Create the rule and apply it in one operation, so the UI needs one call
+    // for one button.
+    //
+    // DEFAULTS TO FALSE, and an auto rule must leave it false: creating,
+    // enabling or editing an auto rule schedules it for the next published
+    // cycle rather than running it immediately -- journeys C3 and Q9. A
+    // one-shot rule sets it, because its whole life is that single
+    // application and a one-shot rule that is never applied does nothing.
+    //
+    // The response then carries what Apply would have returned.
+    bool apply_immediately = 3;
 }
-message PlacementRuleCreateResponse {}
+message PlacementRuleCreateResponse {
+    // Set only when apply_immediately was true. Carries what Apply would have
+    // returned, so one call still reports what it claimed and what it skipped.
+    int32 claimed_count = 1;
+    repeated SkippedResource skipped = 2;
+    repeated ObjectRef applied = 3;
+}
 
 message PlacementRuleInspectRequest {
     string org_id = 1;
