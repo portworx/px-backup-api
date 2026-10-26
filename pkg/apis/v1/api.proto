@@ -6187,34 +6187,27 @@ message PlacementRuleApplyRequest {
     string uid = 3;
     // Resolve and report without writing. Same result shape as a real apply.
     bool dry_run = 4;
+    // Narrows what the filter already matched, for a staged rollout. A UID the
+    // filter does not match is rejected rather than applied. Empty applies to
+    // everything the filter matches. This absorbed the separate
+    // PlacementAssignment.Create call, which was this call plus this field.
+    repeated string only_catalog_resource_uids = 5;
 }
 message PlacementRuleApplyResponse {
     int32 claimed_count = 1;
     repeated SkippedResource skipped = 2;
+    // The assignments this call wrote, so a caller does not have to enumerate
+    // to find them.
+    repeated ObjectRef applied = 3;
+    // Named in only_catalog_resource_uids but not matched by the filter. A
+    // rejection, not a skip: the caller asked for something the rule does not
+    // cover.
+    repeated string rejected_not_matching_filter = 4;
 }
 
 // ---------------------------------------------------------------------------
 // PlacementAssignment service
 // ---------------------------------------------------------------------------
-
-// Create applies a placement rule. It names the RULE, never a resource: the
-// rule carries the filter and the filter chooses the resources. One call
-// therefore writes many assignments.
-message PlacementAssignmentCreateRequest {
-    string org_id = 1;
-    string placement_rule_name = 2;
-    string placement_rule_uid = 3;
-    // Narrows what the filter already matched, for a staged rollout. A UID the
-    // filter does not match is rejected rather than applied.
-    repeated string only_catalog_resource_uids = 4;
-    // Report what would happen and write nothing.
-    bool dry_run = 5;
-}
-message PlacementAssignmentCreateResponse {
-    repeated ObjectRef applied = 1;
-    repeated ObjectRef skipped_already_assigned = 2;
-    repeated string rejected_not_matching_filter = 3;
-}
 
 message PlacementAssignmentInspectRequest {
     string org_id = 1;
@@ -6260,14 +6253,6 @@ message PlacementAssignmentUpdateResponse {
 
 service PlacementAssignment {
     // Create applies a placement rule to every resource its filter matches.
-    rpc Create(PlacementAssignmentCreateRequest)
-        returns (PlacementAssignmentCreateResponse) {
-        option (google.api.http) = {
-            post : "/v1/placementassignment"
-            body : "*"
-        };
-    }
-
     rpc Inspect(PlacementAssignmentInspectRequest)
         returns (PlacementAssignmentInspectResponse) {
         option (google.api.http) = {

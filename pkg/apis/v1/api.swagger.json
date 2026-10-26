@@ -5085,39 +5085,6 @@
         ]
       }
     },
-    "/v1/placementassignment": {
-      "post": {
-        "summary": "Create applies a placement rule to every resource its filter matches.",
-        "operationId": "PlacementAssignment_Create",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/PlacementAssignmentCreateResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/PlacementAssignmentCreateRequest"
-            }
-          }
-        ],
-        "tags": [
-          "PlacementAssignment"
-        ]
-      }
-    },
     "/v1/placementassignment/{org_id}": {
       "get": {
         "operationId": "PlacementAssignment_Enumerate",
@@ -5162,6 +5129,7 @@
     },
     "/v1/placementassignment/{org_id}/{catalog_resource_uid}": {
       "get": {
+        "summary": "Create applies a placement rule to every resource its filter matches.",
         "operationId": "PlacementAssignment_Inspect",
         "responses": {
           "200": {
@@ -14589,55 +14557,6 @@
       },
       "title": "Define Permission struct"
     },
-    "PlacementAssignmentCreateRequest": {
-      "type": "object",
-      "properties": {
-        "org_id": {
-          "type": "string"
-        },
-        "placement_rule_name": {
-          "type": "string"
-        },
-        "placement_rule_uid": {
-          "type": "string"
-        },
-        "only_catalog_resource_uids": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "Narrows what the filter already matched, for a staged rollout. A UID the\nfilter does not match is rejected rather than applied."
-        },
-        "dry_run": {
-          "type": "boolean",
-          "description": "Report what would happen and write nothing."
-        }
-      },
-      "description": "Create applies a placement rule. It names the RULE, never a resource: the\nrule carries the filter and the filter chooses the resources. One call\ntherefore writes many assignments."
-    },
-    "PlacementAssignmentCreateResponse": {
-      "type": "object",
-      "properties": {
-        "applied": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ObjectRef"
-          }
-        },
-        "skipped_already_assigned": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ObjectRef"
-          }
-        },
-        "rejected_not_matching_filter": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "PlacementAssignmentDeleteResponse": {
       "type": "object"
     },
@@ -14755,6 +14674,13 @@
         "dry_run": {
           "type": "boolean",
           "description": "Resolve and report without writing. Same result shape as a real apply."
+        },
+        "only_catalog_resource_uids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Narrows what the filter already matched, for a staged rollout. A UID the\nfilter does not match is rejected rather than applied. Empty applies to\neverything the filter matches. This absorbed the separate\nPlacementAssignment.Create call, which was this call plus this field."
         }
       }
     },
@@ -14770,6 +14696,20 @@
           "items": {
             "$ref": "#/definitions/SkippedResource"
           }
+        },
+        "applied": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "description": "The assignments this call wrote, so a caller does not have to enumerate\nto find them."
+        },
+        "rejected_not_matching_filter": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Named in only_catalog_resource_uids but not matched by the filter. A\nrejection, not a skip: the caller asked for something the rule does not\ncover."
         }
       }
     },
