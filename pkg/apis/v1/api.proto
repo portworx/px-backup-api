@@ -5695,11 +5695,13 @@ message BindingInfo {
     //
     // Readable rather than an opaque hash, because an operator has to be able
     // to see why two resources did not group:
-    //     v1|c1|fb-bl|gold:daily|Namespace|hooks:none|par:false
+    //     v2|c1|fb-bl|gold:daily|Namespace|hooks:none|par:false|ls:app=db
     //
     // The leading version is load-bearing. Changing the derivation changes
     // every key and orphans every existing CR, so the prefix makes that
-    // detectable rather than silent. The CR name is a short digest of this,
+    // detectable rather than silent. It moved from v1 to v2 when
+    // label_selectors and advanced_resource_label_selector were added as
+    // inputs -- question 64. The CR name is a short digest of this,
     // because Kubernetes needs a DNS-safe name under 63 characters.
     string schedule_key = 19;
 
@@ -5730,6 +5732,23 @@ message BindingInfo {
     repeated OwnershipTransition owner_history = 28;
     // Reused from BackupScheduleInfo, same meaning.
     repeated string exclude_resource_types = 29;
+
+    // Narrows what is captured from a namespace the filter ALREADY selected.
+    // Both are reused from BackupScheduleInfo with the same meaning, and stork
+    // resolves them while the backup runs, exactly as it does today.
+    //
+    // This is a CAPTURE setting, not a filter. Non-goal 3 rules out a rule
+    // FILTER naming an object inside a namespace, because placement attaches to
+    // a catalog row and a config-map has no row. Narrowing an already-selected
+    // namespace is a different thing and is allowed -- question 64.
+    //
+    // BOTH ARE PART OF THE SCHEDULE KEY. Two resources whose selectors differ
+    // must not share one ApplicationBackupSchedule, because the CR holds one
+    // selector for every member.
+    map<string, string> label_selectors = 30;
+    // The string form, which supports operators. BackupScheduleInfo carries
+    // both because the map form cannot express them.
+    string advanced_resource_label_selector = 31;
 
     enum Governance {
         GovernanceInvalid = 0;
@@ -6239,6 +6258,17 @@ message PlacementAssignmentEnumerateRequest {
     string org_id = 1;
     string placement_rule_name = 2;
     string placement_rule_uid = 3;
+    // Narrow to a set of resources, so a list view resolves every destination
+    // in one call instead of one call per resource.
+    repeated string catalog_resource_uids = 4;
+    // Which resources send their backups to this location. Journey Q6 needs
+    // this before a backup location is deleted, and nothing else answers it.
+    //
+    // It is not the whole answer on its own: a Binding may override the
+    // destination per intent, so an affected-resources check reads
+    // intent_destinations as well.
+    ObjectRef backup_location_ref = 5;
+    ObjectRef cluster_ref = 6;
 }
 message PlacementAssignmentEnumerateResponse {
     repeated PlacementAssignmentObject placement_assignments = 1;
@@ -6478,6 +6508,10 @@ message BindingCreateRequest {
     // Binding instead of failing the whole call. This replaces the separate
     // BulkCreate call, because the list is already repeated.
     bool skip_already_bound = 9;
+    // Narrows what is captured from each selected namespace. Part of the
+    // schedule key -- question 64.
+    map<string, string> label_selectors = 10;
+    string advanced_resource_label_selector = 11;
 }
 message BindingCreateResponse {
     repeated ObjectRef created = 1;
@@ -6626,6 +6660,11 @@ message BindingUpdateRequest {
     // The replacement baseline. Read only under ActionRebindBaseline.
     string sla_policy_name = 15;
     string sla_policy_uid = 16;
+    // Narrows what is captured from each selected namespace. Changing it
+    // re-derives the schedule key, so the Binding moves to another shared
+    // CR -- question 64.
+    map<string, string> label_selectors = 17;
+    string advanced_resource_label_selector = 18;
 }
 message BindingUpdateResponse {
     BindingObject binding = 1;

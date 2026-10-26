@@ -5120,6 +5120,41 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "catalog_resource_uids",
+            "description": "Narrow to a set of resources, so a list view resolves every destination\nin one call instead of one call per resource.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "backup_location_ref.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "backup_location_ref.uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cluster_ref.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cluster_ref.uid",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -10991,6 +11026,16 @@
         "skip_already_bound": {
           "type": "boolean",
           "description": "Bulk bind -- journey C6. Skip every listed resource that already holds a\nBinding instead of failing the whole call. This replaces the separate\nBulkCreate call, because the list is already repeated."
+        },
+        "label_selectors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Narrows what is captured from each selected namespace. Part of the\nschedule key -- question 64."
+        },
+        "advanced_resource_label_selector": {
+          "type": "string"
         }
       },
       "description": "Create is create-if-absent. It fails when the resource has no placement,\nbecause then there is nowhere to send the backups, and there is no override\nfor any tier."
@@ -11103,7 +11148,7 @@
         },
         "schedule_key": {
           "type": "string",
-          "description": "Which shared schedule executes this Binding.\n\nDERIVED, never user-supplied. Two Bindings holding the same value are\nexecuted by one ApplicationBackupSchedule CR, so this is an\nequivalence-class key rather than an identifier for anything.\n\nReadable rather than an opaque hash, because an operator has to be able\nto see why two resources did not group:\n    v1|c1|fb-bl|gold:daily|Namespace|hooks:none|par:false\n\nThe leading version is load-bearing. Changing the derivation changes\nevery key and orphans every existing CR, so the prefix makes that\ndetectable rather than silent. The CR name is a short digest of this,\nbecause Kubernetes needs a DNS-safe name under 63 characters."
+          "description": "Which shared schedule executes this Binding.\n\nDERIVED, never user-supplied. Two Bindings holding the same value are\nexecuted by one ApplicationBackupSchedule CR, so this is an\nequivalence-class key rather than an identifier for anything.\n\nReadable rather than an opaque hash, because an operator has to be able\nto see why two resources did not group:\n    v2|c1|fb-bl|gold:daily|Namespace|hooks:none|par:false|ls:app=db\n\nThe leading version is load-bearing. Changing the derivation changes\nevery key and orphans every existing CR, so the prefix makes that\ndetectable rather than silent. It moved from v1 to v2 when\nlabel_selectors and advanced_resource_label_selector were added as\ninputs -- question 64. The CR name is a short digest of this,\nbecause Kubernetes needs a DNS-safe name under 63 characters."
         },
         "schedule_policy_cr_name": {
           "type": "string",
@@ -11155,6 +11200,17 @@
             "type": "string"
           },
           "description": "Reused from BackupScheduleInfo, same meaning."
+        },
+        "label_selectors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Narrows what is captured from a namespace the filter ALREADY selected.\nBoth are reused from BackupScheduleInfo with the same meaning, and stork\nresolves them while the backup runs, exactly as it does today.\n\nThis is a CAPTURE setting, not a filter. Non-goal 3 rules out a rule\nFILTER naming an object inside a namespace, because placement attaches to\na catalog row and a config-map has no row. Narrowing an already-selected\nnamespace is a different thing and is allowed -- question 64.\n\nBOTH ARE PART OF THE SCHEDULE KEY. Two resources whose selectors differ\nmust not share one ApplicationBackupSchedule, because the CR holds one\nselector for every member."
+        },
+        "advanced_resource_label_selector": {
+          "type": "string",
+          "description": "The string form, which supports operators. BackupScheduleInfo carries\nboth because the map form cannot express them."
         }
       },
       "description": "The durable junction of one resource and one SLA Policy.\n\nReshaped from BackupScheduleInfo into a new object, keeping its field names\nwhere the meaning is unchanged. What was wrong with the legacy message is its\ncardinality: one schedule selects many namespaces. Here it is one to one, and\nselection moves out to the binding rule — that inversion is the whole model."
@@ -11563,6 +11619,16 @@
           "description": "The replacement baseline. Read only under ActionRebindBaseline."
         },
         "sla_policy_uid": {
+          "type": "string"
+        },
+        "label_selectors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Narrows what is captured from each selected namespace. Changing it\nre-derives the schedule key, so the Binding moves to another shared\nCR -- question 64."
+        },
+        "advanced_resource_label_selector": {
           "type": "string"
         }
       }
