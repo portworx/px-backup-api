@@ -14721,11 +14721,34 @@
         },
         "placement_rule": {
           "$ref": "#/definitions/PlacementRuleInfo"
+        },
+        "apply_immediately": {
+          "type": "boolean",
+          "description": "Create the rule and apply it in one operation, so the UI needs one call\nfor one button.\n\nDEFAULTS TO FALSE, and an auto rule must leave it false: creating,\nenabling or editing an auto rule schedules it for the next published\ncycle rather than running it immediately -- journeys C3 and Q9. A\none-shot rule sets it, because its whole life is that single\napplication and a one-shot rule that is never applied does nothing.\n\nThe response then carries what Apply would have returned."
         }
       }
     },
     "PlacementRuleCreateResponse": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "claimed_count": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Set only when apply_immediately was true. Carries what Apply would have\nreturned, so one call still reports what it claimed and what it skipped."
+        },
+        "skipped": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SkippedResource"
+          }
+        },
+        "applied": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          }
+        }
+      }
     },
     "PlacementRuleDeleteResponse": {
       "type": "object"
