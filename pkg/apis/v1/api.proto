@@ -5478,8 +5478,19 @@ message CatalogResourceInfo {
     // Materialized, never computed on read.
     ProtectionState protection_state = 5;
 
-    google.protobuf.Timestamp first_seen_time = 6;
-    google.protobuf.Timestamp deletion_time = 7;
+    // 6 held first_seen_time. Metadata.create_time is embedded in this object
+    // and, for a row discovery creates, both were written in the same operation,
+    // so they could never differ. The one path where they would -- a row created
+    // by Reconstruct long after the resource was first seen, because the source
+    // cluster is gone -- does not justify a field on every row: there the oldest
+    // recovery point is the only surviving evidence of the original time.
+    reserved 6;
+    reserved "first_seen_time";
+
+    // When the resource left the cluster and the row was tombstoned. Named for
+    // the tombstone, not for a delete: the ROW is not deleted, which is the whole
+    // point of tombstoning.
+    google.protobuf.Timestamp tombstoned_time = 7;
 
     // At most one of each.
     ObjectRef placement_assignment_ref = 8;
@@ -5504,7 +5515,8 @@ message CatalogResourceInfo {
     // Holds the resource out of auto-rule claiming -- FR-014.
     AutoRuleExclusionInfo exclusion = 17;
     // Discovery freshness. Separates "gone from the cluster" from "not scanned
-    // in this pass"; first_seen_time covers only the first pass.
+    // in this pass". Without it a failed or partial pass would tombstone the
+    // whole fleet.
     google.protobuf.Timestamp last_seen_time = 18;
 
     enum ContentBadge {

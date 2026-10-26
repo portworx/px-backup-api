@@ -11642,13 +11642,10 @@
           "$ref": "#/definitions/ProtectionState",
           "description": "Materialized, never computed on read."
         },
-        "first_seen_time": {
+        "tombstoned_time": {
           "type": "string",
-          "format": "date-time"
-        },
-        "deletion_time": {
-          "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "description": "When the resource left the cluster and the row was tombstoned. Named for\nthe tombstone, not for a delete: the ROW is not deleted, which is the whole\npoint of tombstoning."
         },
         "placement_assignment_ref": {
           "$ref": "#/definitions/ObjectRef",
@@ -11698,7 +11695,7 @@
         "last_seen_time": {
           "type": "string",
           "format": "date-time",
-          "description": "Discovery freshness. Separates \"gone from the cluster\" from \"not scanned\nin this pass\"; first_seen_time covers only the first pass."
+          "description": "Discovery freshness. Separates \"gone from the cluster\" from \"not scanned\nin this pass\". Without it a failed or partial pass would tombstone the\nwhole fleet."
         }
       },
       "description": "One namespace or one virtual machine that we have discovered on a cluster.\n\nNothing like this exists today. Note that ResourceInfo and ResourceObject are\nalready taken and mean \"what was inside a given backup\", which is why this is\nnamed CatalogResource.\nIdentity note: Metadata.uid holds the KUBERNETES UID and Metadata.name holds\nthe namespace or virtual-machine name. They are not repeated here, both\nbecause the embed would collide and because it makes a catalog row\naddressable by the same --name and --uid pair as every other object.\nIdentity is Metadata.uid plus cluster_ref; the name is display only, since a\nnamespace can be deleted and recreated under the same name."
