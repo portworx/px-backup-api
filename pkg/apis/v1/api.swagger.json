@@ -16101,6 +16101,10 @@
         "target_namespace_prefix": {
           "type": "string",
           "title": "target_namespace_prefix will be used to prefix all the target namespaces created during restore using filter\nThis will be ignored when restore is done without using filter"
+        },
+        "recovery_point_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "recovery point to restore from, cannot be set with backup_ref"
         }
       },
       "title": "Define RestoreCreateRequest struct"
