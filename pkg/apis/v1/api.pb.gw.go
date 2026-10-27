@@ -8331,17 +8331,6 @@ func request_PlacementAssignment_Update_0(ctx context.Context, marshaler runtime
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "org_id", err)
 	}
 
-	val, ok = pathParams["catalog_resource_uid"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "catalog_resource_uid")
-	}
-
-	protoReq.CatalogResourceUid, err = runtime.String(val)
-
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "catalog_resource_uid", err)
-	}
-
 	msg, err := client.Update(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -8375,17 +8364,6 @@ func local_request_PlacementAssignment_Update_0(ctx context.Context, marshaler r
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "org_id", err)
-	}
-
-	val, ok = pathParams["catalog_resource_uid"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "catalog_resource_uid")
-	}
-
-	protoReq.CatalogResourceUid, err = runtime.String(val)
-
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "catalog_resource_uid", err)
 	}
 
 	msg, err := server.Update(ctx, &protoReq)
@@ -20055,7 +20033,7 @@ var (
 
 	pattern_PlacementAssignment_Enumerate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "placementassignment", "org_id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_PlacementAssignment_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "placementassignment", "org_id", "catalog_resource_uid"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_PlacementAssignment_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "placementassignment", "org_id"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_PlacementAssignment_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "placementassignment", "org_id", "catalog_resource_uid"}, "", runtime.AssumeColonVerbOpt(true)))
 )

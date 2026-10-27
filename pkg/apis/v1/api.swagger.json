@@ -5160,11 +5160,49 @@
         "tags": [
           "PlacementAssignment"
         ]
+      },
+      "put": {
+        "summary": "Update changes the destination for one resource.",
+        "description": "There is deliberately no UpdateOwnership on this service. An assignment\nis not independently owned: its owner is the Placement Rule's owner and\nits visibility comes from the catalog row it names. A third settable\nowner would let a destination be read by someone who can read neither.",
+        "operationId": "PlacementAssignment_Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PlacementAssignmentUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PlacementAssignmentUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PlacementAssignment"
+        ]
       }
     },
     "/v1/placementassignment/{org_id}/{catalog_resource_uid}": {
       "get": {
-        "summary": "Create applies a placement rule to every resource its filter matches.",
+        "summary": "There is no Create. An assignment is written by PlacementRule.Apply,\nwhich carries only_catalog_resource_uids for a staged rollout. A client\nnever invents an assignment, for the same reason it never invents a\ncatalog row.",
         "operationId": "PlacementAssignment_Inspect",
         "responses": {
           "200": {
@@ -5227,51 +5265,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          }
-        ],
-        "tags": [
-          "PlacementAssignment"
-        ]
-      },
-      "put": {
-        "summary": "Update changes the destination for one resource.",
-        "description": "There is deliberately no UpdateOwnership on this service. An assignment\nis not independently owned: its owner is the Placement Rule's owner and\nits visibility comes from the catalog row it names. A third settable\nowner would let a destination be read by someone who can read neither.",
-        "operationId": "PlacementAssignment_Update",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/PlacementAssignmentUpdateResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "org_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "catalog_resource_uid",
-            "description": "Identified by the resource it belongs to, not by its own name.",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/PlacementAssignmentUpdateRequest"
-            }
           }
         ],
         "tags": [
@@ -14700,9 +14693,12 @@
         "org_id": {
           "type": "string"
         },
-        "catalog_resource_uid": {
-          "type": "string",
-          "description": "Identified by the resource it belongs to, not by its own name."
+        "catalog_resource_uids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The resources to rebind. An assignment is identified by the resource it\nbelongs to, never by a name of its own.\n\nREPEATED, because a rebind commonly covers a whole set: a hand-picked\nPlacement Rule of 100 resources is moved by ONE call. This was singular,\nwhich made that 100 calls with no preview and no governance check. The\nuid therefore leaves the URL path, which cannot carry a repeated field."
         },
         "refresh_from_rule": {
           "type": "boolean",
@@ -14714,14 +14710,59 @@
         },
         "local_snapshot_ref": {
           "$ref": "#/definitions/ObjectRef"
+        },
+        "dry_run": {
+          "type": "boolean",
+          "description": "The preview FR-030 requires: list every inherited intent that would\nmove, and write nothing. The UI calls this before it offers Commit."
         }
-      }
+      },
+      "description": "A placement rebind -- journeys Q4 and C7a, FR-030."
     },
     "PlacementAssignmentUpdateResponse": {
       "type": "object",
       "properties": {
-        "placement_assignment": {
-          "$ref": "#/definitions/PlacementAssignmentObject"
+        "placement_assignments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PlacementAssignmentObject"
+          },
+          "description": "Empty on a dry run."
+        },
+        "impact": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PlacementAssignmentUpdateResponseResourceRebindImpact"
+          },
+          "description": "What the rebind would do, or did, per resource -- FR-030. Returned for a\ndry run and for a commit, so both are read the same way."
+        }
+      }
+    },
+    "PlacementAssignmentUpdateResponseResourceRebindImpact": {
+      "type": "object",
+      "properties": {
+        "catalog_resource_uid": {
+          "type": "string"
+        },
+        "moved_intent_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Intents that INHERIT the default placement, so they move. Each one\nstarts a new destination chain with a FULL backup at its next\nscheduled run. Historical recovery points stay at their original\nlocation and stay restorable -- FR-030."
+        },
+        "unchanged_intent_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Intents carrying their own destination. Left unchanged -- FR-030."
+        },
+        "ungoverned_intent_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Intents the caller does not govern.\n\nNON-EMPTY BLOCKS THE WHOLE CALL, every resource in it, not only this\none. A partial rebind would leave a set split across two destinations\nwith no record of why. The dry run exists so a caller sees this\nbefore committing."
         }
       }
     },
