@@ -5174,14 +5174,6 @@ enum RuleKind {
 // When a child belonged to a parent. Open-ended while it still belongs.
 // Needed because Metadata's timestamps describe the OBJECT, not the relation,
 // and a restore to a past time must know the membership at that time.
-message MembershipInterval {
-    // Kubernetes UID of the child, normally a VirtualMachine.
-    string child_uid = 1;
-    google.protobuf.Timestamp joined_time = 2;
-    // Unset means the child is still a member.
-    google.protobuf.Timestamp left_time = 3;
-}
-
 // Exactly one inventory owner per Kubernetes object.
 // Without this a VM disk is captured twice: once by the namespace backup and
 // once by the VM backup.
@@ -5501,9 +5493,10 @@ message CatalogResourceInfo {
     // every read.
     int32 child_count = 12;
     int32 children_in_sla = 13;
-    // VMs only. Which parent, for which interval. A restore to a past time
-    // needs the membership AT that time, which parent_uid cannot give.
-    repeated MembershipInterval membership_history = 14;
+    // 14 held membership_history, now answered by parent_uid with create_time
+    // and tombstoned_time
+    reserved 14;
+    reserved "membership_history";
     // Exactly one inventory owner per Kubernetes object. This is what
     // stops a VM disk being captured by both the VM and its namespace.
     // Recomputed by discovery on every pass.

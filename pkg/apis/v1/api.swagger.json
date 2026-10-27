@@ -11694,13 +11694,6 @@
           "type": "integer",
           "format": "int32"
         },
-        "membership_history": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/MembershipInterval"
-          },
-          "description": "VMs only. Which parent, for which interval. A restore to a past time\nneeds the membership AT that time, which parent_uid cannot give."
-        },
         "graph_owner_index": {
           "type": "array",
           "items": {
@@ -13561,7 +13554,7 @@
           "description": "True when the object has several consumers and ownership was arbitrated."
         }
       },
-      "description": "Exactly one inventory owner per Kubernetes object.\nWithout this a VM disk is captured twice: once by the namespace backup and\nonce by the VM backup."
+      "description": "When a child belonged to a parent. Open-ended while it still belongs.\nNeeded because Metadata's timestamps describe the OBJECT, not the relation,\nand a restore to a past time must know the membership at that time.\nExactly one inventory owner per Kubernetes object.\nWithout this a VM disk is captured twice: once by the namespace backup and\nonce by the VM backup."
     },
     "HealthStatusResponse": {
       "type": "object"
@@ -14042,25 +14035,6 @@
         }
       },
       "description": "A resource set resolved ONCE, at the delegation operation, and then frozen.\n\nLater label, filter-result, discovery or inventory changes MUST NOT add or\nremove a resource. The filter is kept for audit only."
-    },
-    "MembershipInterval": {
-      "type": "object",
-      "properties": {
-        "child_uid": {
-          "type": "string",
-          "description": "Kubernetes UID of the child, normally a VirtualMachine."
-        },
-        "joined_time": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "left_time": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Unset means the child is still a member."
-        }
-      },
-      "description": "When a child belonged to a parent. Open-ended while it still belongs.\nNeeded because Metadata's timestamps describe the OBJECT, not the relation,\nand a restore to a past time must know the membership at that time."
     },
     "Metadata": {
       "type": "object",
