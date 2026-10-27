@@ -8465,9 +8465,6 @@
     "AutoRuleExclusionInfo": {
       "type": "object",
       "properties": {
-        "excluded": {
-          "type": "boolean"
-        },
         "reason_code": {
           "type": "string",
           "description": "A code from an ExclusionReasonTemplate."
@@ -8481,11 +8478,6 @@
         "excluded_time": {
           "type": "string",
           "format": "date-time"
-        },
-        "expires_time": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Unset means the exclusion does not expire."
         },
         "excluded_by_tier": {
           "$ref": "#/definitions/OwnerTier",
@@ -10591,9 +10583,11 @@
       "enum": [
         "Invalid",
         "All",
-        "VirtualMachine"
+        "VirtualMachine",
+        "NamespaceExcludingVirtualMachines"
       ],
-      "default": "Invalid"
+      "default": "Invalid",
+      "title": "- NamespaceExcludingVirtualMachines: a namespace without the objects its VMs own"
     },
     "BackupScheduleInfoBackupType": {
       "type": "object",
@@ -11092,9 +11086,6 @@
           "$ref": "#/definitions/BindingInfoGovernance",
           "description": "DERIVED from the owner's tier, never selectable."
         },
-        "placement_assignment_ref": {
-          "$ref": "#/definitions/ObjectRef"
-        },
         "supplemental_intents": {
           "type": "array",
           "items": {
@@ -11108,9 +11099,6 @@
         },
         "post_exec_rule_ref": {
           "$ref": "#/definitions/ObjectRef"
-        },
-        "backup_object_type": {
-          "$ref": "#/definitions/BackupScheduleInfoBackupObjectType"
         },
         "resource_types": {
           "type": "array",
@@ -11142,13 +11130,6 @@
         "schedule_key": {
           "type": "string",
           "description": "Which shared schedule executes this Binding.\n\nDERIVED, never user-supplied. Two Bindings holding the same value are\nexecuted by one ApplicationBackupSchedule CR, so this is an\nequivalence-class key rather than an identifier for anything.\n\nReadable rather than an opaque hash, because an operator has to be able\nto see why two resources did not group:\n    v2|c1|fb-bl|gold:daily|Namespace|hooks:none|par:false|ls:app=db\n\nThe leading version is load-bearing. Changing the derivation changes\nevery key and orphans every existing CR, so the prefix makes that\ndetectable rather than silent. It moved from v1 to v2 when\nlabel_selectors and advanced_resource_label_selector were added as\ninputs. The CR name is a short digest of this,\nbecause Kubernetes needs a DNS-safe name under 63 characters."
-        },
-        "schedule_policy_cr_name": {
-          "type": "string",
-          "description": "The derived CR names, recorded so an unbind or a suspend can address\nthem without recomputing the digest."
-        },
-        "backup_schedule_cr_name": {
-          "type": "string"
         },
         "backup_schedule_uid": {
           "type": "string"
@@ -11320,10 +11301,6 @@
         "owner_tier": {
           "$ref": "#/definitions/OwnerTier"
         },
-        "created_time": {
-          "type": "string",
-          "format": "date-time"
-        },
         "enabled": {
           "type": "boolean"
         },
@@ -11337,9 +11314,6 @@
         },
         "post_exec_rule_ref": {
           "$ref": "#/definitions/ObjectRef"
-        },
-        "backup_object_type": {
-          "$ref": "#/definitions/BackupScheduleInfoBackupObjectType"
         },
         "resource_types": {
           "type": "array",
@@ -12956,11 +12930,6 @@
           "$ref": "#/definitions/OwnerTier",
           "description": "Super Admin or Infra Admin only -- F11. Arbitration key 1."
         },
-        "created_time": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Arbitration key 2: the older rule wins at equal tier."
-        },
         "enabled": {
           "type": "boolean"
         },
@@ -13382,20 +13351,12 @@
     "ExclusionReasonTemplateInfo": {
       "type": "object",
       "properties": {
-        "code": {
-          "type": "string",
-          "description": "Stored on the catalog row as AutoRuleExclusionInfo.reason_code."
-        },
         "description": {
           "type": "string"
         },
         "requires_free_text": {
           "type": "boolean",
           "description": "The operator must also supply reason_text."
-        },
-        "requires_expiry": {
-          "type": "boolean",
-          "description": "The operator must also supply expires_time."
         },
         "active": {
           "type": "boolean",
@@ -14620,10 +14581,6 @@
           "type": "string",
           "format": "date-time"
         },
-        "captured_rule_definition": {
-          "$ref": "#/definitions/ResourceFilter",
-          "description": "The rule's definition, frozen at apply time.\n\nresource_uids IS NEVER COPIED INTO THIS FIELD. A static rule's filter is\nthe hand-picked list itself, so copying it onto every assignment\nmultiplies it by the number of resources: 1,000 resources freeze a\n1,000-uid list 1,000 times, about 40 MB for one rule. It also says\nnothing, because the existence of this assignment already states that\nthe resource was in the list.\n\nWhat is kept is the part that governs behaviour and cannot be recovered\nfrom the assignments: the mode, the target kinds, and any label selector.\nAn auto rule's selector is small and meaningful -- \"placed because it\nmatched tier=gold\" -- and is why the field exists at all."
-        },
         "source_rule_ref": {
           "$ref": "#/definitions/ObjectRef",
           "description": "Rule provenance."
@@ -14866,10 +14823,6 @@
           "$ref": "#/definitions/OwnerTier",
           "description": "The creator's tier, captured at create time. Metadata.ownership already\ncarries who owns the rule, so there is no owner field here."
         },
-        "created_time": {
-          "type": "string",
-          "format": "date-time"
-        },
         "enabled": {
           "type": "boolean",
           "description": "Auto rules only."
@@ -15023,11 +14976,6 @@
           "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
           "description": "Referenced rather than copied: a leaf value type with no retain conflict.\nThe wrapper is what separates \"always full\" (0) from unset, so it stays\na message."
         },
-        "run_time": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Chosen by the administrator. Automatic run-time selection is out of v1."
-        },
         "recoverability_period": {
           "type": "string",
           "description": "The ONLY retention field. A period, never a count. A count cannot say\n\"recoverable for 30 days\" when runs are missed."
@@ -15053,19 +15001,12 @@
         "encryption_requirement": {
           "$ref": "#/definitions/EncryptionRequirement"
         },
-        "classification": {
-          "$ref": "#/definitions/ProtectionIntentClassification"
-        },
         "owner": {
           "type": "string",
           "description": "Creator. Only the creator may edit a supplemental intent."
         },
         "owner_tier": {
           "$ref": "#/definitions/OwnerTier"
-        },
-        "minimum_retention_period": {
-          "type": "string",
-          "description": "A floor the owner of the baseline sets. A supplemental intent\nmay not state a recoverability_period below it."
         }
       },
       "description": "One statement of how often a resource is captured, how long it stays\nrecoverable, and how it is captured.\n\nEmbeddable only. It sits in an SLAPolicyInfo as a baseline intent and in a\nBindingInfo as a supplemental one, so it is never a standalone object.\n\nThe four schedule forms are COPIED from SchedulePolicyInfo, keeping every\nfield name, MINUS retain and incremental_count. Both of those appear in all\nfive legacy forms and are duplicated at this level; retain is a count and\nwould sit beside a period, giving one intent two retention models."
@@ -15079,16 +15020,6 @@
       ],
       "default": "CaptureModeInvalid",
       "description": " - AutomaticOptimized: Prefers a snapshot; may fall back unless forbidden.\n - GenericCrossCloud: Always the generic path; never silently switched."
-    },
-    "ProtectionIntentClassification": {
-      "type": "string",
-      "enum": [
-        "ClassificationInvalid",
-        "Baseline",
-        "Supplemental"
-      ],
-      "default": "ClassificationInvalid",
-      "description": " - Baseline: Came from the shared SLA Policy.\n - Supplemental: Lives in one Binding only."
     },
     "ProtectionIntentDailyPolicy": {
       "type": "object",
@@ -15543,10 +15474,6 @@
         "status": {
           "$ref": "#/definitions/RecoveryPointInfoStatus"
         },
-        "restorable": {
-          "type": "boolean",
-          "description": "False when the resource's own data did not complete, even if the\nbackup as a whole reports partial success."
-        },
         "size_bytes": {
           "type": "string",
           "format": "uint64"
@@ -15576,10 +15503,6 @@
         "binding_ref": {
           "$ref": "#/definitions/ObjectRef",
           "description": "Which Binding produced it. intent_id alone does not say, because two\nBindings may carry the same intent id."
-        },
-        "parent_recovery_point_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "description": "A VM's point refers to its namespace's point from the same run, when one\nexists. A VM point may publish where the parent point failed."
         },
         "independent_checkpoint": {
           "type": "boolean",
@@ -17756,10 +17679,6 @@
           "items": {
             "type": "string"
           }
-        },
-        "owner_resource_uid": {
-          "type": "string",
-          "description": "The consumer that owns it in the inventory. The others reference it."
         }
       },
       "description": "A volume with more than one consumer."
