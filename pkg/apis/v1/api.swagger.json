@@ -1774,7 +1774,7 @@
     },
     "/v1/binding/checkpoint/{org_id}/{catalog_resource_uid}": {
       "post": {
-        "summary": "CreateIndependentCheckpoint makes one full recovery point outside every\nintent chain and every SLA evaluation. It uses the Binding's default\nplacement and encryption, and the Binding-wide hooks current at start.\nIt expires by itself and changes no scheduled run. Super Admin and\nInfra Admin only -- journey M6, FR-141, FR-142.",
+        "summary": "CreateIndependentCheckpoint makes one full recovery point outside every\nintent chain and every SLA evaluation. It uses the Binding's default\nplacement and encryption, and the Binding-wide hooks current at start.\nIt expires by itself and changes no scheduled run. Super Admin and\nInfra Admin only.",
         "operationId": "Binding_CreateIndependentCheckpoint",
         "responses": {
           "200": {
@@ -1819,7 +1819,7 @@
     },
     "/v1/binding/triggernow/{org_id}": {
       "post": {
-        "summary": "TriggerNow runs one intent immediately, against this Binding's own\ndestination and capture settings. The run joins only that intent's\nchain and does not move its next scheduled run. The UI calls this\n\"Run Policy Now\" -- journey M5, FR-137, FR-139, FR-140.",
+        "summary": "TriggerNow runs one intent immediately, against this Binding's own\ndestination and capture settings. The run joins only that intent's\nchain and does not move its next scheduled run. The UI calls this\n\"Run Policy Now\".",
         "operationId": "Binding_TriggerNow",
         "responses": {
           "200": {
@@ -2087,7 +2087,7 @@
         ]
       },
       "put": {
-        "summary": "Auto rules only. A one-shot rule is immutable after its single\napplication -- FR-070.",
+        "summary": "Auto rules only. A one-shot rule is immutable after its single\napplication.",
         "operationId": "BindingRule_Update",
         "responses": {
           "200": {
@@ -2306,7 +2306,7 @@
         ]
       },
       "delete": {
-        "summary": "Delete leaves every Binding the rule created intact -- FR-080.",
+        "summary": "Delete leaves every Binding the rule created intact.",
         "operationId": "BindingRule_Delete",
         "responses": {
           "200": {
@@ -2626,7 +2626,7 @@
           },
           {
             "name": "delete_recovery_points",
-            "description": "Remove the recovery points too. Without it the call is refused while any\nrecovery point still points at the row, so an operator cannot destroy\nrestorable data by accident -- journey H2a.",
+            "description": "Remove the recovery points too. Without it the call is refused while any\nrecovery point still points at the row, so an operator cannot destroy\nrestorable data by accident.",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -5304,7 +5304,7 @@
         ]
       },
       "put": {
-        "summary": "Update edits the rule. It does NOT touch assignments already made --\nFR-030 -- so it returns the resulting drift count rather than moving\nanything. A one-shot rule is immutable after its single application.",
+        "summary": "Update edits the rule. It does NOT touch assignments already made, so it\nreturns the resulting drift count rather than moving anything. A one-shot\nrule is immutable after its single application.",
         "operationId": "PlacementRule_Update",
         "responses": {
           "200": {
@@ -5337,7 +5337,7 @@
     },
     "/v1/placementrule/apply/{org_id}/{name}/{uid}": {
       "post": {
-        "summary": "Apply runs a one-shot rule now, or forces an auto rule's cycle.\nClaiming only ever ADDS protection: a resource already claimed by\nanother rule is skipped, never taken -- FR-075.",
+        "summary": "Apply runs a one-shot rule now, or forces an auto rule's cycle.\nClaiming only ever ADDS protection: a resource already claimed by\nanother rule is skipped, never taken.",
         "operationId": "PlacementRule_Apply",
         "responses": {
           "200": {
@@ -5576,7 +5576,7 @@
           },
           {
             "name": "group_by",
-            "description": "How to group the counts. GroupByInvalid returns a single group whose key\nis empty, which is the whole-scope total the separate Get call used to\nreturn -- journeys A9, H1.",
+            "description": "How to group the counts. GroupByInvalid returns a single group whose key\nis empty, which is the whole-scope total the separate Get call used to\nreturn.",
             "in": "query",
             "required": false,
             "type": "string",
@@ -6101,7 +6101,7 @@
           },
           {
             "name": "include_gaps",
-            "description": "Return the gaps as well as the points. A gap is a run that published\nnothing, and journey E12 requires it to be visible. Its reason is read\nfrom the backup object's status, never from a recovery point.",
+            "description": "Return the gaps as well as the points. A gap is a run that published\nnothing, and it must be visible. Its reason is read from the backup\nobject's status, never from a recovery point.",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -8446,7 +8446,7 @@
         },
         "preview_token": {
           "type": "string",
-          "description": "Must carry the token from a preceding Preview. FR-123 requires a fresh\nSuper-Admin-initiated preview and an explicit commit for every change."
+          "description": "Must carry the token from a preceding preview. Every change needs a fresh\nSuper-Admin-initiated preview and an explicit commit."
         },
         "dry_run": {
           "type": "boolean",
@@ -8493,10 +8493,10 @@
         },
         "held_for": {
           "type": "string",
-          "description": "Who the hold is held FOR, when it was set by a delegation handover.\n\nWithout this the hold blocks the very delegate it protects. A handover\nsets the hold at the HANDOVER's tier, and excluded_by_tier then outranks\nthe delegate, so the delegate's own auto Binding Rule is skipped --\njourney F5 asks for exactly that rule to work. A rule owned by this\nidentity is therefore exempt.\n\nEmpty for an ordinary exclusion, which holds every tier at or below the\nsetter's -- journey X2."
+          "description": "Who the hold is held FOR, when it was set by a delegation handover.\n\nWithout this the hold blocks the very delegate it protects. A handover\nsets the hold at the HANDOVER's tier, and excluded_by_tier then outranks\nthe delegate, so the delegate's own auto Binding Rule is skipped. A rule\nowned by this identity is therefore exempt.\n\nEmpty for an ordinary exclusion, which holds every tier at or below the\nsetter's."
         }
       },
-      "description": "Why a resource is held out of auto-rule claiming -- FR-014, FR-016.\nAn exclusion needs a reason, an author and a time; no existing field holds\nany of these."
+      "description": "Why a resource is held out of auto-rule claiming.\nAn exclusion needs a reason, an author and a time; no existing field holds\nany of these."
     },
     "AzureConfig": {
       "type": "object",
@@ -9113,7 +9113,7 @@
         },
         "sla_policy_ref": {
           "$ref": "#/definitions/ObjectRef",
-          "description": "Which SLA Policy was in force, and at which revision. Retention is\nanchored to the revision -- FR-133."
+          "description": "Which SLA Policy was in force, and at which revision. Retention is\nanchored to the revision."
         },
         "sla_policy_revision_at_capture": {
           "type": "string",
@@ -9124,7 +9124,7 @@
           "items": {
             "$ref": "#/definitions/VolumeCaptureDetail"
           },
-          "description": "How each volume was ACTUALLY captured, and why a preferred method was\nnot used -- FR-098. BackupInfo.volumes records what was backed up, not\nwhich method moved it."
+          "description": "How each volume was ACTUALLY captured, and why a preferred method was\nnot used. BackupInfo.volumes records what was backed up, not\nwhich method moved it."
         },
         "resource_centric": {
           "type": "boolean",
@@ -10971,7 +10971,7 @@
         },
         "capture_mode": {
           "$ref": "#/definitions/ProtectionIntentCaptureMode",
-          "description": "Required. The capture contract for this one run. There is no intent\nto inherit it from, so the caller states it -- FR-141."
+          "description": "Required. The capture contract for this one run. There is no intent\nto inherit it from, so the caller states it."
         }
       }
     },
@@ -11018,14 +11018,14 @@
         },
         "skip_already_bound": {
           "type": "boolean",
-          "description": "Bulk bind -- journey C6. Skip every listed resource that already holds a\nBinding instead of failing the whole call. This replaces the separate\nBulkCreate call, because the list is already repeated."
+          "description": "Bulk bind. Skip every listed resource that already holds a\nBinding instead of failing the whole call. This replaces the separate\nBulkCreate call, because the list is already repeated."
         },
         "label_selectors": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
           },
-          "description": "Narrows what is captured from each selected namespace. Part of the\nschedule key -- question 64."
+          "description": "Narrows what is captured from each selected namespace. Part of the\nschedule key."
         },
         "advanced_resource_label_selector": {
           "type": "string"
@@ -11141,7 +11141,7 @@
         },
         "schedule_key": {
           "type": "string",
-          "description": "Which shared schedule executes this Binding.\n\nDERIVED, never user-supplied. Two Bindings holding the same value are\nexecuted by one ApplicationBackupSchedule CR, so this is an\nequivalence-class key rather than an identifier for anything.\n\nReadable rather than an opaque hash, because an operator has to be able\nto see why two resources did not group:\n    v2|c1|fb-bl|gold:daily|Namespace|hooks:none|par:false|ls:app=db\n\nThe leading version is load-bearing. Changing the derivation changes\nevery key and orphans every existing CR, so the prefix makes that\ndetectable rather than silent. It moved from v1 to v2 when\nlabel_selectors and advanced_resource_label_selector were added as\ninputs -- question 64. The CR name is a short digest of this,\nbecause Kubernetes needs a DNS-safe name under 63 characters."
+          "description": "Which shared schedule executes this Binding.\n\nDERIVED, never user-supplied. Two Bindings holding the same value are\nexecuted by one ApplicationBackupSchedule CR, so this is an\nequivalence-class key rather than an identifier for anything.\n\nReadable rather than an opaque hash, because an operator has to be able\nto see why two resources did not group:\n    v2|c1|fb-bl|gold:daily|Namespace|hooks:none|par:false|ls:app=db\n\nThe leading version is load-bearing. Changing the derivation changes\nevery key and orphans every existing CR, so the prefix makes that\ndetectable rather than silent. It moved from v1 to v2 when\nlabel_selectors and advanced_resource_label_selector were added as\ninputs. The CR name is a short digest of this,\nbecause Kubernetes needs a DNS-safe name under 63 characters."
         },
         "schedule_policy_cr_name": {
           "type": "string",
@@ -11158,7 +11158,7 @@
           "items": {
             "$ref": "#/definitions/DerivedSchedule"
           },
-          "description": "Fields 19 to 22 describe the BASELINE intent's derived schedule only.\nA Binding that carries supplemental intents contributes to more than one\nschedule, so each extra one is recorded here. Suspend and Resume must\nwalk this list as well as the baseline -- FR-047."
+          "description": "Fields 19 to 22 describe the BASELINE intent's derived schedule only.\nA Binding that carries supplemental intents contributes to more than one\nschedule, so each extra one is recorded here. Suspend and Resume must\nwalk this list as well as the baseline."
         },
         "last_run_time": {
           "type": "string",
@@ -11173,19 +11173,19 @@
           "items": {
             "$ref": "#/definitions/IntentDestination"
           },
-          "description": "Per-intent destination override, keyed by intent id -- FR-036.\nNEVER returned to an App Admin -- FR-028."
+          "description": "Per-intent destination override, keyed by intent id.\nNEVER returned to an App Admin."
         },
         "hook_revision": {
           "type": "string",
           "format": "uint64",
-          "description": "The hook definition in force, captured at execution start -- FR-065."
+          "description": "The hook definition in force, captured at execution start."
         },
         "owner_history": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/OwnershipTransition"
           },
-          "description": "Every ownership transfer, with reason -- FR-060, FR-096. Ownership holds\nthe current state only, so the history needs its own list."
+          "description": "Every ownership transfer, with reason. Ownership holds\nthe current state only, so the history needs its own list."
         },
         "exclude_resource_types": {
           "type": "array",
@@ -11199,7 +11199,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "description": "Narrows what is captured from a namespace the filter ALREADY selected.\nBoth are reused from BackupScheduleInfo with the same meaning, and stork\nresolves them while the backup runs, exactly as it does today.\n\nThis is a CAPTURE setting, not a filter. Non-goal 3 rules out a rule\nFILTER naming an object inside a namespace, because placement attaches to\na catalog row and a config-map has no row. Narrowing an already-selected\nnamespace is a different thing and is allowed -- question 64.\n\nBOTH ARE PART OF THE SCHEDULE KEY, and that costs nothing when the\nselector is uniform. ApplicationBackupSpec.Namespaces is a list but\nApplicationBackupSpec.Selectors is ONE map for every namespace in the CR.\nSo ten resources carrying the same selector still share one CR, exactly\nas ten resources sharing one backup location do.\n\nThe key part exists for the case where members DISAGREE. Without it, two\ndifferent selectors would land on one CR, the last Binding written would\nwin, and every other member would be captured with the wrong filter."
+          "description": "Narrows what is captured from a namespace the filter ALREADY selected.\nBoth are reused from BackupScheduleInfo with the same meaning, and stork\nresolves them while the backup runs, exactly as it does today.\n\nThis is a CAPTURE setting, not a filter. Non-goal 3 rules out a rule\nFILTER naming an object inside a namespace, because placement attaches to\na catalog row and a config-map has no row. Narrowing an already-selected\nnamespace is a different thing and is allowed.\n\nBOTH ARE PART OF THE SCHEDULE KEY, and that costs nothing when the\nselector is uniform. ApplicationBackupSpec.Namespaces is a list but\nApplicationBackupSpec.Selectors is ONE map for every namespace in the CR.\nSo ten resources carrying the same selector still share one CR, exactly\nas ten resources sharing one backup location do.\n\nThe key part exists for the case where members DISAGREE. Without it, two\ndifferent selectors would land on one CR, the last Binding written would\nwin, and every other member would be captured with the wrong filter."
         },
         "advanced_resource_label_selector": {
           "type": "string",
@@ -11311,7 +11311,7 @@
         },
         "sla_policy_ref": {
           "$ref": "#/definitions/ObjectRef",
-          "description": "Must be owned by this rule's owner -- FR-055."
+          "description": "Must be owned by this rule's owner."
         },
         "mode": {
           "$ref": "#/definitions/PlacementRuleInfoMode",
@@ -11368,14 +11368,14 @@
         },
         "captured_target_boundary": {
           "$ref": "#/definitions/ResourceFilter",
-          "description": "The creator's authority at create time, frozen -- FR-074."
+          "description": "The creator's authority at create time, frozen."
         },
         "intent_destination_template": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/IntentDestination"
           },
-          "description": "Super and Infra only. Per-intent destination override -- FR-036."
+          "description": "Super and Infra only. Per-intent destination override."
         },
         "vsc_override_template": {
           "type": "object",
@@ -11485,11 +11485,11 @@
           "items": {
             "type": "string"
           },
-          "description": "Which resources to run the intent for. EMPTY MEANS EVERY RESOURCE THE\nINTENT COVERS that the caller is authorised for.\n\nAn intent is shared. An auto Binding Rule binds every matching namespace\nto one SLA Policy, and the schedule key then puts them in one CR, so a\nscheduled run of the intent already covers all of them. An on-demand run\nof the same intent must be able to do the same -- journey M5.\n\nA non-empty list narrows the run to those resources. Authorisation stays\nper resource, so a caller only ever runs what they hold."
+          "description": "Which resources to run the intent for. EMPTY MEANS EVERY RESOURCE THE\nINTENT COVERS that the caller is authorised for.\n\nAn intent is shared. An auto Binding Rule binds every matching namespace\nto one SLA Policy, and the schedule key then puts them in one CR, so a\nscheduled run of the intent already covers all of them. An on-demand run\nof the same intent must be able to do the same.\n\nA non-empty list narrows the run to those resources. Authorisation stays\nper resource, so a caller only ever runs what they hold."
         },
         "intent_id": {
           "type": "string",
-          "description": "Which intent to run. Required, and exactly one -- journey M5."
+          "description": "Which intent to run. Required, and exactly one."
         }
       }
     },
@@ -11559,7 +11559,7 @@
           "items": {
             "$ref": "#/definitions/ProtectionIntent"
           },
-          "description": "Replaces the list wholesale. Only the creator of an intent may change\nit -- FR-064."
+          "description": "Replaces the list wholesale. Only the creator of an intent may change\nit."
         },
         "pre_exec_rule_ref": {
           "$ref": "#/definitions/ObjectRef"
@@ -11593,7 +11593,7 @@
           "items": {
             "$ref": "#/definitions/IntentDestination"
           },
-          "description": "Super and Infra only. Never accepted from an App Admin -- FR-028. This\nreplaces the separate UpdateIntentDestination call."
+          "description": "Super and Infra only. Never accepted from an App Admin. This\nreplaces the separate UpdateIntentDestination call."
         },
         "dry_run": {
           "type": "boolean",
@@ -11619,7 +11619,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "description": "Narrows what is captured from each selected namespace. Changing it\nre-derives the schedule key, so the Binding moves to another shared\nCR -- question 64."
+          "description": "Narrows what is captured from each selected namespace. Changing it\nre-derives the schedule key, so the Binding moves to another shared\nCR."
         },
         "advanced_resource_label_selector": {
           "type": "string"
@@ -11634,7 +11634,7 @@
         "ActionRebindBaseline"
       ],
       "default": "ActionUpdateSettings",
-      "description": " - ActionUpdateSettings: Hooks, capture settings and intent destinations. A Scoped App Admin\nmay call this with only pre_exec_rule_ref and post_exec_rule_ref set,\neven under an enforced baseline -- journeys K1 and F5. This replaces\nthe separate UpdateHooks call.\n - ActionUpdateSupplementalIntent: Replace one supplemental intent, or the whole list when\nsupplemental_intent_id is empty -- journey C15. This replaces the\nseparate AddSupplementalIntent, RemoveSupplementalIntent and\nEditSupplementalIntent calls: an empty intent removes it.\n - ActionRebindBaseline: Replace the enforced baseline Policy/SLA -- journey C7. This is the\nONLY path that changes a baseline, and it replaces the separate\nRebindBaseline call. Owner only."
+      "description": " - ActionUpdateSettings: Hooks, capture settings and intent destinations. A Scoped App Admin\nmay call this with only pre_exec_rule_ref and post_exec_rule_ref set,\neven under an enforced baseline. This replaces\nthe separate UpdateHooks call.\n - ActionUpdateSupplementalIntent: Replace one supplemental intent, or the whole list when\nsupplemental_intent_id is empty. This replaces the\nseparate AddSupplementalIntent, RemoveSupplementalIntent and\nEditSupplementalIntent calls: an empty intent removes it.\n - ActionRebindBaseline: Replace the enforced baseline Policy/SLA. This is the\nONLY path that changes a baseline, and it replaces the separate\nRebindBaseline call. Owner only."
     },
     "BindingUpdateResponse": {
       "type": "object",
@@ -11706,18 +11706,18 @@
           "items": {
             "$ref": "#/definitions/GraphOwnerEntry"
           },
-          "description": "Exactly one inventory owner per Kubernetes object -- FR-004. This is what\nstops a VM disk being captured by both the VM and its namespace.\nRecomputed by discovery on every pass."
+          "description": "Exactly one inventory owner per Kubernetes object. This is what\nstops a VM disk being captured by both the VM and its namespace.\nRecomputed by discovery on every pass."
         },
         "shared_volumes": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/SharedVolumeInfo"
           },
-          "description": "A volume with more than one consumer -- FR-010."
+          "description": "A volume with more than one consumer."
         },
         "exclusion": {
           "$ref": "#/definitions/AutoRuleExclusionInfo",
-          "description": "Holds the resource out of auto-rule claiming -- FR-014."
+          "description": "Holds the resource out of auto-rule claiming."
         },
         "last_seen_time": {
           "type": "string",
@@ -11795,7 +11795,7 @@
         "DepartedScopeAssignmentRetained"
       ],
       "default": "ClaimOutcomeInvalid",
-      "description": "Why a rule did or did not act on one resource.\n\nONE vocabulary, shared by every preview and every Drift Event -- journeys C4,\nD5 and F11 each name an overlapping list, and three separate enums would drift\napart. A free-form string cannot be switched on by a client, cannot be counted,\nand cannot be redacted per tier.\n\n - Applied: The rule acted.\n - WouldPlace: Preview only: what would happen if this rule ran now.\n - SkippedAlreadyPlaced: Skipped. Claiming only ever ADDS -- an existing assignment, Binding or\ndelegation is never overwritten.\n - SkippedClaimedByOtherRule: Lost arbitration to a stronger tier, or to an equally ranked older rule.\n - SkippedExcluded: Held out by an auto-rule exclusion.\n - FailedNoPlacement: Matched, but a Binding needs a placement first.\n - DepartedScopeAssignmentRetained: Stopped matching. The assignment and Binding are RETAINED."
+      "description": "Why a rule did or did not act on one resource.\n\nONE vocabulary, shared by every preview and every Drift Event\nD5 and F11 each name an overlapping list, and three separate enums would drift\napart. A free-form string cannot be switched on by a client, cannot be counted,\nand cannot be redacted per tier.\n\n - Applied: The rule acted.\n - WouldPlace: Preview only: what would happen if this rule ran now.\n - SkippedAlreadyPlaced: Skipped. Claiming only ever ADDS -- an existing assignment, Binding or\ndelegation is never overwritten.\n - SkippedClaimedByOtherRule: Lost arbitration to a stronger tier, or to an equally ranked older rule.\n - SkippedExcluded: Held out by an auto-rule exclusion.\n - FailedNoPlacement: Matched, but a Binding needs a placement first.\n - DepartedScopeAssignmentRetained: Stopped matching. The assignment and Binding are RETAINED."
     },
     "CloudCredentialCreateRequest": {
       "type": "object",
@@ -12925,7 +12925,7 @@
     },
     "DelegationRuleDeleteResponse": {
       "type": "object",
-      "description": "Deleting the rule does NOT revoke what it already delegated, exactly as\ndeleting a Binding Rule leaves its Bindings intact -- FR-080."
+      "description": "Deleting the rule does NOT revoke what it already delegated, exactly as\ndeleting a Binding Rule leaves its Bindings intact."
     },
     "DelegationRuleEnumerateResponse": {
       "type": "object",
@@ -12977,7 +12977,7 @@
         },
         "captured_target_boundary": {
           "$ref": "#/definitions/ResourceFilter",
-          "description": "The creator's authority, frozen -- FR-074."
+          "description": "The creator's authority, frozen."
         },
         "include_future_children": {
           "type": "boolean",
@@ -13122,7 +13122,7 @@
         },
         "may_be_incomplete": {
           "type": "boolean",
-          "description": "True when the backing projection may have dropped records, so the caller\ndoes not present an incomplete list as complete -- journey D5."
+          "description": "True when the backing projection may have dropped records, so the caller\ndoes not present an incomplete list as complete."
         }
       }
     },
@@ -13137,7 +13137,7 @@
         },
         "rule_owner_tier": {
           "$ref": "#/definitions/OwnerTier",
-          "description": "The rule's captured tier, never its current owner's -- FR-074."
+          "description": "The rule's captured tier, never its current owner's."
         },
         "resource_ref": {
           "$ref": "#/definitions/ObjectRef"
@@ -13168,7 +13168,7 @@
         },
         "winning_rule_ref": {
           "$ref": "#/definitions/ObjectRef",
-          "description": "Set when outcome is SkippedClaimedByOtherRule.\n\nREDACTED for a caller below the winning rule's owner tier. Naming it\nwould tell a scoped administrator that a stronger tier's rule exists and\nwhat it is called, which multi-tenancy isolation forbids -- journey F7."
+          "description": "Set when outcome is SkippedClaimedByOtherRule.\n\nREDACTED for a caller below the winning rule's owner tier. Naming it\nwould tell a scoped administrator that a stronger tier's rule exists and\nwhat it is called, which multi-tenancy isolation forbids."
         },
         "resulting_object_ref": {
           "$ref": "#/definitions/ObjectRef",
@@ -13561,7 +13561,7 @@
           "description": "True when the object has several consumers and ownership was arbitrated."
         }
       },
-      "description": "Exactly one inventory owner per Kubernetes object -- FR-004.\nWithout this a VM disk is captured twice: once by the namespace backup and\nonce by the VM backup."
+      "description": "Exactly one inventory owner per Kubernetes object.\nWithout this a VM disk is captured twice: once by the namespace backup and\nonce by the VM backup."
     },
     "HealthStatusResponse": {
       "type": "object"
@@ -13587,7 +13587,7 @@
           "$ref": "#/definitions/ObjectRef"
         }
       },
-      "description": "A per-intent destination override -- FR-036.\nOne SLA Policy may hold intents that need different destinations, and a\nplacement assignment carries only one backup_location_ref."
+      "description": "A per-intent destination override.\nOne SLA Policy may hold intents that need different destinations, and a\nplacement assignment carries only one backup_location_ref."
     },
     "LicenseActivateRequest": {
       "type": "object",
@@ -14041,7 +14041,7 @@
           "description": "Identities whose scope already covers one of these UIDs. Journey O2a\nwarns about the overlap and confirmation creates co-ownership rather\nthan blocking or silently transferring."
         }
       },
-      "description": "A resource set resolved ONCE, at the delegation operation, and then frozen.\n\nFR-123 and journey O2a: later label, filter-result, discovery or inventory\nchanges MUST NOT add or remove a resource. The filter is kept for audit only."
+      "description": "A resource set resolved ONCE, at the delegation operation, and then frozen.\n\nLater label, filter-result, discovery or inventory changes MUST NOT add or\nremove a resource. The filter is kept for audit only."
     },
     "MembershipInterval": {
       "type": "object",
@@ -14515,7 +14515,7 @@
         "User"
       ],
       "default": "OwnerTierInvalid",
-      "description": "The tier that owns an object. Full resolution is owned by PB-16926; the\nhappy path always writes SuperAdmin."
+      "title": "the tier that owns an object, currently always SuperAdmin"
     },
     "Ownership": {
       "type": "object",
@@ -14597,7 +14597,7 @@
           "type": "string"
         }
       },
-      "description": "One recorded change of owner -- FR-128.\nOwnership holds the current state only, with no history."
+      "description": "One recorded change of owner.\nOwnership holds the current state only, with no history."
     },
     "PXConfig": {
       "type": "object",
@@ -14648,7 +14648,7 @@
         },
         "captured_rule_definition": {
           "$ref": "#/definitions/ResourceFilter",
-          "description": "The rule's definition, frozen at apply time -- FR-025.\n\nresource_uids IS NEVER COPIED INTO THIS FIELD. A static rule's filter is\nthe hand-picked list itself, so copying it onto every assignment\nmultiplies it by the number of resources: 1,000 resources freeze a\n1,000-uid list 1,000 times, about 40 MB for one rule. It also says\nnothing, because the existence of this assignment already states that\nthe resource was in the list.\n\nWhat is kept is the part that governs behaviour and cannot be recovered\nfrom the assignments: the mode, the target kinds, and any label selector.\nAn auto rule's selector is small and meaningful -- \"placed because it\nmatched tier=gold\" -- and is why the field exists at all."
+          "description": "The rule's definition, frozen at apply time.\n\nresource_uids IS NEVER COPIED INTO THIS FIELD. A static rule's filter is\nthe hand-picked list itself, so copying it onto every assignment\nmultiplies it by the number of resources: 1,000 resources freeze a\n1,000-uid list 1,000 times, about 40 MB for one rule. It also says\nnothing, because the existence of this assignment already states that\nthe resource was in the list.\n\nWhat is kept is the part that governs behaviour and cannot be recovered\nfrom the assignments: the mode, the target kinds, and any label selector.\nAn auto rule's selector is small and meaningful -- \"placed because it\nmatched tier=gold\" -- and is why the field exists at all."
         },
         "source_rule_ref": {
           "$ref": "#/definitions/ObjectRef",
@@ -14663,7 +14663,7 @@
         },
         "placement_inheriting_context": {
           "type": "string",
-          "description": "Records that the destination was reached by privilege elevation, and\nunder which context -- FR-118. Auditable after the fact; the delegate\nnever sees the location's credentials."
+          "description": "Records that the destination was reached by privilege elevation, and\nunder which context. Auditable after the fact; the delegate\nnever sees the location's credentials."
         }
       },
       "description": "One resource's resolved destination. Separate from the rule because it must\nkeep the rule's definition as it was at apply time — otherwise editing an\nauto rule would retroactively move every resource already using it."
@@ -14713,10 +14713,10 @@
         },
         "dry_run": {
           "type": "boolean",
-          "description": "The preview FR-030 requires: list every inherited intent that would\nmove, and write nothing. The UI calls this before it offers Commit."
+          "title": "list every inherited intent that would move, and write nothing"
         }
       },
-      "description": "A placement rebind -- journeys Q4 and C7a, FR-030."
+      "description": "A placement rebind."
     },
     "PlacementAssignmentUpdateResponse": {
       "type": "object",
@@ -14733,7 +14733,7 @@
           "items": {
             "$ref": "#/definitions/PlacementAssignmentUpdateResponseResourceRebindImpact"
           },
-          "description": "What the rebind would do, or did, per resource -- FR-030. Returned for a\ndry run and for a commit, so both are read the same way."
+          "description": "What the rebind would do, or did, per resource. Returned for a\ndry run and for a commit, so both are read the same way."
         }
       }
     },
@@ -14748,14 +14748,14 @@
           "items": {
             "type": "string"
           },
-          "description": "Intents that INHERIT the default placement, so they move. Each one\nstarts a new destination chain with a FULL backup at its next\nscheduled run. Historical recovery points stay at their original\nlocation and stay restorable -- FR-030."
+          "description": "Intents that INHERIT the default placement, so they move. Each one\nstarts a new destination chain with a FULL backup at its next\nscheduled run. Historical recovery points stay at their original\nlocation and stay restorable."
         },
         "unchanged_intent_ids": {
           "type": "array",
           "items": {
             "type": "string"
           },
-          "description": "Intents carrying their own destination. Left unchanged -- FR-030."
+          "description": "Intents carrying their own destination. Left unchanged."
         },
         "ungoverned_intent_ids": {
           "type": "array",
@@ -14831,7 +14831,7 @@
         },
         "apply_immediately": {
           "type": "boolean",
-          "description": "Create the rule and apply it in one operation, so the UI needs one call\nfor one button.\n\nDEFAULTS TO FALSE, and an auto rule must leave it false: creating,\nenabling or editing an auto rule schedules it for the next published\ncycle rather than running it immediately -- journeys C3 and Q9. A\none-shot rule sets it, because its whole life is that single\napplication and a one-shot rule that is never applied does nothing.\n\nThe response then carries what Apply would have returned."
+          "description": "Create the rule and apply it in one operation, so the UI needs one call\nfor one button.\n\nDEFAULTS TO FALSE, and an auto rule must leave it false: creating,\nenabling or editing an auto rule schedules it for the next published\ncycle rather than running it immediately. A\none-shot rule sets it, because its whole life is that single\napplication and a one-shot rule that is never applied does nothing.\n\nThe response then carries what Apply would have returned."
         }
       }
     },
@@ -14918,11 +14918,11 @@
         "drift_count": {
           "type": "integer",
           "format": "int32",
-          "description": "OUTPUT_ONLY. How many of them no longer match -- FR-030."
+          "description": "OUTPUT_ONLY. How many of them no longer match."
         },
         "captured_target_boundary": {
           "$ref": "#/definitions/ResourceFilter",
-          "description": "The creator's authority at create time, frozen. Survives the creator\nbeing removed -- FR-074. Reuses ResourceFilter rather than a new message."
+          "description": "The creator's authority at create time, frozen. Survives the creator\nbeing removed. Reuses ResourceFilter rather than a new message."
         }
       },
       "description": "A named statement of where the backups of matching resources go."
@@ -15091,7 +15091,7 @@
         },
         "minimum_retention_period": {
           "type": "string",
-          "description": "A floor the owner of the baseline sets -- FR-044. A supplemental intent\nmay not state a recoverability_period below it."
+          "description": "A floor the owner of the baseline sets. A supplemental intent\nmay not state a recoverability_period below it."
         }
       },
       "description": "One statement of how often a resource is captured, how long it stays\nrecoverable, and how it is captured.\n\nEmbeddable only. It sits in an SLAPolicyInfo as a baseline intent and in a\nBindingInfo as a supplemental one, so it is never a standalone object.\n\nThe four schedule forms are COPIED from SchedulePolicyInfo, keeping every\nfield name, MINUS retain and incremental_count. Both of those appear in all\nfive legacy forms and are duplicated at this level; retain is a count and\nwould sit beside a period, giving one intent two retention models."
@@ -15593,11 +15593,11 @@
         },
         "failure_reason": {
           "type": "string",
-          "description": "NOT a failed execution. A failed or cancelled execution publishes NO\nrecovery point at all, so no row exists to carry a reason -- journeys E5\nand E13 make publication atomic per resource.\n\nThis records a point that SUCCEEDED and later became unreachable: its\nbackup objects were deleted at the location, or the location went away.\nJourney D1 keeps such a point visible while excluding it from SLA\nqualification, and this says why it stopped qualifying."
+          "description": "NOT a failed execution. A failed or cancelled execution publishes NO\nrecovery point at all, so no row exists to carry a reason\nand E13 make publication atomic per resource.\n\nThis records a point that SUCCEEDED and later became unreachable: its\nbackup objects were deleted at the location, or the location went away.\nJourney D1 keeps such a point visible while excluding it from SLA\nqualification, and this says why it stopped qualifying."
         },
         "accessible": {
           "type": "boolean",
-          "description": "OUTPUT_ONLY, computed per caller and never stored. Separates \"this point\nexists but is not yours\" from \"this point does not exist\" -- FR-105.\nIt gates the per-resource view of a backup shared by several tenants."
+          "description": "OUTPUT_ONLY, computed per caller and never stored. Separates \"this point\nexists but is not yours\" from \"this point does not exist\".\nIt gates the per-resource view of a backup shared by several tenants."
         },
         "binding_ref": {
           "$ref": "#/definitions/ObjectRef",
@@ -15609,11 +15609,11 @@
         },
         "independent_checkpoint": {
           "type": "boolean",
-          "description": "True for a point made by Binding.CreateIndependentCheckpoint. Such a\npoint has no intent_id, sits outside every intent chain and every SLA\nevaluation, and expires at expiry_time -- journey M6, FR-141."
+          "description": "True for a point made by Binding.CreateIndependentCheckpoint. Such a\npoint has no intent_id, sits outside every intent chain and every SLA\nevaluation, and expires at expiry_time."
         },
         "capture_mode": {
           "$ref": "#/definitions/ProtectionIntentCaptureMode",
-          "description": "The capture contract the run used. Export eligibility reads it, so a\nGenericCrossCloud checkpoint can be exported across clouds even though\nit has no intent -- journeys M6 and M3, FR-141."
+          "description": "The capture contract the run used. Export eligibility reads it, so a\nGenericCrossCloud checkpoint can be exported across clouds even though\nit has no intent."
         }
       },
       "description": "One resource's entry in one run of a shared backup.\n\nA backup now covers many resources, so the backup alone cannot answer \"what\ncan I restore for this namespace\". This can NOT be derived by querying\nstork's per-namespace array inside the backup document, because that array\nis keyed by namespace NAME while identity here is the Kubernetes UID. A\nnamespace deleted and recreated under the same name is a different resource,\nand a name-keyed lookup would hand it the earlier resource's history.\n\nA recovery point exists only for a resource that actually succeeded. A\nresource that failed inside a partially successful backup gets none, so its\ntimeline shows a gap and the SLA engine reports it out of SLA. That is how\nper-resource failure isolation survives a shared execution."
@@ -17438,7 +17438,7 @@
         },
         "paused": {
           "type": "boolean",
-          "description": "Pause or resume the policy. Pause suppresses new SCHEDULED executions and\nleaves expiry and SLA evaluation running -- journey B15. It replaces the\nseparate Suspend and Resume calls, which were two RPCs for one boolean."
+          "description": "Pause or resume the policy. Pause suppresses new SCHEDULED executions and\nleaves expiry and SLA evaluation running. It replaces the\nseparate Suspend and Resume calls, which were two RPCs for one boolean."
         },
         "paused_set": {
           "type": "boolean"
@@ -17788,7 +17788,7 @@
           "description": "The consumer that owns it in the inventory. The others reference it."
         }
       },
-      "description": "A volume with more than one consumer -- FR-010."
+      "description": "A volume with more than one consumer."
     },
     "ShootDiscoveryConfigInfo": {
       "type": "object",
@@ -18209,7 +18209,7 @@
           "type": "boolean"
         }
       },
-      "description": "How one volume was actually captured, and why -- FR-098.\nBackupInfo.volumes records WHAT was backed up. This records which method\nmoved it, and why a preferred method was not used."
+      "description": "How one volume was actually captured, and why.\nBackupInfo.volumes records WHAT was backed up. This records which method\nmoved it, and why a preferred method was not used."
     },
     "VolumeCaptureDetailMethod": {
       "type": "string",

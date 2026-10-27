@@ -1200,11 +1200,11 @@ message BackupInfo {
     // by the fleet.
     repeated string covered_resource_uids = 65;
     // Which SLA Policy was in force, and at which revision. Retention is
-    // anchored to the revision -- FR-133.
+    // anchored to the revision.
     ObjectRef sla_policy_ref = 66;
     uint64 sla_policy_revision_at_capture = 67;
     // How each volume was ACTUALLY captured, and why a preferred method was
-    // not used -- FR-098. BackupInfo.volumes records what was backed up, not
+    // not used. BackupInfo.volumes records what was backed up, not
     // which method moved it.
     repeated VolumeCaptureDetail volume_capture_details = 68;
     // False for a legacy backup, which has no recovery points.
@@ -5096,10 +5096,7 @@ message ClusterDiscoveryConfigRefreshClustersResponse {
 }
 
 // ============================================================================
-// Resource-Centric Backup — PB-17448 happy-path subset.
-//
-// Design: workspace-config/specs/003-resource-centric-backup/
-//         contracts/proto-changes-fc1.md
+// Resource-Centric Backup.
 //
 // SchedulePolicyInfo and BackupScheduleInfo are NOT touched. The SLA Policy and
 // the Binding are new objects, so the legacy pair can go read-only at cutover
@@ -5121,8 +5118,7 @@ enum ProtectionState {
     Excluded = 5;
 }
 
-// The tier that owns an object. Full resolution is owned by PB-16926; the
-// happy path always writes SuperAdmin.
+// the tier that owns an object, currently always SuperAdmin
 enum OwnerTier {
     OwnerTierInvalid = 0;
     SuperAdmin = 1;
@@ -5133,7 +5129,7 @@ enum OwnerTier {
 
 // Why a rule did or did not act on one resource.
 //
-// ONE vocabulary, shared by every preview and every Drift Event -- journeys C4,
+// ONE vocabulary, shared by every preview and every Drift Event
 // D5 and F11 each name an overlapping list, and three separate enums would drift
 // apart. A free-form string cannot be switched on by a client, cannot be counted,
 // and cannot be redacted per tier.
@@ -5186,7 +5182,7 @@ message MembershipInterval {
     google.protobuf.Timestamp left_time = 3;
 }
 
-// Exactly one inventory owner per Kubernetes object -- FR-004.
+// Exactly one inventory owner per Kubernetes object.
 // Without this a VM disk is captured twice: once by the namespace backup and
 // once by the VM backup.
 message GraphOwnerEntry {
@@ -5199,7 +5195,7 @@ message GraphOwnerEntry {
     bool shared = 4;
 }
 
-// A volume with more than one consumer -- FR-010.
+// A volume with more than one consumer.
 message SharedVolumeInfo {
     string pvc_name = 1;
     repeated string consumer_resource_uids = 2;
@@ -5207,7 +5203,7 @@ message SharedVolumeInfo {
     string owner_resource_uid = 3;
 }
 
-// Why a resource is held out of auto-rule claiming -- FR-014, FR-016.
+// Why a resource is held out of auto-rule claiming.
 // An exclusion needs a reason, an author and a time; no existing field holds
 // any of these.
 message AutoRuleExclusionInfo {
@@ -5231,16 +5227,15 @@ message AutoRuleExclusionInfo {
     //
     // Without this the hold blocks the very delegate it protects. A handover
     // sets the hold at the HANDOVER's tier, and excluded_by_tier then outranks
-    // the delegate, so the delegate's own auto Binding Rule is skipped --
-    // journey F5 asks for exactly that rule to work. A rule owned by this
-    // identity is therefore exempt.
+    // the delegate, so the delegate's own auto Binding Rule is skipped. A rule
+    // owned by this identity is therefore exempt.
     //
     // Empty for an ordinary exclusion, which holds every tier at or below the
-    // setter's -- journey X2.
+    // setter's.
     string held_for = 8;
 }
 
-// How one volume was actually captured, and why -- FR-098.
+// How one volume was actually captured, and why.
 // BackupInfo.volumes records WHAT was backed up. This records which method
 // moved it, and why a preferred method was not used.
 message VolumeCaptureDetail {
@@ -5262,7 +5257,7 @@ message VolumeCaptureDetail {
     }
 }
 
-// A per-intent destination override -- FR-036.
+// A per-intent destination override.
 // One SLA Policy may hold intents that need different destinations, and a
 // placement assignment carries only one backup_location_ref.
 message IntentDestination {
@@ -5271,7 +5266,7 @@ message IntentDestination {
     ObjectRef local_snapshot_ref = 3;
 }
 
-// One recorded change of owner -- FR-128.
+// One recorded change of owner.
 // Ownership holds the current state only, with no history.
 message OwnershipTransition {
     string from_owner = 1;
@@ -5355,7 +5350,7 @@ message ProtectionIntent {
     string owner = 15;
     OwnerTier owner_tier = 16;
 
-    // A floor the owner of the baseline sets -- FR-044. A supplemental intent
+    // A floor the owner of the baseline sets. A supplemental intent
     // may not state a recoverability_period below it.
     google.protobuf.Duration minimum_retention_period = 17;
 
@@ -5509,13 +5504,13 @@ message CatalogResourceInfo {
     // VMs only. Which parent, for which interval. A restore to a past time
     // needs the membership AT that time, which parent_uid cannot give.
     repeated MembershipInterval membership_history = 14;
-    // Exactly one inventory owner per Kubernetes object -- FR-004. This is what
+    // Exactly one inventory owner per Kubernetes object. This is what
     // stops a VM disk being captured by both the VM and its namespace.
     // Recomputed by discovery on every pass.
     repeated GraphOwnerEntry graph_owner_index = 15;
-    // A volume with more than one consumer -- FR-010.
+    // A volume with more than one consumer.
     repeated SharedVolumeInfo shared_volumes = 16;
-    // Holds the resource out of auto-rule claiming -- FR-014.
+    // Holds the resource out of auto-rule claiming.
     AutoRuleExclusionInfo exclusion = 17;
     // Discovery freshness. Separates "gone from the cluster" from "not scanned
     // in this pass". Without it a failed or partial pass would tombstone the
@@ -5592,10 +5587,10 @@ message PlacementRuleInfo {
     google.protobuf.Timestamp last_evaluated_time = 9;
     // OUTPUT_ONLY. How many assignments this rule produced.
     int32 assignment_count = 10;
-    // OUTPUT_ONLY. How many of them no longer match -- FR-030.
+    // OUTPUT_ONLY. How many of them no longer match.
     int32 drift_count = 11;
     // The creator's authority at create time, frozen. Survives the creator
-    // being removed -- FR-074. Reuses ResourceFilter rather than a new message.
+    // being removed. Reuses ResourceFilter rather than a new message.
     ResourceFilter captured_target_boundary = 12;
 
     enum Mode {
@@ -5621,7 +5616,7 @@ message PlacementAssignmentInfo {
     ObjectRef backup_location_ref = 2;
     ObjectRef local_snapshot_ref = 3;
     google.protobuf.Timestamp applied_time = 4;
-    // The rule's definition, frozen at apply time -- FR-025.
+    // The rule's definition, frozen at apply time.
     //
     // resource_uids IS NEVER COPIED INTO THIS FIELD. A static rule's filter is
     // the hand-picked list itself, so copying it onto every assignment
@@ -5647,7 +5642,7 @@ message PlacementAssignmentInfo {
     // the ONE default destination, in backup_location_ref.
     reserved 9;
     // Records that the destination was reached by privilege elevation, and
-    // under which context -- FR-118. Auditable after the fact; the delegate
+    // under which context. Auditable after the fact; the delegate
     // never sees the location's credentials.
     string placement_inheriting_context = 10;
 }
@@ -5716,7 +5711,7 @@ message BindingInfo {
     // every key and orphans every existing CR, so the prefix makes that
     // detectable rather than silent. It moved from v1 to v2 when
     // label_selectors and advanced_resource_label_selector were added as
-    // inputs -- question 64. The CR name is a short digest of this,
+    // inputs. The CR name is a short digest of this,
     // because Kubernetes needs a DNS-safe name under 63 characters.
     string schedule_key = 19;
 
@@ -5729,7 +5724,7 @@ message BindingInfo {
     // Fields 19 to 22 describe the BASELINE intent's derived schedule only.
     // A Binding that carries supplemental intents contributes to more than one
     // schedule, so each extra one is recorded here. Suspend and Resume must
-    // walk this list as well as the baseline -- FR-047.
+    // walk this list as well as the baseline.
     repeated DerivedSchedule additional_schedules = 23;
 
     // OUTPUT_ONLY. Materialized so a list view does not have to read every
@@ -5737,12 +5732,12 @@ message BindingInfo {
     google.protobuf.Timestamp last_run_time = 24;
     ObjectRef last_recovery_point_ref = 25;
 
-    // Per-intent destination override, keyed by intent id -- FR-036.
-    // NEVER returned to an App Admin -- FR-028.
+    // Per-intent destination override, keyed by intent id.
+    // NEVER returned to an App Admin.
     repeated IntentDestination intent_destinations = 26;
-    // The hook definition in force, captured at execution start -- FR-065.
+    // The hook definition in force, captured at execution start.
     uint64 hook_revision = 27;
-    // Every ownership transfer, with reason -- FR-060, FR-096. Ownership holds
+    // Every ownership transfer, with reason. Ownership holds
     // the current state only, so the history needs its own list.
     repeated OwnershipTransition owner_history = 28;
     // Reused from BackupScheduleInfo, same meaning.
@@ -5755,7 +5750,7 @@ message BindingInfo {
     // This is a CAPTURE setting, not a filter. Non-goal 3 rules out a rule
     // FILTER naming an object inside a namespace, because placement attaches to
     // a catalog row and a config-map has no row. Narrowing an already-selected
-    // namespace is a different thing and is allowed -- question 64.
+    // namespace is a different thing and is allowed.
     //
     // BOTH ARE PART OF THE SCHEDULE KEY, and that costs nothing when the
     // selector is uniform. ApplicationBackupSpec.Namespaces is a list but
@@ -5895,7 +5890,7 @@ message SLAPolicyUpdateRequest {
     bool dry_run = 3;
 
     // Pause or resume the policy. Pause suppresses new SCHEDULED executions and
-    // leaves expiry and SLA evaluation running -- journey B15. It replaces the
+    // leaves expiry and SLA evaluation running. It replaces the
     // separate Suspend and Resume calls, which were two RPCs for one boolean.
     bool paused = 4;
     bool paused_set = 5;
@@ -6044,7 +6039,7 @@ message ResourceCatalogDeleteRequest {
     string uid = 2;
     // Remove the recovery points too. Without it the call is refused while any
     // recovery point still points at the row, so an operator cannot destroy
-    // restorable data by accident -- journey H2a.
+    // restorable data by accident.
     bool delete_recovery_points = 3;
 }
 
@@ -6115,7 +6110,7 @@ message PlacementRuleCreateRequest {
     //
     // DEFAULTS TO FALSE, and an auto rule must leave it false: creating,
     // enabling or editing an auto rule schedules it for the next published
-    // cycle rather than running it immediately -- journeys C3 and Q9. A
+    // cycle rather than running it immediately. A
     // one-shot rule sets it, because its whole life is that single
     // application and a one-shot rule that is never applied does nothing.
     //
@@ -6183,9 +6178,9 @@ service PlacementRule {
         };
     }
 
-    // Update edits the rule. It does NOT touch assignments already made --
-    // FR-030 -- so it returns the resulting drift count rather than moving
-    // anything. A one-shot rule is immutable after its single application.
+    // Update edits the rule. It does NOT touch assignments already made, so it
+    // returns the resulting drift count rather than moving anything. A one-shot
+    // rule is immutable after its single application.
     rpc Update(PlacementRuleUpdateRequest)
         returns (PlacementRuleUpdateResponse) {
         option (google.api.http) = {
@@ -6205,7 +6200,7 @@ service PlacementRule {
 
     // Apply runs a one-shot rule now, or forces an auto rule's cycle.
     // Claiming only ever ADDS protection: a resource already claimed by
-    // another rule is skipped, never taken -- FR-075.
+    // another rule is skipped, never taken.
     rpc Apply(PlacementRuleApplyRequest)
         returns (PlacementRuleApplyResponse) {
         option (google.api.http) = {
@@ -6302,7 +6297,7 @@ message PlacementAssignmentDeleteRequest {
 }
 message PlacementAssignmentDeleteResponse {}
 
-// A placement rebind -- journeys Q4 and C7a, FR-030.
+// A placement rebind.
 message PlacementAssignmentUpdateRequest {
     string org_id = 1;
     // The resources to rebind. An assignment is identified by the resource it
@@ -6322,14 +6317,13 @@ message PlacementAssignmentUpdateRequest {
     // 6 held a per-intent destination override. Use Binding.Update instead.
     reserved 6;
 
-    // The preview FR-030 requires: list every inherited intent that would
-    // move, and write nothing. The UI calls this before it offers Commit.
+    // list every inherited intent that would move, and write nothing
     bool dry_run = 7;
 }
 message PlacementAssignmentUpdateResponse {
     // Empty on a dry run.
     repeated PlacementAssignmentObject placement_assignments = 1;
-    // What the rebind would do, or did, per resource -- FR-030. Returned for a
+    // What the rebind would do, or did, per resource. Returned for a
     // dry run and for a commit, so both are read the same way.
     repeated ResourceRebindImpact impact = 2;
 
@@ -6338,9 +6332,9 @@ message PlacementAssignmentUpdateResponse {
         // Intents that INHERIT the default placement, so they move. Each one
         // starts a new destination chain with a FULL backup at its next
         // scheduled run. Historical recovery points stay at their original
-        // location and stay restorable -- FR-030.
+        // location and stay restorable.
         repeated string moved_intent_ids = 2;
-        // Intents carrying their own destination. Left unchanged -- FR-030.
+        // Intents carrying their own destination. Left unchanged.
         repeated string unchanged_intent_ids = 3;
         // Intents the caller does not govern.
         //
@@ -6424,7 +6418,7 @@ message RecoveryPointInfo {
     // once the last recovery point referencing it is gone.
     google.protobuf.Timestamp expiry_time = 9;
     // NOT a failed execution. A failed or cancelled execution publishes NO
-    // recovery point at all, so no row exists to carry a reason -- journeys E5
+    // recovery point at all, so no row exists to carry a reason
     // and E13 make publication atomic per resource.
     //
     // This records a point that SUCCEEDED and later became unreachable: its
@@ -6434,7 +6428,7 @@ message RecoveryPointInfo {
     string failure_reason = 10;
 
     // OUTPUT_ONLY, computed per caller and never stored. Separates "this point
-    // exists but is not yours" from "this point does not exist" -- FR-105.
+    // exists but is not yours" from "this point does not exist".
     // It gates the per-resource view of a backup shared by several tenants.
     bool accessible = 11;
     // Which Binding produced it. intent_id alone does not say, because two
@@ -6445,11 +6439,11 @@ message RecoveryPointInfo {
     ObjectRef parent_recovery_point_ref = 13;
     // True for a point made by Binding.CreateIndependentCheckpoint. Such a
     // point has no intent_id, sits outside every intent chain and every SLA
-    // evaluation, and expires at expiry_time -- journey M6, FR-141.
+    // evaluation, and expires at expiry_time.
     bool independent_checkpoint = 14;
     // The capture contract the run used. Export eligibility reads it, so a
     // GenericCrossCloud checkpoint can be exported across clouds even though
-    // it has no intent -- journeys M6 and M3, FR-141.
+    // it has no intent.
     ProtectionIntent.CaptureMode capture_mode = 15;
 
     enum Status {
@@ -6478,8 +6472,8 @@ message RecoveryPointEnumerateRequest {
     google.protobuf.Timestamp from_time = 5;
     google.protobuf.Timestamp to_time = 6;
     // Return the gaps as well as the points. A gap is a run that published
-    // nothing, and journey E12 requires it to be visible. Its reason is read
-    // from the backup object's status, never from a recovery point.
+    // nothing, and it must be visible. Its reason is read from the backup
+    // object's status, never from a recovery point.
     bool include_gaps = 7;
     // Restore shaping. Returns the points that recover the resource as it stood
     // at this time, which is what a target-time restore needs.
@@ -6561,12 +6555,12 @@ message BindingCreateRequest {
     // Validate and report what WOULD happen, writing nothing. This replaces the
     // separate Preview call: a preview is this call with no writes.
     bool dry_run = 8;
-    // Bulk bind -- journey C6. Skip every listed resource that already holds a
+    // Bulk bind. Skip every listed resource that already holds a
     // Binding instead of failing the whole call. This replaces the separate
     // BulkCreate call, because the list is already repeated.
     bool skip_already_bound = 9;
     // Narrows what is captured from each selected namespace. Part of the
-    // schedule key -- question 64.
+    // schedule key.
     map<string, string> label_selectors = 10;
     string advanced_resource_label_selector = 11;
 }
@@ -6637,7 +6631,7 @@ service Binding {
     // TriggerNow runs one intent immediately, against this Binding's own
     // destination and capture settings. The run joins only that intent's
     // chain and does not move its next scheduled run. The UI calls this
-    // "Run Policy Now" -- journey M5, FR-137, FR-139, FR-140.
+    // "Run Policy Now".
     rpc TriggerNow(BindingTriggerNowRequest)
         returns (BindingTriggerNowResponse) {
         option (google.api.http) = {
@@ -6650,7 +6644,7 @@ service Binding {
     // intent chain and every SLA evaluation. It uses the Binding's default
     // placement and encryption, and the Binding-wide hooks current at start.
     // It expires by itself and changes no scheduled run. Super Admin and
-    // Infra Admin only -- journey M6, FR-141, FR-142.
+    // Infra Admin only.
     rpc CreateIndependentCheckpoint(BindingCreateIndependentCheckpointRequest)
         returns (BindingCreateIndependentCheckpointResponse) {
         option (google.api.http) = {
@@ -6673,7 +6667,7 @@ message BindingUpdateRequest {
     string org_id = 1;
     string catalog_resource_uid = 2;
     // Replaces the list wholesale. Only the creator of an intent may change
-    // it -- FR-064.
+    // it.
     repeated ProtectionIntent supplemental_intents = 3;
     ObjectRef pre_exec_rule_ref = 4;
     ObjectRef post_exec_rule_ref = 5;
@@ -6682,7 +6676,7 @@ message BindingUpdateRequest {
     repeated string exclude_resource_types = 8;
     bool parallel_backup = 9;
     bool keep_cr_status = 10;
-    // Super and Infra only. Never accepted from an App Admin -- FR-028. This
+    // Super and Infra only. Never accepted from an App Admin. This
     // replaces the separate UpdateIntentDestination call.
     repeated IntentDestination intent_destinations = 11;
 
@@ -6698,15 +6692,15 @@ message BindingUpdateRequest {
     enum Action {
         // Hooks, capture settings and intent destinations. A Scoped App Admin
         // may call this with only pre_exec_rule_ref and post_exec_rule_ref set,
-        // even under an enforced baseline -- journeys K1 and F5. This replaces
+        // even under an enforced baseline. This replaces
         // the separate UpdateHooks call.
         ActionUpdateSettings = 0;
         // Replace one supplemental intent, or the whole list when
-        // supplemental_intent_id is empty -- journey C15. This replaces the
+        // supplemental_intent_id is empty. This replaces the
         // separate AddSupplementalIntent, RemoveSupplementalIntent and
         // EditSupplementalIntent calls: an empty intent removes it.
         ActionUpdateSupplementalIntent = 1;
-        // Replace the enforced baseline Policy/SLA -- journey C7. This is the
+        // Replace the enforced baseline Policy/SLA. This is the
         // ONLY path that changes a baseline, and it replaces the separate
         // RebindBaseline call. Owner only.
         ActionRebindBaseline = 2;
@@ -6719,7 +6713,7 @@ message BindingUpdateRequest {
     string sla_policy_uid = 16;
     // Narrows what is captured from each selected namespace. Changing it
     // re-derives the schedule key, so the Binding moves to another shared
-    // CR -- question 64.
+    // CR.
     map<string, string> label_selectors = 17;
     string advanced_resource_label_selector = 18;
 }
@@ -6735,12 +6729,12 @@ message BindingTriggerNowRequest {
     // An intent is shared. An auto Binding Rule binds every matching namespace
     // to one SLA Policy, and the schedule key then puts them in one CR, so a
     // scheduled run of the intent already covers all of them. An on-demand run
-    // of the same intent must be able to do the same -- journey M5.
+    // of the same intent must be able to do the same.
     //
     // A non-empty list narrows the run to those resources. Authorisation stays
     // per resource, so a caller only ever runs what they hold.
     repeated string catalog_resource_uids = 2;
-    // Which intent to run. Required, and exactly one -- journey M5.
+    // Which intent to run. Required, and exactly one.
     string intent_id = 3;
 }
 message BindingTriggerNowResponse {
@@ -6755,7 +6749,7 @@ message BindingCreateIndependentCheckpointRequest {
     // There is no intent, so there is no recoverability_period to inherit.
     google.protobuf.Duration retention_period = 3;
     // Required. The capture contract for this one run. There is no intent
-    // to inherit it from, so the caller states it -- FR-141.
+    // to inherit it from, so the caller states it.
     ProtectionIntent.CaptureMode capture_mode = 4;
 }
 message BindingCreateIndependentCheckpointResponse {
@@ -6780,10 +6774,10 @@ message BindingUpdateOwnershipResponse {
 //
 // The Placement Rule answers "where". This answers "under which SLA Policy".
 // Nothing in this API carried that meaning before, so the whole object and
-// service are new -- FR-052, FR-072, FR-080.
+// service are new.
 //
-// Auto Placement Rules evaluate BEFORE auto Binding Rules on every cycle --
-// FR-072. A resource cannot be bound before it has a destination.
+// Auto Placement Rules evaluate BEFORE auto Binding Rules on every cycle. A
+// resource cannot be bound before it has a destination.
 // ---------------------------------------------------------------------------
 
 message BindingRuleInfo {
@@ -6791,7 +6785,7 @@ message BindingRuleInfo {
     // are rejected at validation with a typed error, never ignored: those
     // objects are not resources and cannot hold a Binding.
     ResourceFilter filter = 1;
-    // Must be owned by this rule's owner -- FR-055.
+    // Must be owned by this rule's owner.
     ObjectRef sla_policy_ref = 2;
     // Reuses the Placement Rule's enum rather than declaring a second one.
     PlacementRuleInfo.Mode mode = 3;
@@ -6813,9 +6807,9 @@ message BindingRuleInfo {
     int32 binding_count = 15;
     int32 drift_count = 16;
 
-    // The creator's authority at create time, frozen -- FR-074.
+    // The creator's authority at create time, frozen.
     ResourceFilter captured_target_boundary = 17;
-    // Super and Infra only. Per-intent destination override -- FR-036.
+    // Super and Infra only. Per-intent destination override.
     repeated IntentDestination intent_destination_template = 18;
     // Super and Infra only.
     map<string, string> vsc_override_template = 19;
@@ -6914,7 +6908,7 @@ service BindingRule {
     }
 
     // Auto rules only. A one-shot rule is immutable after its single
-    // application -- FR-070.
+    // application.
     rpc Update(BindingRuleUpdateRequest)
         returns (BindingRuleUpdateResponse) {
         option (google.api.http) = {
@@ -6923,7 +6917,7 @@ service BindingRule {
         };
     }
 
-    // Delete leaves every Binding the rule created intact -- FR-080.
+    // Delete leaves every Binding the rule created intact.
     rpc Delete(BindingRuleDeleteRequest)
         returns (BindingRuleDeleteResponse) {
         option (google.api.http) = {
@@ -6952,7 +6946,7 @@ service BindingRule {
 // ExclusionReasonTemplate service
 //
 // An administrator-managed list of reasons an operator may pick from when
-// holding a resource out of auto-rule scope -- FR-016. Super Admin writes,
+// holding a resource out of auto-rule scope. Super Admin writes,
 // everyone reads.
 // ---------------------------------------------------------------------------
 
@@ -7080,19 +7074,19 @@ service ExclusionReasonTemplate {
 // ---------------------------------------------------------------------------
 // ProtectionSummary service
 //
-// The fleet rollup -- FR-091, FR-093. Namespaces and VMs are counted
+// The fleet rollup. Namespaces and VMs are counted
 // SEPARATELY: a VM is a resource in its own right, so folding the two into one
 // number would misreport the fleet.
 //
 // The state is materialized on the catalog row and is never recomputed on
-// read -- FR-013.
+// read.
 // ---------------------------------------------------------------------------
 
 message ProtectionSummaryEnumerateRequest {
     string org_id = 1;
     // How to group the counts. GroupByInvalid returns a single group whose key
     // is empty, which is the whole-scope total the separate Get call used to
-    // return -- journeys A9, H1.
+    // return.
     GroupBy group_by = 2;
 
     enum GroupBy {
@@ -7131,7 +7125,7 @@ service ProtectionSummary {
 }
 
 // ---------------------------------------------------------------------------
-// AdminScope service -- journeys O2, O2a, O8. FR-122, FR-123.
+// AdminScope service.
 //
 // An administrator's own estate: the boundary of what that identity owns.
 // Nothing in this API carried it before. Ownership is recorded per object, which
@@ -7143,8 +7137,8 @@ service ProtectionSummary {
 
 // A resource set resolved ONCE, at the delegation operation, and then frozen.
 //
-// FR-123 and journey O2a: later label, filter-result, discovery or inventory
-// changes MUST NOT add or remove a resource. The filter is kept for audit only.
+// Later label, filter-result, discovery or inventory changes MUST NOT add or
+// remove a resource. The filter is kept for audit only.
 message MaterializedResourceSet {
     // Kept so an operator can see what was asked for. NEVER re-evaluated.
     ResourceFilter resolved_from = 1;
@@ -7164,8 +7158,8 @@ message AdminScopeInfo {
     // resource ownership, not from this object.
     OwnerTier tier = 2;
 
-    // EXACTLY ONE form. FR-122 forbids unioning the two, and forbids
-    // accumulating several scope grants for one identity.
+    // EXACTLY ONE form. The two are never unioned, and one identity never
+    // accumulates several scope grants.
     oneof form {
         // Journey O2: one or more complete clusters.
         ObjectRefList whole_clusters = 3;
@@ -7215,8 +7209,8 @@ message AdminScopeEnumerateResponse {
 message AdminScopeUpdateRequest {
     CreateMetadata metadata = 1 [ (gogoproto.embed) = true ];
     AdminScopeInfo admin_scope = 2;
-    // Must carry the token from a preceding Preview. FR-123 requires a fresh
-    // Super-Admin-initiated preview and an explicit commit for every change.
+    // Must carry the token from a preceding preview. Every change needs a fresh
+    // Super-Admin-initiated preview and an explicit commit.
     string preview_token = 3;
 
     // Validate and report what WOULD happen, writing nothing. This replaces the
@@ -7270,7 +7264,7 @@ service AdminScope {
 }
 
 // ---------------------------------------------------------------------------
-// DelegationRule service -- journey F11.
+// DelegationRule service.
 //
 // Delegating resources to a lower-privileged identity, by filter, in static or
 // auto mode. Today a delegation writes collaborators onto each catalog row and
@@ -7298,7 +7292,7 @@ message DelegationRuleInfo {
     google.protobuf.Timestamp created_time = 7;
     bool enabled = 8;
     google.protobuf.Timestamp applied_time = 9;
-    // The creator's authority, frozen -- FR-074.
+    // The creator's authority, frozen.
     ResourceFilter captured_target_boundary = 10;
 
     // Delegating a Namespace grants the Namespace graph and all current AND
@@ -7360,7 +7354,7 @@ message DelegationRuleDeleteRequest {
     string uid = 3;
 }
 // Deleting the rule does NOT revoke what it already delegated, exactly as
-// deleting a Binding Rule leaves its Bindings intact -- FR-080.
+// deleting a Binding Rule leaves its Bindings intact.
 message DelegationRuleDeleteResponse {}
 
 message DelegationRuleApplyRequest {
@@ -7446,7 +7440,7 @@ service DelegationRule {
 }
 
 // ---------------------------------------------------------------------------
-// DriftEvent service -- journey D5. Read only.
+// DriftEvent service. Read only.
 //
 // One immutable row per rule, resource, cycle and evaluation time.
 //
@@ -7463,7 +7457,7 @@ service DelegationRule {
 message DriftEventInfo {
     ObjectRef rule_ref = 1;
     RuleKind rule_kind = 2;
-    // The rule's captured tier, never its current owner's -- FR-074.
+    // The rule's captured tier, never its current owner's.
     OwnerTier rule_owner_tier = 3;
     ObjectRef resource_ref = 4;
 
@@ -7483,7 +7477,7 @@ message DriftEventInfo {
     //
     // REDACTED for a caller below the winning rule's owner tier. Naming it
     // would tell a scoped administrator that a stronger tier's rule exists and
-    // what it is called, which multi-tenancy isolation forbids -- journey F7.
+    // what it is called, which multi-tenancy isolation forbids.
     ObjectRef winning_rule_ref = 12;
     // The assignment or Binding that resulted, or that was retained.
     ObjectRef resulting_object_ref = 13;
@@ -7519,7 +7513,7 @@ message DriftEventEnumerateResponse {
     repeated DriftEventObject drift_events = 1;
     string next_page_token = 2;
     // True when the backing projection may have dropped records, so the caller
-    // does not present an incomplete list as complete -- journey D5.
+    // does not present an incomplete list as complete.
     bool may_be_incomplete = 3;
 }
 
