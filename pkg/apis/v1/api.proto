@@ -653,6 +653,8 @@ message BackupScheduleInfo {
              Invalid = 0;
              All = 1; // for All application backup
              VirtualMachine = 2; // virtualMachine for VirtualMachine specific backup
+             // a namespace without the objects its VMs own
+             NamespaceExcludingVirtualMachines = 3;
          }
      }
 }
@@ -5191,22 +5193,26 @@ message GraphOwnerEntry {
 message SharedVolumeInfo {
     string pvc_name = 1;
     repeated string consumer_resource_uids = 2;
-    // The consumer that owns it in the inventory. The others reference it.
-    string owner_resource_uid = 3;
+    // 3 held owner_resource_uid, the namespace owns a volume that is not VM-exclusive
+    reserved 3;
+    reserved "owner_resource_uid";
 }
 
 // Why a resource is held out of auto-rule claiming.
 // An exclusion needs a reason, an author and a time; no existing field holds
 // any of these.
 message AutoRuleExclusionInfo {
-    bool excluded = 1;
+    // 1 held excluded, the presence of this message is the exclusion
+    reserved 1;
+    reserved "excluded";
     // A code from an ExclusionReasonTemplate.
     string reason_code = 2;
     string reason_text = 3;
     string excluded_by = 4;
     google.protobuf.Timestamp excluded_time = 5;
-    // Unset means the exclusion does not expire.
-    google.protobuf.Timestamp expires_time = 6;
+    // 6 held expires_time, no requirement defines an expiring exclusion
+    reserved 6;
+    reserved "expires_time";
     // The setter's tier, captured at the time.
     //
     // Needed to decide HOW FAR the exclusion reaches. An App Admin may set one
@@ -5321,8 +5327,9 @@ message ProtectionIntent {
     // a message.
     SchedulePolicyInfo.IncrementalCount incremental_count = 6;
 
-    // Chosen by the administrator. Automatic run-time selection is out of v1.
-    google.protobuf.Timestamp run_time = 7;
+    // 7 held run_time, the schedule form already carries the time
+    reserved 7;
+    reserved "run_time";
 
     // The ONLY retention field. A period, never a count. A count cannot say
     // "recoverable for 30 days" when runs are missed.
@@ -5337,14 +5344,16 @@ message ProtectionIntent {
     ObjectRef volume_resource_only_policy_ref = 12;
     EncryptionRequirement encryption_requirement = 13;
 
-    Classification classification = 14;
+    // 14 held classification, a baseline lives on the policy, a supplemental on the Binding
+    reserved 14;
+    reserved "classification";
     // Creator. Only the creator may edit a supplemental intent.
     string owner = 15;
     OwnerTier owner_tier = 16;
 
-    // A floor the owner of the baseline sets. A supplemental intent
-    // may not state a recoverability_period below it.
-    google.protobuf.Duration minimum_retention_period = 17;
+    // 17 held minimum_retention_period, no requirement defines a retention floor
+    reserved 17;
+    reserved "minimum_retention_period";
 
     // ---- the four forms, copied minus retain and incremental_count ----
 
@@ -5570,7 +5579,9 @@ message PlacementRuleInfo {
     // The creator's tier, captured at create time. Metadata.ownership already
     // carries who owns the rule, so there is no owner field here.
     OwnerTier owner_tier = 5;
-    google.protobuf.Timestamp created_time = 6;
+    // 6 held created_time, use Metadata.create_time
+    reserved 6;
+    reserved "created_time";
     // Auto rules only.
     bool enabled = 7;
     // One-shot rules: the moment of their single application.
@@ -5618,11 +5629,9 @@ message PlacementAssignmentInfo {
     // nothing, because the existence of this assignment already states that
     // the resource was in the list.
     //
-    // What is kept is the part that governs behaviour and cannot be recovered
-    // from the assignments: the mode, the target kinds, and any label selector.
-    // An auto rule's selector is small and meaningful -- "placed because it
-    // matched tier=gold" -- and is why the field exists at all.
-    ResourceFilter captured_rule_definition = 5;
+    // 5 held captured_rule_definition, nothing read it
+    reserved 5;
+    reserved "captured_rule_definition";
 
     // Rule provenance.
     ObjectRef source_rule_ref = 6;
@@ -5663,7 +5672,9 @@ message BindingInfo {
     string baseline_assignment_owner = 4;
     // DERIVED from the owner's tier, never selectable.
     Governance governance = 5;
-    ObjectRef placement_assignment_ref = 6;
+    // 6 held placement_assignment_ref, read it from the catalog row
+    reserved 6;
+    reserved "placement_assignment_ref";
     // Stored inline. This is the only place a supplemental intent exists.
     repeated ProtectionIntent supplemental_intents = 7;
 
@@ -5671,7 +5682,9 @@ message BindingInfo {
     ObjectRef pre_exec_rule_ref = 8;
     ObjectRef post_exec_rule_ref = 9;
 
-    BackupScheduleInfo.BackupObjectType backup_object_type = 10;
+    // 10 held backup_object_type, derived from the resource kind
+    reserved 10;
+    reserved "backup_object_type";
     repeated string resource_types = 11;
     bool parallel_backup = 12;
     bool keep_cr_status = 13;
@@ -5708,10 +5721,12 @@ message BindingInfo {
     // because Kubernetes needs a DNS-safe name under 63 characters.
     string schedule_key = 19;
 
-    // The derived CR names, recorded so an unbind or a suspend can address
-    // them without recomputing the digest.
-    string schedule_policy_cr_name = 20;
-    string backup_schedule_cr_name = 21;
+    // 20 held schedule_policy_cr_name, the CR name is a digest of schedule_key
+    reserved 20;
+    reserved "schedule_policy_cr_name";
+    // 21 held backup_schedule_cr_name, the CR name is a digest of schedule_key
+    reserved 21;
+    reserved "backup_schedule_cr_name";
     string backup_schedule_uid = 22;
 
     // Fields 19 to 22 describe the BASELINE intent's derived schedule only.
@@ -6400,9 +6415,9 @@ message RecoveryPointInfo {
     ObjectRef backup_ref = 2;
     string intent_id = 3;
     Status status = 4;
-    // False when the resource's own data did not complete, even if the
-    // backup as a whole reports partial success.
-    bool restorable = 5;
+    // 5 held restorable, true unless failure_reason is set
+    reserved 5;
+    reserved "restorable";
     uint64 size_bytes = 6;
     // Retention is anchored to the revision in force at capture.
     uint64 sla_policy_revision_at_capture = 7;
@@ -6427,9 +6442,9 @@ message RecoveryPointInfo {
     // Which Binding produced it. intent_id alone does not say, because two
     // Bindings may carry the same intent id.
     ObjectRef binding_ref = 12;
-    // A VM's point refers to its namespace's point from the same run, when one
-    // exists. A VM point may publish where the parent point failed.
-    ObjectRef parent_recovery_point_ref = 13;
+    // 13 held parent_recovery_point_ref, a namespace point and a VM point publish independently
+    reserved 13;
+    reserved "parent_recovery_point_ref";
     // True for a point made by Binding.CreateIndependentCheckpoint. Such a
     // point has no intent_id, sits outside every intent chain and every SLA
     // evaluation, and expires at expiry_time.
@@ -6783,14 +6798,18 @@ message BindingRuleInfo {
     // Reuses the Placement Rule's enum rather than declaring a second one.
     PlacementRuleInfo.Mode mode = 3;
     OwnerTier owner_tier = 4;
-    google.protobuf.Timestamp created_time = 5;
+    // 5 held created_time, use Metadata.create_time
+    reserved 5;
+    reserved "created_time";
     bool enabled = 6;
     google.protobuf.Timestamp applied_time = 7;
 
     // Binding-wide capture settings, stamped onto every Binding it creates.
     ObjectRef pre_exec_rule_ref = 8;
     ObjectRef post_exec_rule_ref = 9;
-    BackupScheduleInfo.BackupObjectType backup_object_type = 10;
+    // 10 held backup_object_type, derived from the resource kind
+    reserved 10;
+    reserved "backup_object_type";
     repeated string resource_types = 11;
     bool parallel_backup = 12;
     bool keep_cr_status = 13;
@@ -6944,13 +6963,15 @@ service BindingRule {
 // ---------------------------------------------------------------------------
 
 message ExclusionReasonTemplateInfo {
-    // Stored on the catalog row as AutoRuleExclusionInfo.reason_code.
-    string code = 1;
+    // 1 held code, use Metadata.name
+    reserved 1;
+    reserved "code";
     string description = 2;
     // The operator must also supply reason_text.
     bool requires_free_text = 3;
-    // The operator must also supply expires_time.
-    bool requires_expiry = 4;
+    // 4 held requires_expiry, no requirement defines an expiring exclusion
+    reserved 4;
+    reserved "requires_expiry";
     // An inactive template is kept for the rows that already cite it, but is
     // not offered for a new exclusion.
     bool active = 5;
@@ -7281,8 +7302,9 @@ message DelegationRuleInfo {
     PlacementRuleInfo.Mode mode = 5;
     // Super Admin or Infra Admin only -- F11. Arbitration key 1.
     OwnerTier owner_tier = 6;
-    // Arbitration key 2: the older rule wins at equal tier.
-    google.protobuf.Timestamp created_time = 7;
+    // 7 held created_time, use Metadata.create_time
+    reserved 7;
+    reserved "created_time";
     bool enabled = 8;
     google.protobuf.Timestamp applied_time = 9;
     // The creator's authority, frozen.
