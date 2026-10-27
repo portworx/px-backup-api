@@ -170,8 +170,7 @@ func (ProtectionState) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_9943feda3d652502, []int{3}
 }
 
-// The tier that owns an object. Full resolution is owned by PB-16926; the
-// happy path always writes SuperAdmin.
+// the tier that owns an object, currently always SuperAdmin
 type OwnerTier int32
 
 const (
@@ -208,7 +207,7 @@ func (OwnerTier) EnumDescriptor() ([]byte, []int) {
 
 // Why a rule did or did not act on one resource.
 //
-// ONE vocabulary, shared by every preview and every Drift Event -- journeys C4,
+// ONE vocabulary, shared by every preview and every Drift Event
 // D5 and F11 each name an overlapping list, and three separate enums would drift
 // apart. A free-form string cannot be switched on by a client, cannot be counted,
 // and cannot be redacted per tier.
@@ -2403,15 +2402,15 @@ type BindingUpdateRequest_Action int32
 const (
 	// Hooks, capture settings and intent destinations. A Scoped App Admin
 	// may call this with only pre_exec_rule_ref and post_exec_rule_ref set,
-	// even under an enforced baseline -- journeys K1 and F5. This replaces
+	// even under an enforced baseline. This replaces
 	// the separate UpdateHooks call.
 	BindingUpdateRequest_ActionUpdateSettings BindingUpdateRequest_Action = 0
 	// Replace one supplemental intent, or the whole list when
-	// supplemental_intent_id is empty -- journey C15. This replaces the
+	// supplemental_intent_id is empty. This replaces the
 	// separate AddSupplementalIntent, RemoveSupplementalIntent and
 	// EditSupplementalIntent calls: an empty intent removes it.
 	BindingUpdateRequest_ActionUpdateSupplementalIntent BindingUpdateRequest_Action = 1
-	// Replace the enforced baseline Policy/SLA -- journey C7. This is the
+	// Replace the enforced baseline Policy/SLA. This is the
 	// ONLY path that changes a baseline, and it replaces the separate
 	// RebindBaseline call. Owner only.
 	BindingUpdateRequest_ActionRebindBaseline BindingUpdateRequest_Action = 2
@@ -6735,11 +6734,11 @@ type BackupInfo struct {
 	// by the fleet.
 	CoveredResourceUids []string `protobuf:"bytes,65,rep,name=covered_resource_uids,json=coveredResourceUids,proto3" json:"covered_resource_uids,omitempty"`
 	// Which SLA Policy was in force, and at which revision. Retention is
-	// anchored to the revision -- FR-133.
+	// anchored to the revision.
 	SlaPolicyRef               *ObjectRef `protobuf:"bytes,66,opt,name=sla_policy_ref,json=slaPolicyRef,proto3" json:"sla_policy_ref,omitempty"`
 	SlaPolicyRevisionAtCapture uint64     `protobuf:"varint,67,opt,name=sla_policy_revision_at_capture,json=slaPolicyRevisionAtCapture,proto3" json:"sla_policy_revision_at_capture,omitempty"`
 	// How each volume was ACTUALLY captured, and why a preferred method was
-	// not used -- FR-098. BackupInfo.volumes records what was backed up, not
+	// not used. BackupInfo.volumes records what was backed up, not
 	// which method moved it.
 	VolumeCaptureDetails []*VolumeCaptureDetail `protobuf:"bytes,68,rep,name=volume_capture_details,json=volumeCaptureDetails,proto3" json:"volume_capture_details,omitempty"`
 	// False for a legacy backup, which has no recovery points.
@@ -28284,7 +28283,7 @@ func (m *MembershipInterval) GetLeftTime() *types.Timestamp {
 	return nil
 }
 
-// Exactly one inventory owner per Kubernetes object -- FR-004.
+// Exactly one inventory owner per Kubernetes object.
 // Without this a VM disk is captured twice: once by the namespace backup and
 // once by the VM backup.
 type GraphOwnerEntry struct {
@@ -28358,7 +28357,7 @@ func (m *GraphOwnerEntry) GetShared() bool {
 	return false
 }
 
-// A volume with more than one consumer -- FR-010.
+// A volume with more than one consumer.
 type SharedVolumeInfo struct {
 	PvcName              string   `protobuf:"bytes,1,opt,name=pvc_name,json=pvcName,proto3" json:"pvc_name,omitempty"`
 	ConsumerResourceUids []string `protobuf:"bytes,2,rep,name=consumer_resource_uids,json=consumerResourceUids,proto3" json:"consumer_resource_uids,omitempty"`
@@ -28420,7 +28419,7 @@ func (m *SharedVolumeInfo) GetOwnerResourceUid() string {
 	return ""
 }
 
-// Why a resource is held out of auto-rule claiming -- FR-014, FR-016.
+// Why a resource is held out of auto-rule claiming.
 // An exclusion needs a reason, an author and a time; no existing field holds
 // any of these.
 type AutoRuleExclusionInfo struct {
@@ -28443,12 +28442,11 @@ type AutoRuleExclusionInfo struct {
 	//
 	// Without this the hold blocks the very delegate it protects. A handover
 	// sets the hold at the HANDOVER's tier, and excluded_by_tier then outranks
-	// the delegate, so the delegate's own auto Binding Rule is skipped --
-	// journey F5 asks for exactly that rule to work. A rule owned by this
-	// identity is therefore exempt.
+	// the delegate, so the delegate's own auto Binding Rule is skipped. A rule
+	// owned by this identity is therefore exempt.
 	//
 	// Empty for an ordinary exclusion, which holds every tier at or below the
-	// setter's -- journey X2.
+	// setter's.
 	HeldFor string `protobuf:"bytes,8,opt,name=held_for,json=heldFor,proto3" json:"held_for,omitempty"`
 }
 
@@ -28541,7 +28539,7 @@ func (m *AutoRuleExclusionInfo) GetHeldFor() string {
 	return ""
 }
 
-// How one volume was actually captured, and why -- FR-098.
+// How one volume was actually captured, and why.
 // BackupInfo.volumes records WHAT was backed up. This records which method
 // moved it, and why a preferred method was not used.
 type VolumeCaptureDetail struct {
@@ -28637,7 +28635,7 @@ func (m *VolumeCaptureDetail) GetEncrypted() bool {
 	return false
 }
 
-// A per-intent destination override -- FR-036.
+// A per-intent destination override.
 // One SLA Policy may hold intents that need different destinations, and a
 // placement assignment carries only one backup_location_ref.
 type IntentDestination struct {
@@ -28700,7 +28698,7 @@ func (m *IntentDestination) GetLocalSnapshotRef() *ObjectRef {
 	return nil
 }
 
-// One recorded change of owner -- FR-128.
+// One recorded change of owner.
 // Ownership holds the current state only, with no history.
 type OwnershipTransition struct {
 	FromOwner   string           `protobuf:"bytes,1,opt,name=from_owner,json=fromOwner,proto3" json:"from_owner,omitempty"`
@@ -29008,7 +29006,7 @@ type ProtectionIntent struct {
 	// Creator. Only the creator may edit a supplemental intent.
 	Owner     string    `protobuf:"bytes,15,opt,name=owner,proto3" json:"owner,omitempty"`
 	OwnerTier OwnerTier `protobuf:"varint,16,opt,name=owner_tier,json=ownerTier,proto3,enum=OwnerTier" json:"owner_tier,omitempty"`
-	// A floor the owner of the baseline sets -- FR-044. A supplemental intent
+	// A floor the owner of the baseline sets. A supplemental intent
 	// may not state a recoverability_period below it.
 	MinimumRetentionPeriod *types.Duration `protobuf:"bytes,17,opt,name=minimum_retention_period,json=minimumRetentionPeriod,proto3" json:"minimum_retention_period,omitempty"`
 }
@@ -29757,13 +29755,13 @@ type CatalogResourceInfo struct {
 	// VMs only. Which parent, for which interval. A restore to a past time
 	// needs the membership AT that time, which parent_uid cannot give.
 	MembershipHistory []*MembershipInterval `protobuf:"bytes,14,rep,name=membership_history,json=membershipHistory,proto3" json:"membership_history,omitempty"`
-	// Exactly one inventory owner per Kubernetes object -- FR-004. This is what
+	// Exactly one inventory owner per Kubernetes object. This is what
 	// stops a VM disk being captured by both the VM and its namespace.
 	// Recomputed by discovery on every pass.
 	GraphOwnerIndex []*GraphOwnerEntry `protobuf:"bytes,15,rep,name=graph_owner_index,json=graphOwnerIndex,proto3" json:"graph_owner_index,omitempty"`
-	// A volume with more than one consumer -- FR-010.
+	// A volume with more than one consumer.
 	SharedVolumes []*SharedVolumeInfo `protobuf:"bytes,16,rep,name=shared_volumes,json=sharedVolumes,proto3" json:"shared_volumes,omitempty"`
-	// Holds the resource out of auto-rule claiming -- FR-014.
+	// Holds the resource out of auto-rule claiming.
 	Exclusion *AutoRuleExclusionInfo `protobuf:"bytes,17,opt,name=exclusion,proto3" json:"exclusion,omitempty"`
 	// Discovery freshness. Separates "gone from the cluster" from "not scanned
 	// in this pass". Without it a failed or partial pass would tombstone the
@@ -30079,10 +30077,10 @@ type PlacementRuleInfo struct {
 	LastEvaluatedTime *types.Timestamp `protobuf:"bytes,9,opt,name=last_evaluated_time,json=lastEvaluatedTime,proto3" json:"last_evaluated_time,omitempty"`
 	// OUTPUT_ONLY. How many assignments this rule produced.
 	AssignmentCount int32 `protobuf:"varint,10,opt,name=assignment_count,json=assignmentCount,proto3" json:"assignment_count,omitempty"`
-	// OUTPUT_ONLY. How many of them no longer match -- FR-030.
+	// OUTPUT_ONLY. How many of them no longer match.
 	DriftCount int32 `protobuf:"varint,11,opt,name=drift_count,json=driftCount,proto3" json:"drift_count,omitempty"`
 	// The creator's authority at create time, frozen. Survives the creator
-	// being removed -- FR-074. Reuses ResourceFilter rather than a new message.
+	// being removed. Reuses ResourceFilter rather than a new message.
 	CapturedTargetBoundary *ResourceFilter `protobuf:"bytes,12,opt,name=captured_target_boundary,json=capturedTargetBoundary,proto3" json:"captured_target_boundary,omitempty"`
 }
 
@@ -30249,7 +30247,7 @@ type PlacementAssignmentInfo struct {
 	BackupLocationRef *ObjectRef       `protobuf:"bytes,2,opt,name=backup_location_ref,json=backupLocationRef,proto3" json:"backup_location_ref,omitempty"`
 	LocalSnapshotRef  *ObjectRef       `protobuf:"bytes,3,opt,name=local_snapshot_ref,json=localSnapshotRef,proto3" json:"local_snapshot_ref,omitempty"`
 	AppliedTime       *types.Timestamp `protobuf:"bytes,4,opt,name=applied_time,json=appliedTime,proto3" json:"applied_time,omitempty"`
-	// The rule's definition, frozen at apply time -- FR-025.
+	// The rule's definition, frozen at apply time.
 	//
 	// resource_uids IS NEVER COPIED INTO THIS FIELD. A static rule's filter is
 	// the hand-picked list itself, so copying it onto every assignment
@@ -30268,7 +30266,7 @@ type PlacementAssignmentInfo struct {
 	StillMatchesSourceRule bool             `protobuf:"varint,7,opt,name=still_matches_source_rule,json=stillMatchesSourceRule,proto3" json:"still_matches_source_rule,omitempty"`
 	DepartedSince          *types.Timestamp `protobuf:"bytes,8,opt,name=departed_since,json=departedSince,proto3" json:"departed_since,omitempty"`
 	// Records that the destination was reached by privilege elevation, and
-	// under which context -- FR-118. Auditable after the fact; the delegate
+	// under which context. Auditable after the fact; the delegate
 	// never sees the location's credentials.
 	PlacementInheritingContext string `protobuf:"bytes,10,opt,name=placement_inheriting_context,json=placementInheritingContext,proto3" json:"placement_inheriting_context,omitempty"`
 }
@@ -30454,7 +30452,7 @@ type BindingInfo struct {
 	// every key and orphans every existing CR, so the prefix makes that
 	// detectable rather than silent. It moved from v1 to v2 when
 	// label_selectors and advanced_resource_label_selector were added as
-	// inputs -- question 64. The CR name is a short digest of this,
+	// inputs. The CR name is a short digest of this,
 	// because Kubernetes needs a DNS-safe name under 63 characters.
 	ScheduleKey string `protobuf:"bytes,19,opt,name=schedule_key,json=scheduleKey,proto3" json:"schedule_key,omitempty"`
 	// The derived CR names, recorded so an unbind or a suspend can address
@@ -30465,18 +30463,18 @@ type BindingInfo struct {
 	// Fields 19 to 22 describe the BASELINE intent's derived schedule only.
 	// A Binding that carries supplemental intents contributes to more than one
 	// schedule, so each extra one is recorded here. Suspend and Resume must
-	// walk this list as well as the baseline -- FR-047.
+	// walk this list as well as the baseline.
 	AdditionalSchedules []*DerivedSchedule `protobuf:"bytes,23,rep,name=additional_schedules,json=additionalSchedules,proto3" json:"additional_schedules,omitempty"`
 	// OUTPUT_ONLY. Materialized so a list view does not have to read every
 	// recovery point to answer "when did this last run".
 	LastRunTime          *types.Timestamp `protobuf:"bytes,24,opt,name=last_run_time,json=lastRunTime,proto3" json:"last_run_time,omitempty"`
 	LastRecoveryPointRef *ObjectRef       `protobuf:"bytes,25,opt,name=last_recovery_point_ref,json=lastRecoveryPointRef,proto3" json:"last_recovery_point_ref,omitempty"`
-	// Per-intent destination override, keyed by intent id -- FR-036.
-	// NEVER returned to an App Admin -- FR-028.
+	// Per-intent destination override, keyed by intent id.
+	// NEVER returned to an App Admin.
 	IntentDestinations []*IntentDestination `protobuf:"bytes,26,rep,name=intent_destinations,json=intentDestinations,proto3" json:"intent_destinations,omitempty"`
-	// The hook definition in force, captured at execution start -- FR-065.
+	// The hook definition in force, captured at execution start.
 	HookRevision uint64 `protobuf:"varint,27,opt,name=hook_revision,json=hookRevision,proto3" json:"hook_revision,omitempty"`
-	// Every ownership transfer, with reason -- FR-060, FR-096. Ownership holds
+	// Every ownership transfer, with reason. Ownership holds
 	// the current state only, so the history needs its own list.
 	OwnerHistory []*OwnershipTransition `protobuf:"bytes,28,rep,name=owner_history,json=ownerHistory,proto3" json:"owner_history,omitempty"`
 	// Reused from BackupScheduleInfo, same meaning.
@@ -30488,7 +30486,7 @@ type BindingInfo struct {
 	// This is a CAPTURE setting, not a filter. Non-goal 3 rules out a rule
 	// FILTER naming an object inside a namespace, because placement attaches to
 	// a catalog row and a config-map has no row. Narrowing an already-selected
-	// namespace is a different thing and is allowed -- question 64.
+	// namespace is a different thing and is allowed.
 	//
 	// BOTH ARE PART OF THE SCHEDULE KEY, and that costs nothing when the
 	// selector is uniform. ApplicationBackupSpec.Namespaces is a list but
@@ -31180,7 +31178,7 @@ type SLAPolicyUpdateRequest struct {
 	// separate Preview call: a preview is this call with no writes.
 	DryRun bool `protobuf:"varint,3,opt,name=dry_run,json=dryRun,proto3" json:"dry_run,omitempty"`
 	// Pause or resume the policy. Pause suppresses new SCHEDULED executions and
-	// leaves expiry and SLA evaluation running -- journey B15. It replaces the
+	// leaves expiry and SLA evaluation running. It replaces the
 	// separate Suspend and Resume calls, which were two RPCs for one boolean.
 	Paused    bool `protobuf:"varint,4,opt,name=paused,proto3" json:"paused,omitempty"`
 	PausedSet bool `protobuf:"varint,5,opt,name=paused_set,json=pausedSet,proto3" json:"paused_set,omitempty"`
@@ -31924,7 +31922,7 @@ type ResourceCatalogDeleteRequest struct {
 	Uid string `protobuf:"bytes,2,opt,name=uid,proto3" json:"uid,omitempty"`
 	// Remove the recovery points too. Without it the call is refused while any
 	// recovery point still points at the row, so an operator cannot destroy
-	// restorable data by accident -- journey H2a.
+	// restorable data by accident.
 	DeleteRecoveryPoints bool `protobuf:"varint,3,opt,name=delete_recovery_points,json=deleteRecoveryPoints,proto3" json:"delete_recovery_points,omitempty"`
 }
 
@@ -32270,7 +32268,7 @@ type PlacementRuleCreateRequest struct {
 	//
 	// DEFAULTS TO FALSE, and an auto rule must leave it false: creating,
 	// enabling or editing an auto rule schedules it for the next published
-	// cycle rather than running it immediately -- journeys C3 and Q9. A
+	// cycle rather than running it immediately. A
 	// one-shot rule sets it, because its whole life is that single
 	// application and a one-shot rule that is never applied does nothing.
 	//
@@ -33393,7 +33391,7 @@ func (m *PlacementAssignmentDeleteResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_PlacementAssignmentDeleteResponse proto.InternalMessageInfo
 
-// A placement rebind -- journeys Q4 and C7a, FR-030.
+// A placement rebind.
 type PlacementAssignmentUpdateRequest struct {
 	OrgId string `protobuf:"bytes,1,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
 	// The resources to rebind. An assignment is identified by the resource it
@@ -33410,8 +33408,7 @@ type PlacementAssignmentUpdateRequest struct {
 	// Ignored when refresh_from_rule is set.
 	BackupLocationRef *ObjectRef `protobuf:"bytes,4,opt,name=backup_location_ref,json=backupLocationRef,proto3" json:"backup_location_ref,omitempty"`
 	LocalSnapshotRef  *ObjectRef `protobuf:"bytes,5,opt,name=local_snapshot_ref,json=localSnapshotRef,proto3" json:"local_snapshot_ref,omitempty"`
-	// The preview FR-030 requires: list every inherited intent that would
-	// move, and write nothing. The UI calls this before it offers Commit.
+	// list every inherited intent that would move, and write nothing
 	DryRun bool `protobuf:"varint,7,opt,name=dry_run,json=dryRun,proto3" json:"dry_run,omitempty"`
 }
 
@@ -33493,7 +33490,7 @@ func (m *PlacementAssignmentUpdateRequest) GetDryRun() bool {
 type PlacementAssignmentUpdateResponse struct {
 	// Empty on a dry run.
 	PlacementAssignments []*PlacementAssignmentObject `protobuf:"bytes,1,rep,name=placement_assignments,json=placementAssignments,proto3" json:"placement_assignments,omitempty"`
-	// What the rebind would do, or did, per resource -- FR-030. Returned for a
+	// What the rebind would do, or did, per resource. Returned for a
 	// dry run and for a commit, so both are read the same way.
 	Impact []*PlacementAssignmentUpdateResponse_ResourceRebindImpact `protobuf:"bytes,2,rep,name=impact,proto3" json:"impact,omitempty"`
 }
@@ -33550,9 +33547,9 @@ type PlacementAssignmentUpdateResponse_ResourceRebindImpact struct {
 	// Intents that INHERIT the default placement, so they move. Each one
 	// starts a new destination chain with a FULL backup at its next
 	// scheduled run. Historical recovery points stay at their original
-	// location and stay restorable -- FR-030.
+	// location and stay restorable.
 	MovedIntentIds []string `protobuf:"bytes,2,rep,name=moved_intent_ids,json=movedIntentIds,proto3" json:"moved_intent_ids,omitempty"`
-	// Intents carrying their own destination. Left unchanged -- FR-030.
+	// Intents carrying their own destination. Left unchanged.
 	UnchangedIntentIds []string `protobuf:"bytes,3,rep,name=unchanged_intent_ids,json=unchangedIntentIds,proto3" json:"unchanged_intent_ids,omitempty"`
 	// Intents the caller does not govern.
 	//
@@ -33659,7 +33656,7 @@ type RecoveryPointInfo struct {
 	// once the last recovery point referencing it is gone.
 	ExpiryTime *types.Timestamp `protobuf:"bytes,9,opt,name=expiry_time,json=expiryTime,proto3" json:"expiry_time,omitempty"`
 	// NOT a failed execution. A failed or cancelled execution publishes NO
-	// recovery point at all, so no row exists to carry a reason -- journeys E5
+	// recovery point at all, so no row exists to carry a reason
 	// and E13 make publication atomic per resource.
 	//
 	// This records a point that SUCCEEDED and later became unreachable: its
@@ -33668,7 +33665,7 @@ type RecoveryPointInfo struct {
 	// qualification, and this says why it stopped qualifying.
 	FailureReason string `protobuf:"bytes,10,opt,name=failure_reason,json=failureReason,proto3" json:"failure_reason,omitempty"`
 	// OUTPUT_ONLY, computed per caller and never stored. Separates "this point
-	// exists but is not yours" from "this point does not exist" -- FR-105.
+	// exists but is not yours" from "this point does not exist".
 	// It gates the per-resource view of a backup shared by several tenants.
 	Accessible bool `protobuf:"varint,11,opt,name=accessible,proto3" json:"accessible,omitempty"`
 	// Which Binding produced it. intent_id alone does not say, because two
@@ -33679,11 +33676,11 @@ type RecoveryPointInfo struct {
 	ParentRecoveryPointRef *ObjectRef `protobuf:"bytes,13,opt,name=parent_recovery_point_ref,json=parentRecoveryPointRef,proto3" json:"parent_recovery_point_ref,omitempty"`
 	// True for a point made by Binding.CreateIndependentCheckpoint. Such a
 	// point has no intent_id, sits outside every intent chain and every SLA
-	// evaluation, and expires at expiry_time -- journey M6, FR-141.
+	// evaluation, and expires at expiry_time.
 	IndependentCheckpoint bool `protobuf:"varint,14,opt,name=independent_checkpoint,json=independentCheckpoint,proto3" json:"independent_checkpoint,omitempty"`
 	// The capture contract the run used. Export eligibility reads it, so a
 	// GenericCrossCloud checkpoint can be exported across clouds even though
-	// it has no intent -- journeys M6 and M3, FR-141.
+	// it has no intent.
 	CaptureMode ProtectionIntent_CaptureMode `protobuf:"varint,15,opt,name=capture_mode,json=captureMode,proto3,enum=ProtectionIntent_CaptureMode" json:"capture_mode,omitempty"`
 }
 
@@ -33876,8 +33873,8 @@ type RecoveryPointEnumerateRequest struct {
 	FromTime *types.Timestamp `protobuf:"bytes,5,opt,name=from_time,json=fromTime,proto3" json:"from_time,omitempty"`
 	ToTime   *types.Timestamp `protobuf:"bytes,6,opt,name=to_time,json=toTime,proto3" json:"to_time,omitempty"`
 	// Return the gaps as well as the points. A gap is a run that published
-	// nothing, and journey E12 requires it to be visible. Its reason is read
-	// from the backup object's status, never from a recovery point.
+	// nothing, and it must be visible. Its reason is read from the backup
+	// object's status, never from a recovery point.
 	IncludeGaps bool `protobuf:"varint,7,opt,name=include_gaps,json=includeGaps,proto3" json:"include_gaps,omitempty"`
 	// Restore shaping. Returns the points that recover the resource as it stood
 	// at this time, which is what a target-time restore needs.
@@ -34267,12 +34264,12 @@ type BindingCreateRequest struct {
 	// Validate and report what WOULD happen, writing nothing. This replaces the
 	// separate Preview call: a preview is this call with no writes.
 	DryRun bool `protobuf:"varint,8,opt,name=dry_run,json=dryRun,proto3" json:"dry_run,omitempty"`
-	// Bulk bind -- journey C6. Skip every listed resource that already holds a
+	// Bulk bind. Skip every listed resource that already holds a
 	// Binding instead of failing the whole call. This replaces the separate
 	// BulkCreate call, because the list is already repeated.
 	SkipAlreadyBound bool `protobuf:"varint,9,opt,name=skip_already_bound,json=skipAlreadyBound,proto3" json:"skip_already_bound,omitempty"`
 	// Narrows what is captured from each selected namespace. Part of the
-	// schedule key -- question 64.
+	// schedule key.
 	LabelSelectors                map[string]string `protobuf:"bytes,10,rep,name=label_selectors,json=labelSelectors,proto3" json:"label_selectors,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	AdvancedResourceLabelSelector string            `protobuf:"bytes,11,opt,name=advanced_resource_label_selector,json=advancedResourceLabelSelector,proto3" json:"advanced_resource_label_selector,omitempty"`
 }
@@ -34734,7 +34731,7 @@ type BindingUpdateRequest struct {
 	OrgId              string `protobuf:"bytes,1,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
 	CatalogResourceUid string `protobuf:"bytes,2,opt,name=catalog_resource_uid,json=catalogResourceUid,proto3" json:"catalog_resource_uid,omitempty"`
 	// Replaces the list wholesale. Only the creator of an intent may change
-	// it -- FR-064.
+	// it.
 	SupplementalIntents  []*ProtectionIntent                  `protobuf:"bytes,3,rep,name=supplemental_intents,json=supplementalIntents,proto3" json:"supplemental_intents,omitempty"`
 	PreExecRuleRef       *ObjectRef                           `protobuf:"bytes,4,opt,name=pre_exec_rule_ref,json=preExecRuleRef,proto3" json:"pre_exec_rule_ref,omitempty"`
 	PostExecRuleRef      *ObjectRef                           `protobuf:"bytes,5,opt,name=post_exec_rule_ref,json=postExecRuleRef,proto3" json:"post_exec_rule_ref,omitempty"`
@@ -34743,7 +34740,7 @@ type BindingUpdateRequest struct {
 	ExcludeResourceTypes []string                             `protobuf:"bytes,8,rep,name=exclude_resource_types,json=excludeResourceTypes,proto3" json:"exclude_resource_types,omitempty"`
 	ParallelBackup       bool                                 `protobuf:"varint,9,opt,name=parallel_backup,json=parallelBackup,proto3" json:"parallel_backup,omitempty"`
 	KeepCrStatus         bool                                 `protobuf:"varint,10,opt,name=keep_cr_status,json=keepCrStatus,proto3" json:"keep_cr_status,omitempty"`
-	// Super and Infra only. Never accepted from an App Admin -- FR-028. This
+	// Super and Infra only. Never accepted from an App Admin. This
 	// replaces the separate UpdateIntentDestination call.
 	IntentDestinations []*IntentDestination `protobuf:"bytes,11,rep,name=intent_destinations,json=intentDestinations,proto3" json:"intent_destinations,omitempty"`
 	// Validate and report what WOULD happen, writing nothing. This replaces the
@@ -34762,7 +34759,7 @@ type BindingUpdateRequest struct {
 	SlaPolicyUid  string `protobuf:"bytes,16,opt,name=sla_policy_uid,json=slaPolicyUid,proto3" json:"sla_policy_uid,omitempty"`
 	// Narrows what is captured from each selected namespace. Changing it
 	// re-derives the schedule key, so the Binding moves to another shared
-	// CR -- question 64.
+	// CR.
 	LabelSelectors                map[string]string `protobuf:"bytes,17,rep,name=label_selectors,json=labelSelectors,proto3" json:"label_selectors,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	AdvancedResourceLabelSelector string            `protobuf:"bytes,18,opt,name=advanced_resource_label_selector,json=advancedResourceLabelSelector,proto3" json:"advanced_resource_label_selector,omitempty"`
 }
@@ -34978,12 +34975,12 @@ type BindingTriggerNowRequest struct {
 	// An intent is shared. An auto Binding Rule binds every matching namespace
 	// to one SLA Policy, and the schedule key then puts them in one CR, so a
 	// scheduled run of the intent already covers all of them. An on-demand run
-	// of the same intent must be able to do the same -- journey M5.
+	// of the same intent must be able to do the same.
 	//
 	// A non-empty list narrows the run to those resources. Authorisation stays
 	// per resource, so a caller only ever runs what they hold.
 	CatalogResourceUids []string `protobuf:"bytes,2,rep,name=catalog_resource_uids,json=catalogResourceUids,proto3" json:"catalog_resource_uids,omitempty"`
-	// Which intent to run. Required, and exactly one -- journey M5.
+	// Which intent to run. Required, and exactly one.
 	IntentId string `protobuf:"bytes,3,opt,name=intent_id,json=intentId,proto3" json:"intent_id,omitempty"`
 }
 
@@ -35093,7 +35090,7 @@ type BindingCreateIndependentCheckpointRequest struct {
 	// There is no intent, so there is no recoverability_period to inherit.
 	RetentionPeriod *types.Duration `protobuf:"bytes,3,opt,name=retention_period,json=retentionPeriod,proto3" json:"retention_period,omitempty"`
 	// Required. The capture contract for this one run. There is no intent
-	// to inherit it from, so the caller states it -- FR-141.
+	// to inherit it from, so the caller states it.
 	CaptureMode ProtectionIntent_CaptureMode `protobuf:"varint,4,opt,name=capture_mode,json=captureMode,proto3,enum=ProtectionIntent_CaptureMode" json:"capture_mode,omitempty"`
 }
 
@@ -35344,7 +35341,7 @@ type BindingRuleInfo struct {
 	// are rejected at validation with a typed error, never ignored: those
 	// objects are not resources and cannot hold a Binding.
 	Filter *ResourceFilter `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
-	// Must be owned by this rule's owner -- FR-055.
+	// Must be owned by this rule's owner.
 	SlaPolicyRef *ObjectRef `protobuf:"bytes,2,opt,name=sla_policy_ref,json=slaPolicyRef,proto3" json:"sla_policy_ref,omitempty"`
 	// Reuses the Placement Rule's enum rather than declaring a second one.
 	Mode        PlacementRuleInfo_Mode `protobuf:"varint,3,opt,name=mode,proto3,enum=PlacementRuleInfo_Mode" json:"mode,omitempty"`
@@ -35363,9 +35360,9 @@ type BindingRuleInfo struct {
 	LastEvaluatedTime *types.Timestamp `protobuf:"bytes,14,opt,name=last_evaluated_time,json=lastEvaluatedTime,proto3" json:"last_evaluated_time,omitempty"`
 	BindingCount      int32            `protobuf:"varint,15,opt,name=binding_count,json=bindingCount,proto3" json:"binding_count,omitempty"`
 	DriftCount        int32            `protobuf:"varint,16,opt,name=drift_count,json=driftCount,proto3" json:"drift_count,omitempty"`
-	// The creator's authority at create time, frozen -- FR-074.
+	// The creator's authority at create time, frozen.
 	CapturedTargetBoundary *ResourceFilter `protobuf:"bytes,17,opt,name=captured_target_boundary,json=capturedTargetBoundary,proto3" json:"captured_target_boundary,omitempty"`
-	// Super and Infra only. Per-intent destination override -- FR-036.
+	// Super and Infra only. Per-intent destination override.
 	IntentDestinationTemplate []*IntentDestination `protobuf:"bytes,18,rep,name=intent_destination_template,json=intentDestinationTemplate,proto3" json:"intent_destination_template,omitempty"`
 	// Super and Infra only.
 	VscOverrideTemplate map[string]string `protobuf:"bytes,19,rep,name=vsc_override_template,json=vscOverrideTemplate,proto3" json:"vsc_override_template,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
@@ -37061,7 +37058,7 @@ type ProtectionSummaryEnumerateRequest struct {
 	OrgId string `protobuf:"bytes,1,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
 	// How to group the counts. GroupByInvalid returns a single group whose key
 	// is empty, which is the whole-scope total the separate Get call used to
-	// return -- journeys A9, H1.
+	// return.
 	GroupBy ProtectionSummaryEnumerateRequest_GroupBy `protobuf:"varint,2,opt,name=group_by,json=groupBy,proto3,enum=ProtectionSummaryEnumerateRequest_GroupBy" json:"group_by,omitempty"`
 	// Restrict the counts to one cluster. Empty means every cluster in the
 	// caller's boundary.
@@ -37250,8 +37247,8 @@ func (m *ProtectionSummaryEnumerateResponse_Group) GetCounts() []*ProtectionStat
 
 // A resource set resolved ONCE, at the delegation operation, and then frozen.
 //
-// FR-123 and journey O2a: later label, filter-result, discovery or inventory
-// changes MUST NOT add or remove a resource. The filter is kept for audit only.
+// Later label, filter-result, discovery or inventory changes MUST NOT add or
+// remove a resource. The filter is kept for audit only.
 type MaterializedResourceSet struct {
 	// Kept so an operator can see what was asked for. NEVER re-evaluated.
 	ResolvedFrom *ResourceFilter `protobuf:"bytes,1,opt,name=resolved_from,json=resolvedFrom,proto3" json:"resolved_from,omitempty"`
@@ -37331,8 +37328,8 @@ type AdminScopeInfo struct {
 	// InfraAdmin in v1. Super Admin is unscoped and App Admin scope comes from
 	// resource ownership, not from this object.
 	Tier OwnerTier `protobuf:"varint,2,opt,name=tier,proto3,enum=OwnerTier" json:"tier,omitempty"`
-	// EXACTLY ONE form. FR-122 forbids unioning the two, and forbids
-	// accumulating several scope grants for one identity.
+	// EXACTLY ONE form. The two are never unioned, and one identity never
+	// accumulates several scope grants.
 	//
 	// Types that are valid to be assigned to Form:
 	//
@@ -37801,8 +37798,8 @@ func (m *AdminScopeEnumerateResponse) GetAdminScopes() []*AdminScopeObject {
 type AdminScopeUpdateRequest struct {
 	*CreateMetadata `protobuf:"bytes,1,opt,name=metadata,proto3,embedded=metadata" json:"metadata,omitempty"`
 	AdminScope      *AdminScopeInfo `protobuf:"bytes,2,opt,name=admin_scope,json=adminScope,proto3" json:"admin_scope,omitempty"`
-	// Must carry the token from a preceding Preview. FR-123 requires a fresh
-	// Super-Admin-initiated preview and an explicit commit for every change.
+	// Must carry the token from a preceding preview. Every change needs a fresh
+	// Super-Admin-initiated preview and an explicit commit.
 	PreviewToken string `protobuf:"bytes,3,opt,name=preview_token,json=previewToken,proto3" json:"preview_token,omitempty"`
 	// Validate and report what WOULD happen, writing nothing. This replaces the
 	// separate Preview call: a preview is this call with no writes.
@@ -38018,7 +38015,7 @@ type DelegationRuleInfo struct {
 	CreatedTime *types.Timestamp `protobuf:"bytes,7,opt,name=created_time,json=createdTime,proto3" json:"created_time,omitempty"`
 	Enabled     bool             `protobuf:"varint,8,opt,name=enabled,proto3" json:"enabled,omitempty"`
 	AppliedTime *types.Timestamp `protobuf:"bytes,9,opt,name=applied_time,json=appliedTime,proto3" json:"applied_time,omitempty"`
-	// The creator's authority, frozen -- FR-074.
+	// The creator's authority, frozen.
 	CapturedTargetBoundary *ResourceFilter `protobuf:"bytes,10,opt,name=captured_target_boundary,json=capturedTargetBoundary,proto3" json:"captured_target_boundary,omitempty"`
 	// Delegating a Namespace grants the Namespace graph and all current AND
 	// FUTURE child VMs. Delegating specific VMs grants neither the Namespace
@@ -38658,7 +38655,7 @@ func (m *DelegationRuleDeleteRequest) GetUid() string {
 }
 
 // Deleting the rule does NOT revoke what it already delegated, exactly as
-// deleting a Binding Rule leaves its Bindings intact -- FR-080.
+// deleting a Binding Rule leaves its Bindings intact.
 type DelegationRuleDeleteResponse struct {
 }
 
@@ -38954,7 +38951,7 @@ func (m *DelegationRuleUpdateOwnershipResponse) GetDelegationRule() *DelegationR
 type DriftEventInfo struct {
 	RuleRef  *ObjectRef `protobuf:"bytes,1,opt,name=rule_ref,json=ruleRef,proto3" json:"rule_ref,omitempty"`
 	RuleKind RuleKind   `protobuf:"varint,2,opt,name=rule_kind,json=ruleKind,proto3,enum=RuleKind" json:"rule_kind,omitempty"`
-	// The rule's captured tier, never its current owner's -- FR-074.
+	// The rule's captured tier, never its current owner's.
 	RuleOwnerTier OwnerTier  `protobuf:"varint,3,opt,name=rule_owner_tier,json=ruleOwnerTier,proto3,enum=OwnerTier" json:"rule_owner_tier,omitempty"`
 	ResourceRef   *ObjectRef `protobuf:"bytes,4,opt,name=resource_ref,json=resourceRef,proto3" json:"resource_ref,omitempty"`
 	// Groups every event produced by one evaluation pass.
@@ -38970,7 +38967,7 @@ type DriftEventInfo struct {
 	//
 	// REDACTED for a caller below the winning rule's owner tier. Naming it
 	// would tell a scoped administrator that a stronger tier's rule exists and
-	// what it is called, which multi-tenancy isolation forbids -- journey F7.
+	// what it is called, which multi-tenancy isolation forbids.
 	WinningRuleRef *ObjectRef `protobuf:"bytes,12,opt,name=winning_rule_ref,json=winningRuleRef,proto3" json:"winning_rule_ref,omitempty"`
 	// The assignment or Binding that resulted, or that was retained.
 	ResultingObjectRef *ObjectRef `protobuf:"bytes,13,opt,name=resulting_object_ref,json=resultingObjectRef,proto3" json:"resulting_object_ref,omitempty"`
@@ -39251,7 +39248,7 @@ type DriftEventEnumerateResponse struct {
 	DriftEvents   []*DriftEventObject `protobuf:"bytes,1,rep,name=drift_events,json=driftEvents,proto3" json:"drift_events,omitempty"`
 	NextPageToken string              `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	// True when the backing projection may have dropped records, so the caller
-	// does not present an incomplete list as complete -- journey D5.
+	// does not present an incomplete list as complete.
 	MayBeIncomplete bool `protobuf:"varint,3,opt,name=may_be_incomplete,json=mayBeIncomplete,proto3" json:"may_be_incomplete,omitempty"`
 }
 
@@ -67529,15 +67526,15 @@ type PlacementRuleClient interface {
 	Enumerate(ctx context.Context, in *PlacementRuleEnumerateRequest, opts ...grpc.CallOption) (*PlacementRuleEnumerateResponse, error)
 	// Delete is refused while any assignment still references the rule.
 	Delete(ctx context.Context, in *PlacementRuleDeleteRequest, opts ...grpc.CallOption) (*PlacementRuleDeleteResponse, error)
-	// Update edits the rule. It does NOT touch assignments already made --
-	// FR-030 -- so it returns the resulting drift count rather than moving
-	// anything. A one-shot rule is immutable after its single application.
+	// Update edits the rule. It does NOT touch assignments already made, so it
+	// returns the resulting drift count rather than moving anything. A one-shot
+	// rule is immutable after its single application.
 	Update(ctx context.Context, in *PlacementRuleUpdateRequest, opts ...grpc.CallOption) (*PlacementRuleUpdateResponse, error)
 	// UpdateOwnership shares the RULE itself, not the resources it matches.
 	UpdateOwnership(ctx context.Context, in *PlacementRuleUpdateOwnershipRequest, opts ...grpc.CallOption) (*PlacementRuleUpdateOwnershipResponse, error)
 	// Apply runs a one-shot rule now, or forces an auto rule's cycle.
 	// Claiming only ever ADDS protection: a resource already claimed by
-	// another rule is skipped, never taken -- FR-075.
+	// another rule is skipped, never taken.
 	Apply(ctx context.Context, in *PlacementRuleApplyRequest, opts ...grpc.CallOption) (*PlacementRuleApplyResponse, error)
 }
 
@@ -67619,15 +67616,15 @@ type PlacementRuleServer interface {
 	Enumerate(context.Context, *PlacementRuleEnumerateRequest) (*PlacementRuleEnumerateResponse, error)
 	// Delete is refused while any assignment still references the rule.
 	Delete(context.Context, *PlacementRuleDeleteRequest) (*PlacementRuleDeleteResponse, error)
-	// Update edits the rule. It does NOT touch assignments already made --
-	// FR-030 -- so it returns the resulting drift count rather than moving
-	// anything. A one-shot rule is immutable after its single application.
+	// Update edits the rule. It does NOT touch assignments already made, so it
+	// returns the resulting drift count rather than moving anything. A one-shot
+	// rule is immutable after its single application.
 	Update(context.Context, *PlacementRuleUpdateRequest) (*PlacementRuleUpdateResponse, error)
 	// UpdateOwnership shares the RULE itself, not the resources it matches.
 	UpdateOwnership(context.Context, *PlacementRuleUpdateOwnershipRequest) (*PlacementRuleUpdateOwnershipResponse, error)
 	// Apply runs a one-shot rule now, or forces an auto rule's cycle.
 	// Claiming only ever ADDS protection: a resource already claimed by
-	// another rule is skipped, never taken -- FR-075.
+	// another rule is skipped, never taken.
 	Apply(context.Context, *PlacementRuleApplyRequest) (*PlacementRuleApplyResponse, error)
 }
 
@@ -68192,13 +68189,13 @@ type BindingClient interface {
 	// TriggerNow runs one intent immediately, against this Binding's own
 	// destination and capture settings. The run joins only that intent's
 	// chain and does not move its next scheduled run. The UI calls this
-	// "Run Policy Now" -- journey M5, FR-137, FR-139, FR-140.
+	// "Run Policy Now".
 	TriggerNow(ctx context.Context, in *BindingTriggerNowRequest, opts ...grpc.CallOption) (*BindingTriggerNowResponse, error)
 	// CreateIndependentCheckpoint makes one full recovery point outside every
 	// intent chain and every SLA evaluation. It uses the Binding's default
 	// placement and encryption, and the Binding-wide hooks current at start.
 	// It expires by itself and changes no scheduled run. Super Admin and
-	// Infra Admin only -- journey M6, FR-141, FR-142.
+	// Infra Admin only.
 	CreateIndependentCheckpoint(ctx context.Context, in *BindingCreateIndependentCheckpointRequest, opts ...grpc.CallOption) (*BindingCreateIndependentCheckpointResponse, error)
 	UpdateOwnership(ctx context.Context, in *BindingUpdateOwnershipRequest, opts ...grpc.CallOption) (*BindingUpdateOwnershipResponse, error)
 }
@@ -68295,13 +68292,13 @@ type BindingServer interface {
 	// TriggerNow runs one intent immediately, against this Binding's own
 	// destination and capture settings. The run joins only that intent's
 	// chain and does not move its next scheduled run. The UI calls this
-	// "Run Policy Now" -- journey M5, FR-137, FR-139, FR-140.
+	// "Run Policy Now".
 	TriggerNow(context.Context, *BindingTriggerNowRequest) (*BindingTriggerNowResponse, error)
 	// CreateIndependentCheckpoint makes one full recovery point outside every
 	// intent chain and every SLA evaluation. It uses the Binding's default
 	// placement and encryption, and the Binding-wide hooks current at start.
 	// It expires by itself and changes no scheduled run. Super Admin and
-	// Infra Admin only -- journey M6, FR-141, FR-142.
+	// Infra Admin only.
 	CreateIndependentCheckpoint(context.Context, *BindingCreateIndependentCheckpointRequest) (*BindingCreateIndependentCheckpointResponse, error)
 	UpdateOwnership(context.Context, *BindingUpdateOwnershipRequest) (*BindingUpdateOwnershipResponse, error)
 }
@@ -68532,9 +68529,9 @@ type BindingRuleClient interface {
 	Inspect(ctx context.Context, in *BindingRuleInspectRequest, opts ...grpc.CallOption) (*BindingRuleInspectResponse, error)
 	Enumerate(ctx context.Context, in *BindingRuleEnumerateRequest, opts ...grpc.CallOption) (*BindingRuleEnumerateResponse, error)
 	// Auto rules only. A one-shot rule is immutable after its single
-	// application -- FR-070.
+	// application.
 	Update(ctx context.Context, in *BindingRuleUpdateRequest, opts ...grpc.CallOption) (*BindingRuleUpdateResponse, error)
-	// Delete leaves every Binding the rule created intact -- FR-080.
+	// Delete leaves every Binding the rule created intact.
 	Delete(ctx context.Context, in *BindingRuleDeleteRequest, opts ...grpc.CallOption) (*BindingRuleDeleteResponse, error)
 	Apply(ctx context.Context, in *BindingRuleApplyRequest, opts ...grpc.CallOption) (*BindingRuleApplyResponse, error)
 	UpdateOwnership(ctx context.Context, in *BindingRuleUpdateOwnershipRequest, opts ...grpc.CallOption) (*BindingRuleUpdateOwnershipResponse, error)
@@ -68617,9 +68614,9 @@ type BindingRuleServer interface {
 	Inspect(context.Context, *BindingRuleInspectRequest) (*BindingRuleInspectResponse, error)
 	Enumerate(context.Context, *BindingRuleEnumerateRequest) (*BindingRuleEnumerateResponse, error)
 	// Auto rules only. A one-shot rule is immutable after its single
-	// application -- FR-070.
+	// application.
 	Update(context.Context, *BindingRuleUpdateRequest) (*BindingRuleUpdateResponse, error)
-	// Delete leaves every Binding the rule created intact -- FR-080.
+	// Delete leaves every Binding the rule created intact.
 	Delete(context.Context, *BindingRuleDeleteRequest) (*BindingRuleDeleteResponse, error)
 	Apply(context.Context, *BindingRuleApplyRequest) (*BindingRuleApplyResponse, error)
 	UpdateOwnership(context.Context, *BindingRuleUpdateOwnershipRequest) (*BindingRuleUpdateOwnershipResponse, error)
