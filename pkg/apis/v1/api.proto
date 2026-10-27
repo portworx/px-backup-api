@@ -6299,10 +6299,17 @@ message PlacementAssignmentDeleteRequest {
 }
 message PlacementAssignmentDeleteResponse {}
 
+// A placement rebind -- journeys Q4 and C7a, FR-030.
 message PlacementAssignmentUpdateRequest {
     string org_id = 1;
-    // Identified by the resource it belongs to, not by its own name.
-    string catalog_resource_uid = 2;
+    // The resources to rebind. An assignment is identified by the resource it
+    // belongs to, never by a name of its own.
+    //
+    // REPEATED, because a rebind commonly covers a whole set: a hand-picked
+    // Placement Rule of 100 resources is moved by ONE call. This was singular,
+    // which made that 100 calls with no preview and no governance check. The
+    // uid therefore leaves the URL path, which cannot carry a repeated field.
+    repeated string catalog_resource_uids = 2;
     // Set to re-read the source rule and adopt its current definition. This
     // is the ONLY way an edited rule reaches a resource already assigned.
     bool refresh_from_rule = 3;
@@ -6311,13 +6318,42 @@ message PlacementAssignmentUpdateRequest {
     ObjectRef local_snapshot_ref = 5;
     // 6 held a per-intent destination override. Use Binding.Update instead.
     reserved 6;
+
+    // The preview FR-030 requires: list every inherited intent that would
+    // move, and write nothing. The UI calls this before it offers Commit.
+    bool dry_run = 7;
 }
 message PlacementAssignmentUpdateResponse {
-    PlacementAssignmentObject placement_assignment = 1;
+    // Empty on a dry run.
+    repeated PlacementAssignmentObject placement_assignments = 1;
+    // What the rebind would do, or did, per resource -- FR-030. Returned for a
+    // dry run and for a commit, so both are read the same way.
+    repeated ResourceRebindImpact impact = 2;
+
+    message ResourceRebindImpact {
+        string catalog_resource_uid = 1;
+        // Intents that INHERIT the default placement, so they move. Each one
+        // starts a new destination chain with a FULL backup at its next
+        // scheduled run. Historical recovery points stay at their original
+        // location and stay restorable -- FR-030.
+        repeated string moved_intent_ids = 2;
+        // Intents carrying their own destination. Left unchanged -- FR-030.
+        repeated string unchanged_intent_ids = 3;
+        // Intents the caller does not govern.
+        //
+        // NON-EMPTY BLOCKS THE WHOLE CALL, every resource in it, not only this
+        // one. A partial rebind would leave a set split across two destinations
+        // with no record of why. The dry run exists so a caller sees this
+        // before committing.
+        repeated string ungoverned_intent_ids = 4;
+    }
 }
 
 service PlacementAssignment {
-    // Create applies a placement rule to every resource its filter matches.
+    // There is no Create. An assignment is written by PlacementRule.Apply,
+    // which carries only_catalog_resource_uids for a staged rollout. A client
+    // never invents an assignment, for the same reason it never invents a
+    // catalog row.
     rpc Inspect(PlacementAssignmentInspectRequest)
         returns (PlacementAssignmentInspectResponse) {
         option (google.api.http) = {
@@ -6341,7 +6377,7 @@ service PlacementAssignment {
     rpc Update(PlacementAssignmentUpdateRequest)
         returns (PlacementAssignmentUpdateResponse) {
         option (google.api.http) = {
-            put : "/v1/placementassignment/{org_id}/{catalog_resource_uid}"
+            put : "/v1/placementassignment/{org_id}"
             body : "*"
         };
     }
