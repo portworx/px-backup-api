@@ -3877,6 +3877,9 @@ message RestoreCreateRequest {
     // This will be ignored when restore is done without using filter
     string target_namespace_prefix = 19;
 
+    // recovery point to restore from, cannot be set with backup_ref
+    ObjectRef recovery_point_ref = 20;
+
     // Filter to apply on resources
     message Filter {
         // resource filter
