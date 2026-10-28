@@ -5161,6 +5161,43 @@
           "PlacementAssignment"
         ]
       },
+      "post": {
+        "summary": "Assign a destination to a hand-picked set of resources, with no rule.\nRefused if any named resource is not NotConfigured.",
+        "operationId": "PlacementAssignment_Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PlacementAssignmentCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PlacementAssignmentCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PlacementAssignment"
+        ]
+      },
       "put": {
         "summary": "Update changes the destination for one resource.",
         "description": "There is deliberately no UpdateOwnership on this service. An assignment\nis not independently owned: its owner is the Placement Rule's owner and\nits visibility comes from the catalog row it names. A third settable\nowner would let a destination be read by someone who can read neither.",
@@ -5202,7 +5239,7 @@
     },
     "/v1/placementassignment/{org_id}/{catalog_resource_uid}": {
       "get": {
-        "summary": "There is no Create. An assignment is written by PlacementRule.Apply,\nwhich carries only_catalog_resource_uids for a staged rollout. A client\nnever invents an assignment, for the same reason it never invents a\ncatalog row.",
+        "summary": "PlacementRule.Apply is the rule-based path,\nwhich carries only_catalog_resource_uids for a staged rollout.",
         "operationId": "PlacementAssignment_Inspect",
         "responses": {
           "200": {
@@ -14551,6 +14588,42 @@
       },
       "title": "Define Permission struct"
     },
+    "PlacementAssignmentCreateRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "catalog_resource_uids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "the resources to assign, each must be in NotConfigured"
+        },
+        "backup_location_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "mandatory, and always off-cluster"
+        },
+        "local_snapshot_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "title": "optional local-snapshot leg, local-only is invalid"
+        }
+      },
+      "description": "A placement rebind."
+    },
+    "PlacementAssignmentCreateResponse": {
+      "type": "object",
+      "properties": {
+        "applied": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ObjectRef"
+          },
+          "title": "the assignments this call wrote, one per resource"
+        }
+      }
+    },
     "PlacementAssignmentDeleteResponse": {
       "type": "object"
     },
@@ -14646,8 +14719,7 @@
           "type": "boolean",
           "title": "list every inherited intent that would move, and write nothing"
         }
-      },
-      "description": "A placement rebind."
+      }
     },
     "PlacementAssignmentUpdateResponse": {
       "type": "object",
@@ -14718,7 +14790,7 @@
           "items": {
             "type": "string"
           },
-          "description": "Narrows what the filter already matched, for a staged rollout. A UID the\nfilter does not match is rejected rather than applied. Empty applies to\neverything the filter matches. This absorbed the separate\nPlacementAssignment.Create call, which was this call plus this field."
+          "description": "Narrows what the filter already matched, for a staged rollout. A UID the\nfilter does not match is rejected rather than applied. Empty applies to\neverything the filter matches."
         }
       }
     },
