@@ -6249,8 +6249,7 @@ message PlacementRuleApplyRequest {
     bool dry_run = 4;
     // Narrows what the filter already matched, for a staged rollout. A UID the
     // filter does not match is rejected rather than applied. Empty applies to
-    // everything the filter matches. This absorbed the separate
-    // PlacementAssignment.Create call, which was this call plus this field.
+    // everything the filter matches.
     repeated string only_catalog_resource_uids = 5;
 }
 message PlacementRuleApplyResponse {
@@ -6306,6 +6305,23 @@ message PlacementAssignmentDeleteRequest {
 message PlacementAssignmentDeleteResponse {}
 
 // A placement rebind.
+message PlacementAssignmentCreateRequest {
+    string org_id = 1;
+    // the resources to assign, each must be in NotConfigured
+    repeated string catalog_resource_uids = 2;
+    // mandatory, and always off-cluster
+    ObjectRef backup_location_ref = 3;
+    // optional local-snapshot leg, local-only is invalid
+    ObjectRef local_snapshot_ref = 4;
+}
+
+
+message PlacementAssignmentCreateResponse {
+    // the assignments this call wrote, one per resource
+    repeated ObjectRef applied = 1;
+}
+
+
 message PlacementAssignmentUpdateRequest {
     string org_id = 1;
     // The resources to rebind. An assignment is identified by the resource it
@@ -6355,10 +6371,18 @@ message PlacementAssignmentUpdateResponse {
 }
 
 service PlacementAssignment {
-    // There is no Create. An assignment is written by PlacementRule.Apply,
-    // which carries only_catalog_resource_uids for a staged rollout. A client
-    // never invents an assignment, for the same reason it never invents a
-    // catalog row.
+    // Assign a destination to a hand-picked set of resources, with no rule.
+    // Refused if any named resource is not NotConfigured.
+    rpc Create(PlacementAssignmentCreateRequest)
+        returns (PlacementAssignmentCreateResponse) {
+        option (google.api.http) = {
+            post : "/v1/placementassignment/{org_id}"
+            body : "*"
+        };
+    }
+
+    // PlacementRule.Apply is the rule-based path,
+    // which carries only_catalog_resource_uids for a staged rollout.
     rpc Inspect(PlacementAssignmentInspectRequest)
         returns (PlacementAssignmentInspectResponse) {
         option (google.api.http) = {
