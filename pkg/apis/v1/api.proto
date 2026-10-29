@@ -1201,10 +1201,10 @@ message BackupInfo {
     // this is its member list. Bounded by the size of one schedule group, not
     // by the fleet.
     repeated string covered_resource_uids = 65;
-    // Which SLA Policy was in force, and at which revision. Retention is
-    // anchored to the revision.
-    ObjectRef sla_policy_ref = 66;
-    uint64 sla_policy_revision_at_capture = 67;
+    // 66 and 67 held the SLA Policy and its revision. A backup is shared by a
+    // schedule group, so the capture record belongs on the recovery point
+    reserved 66, 67;
+    reserved "sla_policy_ref", "sla_policy_revision_at_capture";
     // How each volume was ACTUALLY captured, and why a preferred method was
     // not used. BackupInfo.volumes records what was backed up, not
     // which method moved it.
@@ -5264,6 +5264,12 @@ message IntentDestination {
     ObjectRef local_snapshot_ref = 3;
 }
 
+message IntentVscOverride {
+    string intent_id = 1;
+    // Overrides ProtectionIntent.vsc_override_labels for this resource only.
+    map<string, string> vsc_override_labels = 2;
+}
+
 // One recorded change of owner.
 // Ownership holds the current state only, with no history.
 message OwnershipTransition {
@@ -5288,11 +5294,19 @@ message ProtectionStateCount {
 // breaking change for no gain.
 message DerivedSchedule {
     string intent_id = 1;
-    // DERIVED, never user-supplied. OUTPUT_ONLY.
+    // DERIVED, never user-supplied. OUTPUT_ONLY. Both CR names are a digest of
+    // this, the same way BindingInfo derives the baseline's.
     string schedule_key = 2;
-    string schedule_policy_cr_name = 3;
-    string backup_schedule_cr_name = 4;
-    string backup_schedule_uid = 5;
+
+    // 3 held schedule_policy_cr_name, the CR name is a digest of schedule_key
+    reserved 3;
+    reserved "schedule_policy_cr_name";
+    // 4 held backup_schedule_cr_name, the CR name is a digest of schedule_key
+    reserved 4;
+    reserved "backup_schedule_cr_name";
+    // 5 held backup_schedule_uid, the CR is looked up by name
+    reserved 5;
+    reserved "backup_schedule_uid";
 }
 
 // The requirement lives on the intent. Key material stays on the backup
@@ -5412,14 +5426,6 @@ message ProtectionIntent {
         AutomaticOptimized = 1;
         // Always the generic path; never silently switched.
         GenericCrossCloud = 2;
-    }
-
-    enum Classification {
-        ClassificationInvalid = 0;
-        // Came from the shared SLA Policy.
-        Baseline = 1;
-        // Lives in one Binding only.
-        Supplemental = 2;
     }
 }
 
@@ -5643,10 +5649,23 @@ message PlacementAssignmentInfo {
     // supplemental intent has no home on an assignment. An assignment carries
     // the ONE default destination, in backup_location_ref.
     reserved 9;
-    // Records that the destination was reached by privilege elevation, and
-    // under which context. Auditable after the fact; the delegate
-    // never sees the location's credentials.
-    string placement_inheriting_context = 10;
+    // 10 held a single placement_inheriting_context string, which the next
+    // elevation overwrote
+    reserved 10;
+    reserved "placement_inheriting_context";
+
+    // Every time the destination was reached by privilege elevation. Appended,
+    // never replaced, so no earlier elevation is lost. The delegate never sees
+    // the location's credentials.
+    repeated PlacementElevation elevations = 11;
+}
+
+message PlacementElevation {
+    google.protobuf.Timestamp time = 1;
+    // The identity whose privilege resolved the destination.
+    string actor = 2;
+    // Which context allowed it, for example the rule or the delegation.
+    string context = 3;
 }
 
 message PlacementAssignmentObject {
@@ -5727,9 +5746,11 @@ message BindingInfo {
     // 21 held backup_schedule_cr_name, the CR name is a digest of schedule_key
     reserved 21;
     reserved "backup_schedule_cr_name";
-    string backup_schedule_uid = 22;
+    // 22 held backup_schedule_uid, the CR is looked up by name
+    reserved 22;
+    reserved "backup_schedule_uid";
 
-    // Fields 19 to 22 describe the BASELINE intent's derived schedule only.
+    // Fields 19 and 23 describe the BASELINE intent's derived schedule only.
     // A Binding that carries supplemental intents contributes to more than one
     // schedule, so each extra one is recorded here. Suspend and Resume must
     // walk this list as well as the baseline.
@@ -5743,8 +5764,10 @@ message BindingInfo {
     // Per-intent destination override, keyed by intent id.
     // NEVER returned to an App Admin.
     repeated IntentDestination intent_destinations = 26;
-    // The hook definition in force, captured at execution start.
-    uint64 hook_revision = 27;
+    // 27 held hook_revision. A Binding is configuration and a hook revision is
+    // captured per run, so it lives on the recovery point
+    reserved 27;
+    reserved "hook_revision";
     // Every ownership transfer, with reason. Ownership holds
     // the current state only, so the history needs its own list.
     repeated OwnershipTransition owner_history = 28;
@@ -5773,6 +5796,10 @@ message BindingInfo {
     // The string form, which supports operators. BackupScheduleInfo carries
     // both because the map form cannot express them.
     string advanced_resource_label_selector = 31;
+
+    // Per-intent volume-snapshot-class override, keyed by intent id. This is
+    // where a Binding Rule's vsc_override_template lands.
+    repeated IntentVscOverride vsc_overrides = 32;
 
     enum Governance {
         GovernanceInvalid = 0;
@@ -6006,9 +6033,9 @@ service ResourceCatalog {
     }
 
 
-    // Journey M2. The ONE case where a client creates a catalog row: the
-    // source cluster is gone, so discovery can never produce it, and without
-    // a row its recovery points cannot be reached.
+    // The ONE case where a client creates a catalog row: the source cluster is
+    // gone, so discovery can never produce it, and without a row its recovery
+    // points cannot be reached.
     rpc Reconstruct(ResourceCatalogReconstructRequest)
         returns (ResourceCatalogReconstructResponse) {
         option (google.api.http) = {
@@ -6017,8 +6044,7 @@ service ResourceCatalog {
         };
     }
 
-    // Journey H2a. Permanently removes a TOMBSTONED row and everything that
-    // hangs off it. Super Admin only. Discovery never writes this row again,
+    // Permanently removes a TOMBSTONED row and everything that hangs off it. Super Admin only. Discovery never writes this row again,
     // because the source namespace or VM is gone. Named Delete rather than
     // CleanupTombstone to match every other service in this API.
     rpc Delete(ResourceCatalogDeleteRequest)
@@ -6284,8 +6310,8 @@ message PlacementAssignmentEnumerateRequest {
     // Narrow to a set of resources, so a list view resolves every destination
     // in one call instead of one call per resource.
     repeated string catalog_resource_uids = 4;
-    // Which resources send their backups to this location. Journey Q6 needs
-    // this before a backup location is deleted, and nothing else answers it.
+    // Which resources send their backups to this location. Needed before a
+    // backup location is deleted, and nothing else answers it.
     //
     // It is not the whole answer on its own: a Binding may override the
     // destination per intent, so an affected-resources check reads
@@ -6455,14 +6481,14 @@ message RecoveryPointInfo {
     //
     // This records a point that SUCCEEDED and later became unreachable: its
     // backup objects were deleted at the location, or the location went away.
-    // Journey D1 keeps such a point visible while excluding it from SLA
-    // qualification, and this says why it stopped qualifying.
+    // Such a point stays visible but is excluded from SLA qualification, and
+    // this says why it stopped qualifying.
     string failure_reason = 10;
 
-    // OUTPUT_ONLY, computed per caller and never stored. Separates "this point
-    // exists but is not yours" from "this point does not exist".
-    // It gates the per-resource view of a backup shared by several tenants.
-    bool accessible = 11;
+    // 11 held accessible. A caller is shown only the points of resources they
+    // can see, so a point they may not use is filtered out rather than flagged
+    reserved 11;
+    reserved "accessible";
     // Which Binding produced it. intent_id alone does not say, because two
     // Bindings may carry the same intent id.
     ObjectRef binding_ref = 12;
@@ -6478,10 +6504,44 @@ message RecoveryPointInfo {
     // it has no intent.
     ProtectionIntent.CaptureMode capture_mode = 15;
 
+    // ---- the per-run record. One row per resource per run, so this is the
+    // ---- only object that can hold what a single run did.
+
+    // What started the run.
+    Origin origin = 16;
+    // The hook definition in force when this run started.
+    uint64 hook_revision = 17;
+    // Whether the hooks ran, and what they did.
+    HookOutcome hook_outcome = 18;
+    // The SLA Policy in force at capture. Paired with
+    // sla_policy_revision_at_capture, and frozen with it.
+    ObjectRef sla_policy_ref = 19;
+
     enum Status {
         StatusInvalid = 0;
         Successful = 1;
         PartialSuccess = 2;
+    }
+
+    enum Origin {
+        OriginInvalid = 0;
+        // The shared schedule fired.
+        Scheduled = 1;
+        // An administrator ran the SLA Policy on demand.
+        RunPolicyNow = 2;
+        // A one-off point with no intent and no SLA bearing.
+        IndependentCheckpoint = 3;
+    }
+
+    enum HookOutcome {
+        HookOutcomeInvalid = 0;
+        // No pre or post hook was configured.
+        NoHooks = 1;
+        Succeeded = 2;
+        // A hook failed and the run continued.
+        FailedNonBlocking = 3;
+        // A hook failed and the run stopped.
+        FailedBlocking = 4;
     }
 }
 
@@ -7182,34 +7242,42 @@ message MaterializedResourceSet {
     ResourceFilter resolved_from = 1;
     // The frozen set. This, and only this, is the scope.
     repeated string resource_uids = 2;
-    google.protobuf.Timestamp materialized_time = 3;
-    // Identities whose scope already covers one of these UIDs. Journey O2a
-    // warns about the overlap and confirmation creates co-ownership rather
-    // than blocking or silently transferring.
+
+    // 3 held materialized_time, use Metadata.last_update_time
+    reserved 3;
+    reserved "materialized_time";
+
+    // OUTPUT_ONLY. Identities whose scope already covers one of these UIDs.
+    // A dry run returns the overlap so the caller can confirm it; confirming
+    // creates co-ownership rather than blocking or transferring. Never stored.
     repeated string overlapping_identities = 4;
 }
 
 message AdminScopeInfo {
     // The identity this scope belongs to, as it appears in the token.
     string identity_id = 1;
-    // InfraAdmin in v1. Super Admin is unscoped and App Admin scope comes from
-    // resource ownership, not from this object.
-    OwnerTier tier = 2;
+    // 2 held tier, only InfraAdmin is ever valid here
+    reserved 2;
+    reserved "tier";
 
     // EXACTLY ONE form. The two are never unioned, and one identity never
     // accumulates several scope grants.
     oneof form {
-        // Journey O2: one or more complete clusters.
+        // One or more complete clusters.
         ObjectRefList whole_clusters = 3;
-        // Journey O2a: a filter-assisted set, resolved once.
+        // A filter-assisted set, resolved once.
         MaterializedResourceSet materialized = 4;
     }
 
-    // Super Admin only, both of them.
+    // Super Admin only.
     string granted_by = 5;
-    google.protobuf.Timestamp granted_time = 6;
-    // Each change needs a fresh Super-Admin preview and an explicit commit.
-    google.protobuf.Timestamp last_committed_time = 7;
+
+    // 6 held granted_time, use Metadata.create_time
+    reserved 6;
+    reserved "granted_time";
+    // 7 held last_committed_time, use Metadata.last_update_time
+    reserved 7;
+    reserved "last_committed_time";
 }
 
 message AdminScopeObject {
@@ -7226,7 +7294,11 @@ message AdminScopeCreateRequest {
     // separate Preview call: a preview is this call with no writes.
     bool dry_run = 3;
 }
-message AdminScopeCreateResponse { AdminScopeObject admin_scope = 1; }
+message AdminScopeCreateResponse {
+    AdminScopeObject admin_scope = 1;
+    // Returned by a dry run, and required by the commit that follows it.
+    string preview_token = 2;
+}
 
 message AdminScopeInspectRequest {
     string org_id = 1;
@@ -7255,7 +7327,11 @@ message AdminScopeUpdateRequest {
     // separate Preview call: a preview is this call with no writes.
     bool dry_run = 4;
 }
-message AdminScopeUpdateResponse { AdminScopeObject admin_scope = 1; }
+message AdminScopeUpdateResponse {
+    AdminScopeObject admin_scope = 1;
+    // Returned by a dry run, and required by the commit that follows it.
+    string preview_token = 2;
+}
 
 message AdminScopeDeleteRequest {
     string org_id = 1;
@@ -7310,21 +7386,24 @@ service AdminScope {
 // impossible.
 //
 // This is NOT the same as an AdminScope. An AdminScope defines who an
-// administrator is and never re-evaluates -- O2a. A DelegationRule says which
-// resources a team looks after and MAY re-evaluate -- F11.
+// administrator is and never re-evaluates. A DelegationRule says which
+// resources a team looks after and MAY re-evaluate.
 // ---------------------------------------------------------------------------
 
 message DelegationRuleInfo {
     ResourceFilter filter = 1;
-    // Who receives the access.
-    string delegate_id = 2;
+    // 2 held delegate_id, one rule may name several delegates
+    reserved 2;
+    reserved "delegate_id";
     Ownership.AccessType access = 3;
-    // The delegate's tier. Journey F11 delegates to a LOWER privileged role.
-    OwnerTier delegate_tier = 4;
+    // 4 held delegate_tier, the server reads each delegate's tier from the
+    // identity rather than from the request
+    reserved 4;
+    reserved "delegate_tier";
 
     // Reuses the Placement Rule's enum rather than declaring a third one.
     PlacementRuleInfo.Mode mode = 5;
-    // Super Admin or Infra Admin only -- F11. Arbitration key 1.
+    // Super Admin or Infra Admin only. Arbitration key 1.
     OwnerTier owner_tier = 6;
     // 7 held created_time, use Metadata.create_time
     reserved 7;
@@ -7334,11 +7413,10 @@ message DelegationRuleInfo {
     // The creator's authority, frozen.
     ResourceFilter captured_target_boundary = 10;
 
-    // Delegating a Namespace grants the Namespace graph and all current AND
-    // FUTURE child VMs. Delegating specific VMs grants neither the Namespace
-    // graph nor sibling VMs. Journey F10, and acceptance scenario 2 of
-    // User Story 8.
-    bool include_future_children = 11;
+    // 11 held include_future_children, the kind of the granted resource
+    // decides this and it is never a choice
+    reserved 11;
+    reserved "include_future_children";
 
     // Mark every delegated resource do-not-claim, so an auto Binding Rule
     // cannot take it before the delegate binds their own SLA Policy.
@@ -7347,6 +7425,10 @@ message DelegationRuleInfo {
     // OUTPUT_ONLY.
     google.protobuf.Timestamp last_evaluated_time = 13;
     int32 delegation_count = 14;
+
+    // Who receives the access. Each must hold a lower tier than the caller,
+    // checked against the identity and never against a value sent here.
+    repeated string delegate_ids = 15;
 }
 
 message DelegationRuleObject {
@@ -7483,14 +7565,14 @@ service DelegationRule {
 //
 // One immutable row per rule, resource, cycle and evaluation time.
 //
-// Journey D5 calls this "a projection of successfully ingested Prometheus
-// records, not a guaranteed complete transaction log". It is therefore NOT a
-// durable audit trail, and a caller must not assume completeness. The contract
+// This is a projection of successfully ingested Prometheus records, not a
+// guaranteed complete transaction log. It is therefore NOT a durable audit
+// trail, and a caller must not assume completeness. The contract
 // is the same either way: whether the server backs this with a collection or
 // with a metrics query is an implementation choice.
 //
-// Journey H5: an event cannot be accepted, ignored, acknowledged or resolved.
-// There is deliberately no Update, no Delete and no acknowledge call.
+// An event cannot be accepted, ignored, acknowledged or resolved. There is
+// deliberately no Update, no Delete and no acknowledge call.
 // ---------------------------------------------------------------------------
 
 message DriftEventInfo {
@@ -7581,7 +7663,7 @@ service DriftEvent {
 // Three calls that existing services were missing.
 // ---------------------------------------------------------------------------
 
-// Journey M2: DR restore when the source cluster is gone.
+// DR restore when the source cluster is gone.
 //
 // A recovery point is reached through its catalog resource, so a resource whose
 // cluster no longer exists cannot be restored from. This recreates the catalog

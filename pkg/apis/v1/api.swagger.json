@@ -2349,7 +2349,7 @@
     },
     "/v1/catalogresource/reconstruct/{org_id}": {
       "post": {
-        "summary": "Journey M2. The ONE case where a client creates a catalog row: the\nsource cluster is gone, so discovery can never produce it, and without\na row its recovery points cannot be reached.",
+        "summary": "The ONE case where a client creates a catalog row: the source cluster is\ngone, so discovery can never produce it, and without a row its recovery\npoints cannot be reached.",
         "operationId": "ResourceCatalog_Reconstruct",
         "responses": {
           "200": {
@@ -2594,7 +2594,7 @@
         ]
       },
       "delete": {
-        "summary": "Journey H2a. Permanently removes a TOMBSTONED row and everything that\nhangs off it. Super Admin only. Discovery never writes this row again,\nbecause the source namespace or VM is gone. Named Delete rather than\nCleanupTombstone to match every other service in this API.",
+        "summary": "Permanently removes a TOMBSTONED row and everything that hangs off it. Super Admin only. Discovery never writes this row again,\nbecause the source namespace or VM is gone. Named Delete rather than\nCleanupTombstone to match every other service in this API.",
         "operationId": "ResourceCatalog_Delete",
         "responses": {
           "200": {
@@ -8402,6 +8402,10 @@
       "properties": {
         "admin_scope": {
           "$ref": "#/definitions/AdminScopeObject"
+        },
+        "preview_token": {
+          "type": "string",
+          "description": "Returned by a dry run, and required by the commit that follows it."
         }
       }
     },
@@ -8426,30 +8430,17 @@
           "type": "string",
           "description": "The identity this scope belongs to, as it appears in the token."
         },
-        "tier": {
-          "$ref": "#/definitions/OwnerTier",
-          "description": "InfraAdmin in v1. Super Admin is unscoped and App Admin scope comes from\nresource ownership, not from this object."
-        },
         "whole_clusters": {
           "$ref": "#/definitions/ObjectRefList",
-          "description": "Journey O2: one or more complete clusters."
+          "description": "One or more complete clusters."
         },
         "materialized": {
           "$ref": "#/definitions/MaterializedResourceSet",
-          "description": "Journey O2a: a filter-assisted set, resolved once."
+          "description": "A filter-assisted set, resolved once."
         },
         "granted_by": {
           "type": "string",
-          "description": "Super Admin only, both of them."
-        },
-        "granted_time": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "last_committed_time": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Each change needs a fresh Super-Admin preview and an explicit commit."
+          "description": "Super Admin only."
         }
       }
     },
@@ -8496,6 +8487,10 @@
       "properties": {
         "admin_scope": {
           "$ref": "#/definitions/AdminScopeObject"
+        },
+        "preview_token": {
+          "type": "string",
+          "description": "Returned by a dry run, and required by the commit that follows it."
         }
       }
     },
@@ -9139,14 +9134,6 @@
             "type": "string"
           },
           "description": "Which catalog resources this backup covers. The backup is SHARED, so\nthis is its member list. Bounded by the size of one schedule group, not\nby the fleet."
-        },
-        "sla_policy_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "description": "Which SLA Policy was in force, and at which revision. Retention is\nanchored to the revision."
-        },
-        "sla_policy_revision_at_capture": {
-          "type": "string",
-          "format": "uint64"
         },
         "volume_capture_details": {
           "type": "array",
@@ -11168,15 +11155,12 @@
           "type": "string",
           "description": "Which shared schedule executes this Binding.\n\nDERIVED, never user-supplied. Two Bindings holding the same value are\nexecuted by one ApplicationBackupSchedule CR, so this is an\nequivalence-class key rather than an identifier for anything.\n\nReadable rather than an opaque hash, because an operator has to be able\nto see why two resources did not group:\n    v2|c1|fb-bl|gold:daily|Namespace|hooks:none|par:false|ls:app=db\n\nThe leading version is load-bearing. Changing the derivation changes\nevery key and orphans every existing CR, so the prefix makes that\ndetectable rather than silent. It moved from v1 to v2 when\nlabel_selectors and advanced_resource_label_selector were added as\ninputs. The CR name is a short digest of this,\nbecause Kubernetes needs a DNS-safe name under 63 characters."
         },
-        "backup_schedule_uid": {
-          "type": "string"
-        },
         "additional_schedules": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/DerivedSchedule"
           },
-          "description": "Fields 19 to 22 describe the BASELINE intent's derived schedule only.\nA Binding that carries supplemental intents contributes to more than one\nschedule, so each extra one is recorded here. Suspend and Resume must\nwalk this list as well as the baseline."
+          "description": "Fields 19 and 23 describe the BASELINE intent's derived schedule only.\nA Binding that carries supplemental intents contributes to more than one\nschedule, so each extra one is recorded here. Suspend and Resume must\nwalk this list as well as the baseline."
         },
         "last_run_time": {
           "type": "string",
@@ -11192,11 +11176,6 @@
             "$ref": "#/definitions/IntentDestination"
           },
           "description": "Per-intent destination override, keyed by intent id.\nNEVER returned to an App Admin."
-        },
-        "hook_revision": {
-          "type": "string",
-          "format": "uint64",
-          "description": "The hook definition in force, captured at execution start."
         },
         "owner_history": {
           "type": "array",
@@ -11222,6 +11201,13 @@
         "advanced_resource_label_selector": {
           "type": "string",
           "description": "The string form, which supports operators. BackupScheduleInfo carries\nboth because the map form cannot express them."
+        },
+        "vsc_overrides": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/IntentVscOverride"
+          },
+          "description": "Per-intent volume-snapshot-class override, keyed by intent id. This is\nwhere a Binding Rule's vsc_override_template lands."
         }
       },
       "description": "The durable junction of one resource and one SLA Policy.\n\nReshaped from BackupScheduleInfo into a new object, keeping its field names\nwhere the meaning is unchanged. What was wrong with the legacy message is its\ncardinality: one schedule selects many namespaces. Here it is one to one, and\nselection moves out to the binding rule — that inversion is the whole model."
@@ -12948,16 +12934,8 @@
         "filter": {
           "$ref": "#/definitions/ResourceFilter"
         },
-        "delegate_id": {
-          "type": "string",
-          "description": "Who receives the access."
-        },
         "access": {
           "$ref": "#/definitions/OwnershipAccessType"
-        },
-        "delegate_tier": {
-          "$ref": "#/definitions/OwnerTier",
-          "description": "The delegate's tier. Journey F11 delegates to a LOWER privileged role."
         },
         "mode": {
           "$ref": "#/definitions/PlacementRuleInfoMode",
@@ -12965,7 +12943,7 @@
         },
         "owner_tier": {
           "$ref": "#/definitions/OwnerTier",
-          "description": "Super Admin or Infra Admin only -- F11. Arbitration key 1."
+          "description": "Super Admin or Infra Admin only. Arbitration key 1."
         },
         "enabled": {
           "type": "boolean"
@@ -12977,10 +12955,6 @@
         "captured_target_boundary": {
           "$ref": "#/definitions/ResourceFilter",
           "description": "The creator's authority, frozen."
-        },
-        "include_future_children": {
-          "type": "boolean",
-          "description": "Delegating a Namespace grants the Namespace graph and all current AND\nFUTURE child VMs. Delegating specific VMs grants neither the Namespace\ngraph nor sibling VMs. Journey F10, and acceptance scenario 2 of\nUser Story 8."
         },
         "exclude_from_auto_claim_on_delegate": {
           "type": "boolean",
@@ -12994,6 +12968,13 @@
         "delegation_count": {
           "type": "integer",
           "format": "int32"
+        },
+        "delegate_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Who receives the access. Each must hold a lower tier than the caller,\nchecked against the identity and never against a value sent here."
         }
       }
     },
@@ -13093,16 +13074,7 @@
         },
         "schedule_key": {
           "type": "string",
-          "description": "DERIVED, never user-supplied. OUTPUT_ONLY."
-        },
-        "schedule_policy_cr_name": {
-          "type": "string"
-        },
-        "backup_schedule_cr_name": {
-          "type": "string"
-        },
-        "backup_schedule_uid": {
-          "type": "string"
+          "description": "DERIVED, never user-supplied. OUTPUT_ONLY. Both CR names are a digest of\nthis, the same way BindingInfo derives the baseline's."
         }
       },
       "description": "One derived schedule belonging to one Protection Intent.\n\nGroups the four values that BindingInfo already carries at 19 to 22 for the\nbaseline. Those four are NOT reshaped into this message: that would be a\nbreaking change for no gain."
@@ -13580,6 +13552,21 @@
       },
       "description": "A per-intent destination override.\nOne SLA Policy may hold intents that need different destinations, and a\nplacement assignment carries only one backup_location_ref."
     },
+    "IntentVscOverride": {
+      "type": "object",
+      "properties": {
+        "intent_id": {
+          "type": "string"
+        },
+        "vsc_override_labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Overrides ProtectionIntent.vsc_override_labels for this resource only."
+        }
+      }
+    },
     "LicenseActivateRequest": {
       "type": "object",
       "properties": {
@@ -14020,16 +14007,12 @@
           },
           "description": "The frozen set. This, and only this, is the scope."
         },
-        "materialized_time": {
-          "type": "string",
-          "format": "date-time"
-        },
         "overlapping_identities": {
           "type": "array",
           "items": {
             "type": "string"
           },
-          "description": "Identities whose scope already covers one of these UIDs. Journey O2a\nwarns about the overlap and confirmation creates co-ownership rather\nthan blocking or silently transferring."
+          "description": "OUTPUT_ONLY. Identities whose scope already covers one of these UIDs.\nA dry run returns the overlap so the caller can confirm it; confirming\ncreates co-ownership rather than blocking or transferring. Never stored."
         }
       },
       "description": "A resource set resolved ONCE, at the delegation operation, and then frozen.\n\nLater label, filter-result, discovery or inventory changes MUST NOT add or\nremove a resource. The filter is kept for audit only."
@@ -14665,9 +14648,12 @@
           "type": "string",
           "format": "date-time"
         },
-        "placement_inheriting_context": {
-          "type": "string",
-          "description": "Records that the destination was reached by privilege elevation, and\nunder which context. Auditable after the fact; the delegate\nnever sees the location's credentials."
+        "elevations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PlacementElevation"
+          },
+          "description": "Every time the destination was reached by privilege elevation. Appended,\nnever replaced, so no earlier elevation is lost. The delegate never sees\nthe location's credentials."
         }
       },
       "description": "One resource's resolved destination. Separate from the rule because it must\nkeep the rule's definition as it was at apply time — otherwise editing an\nauto rule would retroactively move every resource already using it."
@@ -14766,6 +14752,23 @@
             "type": "string"
           },
           "description": "Intents the caller does not govern.\n\nNON-EMPTY BLOCKS THE WHOLE CALL, every resource in it, not only this\none. A partial rebind would leave a set split across two destinations\nwith no record of why. The dry run exists so a caller sees this\nbefore committing."
+        }
+      }
+    },
+    "PlacementElevation": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "actor": {
+          "type": "string",
+          "description": "The identity whose privilege resolved the destination."
+        },
+        "context": {
+          "type": "string",
+          "description": "Which context allowed it, for example the rule or the delegation."
         }
       }
     },
@@ -15566,11 +15569,7 @@
         },
         "failure_reason": {
           "type": "string",
-          "description": "NOT a failed execution. A failed or cancelled execution publishes NO\nrecovery point at all, so no row exists to carry a reason\nand E13 make publication atomic per resource.\n\nThis records a point that SUCCEEDED and later became unreachable: its\nbackup objects were deleted at the location, or the location went away.\nJourney D1 keeps such a point visible while excluding it from SLA\nqualification, and this says why it stopped qualifying."
-        },
-        "accessible": {
-          "type": "boolean",
-          "description": "OUTPUT_ONLY, computed per caller and never stored. Separates \"this point\nexists but is not yours\" from \"this point does not exist\".\nIt gates the per-resource view of a backup shared by several tenants."
+          "description": "NOT a failed execution. A failed or cancelled execution publishes NO\nrecovery point at all, so no row exists to carry a reason\nand E13 make publication atomic per resource.\n\nThis records a point that SUCCEEDED and later became unreachable: its\nbackup objects were deleted at the location, or the location went away.\nSuch a point stays visible but is excluded from SLA qualification, and\nthis says why it stopped qualifying."
         },
         "binding_ref": {
           "$ref": "#/definitions/ObjectRef",
@@ -15583,9 +15582,49 @@
         "capture_mode": {
           "$ref": "#/definitions/ProtectionIntentCaptureMode",
           "description": "The capture contract the run used. Export eligibility reads it, so a\nGenericCrossCloud checkpoint can be exported across clouds even though\nit has no intent."
+        },
+        "origin": {
+          "$ref": "#/definitions/RecoveryPointInfoOrigin",
+          "description": "What started the run."
+        },
+        "hook_revision": {
+          "type": "string",
+          "format": "uint64",
+          "description": "The hook definition in force when this run started."
+        },
+        "hook_outcome": {
+          "$ref": "#/definitions/RecoveryPointInfoHookOutcome",
+          "description": "Whether the hooks ran, and what they did."
+        },
+        "sla_policy_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "The SLA Policy in force at capture. Paired with\nsla_policy_revision_at_capture, and frozen with it."
         }
       },
       "description": "One resource's entry in one run of a shared backup.\n\nA backup now covers many resources, so the backup alone cannot answer \"what\ncan I restore for this namespace\". This can NOT be derived by querying\nstork's per-namespace array inside the backup document, because that array\nis keyed by namespace NAME while identity here is the Kubernetes UID. A\nnamespace deleted and recreated under the same name is a different resource,\nand a name-keyed lookup would hand it the earlier resource's history.\n\nA recovery point exists only for a resource that actually succeeded. A\nresource that failed inside a partially successful backup gets none, so its\ntimeline shows a gap and the SLA engine reports it out of SLA. That is how\nper-resource failure isolation survives a shared execution."
+    },
+    "RecoveryPointInfoHookOutcome": {
+      "type": "string",
+      "enum": [
+        "HookOutcomeInvalid",
+        "NoHooks",
+        "Succeeded",
+        "FailedNonBlocking",
+        "FailedBlocking"
+      ],
+      "default": "HookOutcomeInvalid",
+      "description": " - NoHooks: No pre or post hook was configured.\n - FailedNonBlocking: A hook failed and the run continued.\n - FailedBlocking: A hook failed and the run stopped."
+    },
+    "RecoveryPointInfoOrigin": {
+      "type": "string",
+      "enum": [
+        "OriginInvalid",
+        "Scheduled",
+        "RunPolicyNow",
+        "IndependentCheckpoint"
+      ],
+      "default": "OriginInvalid",
+      "description": " - Scheduled: The shared schedule fired.\n - RunPolicyNow: An administrator ran the SLA Policy on demand.\n - IndependentCheckpoint: A one-off point with no intent and no SLA bearing."
     },
     "RecoveryPointInfoStatus": {
       "type": "string",
@@ -15727,7 +15766,7 @@
           "description": "Where the reconstructed row is anchored. May differ from the original."
         }
       },
-      "description": "Journey M2: DR restore when the source cluster is gone.\n\nA recovery point is reached through its catalog resource, so a resource whose\ncluster no longer exists cannot be restored from. This recreates the catalog\nrow from a backup's stored metadata, with no live cluster to discover."
+      "description": "DR restore when the source cluster is gone.\n\nA recovery point is reached through its catalog resource, so a resource whose\ncluster no longer exists cannot be restored from. This recreates the catalog\nrow from a backup's stored metadata, with no live cluster to discover."
     },
     "ResourceCatalogReconstructResponse": {
       "type": "object",
