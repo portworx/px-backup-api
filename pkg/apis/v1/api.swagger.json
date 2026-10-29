@@ -15653,10 +15653,11 @@
         "OriginInvalid",
         "Scheduled",
         "RunPolicyNow",
-        "IndependentCheckpoint"
+        "IndependentCheckpoint",
+        "Legacy"
       ],
       "default": "OriginInvalid",
-      "description": " - Scheduled: The shared schedule fired.\n - RunPolicyNow: An administrator ran the SLA Policy on demand.\n - IndependentCheckpoint: A one-off point with no intent and no SLA bearing."
+      "description": " - Scheduled: The shared schedule fired.\n - RunPolicyNow: An administrator ran the SLA Policy on demand.\n - IndependentCheckpoint: A one-off point with no intent and no SLA bearing.\n - Legacy: A pre-migration backup mapped onto this resource's timeline. It has no\nintent, so no intent can qualify on it."
     },
     "RecoveryPointInfoStatus": {
       "type": "string",
