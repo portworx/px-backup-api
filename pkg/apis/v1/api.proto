@@ -6779,6 +6779,9 @@ message RecoveryPointInfo {
         RunPolicyNow = 2;
         // A one-off point with no intent and no SLA bearing.
         IndependentCheckpoint = 3;
+        // A pre-migration backup mapped onto this resource's timeline. It has no
+        // intent, so no intent can qualify on it.
+        Legacy = 4;
     }
 
     enum HookOutcome {
