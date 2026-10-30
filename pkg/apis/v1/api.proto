@@ -6228,6 +6228,10 @@ message ResourceCatalogEnumerateRequest {
     // Narrow the listing to what this filter selects. This replaces the separate
     // Preview call, which evaluated a filter the caller had not saved.
     ResourceFilter filter = 7;
+
+    // Paging and the common filters, the same shape every other enumerate in
+    // this API uses. A fleet of 1,000 namespaces with 10 VMs each is 11,000 rows, about 13 MB.
+    EnumerateOptions enumerate_options = 8 [ (gogoproto.embed) = true ];
 }
 message ResourceCatalogEnumerateResponse {
     repeated CatalogResourceObject resources = 1;
@@ -6566,6 +6570,10 @@ message PlacementAssignmentEnumerateRequest {
     // intent_destinations as well.
     ObjectRef backup_location_ref = 5;
     ObjectRef cluster_ref = 6;
+
+    // Paging and the common filters, the same shape every other enumerate in
+    // this API uses. One row per placed resource, so it grows with the fleet.
+    EnumerateOptions enumerate_options = 7 [ (gogoproto.embed) = true ];
 }
 message PlacementAssignmentEnumerateResponse {
     repeated PlacementAssignmentObject placement_assignments = 1;
@@ -6821,6 +6829,10 @@ message RecoveryPointEnumerateRequest {
     // Restore shaping. Returns the points that recover the resource as it stood
     // at this time, which is what a target-time restore needs.
     google.protobuf.Timestamp target_time = 9;
+
+    // Paging and the common filters, the same shape every other enumerate in
+    // this API uses. Hundreds of points per resource. The design measures 7.4 million rows at fleet scale.
+    EnumerateOptions enumerate_options = 10 [ (gogoproto.embed) = true ];
 }
 message RecoveryPointEnumerateResponse {
     repeated RecoveryPointObject recovery_points = 1;
@@ -6923,6 +6935,10 @@ message BindingEnumerateRequest {
     string org_id = 1;
     string sla_policy_name = 2;
     string sla_policy_uid = 3;
+
+    // Paging and the common filters, the same shape every other enumerate in
+    // this API uses. One row per bound resource. 11,000 rows is about 23 MB, over the client limit.
+    EnumerateOptions enumerate_options = 4 [ (gogoproto.embed) = true ];
 }
 message BindingEnumerateResponse { repeated BindingObject bindings = 1; }
 
@@ -7880,6 +7896,10 @@ message DriftEventEnumerateRequest {
     google.protobuf.Timestamp to_time = 7;
     int32 page_size = 8;
     string page_token = 9;
+
+    // Paging and the common filters, the same shape every other enumerate in
+    // this API uses. One row per rule, resource, cycle and evaluation time.
+    EnumerateOptions enumerate_options = 10 [ (gogoproto.embed) = true ];
 }
 message DriftEventEnumerateResponse {
     repeated DriftEventObject drift_events = 1;
