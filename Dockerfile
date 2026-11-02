@@ -8,7 +8,7 @@ RUN mkdir -p portworx/px-backup-api
 WORKDIR portworx/px-backup-api
 
 RUN apt-get update && \
-    apt-get install -y clang-format unzip golang-grpc-gateway gogoprotobuf && \
+    apt-get install -y clang-format unzip jq golang-grpc-gateway gogoprotobuf && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
