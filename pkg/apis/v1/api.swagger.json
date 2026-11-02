@@ -5655,8 +5655,12 @@
           "$ref": "#/definitions/ObjectRef"
         },
         "backup_type": {
-          "$ref": "#/definitions/BackupCreateRequestBackupType",
-          "title": "To get type of backup (generic or non-generic)"
+          "title": "To get type of backup (generic or non-generic)",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupCreateRequestBackupType"
+            }
+          ]
         },
         "cluster_ref": {
           "$ref": "#/definitions/ObjectRef"
@@ -5665,8 +5669,12 @@
           "type": "string"
         },
         "backup_object_type": {
-          "$ref": "#/definitions/BackupCreateRequestBackupObjectType",
-          "title": "backup object type is all namespace or virtualMachine specific backup"
+          "title": "backup object type is all namespace or virtualMachine specific backup",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupCreateRequestBackupObjectType"
+            }
+          ]
         },
         "skip_vm_auto_exec_rules": {
           "type": "boolean",
@@ -5698,8 +5706,12 @@
           "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
         },
         "volume_resource_only_policy_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "title": "reference to volumeResourceOnly policy object"
+          "title": "reference to volumeResourceOnly policy object",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ObjectRef"
+            }
+          ]
         }
       },
       "title": "Request message structure for backup create"
@@ -5750,8 +5762,12 @@
           "title": "label selectors for the object for filtering"
         },
         "time_range": {
-          "$ref": "#/definitions/TimeRange",
-          "title": "Time range for which to delete objects"
+          "title": "Time range for which to delete objects",
+          "allOf": [
+            {
+              "$ref": "#/definitions/TimeRange"
+            }
+          ]
         },
         "owners": {
           "type": "array",
@@ -5761,8 +5777,12 @@
           "title": "Filter to use owner uids on objects. Any object that contains the\nfilter will be returned"
         },
         "backup_object_type": {
-          "$ref": "#/definitions/BackupInfoBackupObjectType",
-          "description": "Filter by backup object type (application/namespace vs VirtualMachine).\nUnset = no object-type filter."
+          "description": "Filter by backup object type (application/namespace vs VirtualMachine).\nUnset = no object-type filter.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupInfoBackupObjectType"
+            }
+          ]
         },
         "statuses": {
           "type": "array",
@@ -5841,16 +5861,24 @@
           "description": "Only delete backups in these backup locations. Name is required, UID optional."
         },
         "cluster_scope": {
-          "$ref": "#/definitions/ClusterScope",
-          "description": "Only delete backups from these clusters, or all clusters. Names are required, UIDs optional."
+          "description": "Only delete backups from these clusters, or all clusters. Names are required, UIDs optional.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ClusterScope"
+            }
+          ]
         },
         "acknowledge": {
           "type": "boolean",
           "description": "acknowledge must be set to true for a bulk delete request to proceed.\nIt acts as an explicit confirmation that the caller intends to delete\nmultiple backups. If it is not set to true, the bulk delete is rejected."
         },
         "backup_delete_enumerate_options": {
-          "$ref": "#/definitions/BackupDeleteEnumerateOptions",
-          "description": "Advanced filter options for bulk delete."
+          "description": "Advanced filter options for bulk delete.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupDeleteEnumerateOptions"
+            }
+          ]
         }
       },
       "title": "Request message structure for object delete"
@@ -5867,8 +5895,12 @@
           "title": "Organization id"
         },
         "enumerate_options": {
-          "$ref": "#/definitions/EnumerateOptions",
-          "title": "Optional arguments for enumeration"
+          "title": "Optional arguments for enumeration",
+          "allOf": [
+            {
+              "$ref": "#/definitions/EnumerateOptions"
+            }
+          ]
         }
       },
       "title": "Request message structure for enumerate object"
@@ -5947,8 +5979,12 @@
           "type": "string"
         },
         "backup_schedule": {
-          "$ref": "#/definitions/BackupInfoBackupSchedule",
-          "description": "Name of the backup schedule, if the backup was taken by schedule through\npx-backup.\nOtherwise it will be empty."
+          "description": "Name of the backup schedule, if the backup was taken by schedule through\npx-backup.\nOtherwise it will be empty.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupInfoBackupSchedule"
+            }
+          ]
         },
         "cr_name": {
           "type": "string"
@@ -5997,8 +6033,12 @@
           "$ref": "#/definitions/ObjectRef"
         },
         "backup_type": {
-          "$ref": "#/definitions/BackupInfoBackupType",
-          "title": "To get type of backup (generic or non-generic)"
+          "title": "To get type of backup (generic or non-generic)",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupInfoBackupType"
+            }
+          ]
         },
         "cr_uid": {
           "type": "string"
@@ -6035,8 +6075,12 @@
           "title": "this flag signifies if the backup involves large number of resources or not"
         },
         "backup_object_type": {
-          "$ref": "#/definitions/BackupInfoBackupObjectType",
-          "title": "backup object type is all namespace or virtualMachine specific backup"
+          "title": "backup object type is all namespace or virtualMachine specific backup",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupInfoBackupObjectType"
+            }
+          ]
         },
         "skip_vm_auto_exec_rules": {
           "type": "boolean",
@@ -6059,8 +6103,12 @@
           "title": "this will store the timestamp, when the retention period of locked backup will be expired"
         },
         "completion_time_info": {
-          "$ref": "#/definitions/completionTimeInfo",
-          "title": "this will store the completion time of the volumes, resources and total backup"
+          "title": "this will store the completion time of the volumes, resources and total backup",
+          "allOf": [
+            {
+              "$ref": "#/definitions/completionTimeInfo"
+            }
+          ]
         },
         "exclude_resource_types": {
           "type": "array",
@@ -6085,8 +6133,12 @@
           "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
         },
         "schedule_policy_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "title": "schedule_policy_ref is used to get the schedule policy details for the backup"
+          "title": "schedule_policy_ref is used to get the schedule policy details for the backup",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ObjectRef"
+            }
+          ]
         },
         "virtual_machines": {
           "type": "array",
@@ -6103,12 +6155,20 @@
           "format": "int64"
         },
         "retry_parent": {
-          "$ref": "#/definitions/ObjectRef",
-          "title": "this will store the reference of the parent backup in case of retry backup"
+          "title": "this will store the reference of the parent backup in case of retry backup",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ObjectRef"
+            }
+          ]
         },
         "volume_resource_only_policy_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "title": "reference to volumeResourceOnly policy object"
+          "title": "reference to volumeResourceOnly policy object",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ObjectRef"
+            }
+          ]
         },
         "virtual_machine_resources": {
           "type": "array",
@@ -6131,12 +6191,20 @@
           "$ref": "#/definitions/BackupInfoNamespaceResources"
         },
         "resources_sync_status_info": {
-          "$ref": "#/definitions/BackupInfoSyncStatusInfo",
-          "title": "resources sync status information"
+          "title": "resources sync status information",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupInfoSyncStatusInfo"
+            }
+          ]
         },
         "namespace_sync_status_info": {
-          "$ref": "#/definitions/BackupInfoSyncStatusInfo",
-          "title": "namespace sync status information"
+          "title": "namespace sync status information",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupInfoSyncStatusInfo"
+            }
+          ]
         },
         "failed_resource_count": {
           "type": "string",
@@ -6375,15 +6443,23 @@
           "type": "string"
         },
         "job_security_context": {
-          "$ref": "#/definitions/VolumeJobSecurityContext",
-          "title": "As part of restrictive PSA setting, if an UID or GID is used during backup then same value should be used during restore (optional)"
+          "title": "As part of restrictive PSA setting, if an UID or GID is used during backup then same value should be used during restore (optional)",
+          "allOf": [
+            {
+              "$ref": "#/definitions/VolumeJobSecurityContext"
+            }
+          ]
         },
         "virtual_machine_name": {
           "type": "string"
         },
         "backup_mode": {
-          "$ref": "#/definitions/VolumeBackupMode",
-          "title": "Indicate backup mode - full/incr (for pxd volumes) or not supported (for other volume drivers)"
+          "title": "Indicate backup mode - full/incr (for pxd volumes) or not supported (for other volume drivers)",
+          "allOf": [
+            {
+              "$ref": "#/definitions/VolumeBackupMode"
+            }
+          ]
         }
       }
     },
@@ -6464,8 +6540,12 @@
       "type": "object",
       "properties": {
         "type": {
-          "$ref": "#/definitions/BackupLocationInfoType",
-          "description": "Cloud provider type for the backup location.\nFor Both Federated and Non-Federated Identity: Required.\n  - Specifies the type of cloud provider (S3, Azure, Google, NFS).\n  - In Federated Identity mode, this field is used to identify the cloud provider type\n    even though no cloud credential object is referenced.\nNot editable via Update: the provider a backup location was created\nfor cannot be switched to a different one."
+          "description": "Cloud provider type for the backup location.\nFor Both Federated and Non-Federated Identity: Required.\n  - Specifies the type of cloud provider (S3, Azure, Google, NFS).\n  - In Federated Identity mode, this field is used to identify the cloud provider type\n    even though no cloud credential object is referenced.\nNot editable via Update: the provider a backup location was created\nfor cannot be switched to a different one.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupLocationInfoType"
+            }
+          ]
         },
         "path": {
           "type": "string",
@@ -6480,8 +6560,12 @@
           "description": "cloud_credential is deprecated, not to be used."
         },
         "status": {
-          "$ref": "#/definitions/BackupLocationInfoStatusInfo",
-          "description": "System-managed field (OUTPUT) - reflects validation status. Not\neditable; any value set in the request is ignored."
+          "description": "System-managed field (OUTPUT) - reflects validation status. Not\neditable; any value set in the request is ignored.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupLocationInfoStatusInfo"
+            }
+          ]
         },
         "delete_backups": {
           "type": "boolean",
@@ -6492,8 +6576,12 @@
           "description": "Editable. Triggers (re-)validation of the backup location on Update."
         },
         "cloud_credential_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "description": "Reference to the cloud credential object.\nFor Non-Federated Identity: Required for Non NFS provider.\n  - Must reference a valid CloudCredentialObject that contains the authentication credentials\n    (e.g., AzureConfig with account_name, account_key/client_secret, client_id, tenant_id, subscription_id).\n  - The cloud credential object provides the necessary authentication information to access the backup location.\nFor Federated Identity (Workload Identity): Not required, leave empty.\n  - In federated identity mode, authentication is handled via workload identity/OIDC tokens,\n    so no cloud credential object is needed.\n  - The 'type' field is still required to specify the cloud provider type (e.g., Azure, AWS, Google).\n  - Cloud-specific configuration (e.g., azure_account_name, azure_subscription_id) should be\n    provided directly in the backup location's config (e.g., S3Config)."
+          "description": "Reference to the cloud credential object.\nFor Non-Federated Identity: Required for Non NFS provider.\n  - Must reference a valid CloudCredentialObject that contains the authentication credentials\n    (e.g., AzureConfig with account_name, account_key/client_secret, client_id, tenant_id, subscription_id).\n  - The cloud credential object provides the necessary authentication information to access the backup location.\nFor Federated Identity (Workload Identity): Not required, leave empty.\n  - In federated identity mode, authentication is handled via workload identity/OIDC tokens,\n    so no cloud credential object is needed.\n  - The 'type' field is still required to specify the cloud provider type (e.g., Azure, AWS, Google).\n  - Cloud-specific configuration (e.g., azure_account_name, azure_subscription_id) should be\n    provided directly in the backup location's config (e.g., S3Config).",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ObjectRef"
+            }
+          ]
         },
         "object_lock_enabled": {
           "type": "boolean",
@@ -6527,8 +6615,12 @@
           "description": "sync and the sync_info are valid only in Federated PXB deployment mode.\nsync is used to trigger backup sync from the object store.\nIt is an on-demand sync, not automatic or periodic.\nNote: The sync flag will be reset by the server once the backup sync operation\nis completed for this BackupLocation. Parallel sync triggers by updating sync\nflag while another sync is in progress are not allowed."
         },
         "sync_info": {
-          "$ref": "#/definitions/BackupLocationInfoSyncInfo",
-          "description": "sync_info provides information about the sync operation including status, timing, and stats."
+          "description": "sync_info provides information about the sync operation including status, timing, and stats.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupLocationInfoSyncInfo"
+            }
+          ]
         },
         "s3_config": {
           "$ref": "#/definitions/S3Config"
@@ -6573,12 +6665,20 @@
           "type": "string"
         },
         "cluster_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "title": "Reference to the cluster used for executing the backup sync operation"
+          "title": "Reference to the cluster used for executing the backup sync operation",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ObjectRef"
+            }
+          ]
         },
         "sync_stats": {
-          "$ref": "#/definitions/SyncInfoSyncStats",
-          "title": "Statistics about the sync operation (timing, counts, etc.)"
+          "title": "Statistics about the sync operation (timing, counts, etc.)",
+          "allOf": [
+            {
+              "$ref": "#/definitions/SyncInfoSyncStats"
+            }
+          ]
         }
       },
       "title": "Message for maintaining information about sync operations"
@@ -6652,8 +6752,12 @@
       "type": "object",
       "properties": {
         "status": {
-          "$ref": "#/definitions/BackupLocationRefStatusBackupLocationValidationState",
-          "title": "Validation status of the BackupLocation on this cluster"
+          "title": "Validation status of the BackupLocation on this cluster",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupLocationRefStatusBackupLocationValidationState"
+            }
+          ]
         },
         "last_validation_time": {
           "type": "string",
@@ -6683,12 +6787,20 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata",
-          "description": "See CreateMetadata: name/org_id/uid identify the backup location and\nare immutable via Update. labels are editable; ownership is not\neditable via this Update — use BackupLocationOwnershipUpdateRequest\ninstead."
+          "description": "See CreateMetadata: name/org_id/uid identify the backup location and\nare immutable via Update. labels are editable; ownership is not\neditable via this Update — use BackupLocationOwnershipUpdateRequest\ninstead.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/CreateMetadata"
+            }
+          ]
         },
         "backup_location": {
-          "$ref": "#/definitions/BackupLocationInfo",
-          "description": "See message-level summary above and BackupLocationInfo for\nper-field detail. Must be sent in full; omitted sub-fields may be\nreset."
+          "description": "See message-level summary above and BackupLocationInfo for\nper-field detail. Must be sent in full; omitted sub-fields may be\nreset.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupLocationInfo"
+            }
+          ]
         }
       },
       "description": "Define BackupLocationUpdateRequest struct\nBackupLocationUpdateRequest performs a full-object replace: fetch the\ncurrent backup location via Inspect, modify only the fields you need to\nchange, and send the complete request back.\n\nbackup_location field breakdown (see BackupLocationInfo for full\nper-field detail):\n  - Editable: validate_cloud_credential (triggers re-validation),\n    cloud_credential_ref, use_workload_identity, cluster_refs, sync\n    (triggers a one-off sync; reset by the server once it completes).\n  - Not editable: type (the provider a backup location was created for\n    cannot be switched to a different one), path, encryption_key\n    (neither can be changed once set) — all three are enforced by the\n    server, which rejects an Update that attempts to change them.\n  - Deprecated, not to be used: cloud_credential.\n  - Delete-only, not used by Update (see BackupLocationInfo):\n    delete_backups.\n  - System-managed / output-only (any value sent is ignored): status,\n    object_lock_enabled, cluster_status, validation_started_at,\n    sync_info."
@@ -6772,8 +6884,12 @@
           "title": "Backup uid"
         },
         "filter": {
-          "$ref": "#/definitions/BackupResourceDetailGetRequestFilter",
-          "title": "Filter options"
+          "title": "Filter options",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupResourceDetailGetRequestFilter"
+            }
+          ]
         },
         "force_resync": {
           "type": "boolean",
@@ -6884,8 +7000,12 @@
           "title": "this flag signifies if the backup involves large number of resources or not"
         },
         "backup_object_type": {
-          "$ref": "#/definitions/BackupInfoBackupObjectType",
-          "title": "backup object type is all namespace or virtualMachine specific backup"
+          "title": "backup object type is all namespace or virtualMachine specific backup",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupInfoBackupObjectType"
+            }
+          ]
         },
         "skip_vm_auto_exec_rules": {
           "type": "boolean",
@@ -6903,8 +7023,12 @@
           "format": "date-time"
         },
         "completion_time_info": {
-          "$ref": "#/definitions/completionTimeInfo",
-          "title": "this will store the completion time of the volumes, resources and total backup"
+          "title": "this will store the completion time of the volumes, resources and total backup",
+          "allOf": [
+            {
+              "$ref": "#/definitions/completionTimeInfo"
+            }
+          ]
         },
         "advanced_resource_label_selector": {
           "type": "string",
@@ -6953,12 +7077,20 @@
           "title": "list of filtered namespaces"
         },
         "resources_sync_status_info": {
-          "$ref": "#/definitions/BackupResourceObjectSyncStatusInfo",
-          "title": "resources sync status information"
+          "title": "resources sync status information",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupResourceObjectSyncStatusInfo"
+            }
+          ]
         },
         "namespace_sync_status_info": {
-          "$ref": "#/definitions/BackupResourceObjectSyncStatusInfo",
-          "title": "namespace sync status information"
+          "title": "namespace sync status information",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupResourceObjectSyncStatusInfo"
+            }
+          ]
         }
       }
     },
@@ -6981,8 +7113,12 @@
       "type": "object",
       "properties": {
         "virtual_machine_list": {
-          "$ref": "#/definitions/BackupResourceObjectVirtualMachineList",
-          "title": "List of resources mapped to virtualMachine"
+          "title": "List of resources mapped to virtualMachine",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupResourceObjectVirtualMachineList"
+            }
+          ]
         }
       },
       "title": "Resources details mapped to either Namespace or virtualMachine"
@@ -7128,8 +7264,12 @@
       "type": "object",
       "properties": {
         "backup": {
-          "$ref": "#/definitions/BackupObject",
-          "title": "Auto-generated backup name format : \u003coriginal backup name\u003e-retry{count}-\u003cepoch\u003e ;"
+          "title": "Auto-generated backup name format : \u003coriginal backup name\u003e-retry{count}-\u003cepoch\u003e ;",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupObject"
+            }
+          ]
         }
       },
       "title": "Response message for BackupRetryRequest"
@@ -7207,8 +7347,12 @@
           "$ref": "#/definitions/ObjectRef"
         },
         "backup_type": {
-          "$ref": "#/definitions/BackupScheduleCreateRequestBackupType",
-          "title": "To get type of backup (generic or non-generic)"
+          "title": "To get type of backup (generic or non-generic)",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupScheduleCreateRequestBackupType"
+            }
+          ]
         },
         "ns_label_selectors": {
           "type": "string"
@@ -7217,8 +7361,12 @@
           "$ref": "#/definitions/ObjectRef"
         },
         "backup_object_type": {
-          "$ref": "#/definitions/BackupScheduleCreateRequestBackupObjectType",
-          "title": "backup object type is all namespace or virtualMachine specific backup"
+          "title": "backup object type is all namespace or virtualMachine specific backup",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupScheduleCreateRequestBackupObjectType"
+            }
+          ]
         },
         "skip_vm_auto_exec_rules": {
           "type": "boolean",
@@ -7254,8 +7402,12 @@
           "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
         },
         "volume_resource_only_policy_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "title": "reference to volumeResourceOnly policy object"
+          "title": "reference to volumeResourceOnly policy object",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ObjectRef"
+            }
+          ]
         }
       },
       "title": "Define BackupScheduleCreateRequest struct"
@@ -7299,12 +7451,20 @@
       "type": "object",
       "properties": {
         "filter_options": {
-          "$ref": "#/definitions/BackupScheduleFilterOptions",
-          "description": "Common bulk selectors shared with the update filter."
+          "description": "Common bulk selectors shared with the update filter.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupScheduleFilterOptions"
+            }
+          ]
         },
         "status": {
-          "$ref": "#/definitions/BackupScheduleRunState",
-          "description": "[Access: All users] Run state to scope the delete. A schedule is either Running or\nSuspended; unspecified = no run-state filter."
+          "description": "[Access: All users] Run state to scope the delete. A schedule is either Running or\nSuspended; unspecified = no run-state filter.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupScheduleRunState"
+            }
+          ]
         }
       },
       "description": "BackupScheduleDeleteFilterOptions carries the selectors used to pick which\nbackup schedules a bulk delete acts on. It wraps the common\nBackupScheduleFilterOptions so delete-specific selectors can be added here\nlater without changing the shared message or the update filter."
@@ -7333,8 +7493,12 @@
           "description": "List of exact backup schedules to include (name + UID required)."
         },
         "backup_object_type": {
-          "$ref": "#/definitions/BackupObjectType",
-          "title": "backup object type is all namespace or virtualMachine specific backup"
+          "title": "backup object type is all namespace or virtualMachine specific backup",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupObjectType"
+            }
+          ]
         },
         "policy_ref": {
           "type": "array",
@@ -7359,16 +7523,24 @@
           "description": "Substring or regex pattern to match backup schedules and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with exclude_objects."
         },
         "cluster_scope": {
-          "$ref": "#/definitions/ClusterScope",
-          "title": "option to provide clusterRef to delete the backupschedule from cluster"
+          "title": "option to provide clusterRef to delete the backupschedule from cluster",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ClusterScope"
+            }
+          ]
         },
         "bulk_uid_check_relaxation": {
           "type": "boolean",
           "description": "bulk_uid_check_relaxation - This flag needs to be set to relax the UID check for bulk update operations.\nIn a bulk operation, the user will pass multiple filter options to select a list of BackupSchedule objects.\nFor example, the user may send a schedulePolicyRef object to filter BackupSchedules that use that SchedulePolicy.\nIf the user provides only the name in the schedulePolicyRef, and there are multiple SchedulePolicy objects with the same name,\nwe cannot return an error. Therefore, we require the user to explicitly confirm acceptance of the side effects of UID relaxation."
         },
         "filter_options": {
-          "$ref": "#/definitions/BackupScheduleDeleteFilterOptions",
-          "description": "Selectors narrowing which schedules a bulk delete acts on."
+          "description": "Selectors narrowing which schedules a bulk delete acts on.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupScheduleDeleteFilterOptions"
+            }
+          ]
         }
       },
       "title": "Define BackupScheduleDeleteRequest struct"
@@ -7398,8 +7570,12 @@
           "$ref": "#/definitions/ObjectRef"
         },
         "enumerate_options": {
-          "$ref": "#/definitions/EnumerateOptions",
-          "title": "Optional arguments for enumeration"
+          "title": "Optional arguments for enumeration",
+          "allOf": [
+            {
+              "$ref": "#/definitions/EnumerateOptions"
+            }
+          ]
         }
       },
       "title": "Define BackupScheduleEnumerateRequest struct"
@@ -7539,8 +7715,12 @@
           "$ref": "#/definitions/ObjectRef"
         },
         "backup_type": {
-          "$ref": "#/definitions/BackupScheduleInfoBackupType",
-          "title": "To get type of backup (generic or non-generic)"
+          "title": "To get type of backup (generic or non-generic)",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupScheduleInfoBackupType"
+            }
+          ]
         },
         "ns_label_selectors": {
           "type": "string",
@@ -7554,8 +7734,12 @@
           "$ref": "#/definitions/ObjectRef"
         },
         "backup_object_type": {
-          "$ref": "#/definitions/BackupScheduleInfoBackupObjectType",
-          "title": "backup object type is all namespace or virtualMachine specific backup"
+          "title": "backup object type is all namespace or virtualMachine specific backup",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupScheduleInfoBackupObjectType"
+            }
+          ]
         },
         "skip_vm_auto_exec_rules": {
           "type": "boolean",
@@ -7591,12 +7775,20 @@
           "title": "older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
         },
         "volume_resource_only_policy_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "title": "reference to volumeResourceOnly policy object"
+          "title": "reference to volumeResourceOnly policy object",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ObjectRef"
+            }
+          ]
         },
         "remark": {
-          "$ref": "#/definitions/Remark",
-          "title": "Last remark made during update operations"
+          "title": "Last remark made during update operations",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Remark"
+            }
+          ]
         },
         "missing_namespaces": {
           "type": "array",
@@ -7751,8 +7943,12 @@
       "type": "object",
       "properties": {
         "filter_options": {
-          "$ref": "#/definitions/BackupScheduleFilterOptions",
-          "description": "Common bulk selectors shared with the delete filter."
+          "description": "Common bulk selectors shared with the delete filter.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupScheduleFilterOptions"
+            }
+          ]
         }
       },
       "description": "BackupScheduleUpdateFilterOptions carries the selectors used to pick which\nbackup schedules a bulk update acts on. It wraps the common\nBackupScheduleFilterOptions so update-specific selectors can be added here\nlater without changing the shared message or the delete filter."
@@ -7761,8 +7957,12 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata",
-          "description": "Selector: identifies the schedule (single-object case). See\nCreateMetadata; name/org_id/uid are immutable identifiers,\nlabels are editable; ownership is not editable via Update."
+          "description": "Selector: identifies the schedule (single-object case). See\nCreateMetadata; name/org_id/uid are immutable identifiers,\nlabels are editable; ownership is not editable via Update.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/CreateMetadata"
+            }
+          ]
         },
         "schedule_policy": {
           "type": "string",
@@ -7846,8 +8046,12 @@
           "title": "advanced_resource_label_selector - older label selector does not support string type. Map type has contraint of supporting operator, So introducing this new parameter"
         },
         "backup_object_type": {
-          "$ref": "#/definitions/BackupObjectType",
-          "title": "backup object type is all namespace or virtualMachine specific backup"
+          "title": "backup object type is all namespace or virtualMachine specific backup",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupObjectType"
+            }
+          ]
         },
         "policy_ref": {
           "type": "array",
@@ -7879,12 +8083,20 @@
           "description": "Substring or regex pattern to match backup schedules and exclude (e.g. \"*\" for All, \"pxb-\" or any valid regex)\nCannot be used with exclude_objects."
         },
         "cluster_scope": {
-          "$ref": "#/definitions/ClusterScope",
-          "title": "option to provide clusterRef to suspend/resume the backupschedule from cluster"
+          "title": "option to provide clusterRef to suspend/resume the backupschedule from cluster",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ClusterScope"
+            }
+          ]
         },
         "volume_resource_only_policy_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "title": "reference to volumeResourceOnly policy object"
+          "title": "reference to volumeResourceOnly policy object",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ObjectRef"
+            }
+          ]
         },
         "remark": {
           "type": "string",
@@ -7898,8 +8110,12 @@
           "type": "string"
         },
         "filter_options": {
-          "$ref": "#/definitions/BackupScheduleUpdateFilterOptions",
-          "description": "Selectors narrowing which schedules a bulk update acts on. Distinct from\nvolume_resource_only_policy_ref above, which sets the volumeResourceOnly\npolicy on the schedule being updated."
+          "description": "Selectors narrowing which schedules a bulk update acts on. Distinct from\nvolume_resource_only_policy_ref above, which sets the volumeResourceOnly\npolicy on the schedule being updated.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupScheduleUpdateFilterOptions"
+            }
+          ]
         }
       },
       "description": "BackupScheduleUpdateRequest fields fall into two groups:\n  - Selector fields identify which schedule(s) to update: metadata\n    (name/org_id/uid, for a single schedule), or include_objects/\n    exclude_objects/include_filter/exclude_filter/filter_options/\n    cluster_scope/bulk_uid_check_relaxation (for a bulk update across\n    multiple schedules).\n  - Value fields (namespaces, label_selectors, suspend, include_resources,\n    reclaim_policy, schedule_policy_ref, backup_location_ref,\n    pre_exec_rule_ref, post_exec_rule_ref, etc.) are the new values\n    applied to every selected schedule; send the complete set you want,\n    since fields left unset may reset the corresponding setting."
@@ -7977,16 +8193,24 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata",
-          "description": "See CreateMetadata: name/org_id/uid identify the backup and are\nimmutable via Update. labels are editable; ownership is not\neditable via Update."
+          "description": "See CreateMetadata: name/org_id/uid identify the backup and are\nimmutable via Update. labels are editable; ownership is not\neditable via Update.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/CreateMetadata"
+            }
+          ]
         },
         "cloud_credential": {
           "type": "string",
           "description": "Reference to cloud credential object used for backup\ncloud_credential is deprecated, not to be used."
         },
         "cloud_credential_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "description": "Editable."
+          "description": "Editable.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ObjectRef"
+            }
+          ]
         }
       },
       "description": "Define BackupUpdateRequest struct\nBackupUpdateRequest only allows updating cloud_credential_ref and\nmetadata.labels/ownership; all other Backup fields (e.g. namespaces,\nresources, backup_location_ref) are set at Create time and are immutable\nvia Update."
@@ -8055,8 +8279,12 @@
       "type": "object",
       "properties": {
         "type": {
-          "$ref": "#/definitions/CloudCredentialInfoType",
-          "description": "Cloud provider type. Not editable via Update: the provider a\ncredential was created for cannot be switched to a different one\n(create a new credential instead). Enforced by the server, which\nrejects an Update whose type differs from the stored value."
+          "description": "Cloud provider type. Not editable via Update: the provider a\ncredential was created for cannot be switched to a different one\n(create a new credential instead). Enforced by the server, which\nrejects an Update whose type differs from the stored value.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/CloudCredentialInfoType"
+            }
+          ]
         },
         "aws_config": {
           "$ref": "#/definitions/AWSConfig"
@@ -8133,12 +8361,20 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata",
-          "description": "See CreateMetadata: name/org_id/uid identify the credential and are\nimmutable via Update. labels are editable; ownership is not\neditable via this Update — use CloudCredentialOwnershipUpdateRequest\ninstead."
+          "description": "See CreateMetadata: name/org_id/uid identify the credential and are\nimmutable via Update. labels are editable; ownership is not\neditable via this Update — use CloudCredentialOwnershipUpdateRequest\ninstead.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/CreateMetadata"
+            }
+          ]
         },
         "cloud_credential": {
-          "$ref": "#/definitions/CloudCredentialInfo",
-          "description": "Editable, except `type` (see message-level summary above and\nCloudCredentialInfo for detail). Must be sent in full; omitted\nsub-fields may be reset."
+          "description": "Editable, except `type` (see message-level summary above and\nCloudCredentialInfo for detail). Must be sent in full; omitted\nsub-fields may be reset.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/CloudCredentialInfo"
+            }
+          ]
         }
       },
       "description": "Define CloudCredentialUpdateRequest struct\nCloudCredentialUpdateRequest performs a full-object replace: fetch the\ncurrent cloud credential via Inspect, modify only the fields you need to\nchange, and send the complete request back.\n\ncloud_credential field breakdown (see CloudCredentialInfo for full\nper-field detail): config is editable and must match type. type is\nnot editable — the server rejects an Update whose type differs from\nthe stored value (create a new credential instead)."
@@ -8206,8 +8442,12 @@
           "title": "PDS account service token to fetch rest.Config for\nteleport based cluster"
         },
         "provider": {
-          "$ref": "#/definitions/ClusterCreateRequestProvider",
-          "title": "This is optional field and used by BaaS only"
+          "title": "This is optional field and used by BaaS only",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ClusterCreateRequestProvider"
+            }
+          ]
         }
       },
       "title": "Define ClusterCreateRequest struct"
@@ -8315,16 +8555,28 @@
       "type": "object",
       "properties": {
         "type": {
-          "$ref": "#/definitions/ClusterDiscoveryConfigType",
-          "description": "Type of discovery configuration."
+          "description": "Type of discovery configuration.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ClusterDiscoveryConfigType"
+            }
+          ]
         },
         "shoot_config": {
-          "$ref": "#/definitions/ShootDiscoveryConfigInfo",
-          "description": "Configuration for Gardener Shoot cluster discovery."
+          "description": "Configuration for Gardener Shoot cluster discovery.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ShootDiscoveryConfigInfo"
+            }
+          ]
         },
         "settings": {
-          "$ref": "#/definitions/ClusterDiscoverySettings",
-          "description": "Common discovery settings (polling frequency, auto-discover toggle) that apply to all discovery types."
+          "description": "Common discovery settings (polling frequency, auto-discover toggle) that apply to all discovery types.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ClusterDiscoverySettings"
+            }
+          ]
         },
         "last_auto_discovery_time": {
           "type": "string",
@@ -8337,16 +8589,28 @@
           "description": "Timestamp of the last manually triggered discovery run."
         },
         "discovery_stats": {
-          "$ref": "#/definitions/ClusterDiscoveryConfigInfoDiscoveryStats",
-          "description": "Statistics from the last discovery run."
+          "description": "Statistics from the last discovery run.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ClusterDiscoveryConfigInfoDiscoveryStats"
+            }
+          ]
         },
         "status": {
-          "$ref": "#/definitions/ClusterDiscoveryConfigInfoStatusInfo",
-          "description": "Status information for the discovery configuration."
+          "description": "Status information for the discovery configuration.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ClusterDiscoveryConfigInfoStatusInfo"
+            }
+          ]
         },
         "refresh_status": {
-          "$ref": "#/definitions/ClusterDiscoveryConfigInfoRefreshStatusInfo",
-          "description": "Status information for the manual refresh operation.\nThis is separate from the main status to allow both operations — discovery and refresh —\nto run and be tracked independently."
+          "description": "Status information for the manual refresh operation.\nThis is separate from the main status to allow both operations — discovery and refresh —\nto run and be tracked independently.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ClusterDiscoveryConfigInfoRefreshStatusInfo"
+            }
+          ]
         }
       },
       "description": "ClusterDiscoveryConfigInfo is a polymorphic wrapper for different discovery configuration types.\nUse the type field to determine which config variant is set.\nCommon discovery settings are provided via the settings field."
@@ -8512,8 +8776,12 @@
           "description": "Selector: organization ID of the cluster discovery config to update."
         },
         "config_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "description": "Selector: reference to the cluster discovery config to update (name is required, uid is optional for exact match)."
+          "description": "Selector: reference to the cluster discovery config to update (name is required, uid is optional for exact match).",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ObjectRef"
+            }
+          ]
         },
         "gardener_kubeconfig": {
           "type": "string",
@@ -8524,8 +8792,12 @@
           "description": "Toggle automatic discovery on or off.\nUses BoolValue wrapper to distinguish between \"not provided\" (nil) and \"explicitly set to false\"."
         },
         "auto_discover_frequency": {
-          "$ref": "#/definitions/ClusterDiscoverySettingsAutoDiscoverFrequency",
-          "description": "Updated frequency of automatic discovery when auto_discover is enabled."
+          "description": "Updated frequency of automatic discovery when auto_discover is enabled.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ClusterDiscoverySettingsAutoDiscoverFrequency"
+            }
+          ]
         },
         "metadata_labels": {
           "type": "object",
@@ -8552,8 +8824,12 @@
           "description": "Enable or disable automatic discovery.\nUses BoolValue wrapper to distinguish between \"not provided\" (nil) and\n\"explicitly set to false\" during update operations."
         },
         "auto_discover_frequency": {
-          "$ref": "#/definitions/ClusterDiscoverySettingsAutoDiscoverFrequency",
-          "description": "Frequency of automatic discovery when auto_discover is enabled.\nDiscovery is executed based on the creation time plus this interval."
+          "description": "Frequency of automatic discovery when auto_discover is enabled.\nDiscovery is executed based on the creation time plus this interval.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ClusterDiscoverySettingsAutoDiscoverFrequency"
+            }
+          ]
         }
       },
       "description": "ClusterDiscoverySettings contains common settings that apply to all discovery types.\nThis message is embedded in ClusterDiscoveryConfigInfo to provide reusable lifecycle\nand polling configuration for any discovery provider."
@@ -8649,16 +8925,28 @@
           "title": "Set this to true, to get the backupshare enabled cluster list"
         },
         "enumerate_options": {
-          "$ref": "#/definitions/EnumerateOptions",
-          "title": "Optional arguments for enumeration - Sorting, Pagination"
+          "title": "Optional arguments for enumeration - Sorting, Pagination",
+          "allOf": [
+            {
+              "$ref": "#/definitions/EnumerateOptions"
+            }
+          ]
         },
         "backup_location_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "title": "Optional filter to return only clusters that are referenced by the specified BackupLocation.\nIf not provided, return ALL clusters (existing behavior).\nIf provided, return ONLY clusters that have \"blName/blUID\" as a key in their backup_location_ref_status map.\nThis enables bidirectional querying: \"Show me all clusters that can access this BackupLocation\""
+          "title": "Optional filter to return only clusters that are referenced by the specified BackupLocation.\nIf not provided, return ALL clusters (existing behavior).\nIf provided, return ONLY clusters that have \"blName/blUID\" as a key in their backup_location_ref_status map.\nThis enables bidirectional querying: \"Show me all clusters that can access this BackupLocation\"",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ObjectRef"
+            }
+          ]
         },
         "cluster_enumerate_options": {
-          "$ref": "#/definitions/ClusterEnumerateOptions",
-          "description": "Advanced filter options for cluster enumeration."
+          "description": "Advanced filter options for cluster enumeration.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ClusterEnumerateOptions"
+            }
+          ]
         }
       },
       "title": "Define ClusterEnumerateRequest struct"
@@ -8776,8 +9064,12 @@
           "title": "time_zone is the time zone of the cluster"
         },
         "provider_info": {
-          "$ref": "#/definitions/ClusterInfoClusterProviderInfo",
-          "description": "Provider-specific cluster information for clusters discovered or managed\nby external providers (e.g., Gardener).\nThis field is populated based on how the cluster was discovered/added."
+          "description": "Provider-specific cluster information for clusters discovered or managed\nby external providers (e.g., Gardener).\nThis field is populated based on how the cluster was discovered/added.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ClusterInfoClusterProviderInfo"
+            }
+          ]
         },
         "backup_location_ref_status": {
           "type": "object",
@@ -8820,8 +9112,12 @@
       "type": "object",
       "properties": {
         "gardener_shoot_info": {
-          "$ref": "#/definitions/ClusterInfoGardenerShootInfo",
-          "description": "Gardener Shoot cluster information for clusters discovered from Gardener."
+          "description": "Gardener Shoot cluster information for clusters discovered from Gardener.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ClusterInfoGardenerShootInfo"
+            }
+          ]
         }
       },
       "description": "ClusterProviderInfo is a polymorphic wrapper for provider-specific cluster information.\nUse the oneof to determine which provider type is set."
@@ -8953,12 +9249,20 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata",
-          "description": "See CreateMetadata: name/org_id/uid identify the cluster and are\nimmutable via Update. labels are editable; ownership is not\neditable via Update."
+          "description": "See CreateMetadata: name/org_id/uid identify the cluster and are\nimmutable via Update. labels are editable; ownership is not\neditable via Update.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/CreateMetadata"
+            }
+          ]
         },
         "px_config": {
-          "$ref": "#/definitions/PXConfig",
-          "description": "Editable. Must be sent in full; omitted sub-fields may be reset."
+          "description": "Editable. Must be sent in full; omitted sub-fields may be reset.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/PXConfig"
+            }
+          ]
         },
         "kubeconfig": {
           "type": "string",
@@ -8969,12 +9273,20 @@
           "description": "cloud_credential is deprecated, not to be used."
         },
         "cloud_credential_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "description": "Editable."
+          "description": "Editable.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ObjectRef"
+            }
+          ]
         },
         "platform_credential_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "description": "Editable."
+          "description": "Editable.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ObjectRef"
+            }
+          ]
         }
       },
       "description": "Define ClusterUpdateRequest struct\nClusterUpdateRequest performs a full-object replace of the cluster: fetch\nthe current cluster via Inspect, modify only the fields you need to\nchange, and send the complete request back, including nested fields\n(e.g. px_config) that did not change."
@@ -8987,8 +9299,12 @@
       "type": "object",
       "properties": {
         "status_info": {
-          "$ref": "#/definitions/ClusterValidationStatusStatusInfo",
-          "title": "Validation status information"
+          "title": "Validation status information",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ClusterValidationStatusStatusInfo"
+            }
+          ]
         },
         "cloud_provider_type": {
           "type": "string",
@@ -9013,8 +9329,12 @@
       "type": "object",
       "properties": {
         "status": {
-          "$ref": "#/definitions/ClusterValidationStatusClusterValidationState",
-          "title": "Cluster validation status"
+          "title": "Cluster validation status",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ClusterValidationStatusClusterValidationState"
+            }
+          ]
         },
         "last_validation_time": {
           "type": "string",
@@ -9052,12 +9372,20 @@
           "format": "uint64"
         },
         "sort_option": {
-          "$ref": "#/definitions/SortOption",
-          "title": "Add sorting support for VRO list API"
+          "title": "Add sorting support for VRO list API",
+          "allOf": [
+            {
+              "$ref": "#/definitions/SortOption"
+            }
+          ]
         },
         "time_range": {
-          "$ref": "#/definitions/TimeRange",
-          "title": "Time range for which to return objects"
+          "title": "Time range for which to return objects",
+          "allOf": [
+            {
+              "$ref": "#/definitions/TimeRange"
+            }
+          ]
         }
       }
     },
@@ -9084,8 +9412,12 @@
           "description": "labels associated with the object.\nUpdate: editable."
         },
         "ownership": {
-          "$ref": "#/definitions/Ownership",
-          "description": "ownership of the object.\nUpdate: not editable via this embedding — see the message-level\ncomment on CreateMetadata."
+          "description": "ownership of the object.\nUpdate: not editable via this embedding — see the message-level\ncomment on CreateMetadata.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Ownership"
+            }
+          ]
         },
         "uid": {
           "type": "string",
@@ -9131,8 +9463,12 @@
           "title": "Allow custom certificate for SMTP server client creation"
         },
         "tls_config": {
-          "$ref": "#/definitions/TlsConfig",
-          "title": "TLS configuration for SMTP server client creation"
+          "title": "TLS configuration for SMTP server client creation",
+          "allOf": [
+            {
+              "$ref": "#/definitions/TlsConfig"
+            }
+          ]
         }
       }
     },
@@ -9152,8 +9488,12 @@
           "title": "max objects to fetch"
         },
         "time_range": {
-          "$ref": "#/definitions/TimeRange",
-          "title": "Time range for which to return objects"
+          "title": "Time range for which to return objects",
+          "allOf": [
+            {
+              "$ref": "#/definitions/TimeRange"
+            }
+          ]
         },
         "name_filter": {
           "type": "string",
@@ -9208,8 +9548,12 @@
           "description": "filter to use backup schedule policy name and uid. Any object that contains the filter will be returned."
         },
         "sort_option": {
-          "$ref": "#/definitions/SortOption",
-          "title": "Sorting backup objects based on the field and order\nIf the field is not set, default value will be \"CreationTimestamp\"\nIf the order is not set, default value will be \"descending\""
+          "title": "Sorting backup objects based on the field and order\nIf the field is not set, default value will be \"CreationTimestamp\"\nIf the order is not set, default value will be \"descending\"",
+          "allOf": [
+            {
+              "$ref": "#/definitions/SortOption"
+            }
+          ]
         },
         "volume_resource_only_policy_ref": {
           "type": "array",
@@ -9219,8 +9563,12 @@
           "description": "filter to use volumeResourceOnly policy name and uid. Any object that contains the filter will be returned."
         },
         "resource_info": {
-          "$ref": "#/definitions/ResourceInfo",
-          "title": "filter to use resource name and namespace. Any backup that contains the resource will be returned"
+          "title": "filter to use resource name and namespace. Any backup that contains the resource will be returned",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ResourceInfo"
+            }
+          ]
         },
         "vm_volume_name": {
           "type": "string",
@@ -9356,8 +9704,12 @@
           "title": "Start time of license"
         },
         "type": {
-          "$ref": "#/definitions/LicenseType",
-          "title": "License type defined in common.proto"
+          "title": "License type defined in common.proto",
+          "allOf": [
+            {
+              "$ref": "#/definitions/LicenseType"
+            }
+          ]
         }
       }
     },
@@ -9417,8 +9769,12 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata",
-          "description": "metadata.org_id identifies the org whose license is updated."
+          "description": "metadata.org_id identifies the org whose license is updated.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/CreateMetadata"
+            }
+          ]
         },
         "usage_based_id": {
           "type": "string",
@@ -9693,8 +10049,12 @@
           "title": "UID of the managed cluster\nThis is the UID returned by the managed cluster provider"
         },
         "cloud_credential": {
-          "$ref": "#/definitions/ObjectRef",
-          "title": "Cloud Credential name used for fetching this cluster's details"
+          "title": "Cloud Credential name used for fetching this cluster's details",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ObjectRef"
+            }
+          ]
         },
         "kubeconfig": {
           "type": "string",
@@ -9760,8 +10120,12 @@
           "title": "create time in sec"
         },
         "ownership": {
-          "$ref": "#/definitions/Ownership",
-          "title": "ownership of the object"
+          "title": "ownership of the object",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Ownership"
+            }
+          ]
         },
         "last_update_time_in_sec": {
           "type": "string",
@@ -9871,8 +10235,12 @@
           "description": "Number of objects to retain for monthly policy, default value is 12."
         },
         "incremental_count": {
-          "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
-          "description": "Number of incremental snapshots to take before taking a full snapshot."
+          "description": "Number of incremental snapshots to take before taking a full snapshot.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount"
+            }
+          ]
         }
       }
     },
@@ -9894,8 +10262,12 @@
           "description": "Number of objects to retain for monthly policy, default value is 12."
         },
         "incremental_count": {
-          "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
-          "description": "Number of incremental snapshots to take before taking a full snapshot."
+          "description": "Number of incremental snapshots to take before taking a full snapshot.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount"
+            }
+          ]
         },
         "months": {
           "type": "string",
@@ -9995,8 +10367,12 @@
           "title": "Namespace name"
         },
         "status": {
-          "$ref": "#/definitions/NamespaceResourceStatusInfo",
-          "title": "Status information for this namespace"
+          "title": "Status information for this namespace",
+          "allOf": [
+            {
+              "$ref": "#/definitions/NamespaceResourceStatusInfo"
+            }
+          ]
         },
         "resource_types": {
           "type": "array",
@@ -10006,8 +10382,12 @@
           "title": "List of resource types in this namespace, grouped by resource type"
         },
         "metrics": {
-          "$ref": "#/definitions/NamespaceResourceMetrics",
-          "title": "Statistics for this namespace"
+          "title": "Statistics for this namespace",
+          "allOf": [
+            {
+              "$ref": "#/definitions/NamespaceResourceMetrics"
+            }
+          ]
         }
       },
       "title": "Message representing resources within a namespace with status, metrics, and resource type breakdown"
@@ -10020,8 +10400,12 @@
           "format": "int32"
         },
         "status": {
-          "$ref": "#/definitions/NamespaceResourceChunkInfoStatusInfo",
-          "title": "Processing status of this specific chunk"
+          "title": "Processing status of this specific chunk",
+          "allOf": [
+            {
+              "$ref": "#/definitions/NamespaceResourceChunkInfoStatusInfo"
+            }
+          ]
         },
         "resource_names": {
           "type": "array",
@@ -10101,8 +10485,12 @@
           "title": "List of chunks containing resources of this type"
         },
         "metrics": {
-          "$ref": "#/definitions/NamespaceResourceResourceTypeInfoMetrics",
-          "title": "Statistics for this resource type"
+          "title": "Statistics for this resource type",
+          "allOf": [
+            {
+              "$ref": "#/definitions/NamespaceResourceResourceTypeInfoMetrics"
+            }
+          ]
         }
       },
       "title": "ResourceTypeInfo groups resources by their resource type and organizes them into chunks"
@@ -10237,8 +10625,12 @@
           "description": "Collaborator access to objects gives access to other user.\nMust be the username (unique id) set in the authorization token.\nThe owner or the administrator can set this value. Possible values\nare:\n1. no collaborators: Means no users are given access.\n2. `[\"*\"]`: All users are allowed.\n3. `[\"username1\", \"username2\"]`: Only certain usernames are allowed.\nIn this example only\n_username1_ and _username2_ are allowed."
         },
         "public": {
-          "$ref": "#/definitions/OwnershipPublicAccessControl",
-          "title": "Public access to objects may be assigned for access by the public\nuserd\nTODO: Instead of PublicAccessControl, can we just set '*' in\ncollaborators with required permission?"
+          "title": "Public access to objects may be assigned for access by the public\nuserd\nTODO: Instead of PublicAccessControl, can we just set '*' in\ncollaborators with required permission?",
+          "allOf": [
+            {
+              "$ref": "#/definitions/OwnershipPublicAccessControl"
+            }
+          ]
         }
       },
       "description": "Ownership information for objects(eg: backup object, schedule object).\nAdministrators are users who belong to the group `*`, meaning, every group."
@@ -10269,8 +10661,12 @@
       "type": "object",
       "properties": {
         "type": {
-          "$ref": "#/definitions/OwnershipAccessType",
-          "title": "AccessType declares which level of public access is allowed"
+          "title": "AccessType declares which level of public access is allowed",
+          "allOf": [
+            {
+              "$ref": "#/definitions/OwnershipAccessType"
+            }
+          ]
         }
       },
       "title": "PublicAccessControl allows assigning public ownership"
@@ -10340,8 +10736,12 @@
       "type": "object",
       "properties": {
         "type": {
-          "$ref": "#/definitions/ReceiverInfoType",
-          "description": "Used together with org_id/ownership to look up the receiver on\nUpdate — name/uid are not part of that lookup. Sending a\ndifferent type does not change this receiver's type in place; it\ntargets a different receiver (or matches none) instead."
+          "description": "Used together with org_id/ownership to look up the receiver on\nUpdate — name/uid are not part of that lookup. Sending a\ndifferent type does not change this receiver's type in place; it\ntargets a different receiver (or matches none) instead.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ReceiverInfoType"
+            }
+          ]
         },
         "email_config": {
           "$ref": "#/definitions/EmailConfig"
@@ -10399,12 +10799,20 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata",
-          "description": "See CreateMetadata: name/org_id/uid identify the receiver and are\nimmutable via Update. labels are editable; ownership is not\neditable via Update."
+          "description": "See CreateMetadata: name/org_id/uid identify the receiver and are\nimmutable via Update. labels are editable; ownership is not\neditable via Update.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/CreateMetadata"
+            }
+          ]
         },
         "receiver_info": {
-          "$ref": "#/definitions/ReceiverInfo",
-          "description": "See message-level summary above and ReceiverInfo for per-field\ndetail. Must be sent in full; omitted sub-fields may be reset."
+          "description": "See message-level summary above and ReceiverInfo for per-field\ndetail. Must be sent in full; omitted sub-fields may be reset.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ReceiverInfo"
+            }
+          ]
         }
       },
       "description": "ReceiverUpdateRequest performs a full-object replace: fetch the current\nreceiver via Inspect, modify only the fields you need to change, and send\nthe complete request back.\n\nreceiver_info field breakdown (see ReceiverInfo for full per-field\ndetail): type is not a free-form edit — it is used together with\norg_id/ownership to look up the receiver being updated (name/uid are\nnot part of that lookup), so sending a different type targets a\ndifferent receiver instead of changing this one's type. config is\neditable and must match type."
@@ -10484,8 +10892,12 @@
       "type": "object",
       "properties": {
         "type": {
-          "$ref": "#/definitions/RecipientInfoType",
-          "description": "Type of notification on user level.\nEditable — the server does not enforce immutability here:\nsending a different type overwrites the stored value."
+          "description": "Type of notification on user level.\nEditable — the server does not enforce immutability here:\nsending a different type overwrites the stored value.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RecipientInfoType"
+            }
+          ]
         },
         "recipient_id": {
           "type": "array",
@@ -10499,12 +10911,20 @@
           "description": "current status set by user. Editable."
         },
         "receiver_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "description": "Link receiver object. Editable."
+          "description": "Link receiver object. Editable.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ObjectRef"
+            }
+          ]
         },
         "severity": {
-          "$ref": "#/definitions/RecipientInfoSeverity",
-          "description": "Filter level of alert by severity. Editable."
+          "description": "Filter level of alert by severity. Editable.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RecipientInfoSeverity"
+            }
+          ]
         }
       }
     },
@@ -10548,12 +10968,20 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata",
-          "description": "See CreateMetadata: name/org_id/uid identify the recipient and are\nimmutable via Update. labels are editable; ownership is not\neditable via Update."
+          "description": "See CreateMetadata: name/org_id/uid identify the recipient and are\nimmutable via Update. labels are editable; ownership is not\neditable via Update.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/CreateMetadata"
+            }
+          ]
         },
         "recipient_info": {
-          "$ref": "#/definitions/RecipientInfo",
-          "description": "Editable, including `type` (see message-level summary above and\nRecipientInfo for detail). Must be sent in full; omitted sub-fields\nmay be reset."
+          "description": "Editable, including `type` (see message-level summary above and\nRecipientInfo for detail). Must be sent in full; omitted sub-fields\nmay be reset.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RecipientInfo"
+            }
+          ]
         }
       },
       "description": "RecipientUpdateRequest performs a full-object replace: fetch the current\nrecipient via Inspect, modify only the fields you need to change, and\nsend the complete request back.\n\nrecipient_info field breakdown (see RecipientInfo for full per-field\ndetail): every field is editable, including type — changing it\noverwrites the stored value, the server does not enforce immutability."
@@ -10639,8 +11067,12 @@
       "type": "object",
       "properties": {
         "status": {
-          "$ref": "#/definitions/ChunkInfoResourceInfoStatus",
-          "title": "Status of the resources in this group"
+          "title": "Status of the resources in this group",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ChunkInfoResourceInfoStatus"
+            }
+          ]
         },
         "resources": {
           "type": "array",
@@ -10706,16 +11138,28 @@
       "type": "object",
       "properties": {
         "backend_type": {
-          "$ref": "#/definitions/BackupLocationInfoType",
-          "description": "Backend type -- reuses the existing BackupLocationInfo.Type enum\n(Invalid / S3 / Azure / Google / NFS). Client uses this to pick\nthe right access method AND to know which `location` oneof field\nto read."
+          "description": "Backend type -- reuses the existing BackupLocationInfo.Type enum\n(Invalid / S3 / Azure / Google / NFS). Client uses this to pick\nthe right access method AND to know which `location` oneof field\nto read.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/BackupLocationInfoType"
+            }
+          ]
         },
         "signed_url": {
-          "$ref": "#/definitions/SignedURLLocation",
-          "description": "S3 / Azure / Google -- pre-signed URL + expiry bundle."
+          "description": "S3 / Azure / Google -- pre-signed URL + expiry bundle.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/SignedURLLocation"
+            }
+          ]
         },
         "nfs_location": {
-          "$ref": "#/definitions/NFSLocation",
-          "description": "NFS -- server + path metadata. Client mounts the export and\nreads \u003cexport_path\u003e/\u003cfile_path\u003e after mount."
+          "description": "NFS -- server + path metadata. Client mounts the export and\nreads \u003cexport_path\u003e/\u003cfile_path\u003e after mount.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/NFSLocation"
+            }
+          ]
         }
       },
       "description": "Response for GetRestoreCRDownloadLocation."
@@ -10742,8 +11186,12 @@
           "title": "mapping of the namespaces from the backup to which restore should be done\nshould be used only when restore is done without using filter\nset namespace_mapping key = value if is_sfr is set to true"
         },
         "replace_policy": {
-          "$ref": "#/definitions/ReplacePolicyType",
-          "title": "replace policy to use if the resource already exists"
+          "title": "replace policy to use if the resource already exists",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ReplacePolicyType"
+            }
+          ]
         },
         "include_optional_resource_types": {
           "type": "array",
@@ -10767,8 +11215,12 @@
           "title": "storage class mapping for generic backup \u003csource, destination\u003e"
         },
         "backup_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "title": "backup object reference having name and id"
+          "title": "backup object reference having name and id",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ObjectRef"
+            }
+          ]
         },
         "rancher_project_mapping": {
           "type": "object",
@@ -10788,8 +11240,12 @@
           "$ref": "#/definitions/ObjectRef"
         },
         "backup_object_type": {
-          "$ref": "#/definitions/RestoreCreateRequestBackupObjectType",
-          "title": "backup object type is all namespace or virtualMachine specific backup"
+          "title": "backup object type is all namespace or virtualMachine specific backup",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RestoreCreateRequestBackupObjectType"
+            }
+          ]
         },
         "exclude_resources": {
           "type": "array",
@@ -10799,20 +11255,32 @@
           "description": "List of resources to exclude from restore."
         },
         "filter": {
-          "$ref": "#/definitions/RestoreCreateRequestFilter",
-          "title": "Filter options"
+          "title": "Filter options",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RestoreCreateRequestFilter"
+            }
+          ]
         },
         "virtual_machine_restore_options": {
-          "$ref": "#/definitions/RestoreCreateRequestVirtualMachineRestoreOptions",
-          "title": "VirtualMachine Restore Options"
+          "title": "VirtualMachine Restore Options",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RestoreCreateRequestVirtualMachineRestoreOptions"
+            }
+          ]
         },
         "is_sfr": {
           "type": "boolean",
           "title": "Set it to true if restore is for virtualMachine file level restore"
         },
         "file_level_restore_info": {
-          "$ref": "#/definitions/FileLevelRestoreInfo",
-          "title": "File level restore info details if is_sfr is set to true"
+          "title": "File level restore info details if is_sfr is set to true",
+          "allOf": [
+            {
+              "$ref": "#/definitions/FileLevelRestoreInfo"
+            }
+          ]
         },
         "target_namespace_prefix": {
           "type": "string",
@@ -10927,8 +11395,12 @@
           "title": "Time taken to complete the copy operation"
         },
         "status": {
-          "$ref": "#/definitions/RestoreInfoStatusInfo",
-          "title": "Restore status of the file with reason for failure if any"
+          "title": "Restore status of the file with reason for failure if any",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RestoreInfoStatusInfo"
+            }
+          ]
         }
       }
     },
@@ -10958,8 +11430,12 @@
           "title": "Namespace Mapping"
         },
         "replace_policy": {
-          "$ref": "#/definitions/ReplacePolicyType",
-          "title": "Restore replace policy type (\"delete\"/\"retain\")"
+          "title": "Restore replace policy type (\"delete\"/\"retain\")",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ReplacePolicyType"
+            }
+          ]
         },
         "status": {
           "$ref": "#/definitions/RestoreInfoStatusInfo"
@@ -11014,8 +11490,12 @@
           "title": "storage class mapping for generic backup \u003csource, destination\u003e"
         },
         "backup_ref": {
-          "$ref": "#/definitions/ObjectRef",
-          "title": "backup to restore from"
+          "title": "backup to restore from",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ObjectRef"
+            }
+          ]
         },
         "rancher_project_mapping": {
           "type": "object",
@@ -11041,38 +11521,62 @@
           "title": "counter to show number of already restored resources"
         },
         "restore_status": {
-          "$ref": "#/definitions/RestoreInfoRestoreResourceState",
-          "title": "current activity while doing resource restore"
+          "title": "current activity while doing resource restore",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RestoreInfoRestoreResourceState"
+            }
+          ]
         },
         "cluster_ref": {
           "$ref": "#/definitions/ObjectRef"
         },
         "backup_object_type": {
-          "$ref": "#/definitions/RestoreInfoBackupObjectType",
-          "title": "backup object type is all namespace or virtualMachine specific backup"
+          "title": "backup object type is all namespace or virtualMachine specific backup",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RestoreInfoBackupObjectType"
+            }
+          ]
         },
         "virtual_machine_restore_options": {
-          "$ref": "#/definitions/RestoreInfoVirtualMachineRestoreOptions",
-          "title": "VirtualMachine Restore Options"
+          "title": "VirtualMachine Restore Options",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RestoreInfoVirtualMachineRestoreOptions"
+            }
+          ]
         },
         "is_sfr": {
           "type": "boolean",
           "title": "Is true if restore is VirtualMachine file level restore"
         },
         "file_level_restore_info": {
-          "$ref": "#/definitions/FileLevelRestoreStatusInfo",
-          "title": "File level restore info"
+          "title": "File level restore info",
+          "allOf": [
+            {
+              "$ref": "#/definitions/FileLevelRestoreStatusInfo"
+            }
+          ]
         },
         "filter": {
-          "$ref": "#/definitions/RestoreInfoFilter",
-          "title": "Filter criteria used for this restore (for audit/duplicate restore)"
+          "title": "Filter criteria used for this restore (for audit/duplicate restore)",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RestoreInfoFilter"
+            }
+          ]
         },
         "target_namespace_prefix": {
           "type": "string"
         },
         "restore_resources": {
-          "$ref": "#/definitions/RestoreInfoResources",
-          "title": "Message for restore resources"
+          "title": "Message for restore resources",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RestoreInfoResources"
+            }
+          ]
         },
         "retention_period": {
           "type": "string",
@@ -11134,8 +11638,12 @@
           "title": "Namespace name"
         },
         "status": {
-          "$ref": "#/definitions/RestoreInfoStatusInfo",
-          "title": "Overall status information"
+          "title": "Overall status information",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RestoreInfoStatusInfo"
+            }
+          ]
         },
         "resource_types": {
           "type": "array",
@@ -11145,8 +11653,12 @@
           "title": "List of resource types (grouped by GVK)"
         },
         "metrics": {
-          "$ref": "#/definitions/RestoreInfoResourceMetrics",
-          "title": "Statistics"
+          "title": "Statistics",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RestoreInfoResourceMetrics"
+            }
+          ]
         }
       },
       "title": "Message representing restored resources grouped by GVK"
@@ -11215,8 +11727,12 @@
           "title": "Chunks containing resources of this type"
         },
         "metrics": {
-          "$ref": "#/definitions/RestoreInfoResourceResourceTypeInfoMetrics",
-          "title": "Statistics for this resource type"
+          "title": "Statistics for this resource type",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RestoreInfoResourceResourceTypeInfoMetrics"
+            }
+          ]
         }
       },
       "title": "ResourceTypeInfo groups resources by their resource type (GVK)"
@@ -11343,8 +11859,12 @@
           "description": "Namespace of the virtual machine."
         },
         "status": {
-          "$ref": "#/definitions/RestoreInfoStatusInfo",
-          "description": "Restore status of the virtual machine."
+          "description": "Restore status of the virtual machine.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RestoreInfoStatusInfo"
+            }
+          ]
         },
         "volume_index": {
           "type": "array",
@@ -11438,8 +11958,12 @@
           "title": "Restore uid"
         },
         "filter": {
-          "$ref": "#/definitions/RestoreResourceDetailGetRequestFilter",
-          "title": "Filter options"
+          "title": "Filter options",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RestoreResourceDetailGetRequestFilter"
+            }
+          ]
         }
       },
       "description": "Request message for paginated/filtered restore resource details."
@@ -11609,8 +12133,12 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata",
-          "description": "See CreateMetadata: name/org_id/uid identify the restore and are\nimmutable via Update. labels are editable; ownership is not\neditable via Update."
+          "description": "See CreateMetadata: name/org_id/uid identify the restore and are\nimmutable via Update. labels are editable; ownership is not\neditable via Update.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/CreateMetadata"
+            }
+          ]
         }
       },
       "description": "Define RestoreUpdateRequest struct\nRestoreUpdateRequest only allows updating metadata.labels/ownership; a\nrestore's other properties are fixed at Create time."
@@ -11695,8 +12223,12 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/Metadata",
-          "title": "Metadata of the object"
+          "title": "Metadata of the object",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Metadata"
+            }
+          ]
         },
         "rules": {
           "type": "array",
@@ -11728,8 +12260,12 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata",
-          "description": "See CreateMetadata: name/org_id/uid identify the role and are\nimmutable via Update. labels are editable; ownership is not\neditable via Update."
+          "description": "See CreateMetadata: name/org_id/uid identify the role and are\nimmutable via Update. labels are editable; ownership is not\neditable via Update.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/CreateMetadata"
+            }
+          ]
         },
         "rules": {
           "type": "array",
@@ -11832,12 +12368,20 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata",
-          "description": "See CreateMetadata: name/org_id/uid identify the rule and are\nimmutable via Update. labels are editable; ownership is not\neditable via this Update — use RuleOwnershipUpdateRequest\ninstead."
+          "description": "See CreateMetadata: name/org_id/uid identify the rule and are\nimmutable via Update. labels are editable; ownership is not\neditable via this Update — use RuleOwnershipUpdateRequest\ninstead.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/CreateMetadata"
+            }
+          ]
         },
         "rules_info": {
-          "$ref": "#/definitions/RulesInfo",
-          "description": "Editable. Must be sent in full; omitted sub-fields may be reset."
+          "description": "Editable. Must be sent in full; omitted sub-fields may be reset.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RulesInfo"
+            }
+          ]
         }
       },
       "description": "RuleUpdateRequest performs a full-object replace: fetch the current rule\nvia Inspect, modify only the fields you need to change, and send the\ncomplete request back."
@@ -11914,12 +12458,20 @@
           "type": "string"
         },
         "sse_type": {
-          "$ref": "#/definitions/S3ConfigSse",
-          "description": "Server side encryption type name\nCurrently supporting only SSE-S3 and SSE-KMS type alone."
+          "description": "Server side encryption type name\nCurrently supporting only SSE-S3 and SSE-KMS type alone.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/S3ConfigSse"
+            }
+          ]
         },
         "azure_environment": {
-          "$ref": "#/definitions/S3ConfigAzureEnvironmentType",
-          "title": "Azure environment type\nCurrently supporting only AZURE_GLOBAL and AZURE_CHINA"
+          "title": "Azure environment type\nCurrently supporting only AZURE_GLOBAL and AZURE_CHINA",
+          "allOf": [
+            {
+              "$ref": "#/definitions/S3ConfigAzureEnvironmentType"
+            }
+          ]
         },
         "azure_resource_group_name": {
           "type": "string",
@@ -12052,8 +12604,12 @@
           "description": "Number of objects to retain for daily policy, default value is 10."
         },
         "incremental_count": {
-          "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
-          "description": "Number of incremental snapshots to take before taking a full\nsnapshot."
+          "description": "Number of incremental snapshots to take before taking a full\nsnapshot.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount"
+            }
+          ]
         }
       }
     },
@@ -12080,8 +12636,12 @@
           "description": "Number of objects to retain for interval policy, default value is 10."
         },
         "incremental_count": {
-          "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
-          "description": "Number of incremental snapshots to take before taking a full\nsnapshot."
+          "description": "Number of incremental snapshots to take before taking a full\nsnapshot.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount"
+            }
+          ]
         }
       }
     },
@@ -12103,8 +12663,12 @@
           "description": "Number of objects to retain for monthly policy, default value is 12.\nThis field is deprecated, not to be used."
         },
         "incremental_count": {
-          "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
-          "description": "Number of incremental snapshots to take before taking a full snapshot.\nThis field is deprecated, not to be used."
+          "description": "Number of incremental snapshots to take before taking a full snapshot.\nThis field is deprecated, not to be used.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount"
+            }
+          ]
         },
         "relative_monthly_policy": {
           "$ref": "#/definitions/MonthlyPolicyRelativeMonthlyPolicy"
@@ -12131,8 +12695,12 @@
           "description": "Number of objects to retain for weekly policy, default value is 5."
         },
         "incremental_count": {
-          "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
-          "description": "Number of incremental snapshots to take before taking a full\nsnapshot."
+          "description": "Number of incremental snapshots to take before taking a full\nsnapshot.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount"
+            }
+          ]
         },
         "bi_weekly": {
           "type": "boolean",
@@ -12185,12 +12753,20 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata",
-          "description": "See CreateMetadata: name/org_id/uid identify the policy and are\nimmutable via Update. labels are editable; ownership is not\neditable via this Update — use SchedulePolicyOwnershipUpdateRequest\ninstead."
+          "description": "See CreateMetadata: name/org_id/uid identify the policy and are\nimmutable via Update. labels are editable; ownership is not\neditable via this Update — use SchedulePolicyOwnershipUpdateRequest\ninstead.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/CreateMetadata"
+            }
+          ]
         },
         "schedule_policy": {
-          "$ref": "#/definitions/SchedulePolicyInfo",
-          "description": "Editable. Must be sent in full; omitted sub-fields may be reset."
+          "description": "Editable. Must be sent in full; omitted sub-fields may be reset.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/SchedulePolicyInfo"
+            }
+          ]
         }
       },
       "description": "Define SchedulePolicyUpdateRequest struct\nSchedulePolicyUpdateRequest performs a full-object replace: fetch the\ncurrent schedule policy via Inspect, modify only the fields you need to\nchange, and send the complete request back."
@@ -12284,8 +12860,12 @@
       "type": "object",
       "properties": {
         "type": {
-          "$ref": "#/definitions/SortOptionSortByTypeType",
-          "title": "Name of the field by which sort to be performed"
+          "title": "Name of the field by which sort to be performed",
+          "allOf": [
+            {
+              "$ref": "#/definitions/SortOptionSortByTypeType"
+            }
+          ]
         }
       },
       "title": "field by which sorting will performed"
@@ -12307,8 +12887,12 @@
       "type": "object",
       "properties": {
         "type": {
-          "$ref": "#/definitions/SortOptionSortOrderTypeType",
-          "title": "Order of sorting"
+          "title": "Order of sorting",
+          "allOf": [
+            {
+              "$ref": "#/definitions/SortOptionSortOrderTypeType"
+            }
+          ]
         }
       },
       "title": "Order of sorting"
@@ -12441,8 +13025,12 @@
       "type": "object",
       "properties": {
         "version": {
-          "$ref": "#/definitions/VersionInfo",
-          "title": "version information of the server"
+          "title": "version information of the server",
+          "allOf": [
+            {
+              "$ref": "#/definitions/VersionInfo"
+            }
+          ]
         }
       }
     },
@@ -12643,8 +13231,12 @@
       "type": "object",
       "properties": {
         "generic_enumerate_options": {
-          "$ref": "#/definitions/CommonEnumerateOptions",
-          "title": "Optional arguments for enumeration"
+          "title": "Optional arguments for enumeration",
+          "allOf": [
+            {
+              "$ref": "#/definitions/CommonEnumerateOptions"
+            }
+          ]
         },
         "volume_types": {
           "type": "array",
@@ -12669,8 +13261,12 @@
           "title": "label selectors for the object for filtering"
         },
         "enumerate_options": {
-          "$ref": "#/definitions/VolumeResourceOnlyPolicyEnumerateOptions",
-          "title": "Optional arguments for enumeration"
+          "title": "Optional arguments for enumeration",
+          "allOf": [
+            {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyEnumerateOptions"
+            }
+          ]
         }
       },
       "title": "Define VolumeResourceOnlyPolicyEnumerateRequest struct"
@@ -12776,12 +13372,20 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "$ref": "#/definitions/CreateMetadata",
-          "description": "See CreateMetadata: name/org_id/uid identify the policy and are\nimmutable via Update. labels are editable; ownership is not\neditable via this Update — use\nVolumeResourceOnlyPolicyOwnershipUpdateRequest instead."
+          "description": "See CreateMetadata: name/org_id/uid identify the policy and are\nimmutable via Update. labels are editable; ownership is not\neditable via this Update — use\nVolumeResourceOnlyPolicyOwnershipUpdateRequest instead.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/CreateMetadata"
+            }
+          ]
         },
         "volume_resource_only_policy": {
-          "$ref": "#/definitions/VolumeResourceOnlyPolicyInfo",
-          "description": "Editable. Must be sent in full; omitted sub-fields may be reset."
+          "description": "Editable. Must be sent in full; omitted sub-fields may be reset.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/VolumeResourceOnlyPolicyInfo"
+            }
+          ]
         }
       },
       "description": "Define VolumeResourceOnlyPolicyUpdateRequest struct\nVolumeResourceOnlyPolicyUpdateRequest performs a full-object replace:\nfetch the current policy via Inspect, modify only the fields you need to\nchange, and send the complete request back."
