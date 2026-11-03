@@ -6579,7 +6579,7 @@
         },
         "sync_manual": {
           "type": "boolean",
-          "description": "sync_manual controls whether this BackupLocation uses manual or automatic sync.\n- true  : Manual mode. Periodic BackupSync is skipped for this BL.\n          Syncs only occur when explicitly triggered via sync=true.\n- false : Automatic mode. Periodic BackupSync runs every 10 minutes.\n- null (not set): rejected on Create; treated as no-op on Update.\nValid in both Federated and Non-Federated deployment modes.\nUses BoolValue wrapper to distinguish between \"not provided\" (nil) and \"explicitly set to false\"."
+          "description": "sync_manual controls whether this BackupLocation uses manual or automatic sync.\n- true  : Manual mode. Periodic BackupSync is skipped for this BL.\n          Syncs only occur when explicitly triggered via sync=true.\n          Valid in both Federated and Non-Federated deployment modes.\n- false : Automatic mode. Periodic BackupSync runs every 10 minutes.\n          Only valid in Non-Federated mode. In Federated mode,\n          Create or Update with sync_manual=false is rejected with InvalidArgument.\n- null (not set):\n  - Create: server defaults to sync_manual=true (Manual mode) for new BLs,\n            in both Federated and Non-Federated mode.\n  - Update: treated as no-op; the stored value is kept.\nExisting BLs created before this field existed are migrated at startup to\nfalse (Automatic) in Non-Federated mode and true (Manual) in Federated mode,\nso their sync behaviour does not change on upgrade.\nUses BoolValue wrapper to distinguish between \"not provided\" (nil) and \"explicitly set to false\"."
         },
         "s3_config": {
           "$ref": "#/definitions/S3Config"
