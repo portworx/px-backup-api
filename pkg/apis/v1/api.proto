@@ -7667,3 +7667,209 @@ message ResourceCatalogReconstructResponse {
     // Recovery points relinked to the reconstructed row.
     int32 relinked_recovery_point_count = 2;
 }
+
+// -----------------------------------------------------------------------------
+// PB-18168 Part A — Resource-Centric migration.
+//
+// Two RPCs:
+//   Assess  — read-only. Walks every legacy object in orgID, projects the new
+//             object model in memory, returns a MigrationReport.
+//   Switch  — the ten-step transaction. Any failure rolls back and the install
+//             stays on the legacy path.
+//
+// See:
+//   https://purestorage.atlassian.net/wiki/spaces/PXBAC/pages/5397644466
+// -----------------------------------------------------------------------------
+
+message ResourceCentricMigrationAssessRequest {
+    string org_id = 1;
+}
+
+message ResourceCentricMigrationAssessResponse {
+    MigrationReport report = 1;
+}
+
+message ResourceCentricMigrationSwitchRequest {
+    string org_id = 1;
+    // confirm MUST be true for the switch to run. Guards against accidental
+    // invocation; mirrors the --confirm flag on the pxb CLI.
+    bool confirm = 2;
+    MigrationSwitchOverrides overrides = 3;
+}
+
+message ResourceCentricMigrationSwitchResponse {
+    MigrationSwitchResult result = 1;
+}
+
+// MigrationReport is the JSON shape of Confluence Appendix A.10.
+message MigrationReport {
+    string install = 1;
+    google.protobuf.Timestamp run_at = 2;
+    string org_id = 3;
+    MigrationEnv environment = 4;
+    map<string, int32> new_writes = 5;
+    map<string, int32> extended_in_place = 6;
+    map<string, int32> unchanged = 7;
+    map<string, int32> read_only_after_switch = 8;
+    repeated MigrationWarning warnings = 9;
+    repeated MigrationBlocker blockers = 10;
+    // verdict is one of: ready | ready_with_confirmations | blocked
+    string verdict = 11;
+    // duplicate_clusters lists every group of cluster_object rows that
+    // point at the same Kubernetes API endpoint. Each group needs one
+    // --pick-cluster on the switch call; the picked cluster wins and
+    // every other cluster in the group is merged into it.
+    repeated DuplicateClusterGroup duplicate_clusters = 12;
+}
+
+// DuplicateClusterGroup names one API endpoint and the cluster_object
+// rows that all resolve to it. The switch cannot run until every group
+// has exactly one --pick-cluster.
+message DuplicateClusterGroup {
+    string endpoint = 1;
+    repeated DuplicateClusterEntry clusters = 2;
+    // suggested_keep_uid: the UID the switch would recommend if the
+    // operator does not pass --pick-cluster. Rule: oldest cluster wins.
+    string suggested_keep_uid = 3;
+    // suggestion_reason: human-readable line describing why the
+    // suggestion was made.
+    string suggestion_reason = 4;
+}
+
+// DuplicateClusterEntry is one cluster in a duplicate group.
+message DuplicateClusterEntry {
+    string name = 1;
+    string uid = 2;
+    string original_owner_uid = 3;
+    google.protobuf.Timestamp created_time = 4;
+    // status mirrors ClusterInfo.StatusInfo.Status as a string, for the
+    // report reader's convenience.
+    string status = 5;
+    int32 namespaces = 6;
+    int32 backup_schedules = 7;
+    int32 backups = 8;
+    int32 recovery_points = 9;
+}
+
+// MigrationEnv counts what already exists on this install.
+message MigrationEnv {
+    int32 clusters = 1;
+    int32 orgs = 2;
+    int32 live_namespaces = 3;
+    int32 non_system_namespaces = 4;
+    int32 backup_locations = 5;
+    int32 cloud_credentials = 6;
+    int32 schedule_policies = 7;
+    int32 backup_schedules = 8;
+    int32 backups = 9;
+    int32 roles = 10;
+    int32 rules = 11;
+    int32 vro_policies = 12;
+    int32 restores = 13;
+}
+
+message MigrationWarning {
+    string id = 1;
+    // severity is one of: high | medium | low
+    string severity = 2;
+    string code = 3;
+    string message = 4;
+    map<string, string> fields = 5;
+}
+
+message MigrationBlocker {
+    string code = 1;
+    string message = 2;
+}
+
+// MigrationSwitchOverrides carries the customer's answers to the warnings
+// raised by the assessment.
+message MigrationSwitchOverrides {
+    // retain_override answers W1. policy_name → new retain count. Applied
+    // before the retain*interval conversion.
+    map<string, int64> retain_override = 1;
+    // Field 2 (multi_namespace_backup) was removed. A backup that covers
+    // several namespaces is the normal case in Resource-Centric mode: it
+    // fans out to one recovery point per namespace at switch time.
+    reserved 2;
+    reserved "multi_namespace_backup";
+    // unpause_on_switch answers W2. If true, ignore sched.suspend and start
+    // the new SLA policy unpaused. Default false.
+    bool unpause_on_switch = 3;
+    // target_owner_uid names the owner that every migrated row (legacy
+    // and Resource-Centric) will carry after the switch.
+    //
+    // Two accepted forms:
+    //   "super-admin"                     -> datastore.EmptyUser
+    //   "<any-other-non-empty-string>"    -> literal user UID
+    //
+    // An empty value is rejected by the server: the switch will not
+    // silently pick an owner. Part B (share) hands specific catalog
+    // resources back to individual users through Collaborators or Groups
+    // on the binding or catalog row.
+    string target_owner_uid = 4;
+    // share_cluster_resources controls the Part B automatic share that
+    // runs after Part A reown. Two accepted values:
+    //
+    //   "none"  -> the switch shares nothing. The target owner is the
+    //              only identity that can see any migrated row. An
+    //              operator does the sharing later, one resource at a
+    //              time, through pxb share catalogresource.
+    //   "all"   -> for every cluster registered by a non-Super-Admin
+    //              user before the migration, every catalog resource on
+    //              that cluster is shared back to the cluster's
+    //              original owner with Read access. Every recovery
+    //              point that references such a catalog resource is
+    //              shared with the same identity so the timeline shows
+    //              up in the RC UI.
+    //
+    // Empty value is treated as "none". A cluster that was already
+    // owned by Super Admin is skipped (Super Admin sees everything).
+    string share_cluster_resources = 5;
+    // pick_cluster_uids names, for every duplicate-cluster group the
+    // assessment reported, the ONE cluster UID that will survive the
+    // switch. Every other cluster in the same group gets its referring
+    // rows repointed at the picked UID and is then deleted. The
+    // annotations on the CRs on the physical cluster are rewritten in
+    // the same step, so nothing on the app cluster still names a
+    // defunct px-backup cluster row.
+    //
+    // Rules:
+    //   - Exactly one UID per duplicate group. Zero or many UIDs in
+    //     the same group is refused up front.
+    //   - A UID that does not belong to any duplicate group is refused.
+    //   - When the assessment reports no duplicate groups the field is
+    //     ignored.
+    repeated string pick_cluster_uids = 6;
+}
+
+message MigrationSwitchResult {
+    MigrationReport report = 1;
+    map<string, int32> written = 2;
+    map<string, int32> extended_rows = 3;
+    google.protobuf.Timestamp started_at = 4;
+    google.protobuf.Timestamp finished_at = 5;
+    // duration_ns is finished_at - started_at as nanoseconds.
+    int64 duration_ns = 6;
+    bool committed = 7;
+    bool rolled_back = 8;
+    string failure_msg = 9;
+}
+
+service ResourceCentricMigration {
+    rpc Assess(ResourceCentricMigrationAssessRequest)
+        returns (ResourceCentricMigrationAssessResponse) {
+        option (google.api.http) = {
+            post : "/v1/rcmigration/assess/{org_id}"
+            body : "*"
+        };
+    }
+
+    rpc Switch(ResourceCentricMigrationSwitchRequest)
+        returns (ResourceCentricMigrationSwitchResponse) {
+        option (google.api.http) = {
+            post : "/v1/rcmigration/switch/{org_id}"
+            body : "*"
+        };
+    }
+}

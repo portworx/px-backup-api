@@ -5809,6 +5809,82 @@
         ]
       }
     },
+    "/v1/rcmigration/assess/{org_id}": {
+      "post": {
+        "operationId": "ResourceCentricMigration_Assess",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ResourceCentricMigrationAssessResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ResourceCentricMigrationAssessRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ResourceCentricMigration"
+        ]
+      }
+    },
+    "/v1/rcmigration/switch/{org_id}": {
+      "post": {
+        "operationId": "ResourceCentricMigration_Switch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ResourceCentricMigrationSwitchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ResourceCentricMigrationSwitchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ResourceCentricMigration"
+        ]
+      }
+    },
     "/v1/receiver": {
       "post": {
         "summary": "Create new alert manager receiver",
@@ -13850,6 +13926,68 @@
         }
       }
     },
+    "DuplicateClusterEntry": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        },
+        "original_owner_uid": {
+          "type": "string"
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "description": "status mirrors ClusterInfo.StatusInfo.Status as a string, for the\nreport reader's convenience."
+        },
+        "namespaces": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "backup_schedules": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "backups": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "recovery_points": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "description": "DuplicateClusterEntry is one cluster in a duplicate group."
+    },
+    "DuplicateClusterGroup": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string"
+        },
+        "clusters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DuplicateClusterEntry"
+          }
+        },
+        "suggested_keep_uid": {
+          "type": "string",
+          "description": "suggested_keep_uid: the UID the switch would recommend if the\noperator does not pass --pick-cluster. Rule: oldest cluster wins."
+        },
+        "suggestion_reason": {
+          "type": "string",
+          "description": "suggestion_reason: human-readable line describing why the\nsuggestion was made."
+        }
+      },
+      "description": "DuplicateClusterGroup names one API endpoint and the cluster_object\nrows that all resolve to it. The switch cannot run until every group\nhas exactly one --pick-cluster."
+    },
     "EmailConfig": {
       "type": "object",
       "properties": {
@@ -14834,6 +14972,247 @@
         "total_namespaces": {
           "type": "string",
           "format": "uint64"
+        }
+      }
+    },
+    "MigrationBlocker": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "MigrationEnv": {
+      "type": "object",
+      "properties": {
+        "clusters": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "orgs": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "live_namespaces": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "non_system_namespaces": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "backup_locations": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "cloud_credentials": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "schedule_policies": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "backup_schedules": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "backups": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "roles": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "rules": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "vro_policies": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "restores": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "description": "MigrationEnv counts what already exists on this install."
+    },
+    "MigrationReport": {
+      "type": "object",
+      "properties": {
+        "install": {
+          "type": "string"
+        },
+        "run_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "org_id": {
+          "type": "string"
+        },
+        "environment": {
+          "$ref": "#/definitions/MigrationEnv"
+        },
+        "new_writes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "extended_in_place": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "unchanged": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "read_only_after_switch": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MigrationWarning"
+          }
+        },
+        "blockers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MigrationBlocker"
+          }
+        },
+        "verdict": {
+          "type": "string",
+          "title": "verdict is one of: ready | ready_with_confirmations | blocked"
+        },
+        "duplicate_clusters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DuplicateClusterGroup"
+          },
+          "description": "duplicate_clusters lists every group of cluster_object rows that\npoint at the same Kubernetes API endpoint. Each group needs one\n--pick-cluster on the switch call; the picked cluster wins and\nevery other cluster in the group is merged into it."
+        }
+      },
+      "description": "MigrationReport is the JSON shape of Confluence Appendix A.10."
+    },
+    "MigrationSwitchOverrides": {
+      "type": "object",
+      "properties": {
+        "retain_override": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "int64"
+          },
+          "description": "retain_override answers W1. policy_name → new retain count. Applied\nbefore the retain*interval conversion."
+        },
+        "unpause_on_switch": {
+          "type": "boolean",
+          "description": "unpause_on_switch answers W2. If true, ignore sched.suspend and start\nthe new SLA policy unpaused. Default false."
+        },
+        "target_owner_uid": {
+          "type": "string",
+          "description": "target_owner_uid names the owner that every migrated row (legacy\nand Resource-Centric) will carry after the switch.\n\nTwo accepted forms:\n  \"super-admin\"                     -\u003e datastore.EmptyUser\n  \"\u003cany-other-non-empty-string\u003e\"    -\u003e literal user UID\n\nAn empty value is rejected by the server: the switch will not\nsilently pick an owner. Part B (share) hands specific catalog\nresources back to individual users through Collaborators or Groups\non the binding or catalog row."
+        },
+        "share_cluster_resources": {
+          "type": "string",
+          "description": "\"none\"  -\u003e the switch shares nothing. The target owner is the\n             only identity that can see any migrated row. An\n             operator does the sharing later, one resource at a\n             time, through pxb share catalogresource.\n  \"all\"   -\u003e for every cluster registered by a non-Super-Admin\n             user before the migration, every catalog resource on\n             that cluster is shared back to the cluster's\n             original owner with Read access. Every recovery\n             point that references such a catalog resource is\n             shared with the same identity so the timeline shows\n             up in the RC UI.\n\nEmpty value is treated as \"none\". A cluster that was already\nowned by Super Admin is skipped (Super Admin sees everything).",
+          "title": "share_cluster_resources controls the Part B automatic share that\nruns after Part A reown. Two accepted values:"
+        },
+        "pick_cluster_uids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "pick_cluster_uids names, for every duplicate-cluster group the\nassessment reported, the ONE cluster UID that will survive the\nswitch. Every other cluster in the same group gets its referring\nrows repointed at the picked UID and is then deleted. The\nannotations on the CRs on the physical cluster are rewritten in\nthe same step, so nothing on the app cluster still names a\ndefunct px-backup cluster row.\n\nRules:\n  - Exactly one UID per duplicate group. Zero or many UIDs in\n    the same group is refused up front.\n  - A UID that does not belong to any duplicate group is refused.\n  - When the assessment reports no duplicate groups the field is\n    ignored."
+        }
+      },
+      "description": "MigrationSwitchOverrides carries the customer's answers to the warnings\nraised by the assessment."
+    },
+    "MigrationSwitchResult": {
+      "type": "object",
+      "properties": {
+        "report": {
+          "$ref": "#/definitions/MigrationReport"
+        },
+        "written": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "extended_rows": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "finished_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "duration_ns": {
+          "type": "string",
+          "format": "int64",
+          "description": "duration_ns is finished_at - started_at as nanoseconds."
+        },
+        "committed": {
+          "type": "boolean"
+        },
+        "rolled_back": {
+          "type": "boolean"
+        },
+        "failure_msg": {
+          "type": "string"
+        }
+      }
+    },
+    "MigrationWarning": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string",
+          "title": "severity is one of: high | medium | low"
+        },
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       }
     },
@@ -16553,6 +16932,45 @@
       "properties": {
         "resource": {
           "$ref": "#/definitions/CatalogResourceObject"
+        }
+      }
+    },
+    "ResourceCentricMigrationAssessRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        }
+      }
+    },
+    "ResourceCentricMigrationAssessResponse": {
+      "type": "object",
+      "properties": {
+        "report": {
+          "$ref": "#/definitions/MigrationReport"
+        }
+      }
+    },
+    "ResourceCentricMigrationSwitchRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "confirm": {
+          "type": "boolean",
+          "description": "confirm MUST be true for the switch to run. Guards against accidental\ninvocation; mirrors the --confirm flag on the pxb CLI."
+        },
+        "overrides": {
+          "$ref": "#/definitions/MigrationSwitchOverrides"
+        }
+      }
+    },
+    "ResourceCentricMigrationSwitchResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "$ref": "#/definitions/MigrationSwitchResult"
         }
       }
     },
