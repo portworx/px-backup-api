@@ -842,10 +842,13 @@ message BackupLocationInfo {
     // - false : Automatic mode. Periodic BackupSync runs every 10 minutes.
     //           Only valid in Non-Federated mode. In Federated mode,
     //           Create or Update with sync_manual=false is rejected with InvalidArgument.
-    // - null (not set): behaviour differs by deployment mode:
-    //   - Non-Federated: rejected on Create; treated as no-op on Update.
-    //   - Federated: on Create, server defaults to sync_manual=true (Manual mode);
-    //                on Update, treated as no-op.
+    // - null (not set):
+    //   - Create: server defaults to sync_manual=true (Manual mode) for new BLs,
+    //             in both Federated and Non-Federated mode.
+    //   - Update: treated as no-op; the stored value is kept.
+    // Existing BLs created before this field existed are migrated at startup to
+    // false (Automatic) in Non-Federated mode and true (Manual) in Federated mode,
+    // so their sync behaviour does not change on upgrade.
     // Uses BoolValue wrapper to distinguish between "not provided" (nil) and "explicitly set to false".
     google.protobuf.BoolValue sync_manual = 16;
 
