@@ -6049,6 +6049,14 @@ message BindingInfo {
     // where a Binding Rule's vsc_override_template lands.
     repeated IntentVscOverride vsc_overrides = 32;
 
+    // Suppresses new scheduled runs for this resource alone. The other
+    // members of its shared schedule keep running.
+    bool paused = 33;
+    // When it was paused.
+    google.protobuf.Timestamp paused_time = 34;
+    // Who paused it.
+    string paused_by = 35;
+
     enum Governance {
         GovernanceInvalid = 0;
         // A Super or Infra Admin owns the baseline assignment.
@@ -6076,7 +6084,18 @@ message SLAPolicyCreateRequest {
     // separate Preview call: a preview is this call with no writes.
     bool dry_run = 3;
 }
-message SLAPolicyCreateResponse {}
+// How many copies one intent keeps for one resource.
+message IntentCopyCount {
+    // Which intent the count belongs to.
+    string intent_id = 1;
+    // Runs that fit inside this intent's recoverability period.
+    int32 copies_per_resource = 2;
+}
+
+message SLAPolicyCreateResponse {
+    // What this policy will keep, per intent, before it is saved.
+    repeated IntentCopyCount copy_counts = 1;
+}
 
 message SLAPolicyInspectRequest {
     string org_id = 1;
@@ -6182,6 +6201,8 @@ message SLAPolicyUpdateResponse {
     SLAPolicyObject sla_policy = 1;
     // How many Bindings had their schedule key re-derived.
     int32 regrouped_binding_count = 2;
+    // What this policy will keep, per intent, after the change.
+    repeated IntentCopyCount copy_counts = 3;
 }
 
 message SLAPolicyUpdateIntentRequest {
@@ -6194,6 +6215,8 @@ message SLAPolicyUpdateIntentRequest {
 message SLAPolicyUpdateIntentResponse {
     SLAPolicyObject sla_policy = 1;
     int32 regrouped_binding_count = 2;
+    // What this policy will keep, per intent, after the change.
+    repeated IntentCopyCount copy_counts = 3;
 }
 
 message SLAPolicyUpdateOwnershipRequest {
@@ -7063,6 +7086,9 @@ message BindingUpdateRequest {
         // ONLY path that changes a baseline, and it replaces the separate
         // RebindBaseline call. Owner only.
         ActionRebindBaseline = 2;
+        // Pause or resume this one Binding. Reads the paused field and
+        // nothing else.
+        ActionPause = 3;
     }
     // Which supplemental intent to replace. Read only under
     // ActionUpdateSupplementalIntent.
@@ -7075,6 +7101,8 @@ message BindingUpdateRequest {
     // CR.
     map<string, string> label_selectors = 17;
     string advanced_resource_label_selector = 18;
+    // Pause when true, resume when false. Read only under ActionPause.
+    bool paused = 19;
 }
 message BindingUpdateResponse {
     BindingObject binding = 1;
