@@ -12018,6 +12018,19 @@
             "$ref": "#/definitions/IntentVscOverride"
           },
           "description": "Per-intent volume-snapshot-class override, keyed by intent id. This is\nwhere a Binding Rule's vsc_override_template lands."
+        },
+        "paused": {
+          "type": "boolean",
+          "description": "Suppresses new scheduled runs for this resource alone. The other\nmembers of its shared schedule keep running."
+        },
+        "paused_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When it was paused."
+        },
+        "paused_by": {
+          "type": "string",
+          "description": "Who paused it."
         }
       },
       "description": "The durable junction of one resource and one SLA Policy.\n\nReshaped from BackupScheduleInfo into a new object, keeping its field names\nwhere the meaning is unchanged. What was wrong with the legacy message is its\ncardinality: one schedule selects many namespaces. Here it is one to one, and\nselection moves out to the binding rule — that inversion is the whole model."
@@ -12430,6 +12443,10 @@
         },
         "advanced_resource_label_selector": {
           "type": "string"
+        },
+        "paused": {
+          "type": "boolean",
+          "description": "Pause when true, resume when false. Read only under ActionPause."
         }
       }
     },
@@ -12438,10 +12455,11 @@
       "enum": [
         "ActionUpdateSettings",
         "ActionUpdateSupplementalIntent",
-        "ActionRebindBaseline"
+        "ActionRebindBaseline",
+        "ActionPause"
       ],
       "default": "ActionUpdateSettings",
-      "description": " - ActionUpdateSettings: Hooks, capture settings and intent destinations. A Scoped App Admin\nmay call this with only pre_exec_rule_ref and post_exec_rule_ref set,\neven under an enforced baseline. This replaces\nthe separate UpdateHooks call.\n - ActionUpdateSupplementalIntent: Replace one supplemental intent, or the whole list when\nsupplemental_intent_id is empty. This replaces the\nseparate AddSupplementalIntent, RemoveSupplementalIntent and\nEditSupplementalIntent calls: an empty intent removes it.\n - ActionRebindBaseline: Replace the enforced baseline Policy/SLA. This is the\nONLY path that changes a baseline, and it replaces the separate\nRebindBaseline call. Owner only."
+      "description": " - ActionUpdateSettings: Hooks, capture settings and intent destinations. A Scoped App Admin\nmay call this with only pre_exec_rule_ref and post_exec_rule_ref set,\neven under an enforced baseline. This replaces\nthe separate UpdateHooks call.\n - ActionUpdateSupplementalIntent: Replace one supplemental intent, or the whole list when\nsupplemental_intent_id is empty. This replaces the\nseparate AddSupplementalIntent, RemoveSupplementalIntent and\nEditSupplementalIntent calls: an empty intent removes it.\n - ActionRebindBaseline: Replace the enforced baseline Policy/SLA. This is the\nONLY path that changes a baseline, and it replaces the separate\nRebindBaseline call. Owner only.\n - ActionPause: Pause or resume this one Binding. Reads the paused field and\nnothing else."
     },
     "BindingUpdateResponse": {
       "type": "object",
@@ -14358,6 +14376,21 @@
           "type": "string"
         }
       }
+    },
+    "IntentCopyCount": {
+      "type": "object",
+      "properties": {
+        "intent_id": {
+          "type": "string",
+          "description": "Which intent the count belongs to."
+        },
+        "copies_per_resource": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Runs that fit inside this intent's recoverability period."
+        }
+      },
+      "description": "How many copies one intent keeps for one resource."
     },
     "IntentDestination": {
       "type": "object",
@@ -18123,7 +18156,16 @@
       }
     },
     "SLAPolicyCreateResponse": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "copy_counts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/IntentCopyCount"
+          },
+          "description": "What this policy will keep, per intent, before it is saved."
+        }
+      }
     },
     "SLAPolicyDeleteResponse": {
       "type": "object"
@@ -18221,6 +18263,13 @@
         "regrouped_binding_count": {
           "type": "integer",
           "format": "int32"
+        },
+        "copy_counts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/IntentCopyCount"
+          },
+          "description": "What this policy will keep, per intent, after the change."
         }
       }
     },
@@ -18302,6 +18351,13 @@
           "type": "integer",
           "format": "int32",
           "description": "How many Bindings had their schedule key re-derived."
+        },
+        "copy_counts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/IntentCopyCount"
+          },
+          "description": "What this policy will keep, per intent, after the change."
         }
       }
     },
