@@ -6857,8 +6857,23 @@ message RecoveryPointEnumerateRequest {
     // this API uses. Hundreds of points per resource. The design measures 7.4 million rows at fleet scale.
     EnumerateOptions enumerate_options = 10 [ (gogoproto.embed) = true ];
 }
+// A run that covered a resource and published no recovery point for it.
+message TimelineGap {
+    // Which intent should have produced a point.
+    string intent_id = 1;
+    // The run that published nothing.
+    ObjectRef backup_ref = 2;
+    // When that run started.
+    google.protobuf.Timestamp attempted_time = 3;
+    // Why no point exists, read from the backup's status.
+    string reason = 4;
+}
+
 message RecoveryPointEnumerateResponse {
     repeated RecoveryPointObject recovery_points = 1;
+    // Set only when include_gaps was true. Derived at read time; nothing
+    // stores a gap.
+    repeated TimelineGap gaps = 2;
 }
 
 message RecoveryPointInspectRequest {
