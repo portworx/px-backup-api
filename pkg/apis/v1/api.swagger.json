@@ -16394,6 +16394,13 @@
           "items": {
             "$ref": "#/definitions/RecoveryPointObject"
           }
+        },
+        "gaps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimelineGap"
+          },
+          "description": "Set only when include_gaps was true. Derived at read time; nothing\nstores a gap."
         }
       }
     },
@@ -18875,6 +18882,29 @@
           "format": "date-time"
         }
       }
+    },
+    "TimelineGap": {
+      "type": "object",
+      "properties": {
+        "intent_id": {
+          "type": "string",
+          "description": "Which intent should have produced a point."
+        },
+        "backup_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "The run that published nothing."
+        },
+        "attempted_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When that run started."
+        },
+        "reason": {
+          "type": "string",
+          "description": "Why no point exists, read from the backup's status."
+        }
+      },
+      "description": "A run that covered a resource and published no recovery point for it."
     },
     "TlsConfig": {
       "type": "object",
