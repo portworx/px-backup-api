@@ -195,8 +195,12 @@
       "type": "object",
       "properties": {
         "customer_proxy_settings": {
-          "$ref": "#/definitions/emsCustomerProxySettings",
-          "title": "The customer proxy settings"
+          "title": "The customer proxy settings",
+          "allOf": [
+            {
+              "$ref": "#/definitions/emsCustomerProxySettings"
+            }
+          ]
         },
         "empty": {
           "properties": {},

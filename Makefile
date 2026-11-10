@@ -65,6 +65,14 @@ Mgoogle/api/annotations.proto=github.com/gogo/googleapis/google/api,\
 Mgoogle/protobuf/field_mask.proto=github.com/gogo/protobuf/types:.\
 		--swagger_out=logtostderr=true:. \
 		$(PROTOC_FILES)
+	# Swagger 2.0 ignores keys next to "$$ref", so descriptions on
+	# message/enum-typed fields are hidden in Swagger UI. Wrap such refs in
+	# allOf so they render. sed restores the \u003c/\u003e/\u0026 escaping
+	# protoc-gen-swagger emits (jq un-escapes it) to keep diffs minimal.
+	for f in $(PROTOC_FILES:.proto=.swagger.json); do \
+		jq 'walk(if type == "object" and has("$$ref") and (keys | length) > 1 then (del(."$$ref") + {allOf: [{"$$ref": ."$$ref"}]}) else . end)' $$f | \
+		sed -e 's/</\\u003c/g' -e 's/>/\\u003e/g' -e 's/&/\\u0026/g' > $$f.tmp && mv $$f.tmp $$f || exit 1; \
+	done
 pretest: vet staticcheck errcheck
 
 vet:
