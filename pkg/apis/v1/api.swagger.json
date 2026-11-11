@@ -12190,6 +12190,17 @@
             "type": "string"
           },
           "description": "Super and Infra only."
+        },
+        "label_selectors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Resource label selection inside each namespace the filter selects.\nCopied onto every Binding this rule creates, as label_selectors and\nadvanced_resource_label_selector, so only the objects carrying the\nlabel are captured. Stork resolves it while the backup runs. This\ndoes not choose which resources the rule matches; the filter does.\nAt most one of the two may be set."
+        },
+        "advanced_resource_label_selector": {
+          "type": "string",
+          "description": "The string form, which supports operators."
         }
       }
     },

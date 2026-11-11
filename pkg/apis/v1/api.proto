@@ -7176,6 +7176,16 @@ message BindingRuleInfo {
     repeated IntentDestination intent_destination_template = 18;
     // Super and Infra only.
     map<string, string> vsc_override_template = 19;
+
+    // Resource label selection inside each namespace the filter selects.
+    // Copied onto every Binding this rule creates, as label_selectors and
+    // advanced_resource_label_selector, so only the objects carrying the
+    // label are captured. Stork resolves it while the backup runs. This
+    // does not choose which resources the rule matches; the filter does.
+    // At most one of the two may be set.
+    map<string, string> label_selectors = 20;
+    // The string form, which supports operators.
+    string advanced_resource_label_selector = 21;
 }
 
 message BindingRuleObject {
