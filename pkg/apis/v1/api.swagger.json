@@ -6056,7 +6056,7 @@
         "retention_time": {
           "type": "string",
           "format": "date-time",
-          "title": "this will store the timestamp, when the retention period of locked backup will be expired"
+          "description": "this will store the timestamp, when the retention period of locked backup will be expired.\nOn a locked backup location it is the latest confirmed lock date of the backup's objects.\nThe backup cannot be deleted before it."
         },
         "completion_time_info": {
           "$ref": "#/definitions/completionTimeInfo",
@@ -6172,6 +6172,15 @@
             "$ref": "#/definitions/ObjectRef"
           },
           "description": "cleanup_dependent_backups is the lookup table for CleanupDetails.dependent_backup_index --\nthe backup (name+uid) owning a volume's blocker snapshot. Index 0 = \"no dependent backup\"."
+        },
+        "retention_state": {
+          "$ref": "#/definitions/BackupInfoRetentionState",
+          "description": "System-managed field (OUTPUT) - why the backup is, or is no longer, protected on an\nobject-locked backup location. Any value set in the request is ignored."
+        },
+        "resources_locked_until": {
+          "type": "string",
+          "format": "date-time",
+          "description": "System-managed field (OUTPUT) - confirmed lock date of the backup's resource objects\non an object-locked backup location. Any value set in the request is ignored."
         }
       }
     },
@@ -6252,6 +6261,17 @@
         }
       },
       "title": "Message for Namespace resources"
+    },
+    "BackupInfoRetentionState": {
+      "type": "string",
+      "enum": [
+        "RetentionStateInvalid",
+        "RetentionStateRetained",
+        "RetentionStateDependency",
+        "RetentionStateRetired"
+      ],
+      "default": "RetentionStateInvalid",
+      "description": " - RetentionStateInvalid: Not on a locked location, or not evaluated yet.\n - RetentionStateRetained: The schedule still lists this backup.\n - RetentionStateDependency: Not listed, but a listed backup needs its data to restore.\n - RetentionStateRetired: Not needed any more. Renewal stopped. It can be deleted after retention_time."
     },
     "BackupInfoStage": {
       "type": "string",
@@ -12106,6 +12126,11 @@
         "supports_advanced_features": {
           "type": "boolean",
           "title": "supports_advanced_features - this option is to indicate, whether the policy is created with advanced feature support multiday, biweekly, relative and selective monthly"
+        },
+        "protection_period_days": {
+          "type": "string",
+          "format": "int64",
+          "description": "protection_period_days is P: the minimum number of whole days that each retained\nbackup of a locked schedule, and every backup it depends on, stays locked.\nUsed only when for_object_lock is true. 0 means the server default."
         }
       }
     },

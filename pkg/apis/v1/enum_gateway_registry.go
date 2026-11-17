@@ -46,6 +46,7 @@ func init() {
 	golangproto.RegisterEnum("BackupInfo_Volume_BackupMode_Type", BackupInfo_Volume_BackupMode_Type_name, BackupInfo_Volume_BackupMode_Type_value)
 	golangproto.RegisterEnum("BackupInfo_StatusInfo_Status", BackupInfo_StatusInfo_Status_name, BackupInfo_StatusInfo_Status_value)
 	golangproto.RegisterEnum("BackupInfo_BackupObjectType_Type", BackupInfo_BackupObjectType_Type_name, BackupInfo_BackupObjectType_Type_value)
+	golangproto.RegisterEnum("BackupInfo_RetentionState", BackupInfo_RetentionState_name, BackupInfo_RetentionState_value)
 	golangproto.RegisterEnum("NamespaceResource_StatusInfo_Status", NamespaceResource_StatusInfo_Status_name, NamespaceResource_StatusInfo_Status_value)
 	golangproto.RegisterEnum("NamespaceResource_ChunkInfo_StatusInfo_Status", NamespaceResource_ChunkInfo_StatusInfo_Status_name, NamespaceResource_ChunkInfo_StatusInfo_Status_value)
 	golangproto.RegisterEnum("ReplacePolicy_Type", ReplacePolicy_Type_name, ReplacePolicy_Type_value)

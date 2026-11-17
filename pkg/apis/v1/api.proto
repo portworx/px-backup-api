@@ -425,6 +425,10 @@ message SchedulePolicyInfo {
     bool auto_delete = 7;
     // supports_advanced_features - this option is to indicate, whether the policy is created with advanced feature support multiday, biweekly, relative and selective monthly
     bool supports_advanced_features = 8;
+    // protection_period_days is P: the minimum number of whole days that each retained
+    // backup of a locked schedule, and every backup it depends on, stays locked.
+    // Used only when for_object_lock is true. 0 means the server default.
+    int64 protection_period_days = 9;
 
     message IncrementalCount {
         uint64 count = 1 [ (gogoproto.jsontag) = "count" ];
@@ -1056,7 +1060,9 @@ message BackupInfo {
     map<string, string> volume_snapshot_class_mapping = 37;
     // option to take backup as direct kdmp
     bool direct_kdmp = 38;
-    // this will store the timestamp, when the retention period of locked backup will be expired
+    // this will store the timestamp, when the retention period of locked backup will be expired.
+    // On a locked backup location it is the latest confirmed lock date of the backup's objects.
+    // The backup cannot be deleted before it.
     google.protobuf.Timestamp retention_time = 39;
     // this will store the completion time of the volumes, resources and total backup
     completionTimeInfo completion_time_info = 40;
@@ -1130,6 +1136,24 @@ message BackupInfo {
     // cleanup_dependent_backups is the lookup table for CleanupDetails.dependent_backup_index --
     // the backup (name+uid) owning a volume's blocker snapshot. Index 0 = "no dependent backup".
     repeated ObjectRef cleanup_dependent_backups = 63;
+    // System-managed field (OUTPUT) - why the backup is, or is no longer, protected on an
+    // object-locked backup location. Any value set in the request is ignored.
+    RetentionState retention_state = 64;
+    // System-managed field (OUTPUT) - confirmed lock date of the backup's resource objects
+    // on an object-locked backup location. Any value set in the request is ignored.
+    google.protobuf.Timestamp resources_locked_until = 65;
+
+    enum RetentionState {
+        // Not on a locked location, or not evaluated yet.
+        RetentionStateInvalid = 0;
+        // The schedule still lists this backup.
+        RetentionStateRetained = 1;
+        // Not listed, but a listed backup needs its data to restore.
+        RetentionStateDependency = 2;
+        // Not needed any more. Renewal stopped. It can be deleted after retention_time.
+        RetentionStateRetired = 3;
+    }
+
     // Message for maintaining status of sync operations
     message SyncStatusInfo {
         Status status = 1;
