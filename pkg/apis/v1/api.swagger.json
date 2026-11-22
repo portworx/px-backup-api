@@ -9945,6 +9945,20 @@
         "resource_centric": {
           "type": "boolean",
           "description": "False for a legacy backup, which has no recovery points."
+        },
+        "resources_pending_deletion": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceDeletionInfo"
+          },
+          "description": "ONE RESOURCE LEAVING A SHARED BACKUP. Retention never writes these: a\nscheduled point ages out through the schedule prune, which takes the\nwhole backup. These record the deliberate act - a compliance erasure, an\nunbind, or a catalog row removed with its points - where the backup must\nsurvive for the members that remain."
+        },
+        "resources_deleted": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResourceDeletionInfo"
+          },
+          "description": "What has already left, kept for the audit. The membership fields above\nare never edited, so this is the only record that a member departed."
         }
       }
     },
@@ -16764,6 +16778,58 @@
         }
       },
       "title": "Resources grouped by status"
+    },
+    "ResourceDeletionInfo": {
+      "type": "object",
+      "properties": {
+        "catalog_resource_uid": {
+          "type": "string"
+        },
+        "resource_name": {
+          "type": "string",
+          "description": "The namespace name, or the virtual machine name. This is what the\nvolume records are filtered by."
+        },
+        "kind": {
+          "$ref": "#/definitions/CatalogResourceInfoKind"
+        },
+        "marked_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "state": {
+          "$ref": "#/definitions/ResourceDeletionInfoState"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Why it is leaving, or why it is stuck."
+        },
+        "blocking_backup_ref": {
+          "$ref": "#/definitions/ObjectRef",
+          "description": "Set only in DeletePending: the later backup whose incremental still\nneeds this snapshot. Re-driven when that backup is deleted."
+        },
+        "attempts": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "completed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "description": "ResourceDeletionInfo tracks one resource being removed from a shared backup.\n\nIT IS DURABLE ON PURPOSE. The three steps - volumes, the per-namespace\nobject, then the recovery point row - are not atomic, so a restart between\nthem must be able to say which one was reached."
+    },
+    "ResourceDeletionInfoState": {
+      "type": "string",
+      "enum": [
+        "StateInvalid",
+        "Pending",
+        "Deleting",
+        "DeletePending",
+        "Done",
+        "Failed"
+      ],
+      "default": "StateInvalid",
+      "description": " - Pending: Marked, nothing started.\n - Deleting: The volumes are going.\n - DeletePending: Blocked by a snapshot dependency. The recovery point row STAYS, so\nthe timeline keeps telling the truth while it waits."
     },
     "ResourceDetail": {
       "type": "object",
