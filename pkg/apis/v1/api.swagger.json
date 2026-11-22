@@ -15909,10 +15909,6 @@
           "$ref": "#/definitions/SchedulePolicyInfoIncrementalCount",
           "description": "Referenced rather than copied: a leaf value type with no retain conflict.\nThe wrapper is what separates \"always full\" (0) from unset, so it stays\na message."
         },
-        "recoverability_period": {
-          "type": "string",
-          "description": "The ONLY retention field. A period, never a count. A count cannot say\n\"recoverable for 30 days\" when runs are missed."
-        },
         "capture_mode": {
           "$ref": "#/definitions/ProtectionIntentCaptureMode",
           "description": "Capture. Relocated from BackupScheduleInfo.backup_type and .direct_kdmp."
@@ -15940,6 +15936,11 @@
         },
         "owner_tier": {
           "$ref": "#/definitions/OwnerTier"
+        },
+        "retain": {
+          "type": "string",
+          "format": "uint64",
+          "description": "How many successful recovery points to keep for each resource under this\nintent. Counted per resource, so a member that missed a run keeps its own\ncopies. Must be greater than zero."
         }
       },
       "description": "One statement of how often a resource is captured, how long it stays\nrecoverable, and how it is captured.\n\nEmbeddable only. It sits in an SLAPolicyInfo as a baseline intent and in a\nBindingInfo as a supplemental one, so it is never a standalone object.\n\nThe four schedule forms are COPIED from SchedulePolicyInfo, keeping every\nfield name, MINUS retain and incremental_count. Both of those appear in all\nfive legacy forms and are duplicated at this level; retain is a count and\nwould sit beside a period, giving one intent two retention models."
@@ -16433,11 +16434,6 @@
         "taken_time": {
           "type": "string",
           "format": "date-time"
-        },
-        "expiry_time": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Drives reference-counted deletion: the shared backup may only be removed\nonce the last recovery point referencing it is gone."
         },
         "failure_reason": {
           "type": "string",

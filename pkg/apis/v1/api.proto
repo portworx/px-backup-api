@@ -5593,9 +5593,11 @@ message ProtectionIntent {
     reserved 7;
     reserved "run_time";
 
-    // The ONLY retention field. A period, never a count. A count cannot say
-    // "recoverable for 30 days" when runs are missed.
-    google.protobuf.Duration recoverability_period = 8;
+    // 8 held recoverability_period. A period cannot promise a surviving copy:
+    // four failed nightly runs against a five-day period delete the last good
+    // copy on day six. A count counts SUCCESSFUL points, so it cannot.
+    reserved 8;
+    reserved "recoverability_period";
 
     // Capture. Relocated from BackupScheduleInfo.backup_type and .direct_kdmp.
     CaptureMode capture_mode = 9;
@@ -5616,6 +5618,11 @@ message ProtectionIntent {
     // 17 held minimum_retention_period, no requirement defines a retention floor
     reserved 17;
     reserved "minimum_retention_period";
+
+    // How many successful recovery points to keep for each resource under this
+    // intent. Counted per resource, so a member that missed a run keeps its own
+    // copies. Must be greater than zero.
+    uint64 retain = 18;
 
     // ---- the four forms, copied minus retain and incremental_count ----
 
@@ -6751,9 +6758,11 @@ message RecoveryPointInfo {
     // Retention is anchored to the revision in force at capture.
     uint64 sla_policy_revision_at_capture = 7;
     google.protobuf.Timestamp taken_time = 8;
-    // Drives reference-counted deletion: the shared backup may only be removed
-    // once the last recovery point referencing it is gone.
-    google.protobuf.Timestamp expiry_time = 9;
+    // 9 held expiry_time. A scheduled point leaves when the retain count passes
+    // it, not when a clock does. An independent checkpoint still carries its own
+    // expiry, on the backup, because it belongs to no intent and so to no count.
+    reserved 9;
+    reserved "expiry_time";
     // NOT a failed execution. A failed or cancelled execution publishes NO
     // recovery point at all, so no row exists to carry a reason
     // and E13 make publication atomic per resource.
