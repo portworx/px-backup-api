@@ -1234,6 +1234,51 @@ message BackupInfo {
     repeated VolumeCaptureDetail volume_capture_details = 68;
     // False for a legacy backup, which has no recovery points.
     bool resource_centric = 69;
+
+    // ONE RESOURCE LEAVING A SHARED BACKUP. Retention never writes these: a
+    // scheduled point ages out through the schedule prune, which takes the
+    // whole backup. These record the deliberate act - a compliance erasure, an
+    // unbind, or a catalog row removed with its points - where the backup must
+    // survive for the members that remain.
+    repeated ResourceDeletionInfo resources_pending_deletion = 70;
+    // What has already left, kept for the audit. The membership fields above
+    // are never edited, so this is the only record that a member departed.
+    repeated ResourceDeletionInfo resources_deleted = 71;
+}
+
+// ResourceDeletionInfo tracks one resource being removed from a shared backup.
+//
+// IT IS DURABLE ON PURPOSE. The three steps - volumes, the per-namespace
+// object, then the recovery point row - are not atomic, so a restart between
+// them must be able to say which one was reached.
+message ResourceDeletionInfo {
+    string catalog_resource_uid = 1;
+    // The namespace name, or the virtual machine name. This is what the
+    // volume records are filtered by.
+    string resource_name = 2;
+    CatalogResourceInfo.Kind kind = 3;
+    google.protobuf.Timestamp marked_at = 4;
+    State state = 5;
+    // Why it is leaving, or why it is stuck.
+    string reason = 6;
+    // Set only in DeletePending: the later backup whose incremental still
+    // needs this snapshot. Re-driven when that backup is deleted.
+    ObjectRef blocking_backup_ref = 7;
+    int32 attempts = 8;
+    google.protobuf.Timestamp completed_at = 9;
+
+    enum State {
+        StateInvalid = 0;
+        // Marked, nothing started.
+        Pending = 1;
+        // The volumes are going.
+        Deleting = 2;
+        // Blocked by a snapshot dependency. The recovery point row STAYS, so
+        // the timeline keeps telling the truth while it waits.
+        DeletePending = 3;
+        Done = 4;
+        Failed = 5;
+    }
 }
 
 // Message representing resources within a namespace with status, metrics, and resource type breakdown
