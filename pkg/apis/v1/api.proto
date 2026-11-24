@@ -7998,36 +7998,134 @@ message ResourceCatalogReconstructResponse {
 }
 
 // -----------------------------------------------------------------------------
-// PB-18168 Part A — Resource-Centric migration.
+// PB-18168 Part A — Resource-Centric migration (async).
 //
-// Two RPCs:
-//   Assess  — read-only. Walks every legacy object in orgID, projects the new
-//             object model in memory, returns a MigrationReport.
-//   Switch  — the ten-step transaction. Any failure rolls back and the install
-//             stays on the legacy path.
+// Both assess and switch take long enough that a blocking gRPC call is a bad
+// fit (operators lose the response on a network hiccup, and a load balancer
+// idle-timeout can kill the connection mid-run). The async design stores a
+// MigrationRunObject in Mongo for every attempt and returns the doc UID to
+// the caller; the real work runs in a background goroutine that updates the
+// same doc as it progresses. The operator then polls GetMigration (or
+// ListMigrations) until phase is terminal.
+//
+// Four RPCs:
+//   StartAssess     — creates one MigrationRunObject in phase=assess_pending
+//                     and kicks off the background assess. Returns the doc.
+//   StartSwitch     — against an existing MigrationRunObject whose phase is
+//                     assess_complete, stamps the overrides and flips phase
+//                     to switch_pending. Returns the doc. The background
+//                     runner executes the twelve-step transaction and writes
+//                     MigrationSwitchResult back into the same doc.
+//   GetMigration    — one doc by UID. The polling surface.
+//   ListMigrations  — every doc for the org, newest first.
 //
 // See:
 //   https://purestorage.atlassian.net/wiki/spaces/PXBAC/pages/5397644466
 // -----------------------------------------------------------------------------
 
-message ResourceCentricMigrationAssessRequest {
-    string org_id = 1;
+// MigrationRunObject is one migration attempt — one Assess, optionally
+// followed by one Switch against it. The row is created by StartAssess and
+// flipped forward through the phases listed on MigrationRunInfo.phase.
+message MigrationRunObject {
+    Metadata metadata = 1
+        [ (gogoproto.jsontag) = "metadata", (gogoproto.embed) = true ];
+    MigrationRunInfo migration_run_info = 2 [ (gogoproto.embed) = true ];
 }
 
-message ResourceCentricMigrationAssessResponse {
-    MigrationReport report = 1;
+// MigrationRunInfo carries the lifecycle, inputs and outputs of one run.
+//
+// phase is the state machine:
+//
+//     assess_pending  ──► assess_running  ──► assess_complete
+//                                        └──► assess_failed
+//     assess_complete ──► switch_pending ──► switch_running ──► switch_complete
+//                                                           └──► switch_failed
+//
+// Only one row per org may hold phase in {switch_pending, switch_running} at
+// a time; StartSwitch enforces that.
+message MigrationRunInfo {
+    // phase names the current lifecycle state. See the state machine above.
+    string phase = 1;
+    // phase_message is a short free-text description of what the runner is
+    // doing now (for example "step 5/12: writing bindings"). Overwritten by
+    // the runner as it progresses.
+    string phase_message = 2;
+    // progress_percent is a coarse 0..100 estimate the runner updates. Not
+    // monotonic across phase boundaries — resets to 0 when phase advances.
+    int32 progress_percent = 3;
+
+    // assess_report is set when the assess goroutine succeeds. On
+    // assess_failed the report may be nil; read error instead.
+    MigrationReport assess_report = 4;
+
+    // switch_overrides is captured from the StartSwitch call and persisted
+    // so GetMigration can show what the operator confirmed with.
+    MigrationSwitchOverrides switch_overrides = 5;
+
+    // switch_result is set when the switch goroutine reaches a terminal
+    // state (switch_complete or switch_failed). On failure, committed=false
+    // and rolled_back=true; failure_msg explains why.
+    MigrationSwitchResult switch_result = 6;
+
+    google.protobuf.Timestamp assess_started_at = 7;
+    google.protobuf.Timestamp assess_finished_at = 8;
+    google.protobuf.Timestamp switch_started_at = 9;
+    google.protobuf.Timestamp switch_finished_at = 10;
+
+    // created_by is the user UID that ran StartAssess.
+    string created_by = 11;
+    // switched_by is the user UID that ran StartSwitch. Empty until then;
+    // may differ from created_by.
+    string switched_by = 12;
+
+    // error carries the last terminal failure message. Set together with a
+    // phase flip to assess_failed or switch_failed.
+    string error = 13;
+
+    // last_heartbeat is written by the background runner every few seconds
+    // while phase is assess_running or switch_running. The startup sweeper
+    // uses it to flip rows left stranded by a pod restart into _failed with
+    // error="server restarted".
+    google.protobuf.Timestamp last_heartbeat = 14;
 }
 
-message ResourceCentricMigrationSwitchRequest {
+message StartAssessRequest {
     string org_id = 1;
+}
+message StartAssessResponse {
+    MigrationRunObject migration = 1;
+}
+
+message StartSwitchRequest {
+    string org_id = 1;
+    // uid is the MigrationRunObject the switch runs against. Its phase must
+    // be assess_complete; anything else is refused.
+    string uid = 2;
     // confirm MUST be true for the switch to run. Guards against accidental
     // invocation; mirrors the --confirm flag on the pxb CLI.
-    bool confirm = 2;
-    MigrationSwitchOverrides overrides = 3;
+    bool confirm = 3;
+    MigrationSwitchOverrides overrides = 4;
+}
+message StartSwitchResponse {
+    MigrationRunObject migration = 1;
 }
 
-message ResourceCentricMigrationSwitchResponse {
-    MigrationSwitchResult result = 1;
+message GetMigrationRequest {
+    string org_id = 1;
+    string uid = 2;
+}
+message GetMigrationResponse {
+    MigrationRunObject migration = 1;
+}
+
+message ListMigrationsRequest {
+    string org_id = 1;
+    // Paging and the common filters, the same shape every other enumerate
+    // in this API uses.
+    EnumerateOptions enumerate_options = 2 [ (gogoproto.embed) = true ];
+}
+message ListMigrationsResponse {
+    repeated MigrationRunObject migrations = 1;
 }
 
 // MigrationReport is the JSON shape of Confluence Appendix A.10.
@@ -8186,19 +8284,40 @@ message MigrationSwitchResult {
 }
 
 service ResourceCentricMigration {
-    rpc Assess(ResourceCentricMigrationAssessRequest)
-        returns (ResourceCentricMigrationAssessResponse) {
+    // StartAssess creates a MigrationRunObject in phase=assess_pending and
+    // returns it immediately. A background goroutine fills assess_report
+    // and flips phase to assess_complete or assess_failed.
+    rpc StartAssess(StartAssessRequest) returns (StartAssessResponse) {
         option (google.api.http) = {
             post : "/v1/rcmigration/assess/{org_id}"
             body : "*"
         };
     }
 
-    rpc Switch(ResourceCentricMigrationSwitchRequest)
-        returns (ResourceCentricMigrationSwitchResponse) {
+    // StartSwitch runs against an existing MigrationRunObject whose phase
+    // is assess_complete. Captures overrides, flips phase to
+    // switch_pending, returns immediately. A background goroutine executes
+    // the twelve-step transaction and writes MigrationSwitchResult back.
+    rpc StartSwitch(StartSwitchRequest) returns (StartSwitchResponse) {
         option (google.api.http) = {
-            post : "/v1/rcmigration/switch/{org_id}"
+            post : "/v1/rcmigration/switch/{org_id}/{uid}"
             body : "*"
+        };
+    }
+
+    // GetMigration returns one MigrationRunObject by UID. Clients poll
+    // this until phase is terminal.
+    rpc GetMigration(GetMigrationRequest) returns (GetMigrationResponse) {
+        option (google.api.http) = {
+            get : "/v1/rcmigration/{org_id}/{uid}"
+        };
+    }
+
+    // ListMigrations returns every MigrationRunObject for the org. Used
+    // by pxb migrate list and by the UI's history view.
+    rpc ListMigrations(ListMigrationsRequest) returns (ListMigrationsResponse) {
+        option (google.api.http) = {
+            get : "/v1/rcmigration/{org_id}"
         };
     }
 }

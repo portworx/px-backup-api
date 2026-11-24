@@ -6285,12 +6285,13 @@
     },
     "/v1/rcmigration/assess/{org_id}": {
       "post": {
-        "operationId": "ResourceCentricMigration_Assess",
+        "summary": "StartAssess creates a MigrationRunObject in phase=assess_pending and\nreturns it immediately. A background goroutine fills assess_report\nand flips phase to assess_complete or assess_failed.",
+        "operationId": "ResourceCentricMigration_StartAssess",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/ResourceCentricMigrationAssessResponse"
+              "$ref": "#/definitions/StartAssessResponse"
             }
           },
           "default": {
@@ -6312,7 +6313,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/ResourceCentricMigrationAssessRequest"
+              "$ref": "#/definitions/StartAssessRequest"
             }
           }
         ],
@@ -6321,14 +6322,15 @@
         ]
       }
     },
-    "/v1/rcmigration/switch/{org_id}": {
+    "/v1/rcmigration/switch/{org_id}/{uid}": {
       "post": {
-        "operationId": "ResourceCentricMigration_Switch",
+        "summary": "StartSwitch runs against an existing MigrationRunObject whose phase\nis assess_complete. Captures overrides, flips phase to\nswitch_pending, returns immediately. A background goroutine executes\nthe twelve-step transaction and writes MigrationSwitchResult back.",
+        "operationId": "ResourceCentricMigration_StartSwitch",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/ResourceCentricMigrationSwitchResponse"
+              "$ref": "#/definitions/StartSwitchResponse"
             }
           },
           "default": {
@@ -6346,12 +6348,247 @@
             "type": "string"
           },
           {
+            "name": "uid",
+            "description": "uid is the MigrationRunObject the switch runs against. Its phase must\nbe assess_complete; anything else is refused.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/ResourceCentricMigrationSwitchRequest"
+              "$ref": "#/definitions/StartSwitchRequest"
             }
+          }
+        ],
+        "tags": [
+          "ResourceCentricMigration"
+        ]
+      }
+    },
+    "/v1/rcmigration/{org_id}": {
+      "get": {
+        "summary": "ListMigrations returns every MigrationRunObject for the org. Used\nby pxb migrate list and by the UI's history view.",
+        "operationId": "ResourceCentricMigration_ListMigrations",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListMigrationsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.max_objects",
+            "description": "max objects to fetch.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.time_range.start_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "enumerate_options.time_range.end_time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "enumerate_options.name_filter",
+            "description": "Filter to use for name of objects. Any object that contains the filter\nwill be returned.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.cluster_name_filter",
+            "description": "Filter to use for cluster name of objects. Any object that contains the\nfilter will be returned.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.object_index",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "enumerate_options.include_detailed_resources",
+            "description": "Ths option will be set to true by the caller, when they want to have\ncomplete backup object. That means the backupObject's\nresource list will be set to complete list of resources.\nIf this option is set to false, resource list will be\nset to nil and rest of the backupObject details will be returned in the\nresponse.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "enumerate_options.cluster_uid_filter",
+            "description": "Filter to use with cluster uid on objects. Any object that contains the\nfilter will be returned\nCurrently backup enumerate request should pass this along with cluster\nname.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.owners",
+            "description": "Filter to use owner uids on objects. Any object that contains the\nfilter will be returned.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "enumerate_options.backup_object_type",
+            "description": "filter to use backupObjectType on object.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.status",
+            "description": "filter based on the object status.\nNeed to pass the string value of the status field of the object ( backup /restore )\nFor example, {\"Success\", \"Failed\"}.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortBy.type",
+            "description": "Name of the field by which sort to be performed.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "CreationTimestamp",
+              "Name",
+              "ClusterName",
+              "Size",
+              "RestoreBackupName",
+              "LastUpdateTimestamp"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.sort_option.sortOrder.type",
+            "description": "Order of sorting.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Invalid",
+              "Ascending",
+              "Descending"
+            ],
+            "default": "Invalid"
+          },
+          {
+            "name": "enumerate_options.resource_info.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.group",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.kind",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.resource_info.version",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.vm_volume_name",
+            "description": "filter VM that matches the resource_info and has volume vm_volume_name attached to it.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enumerate_options.exclude_failed_resource",
+            "description": "filter to exclude failed resources while enumerating object.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "ResourceCentricMigration"
+        ]
+      }
+    },
+    "/v1/rcmigration/{org_id}/{uid}": {
+      "get": {
+        "summary": "GetMigration returns one MigrationRunObject by UID. Clients poll\nthis until phase is terminal.",
+        "operationId": "ResourceCentricMigration_GetMigration",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetMigrationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "tags": [
@@ -14472,6 +14709,14 @@
         }
       }
     },
+    "GetMigrationResponse": {
+      "type": "object",
+      "properties": {
+        "migration": {
+          "$ref": "#/definitions/MigrationRunObject"
+        }
+      }
+    },
     "GoogleConfig": {
       "type": "object",
       "properties": {
@@ -14737,6 +14982,17 @@
         },
         "subscription_id": {
           "type": "string"
+        }
+      }
+    },
+    "ListMigrationsResponse": {
+      "type": "object",
+      "properties": {
+        "migrations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MigrationRunObject"
+          }
         }
       }
     },
@@ -15282,6 +15538,82 @@
         }
       },
       "description": "MigrationReport is the JSON shape of Confluence Appendix A.10."
+    },
+    "MigrationRunInfo": {
+      "type": "object",
+      "properties": {
+        "phase": {
+          "type": "string",
+          "description": "phase names the current lifecycle state. See the state machine above."
+        },
+        "phase_message": {
+          "type": "string",
+          "description": "phase_message is a short free-text description of what the runner is\ndoing now (for example \"step 5/12: writing bindings\"). Overwritten by\nthe runner as it progresses."
+        },
+        "progress_percent": {
+          "type": "integer",
+          "format": "int32",
+          "description": "progress_percent is a coarse 0..100 estimate the runner updates. Not\nmonotonic across phase boundaries — resets to 0 when phase advances."
+        },
+        "assess_report": {
+          "$ref": "#/definitions/MigrationReport",
+          "description": "assess_report is set when the assess goroutine succeeds. On\nassess_failed the report may be nil; read error instead."
+        },
+        "switch_overrides": {
+          "$ref": "#/definitions/MigrationSwitchOverrides",
+          "description": "switch_overrides is captured from the StartSwitch call and persisted\nso GetMigration can show what the operator confirmed with."
+        },
+        "switch_result": {
+          "$ref": "#/definitions/MigrationSwitchResult",
+          "description": "switch_result is set when the switch goroutine reaches a terminal\nstate (switch_complete or switch_failed). On failure, committed=false\nand rolled_back=true; failure_msg explains why."
+        },
+        "assess_started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "assess_finished_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "switch_started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "switch_finished_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_by": {
+          "type": "string",
+          "description": "created_by is the user UID that ran StartAssess."
+        },
+        "switched_by": {
+          "type": "string",
+          "description": "switched_by is the user UID that ran StartSwitch. Empty until then;\nmay differ from created_by."
+        },
+        "error": {
+          "type": "string",
+          "description": "error carries the last terminal failure message. Set together with a\nphase flip to assess_failed or switch_failed."
+        },
+        "last_heartbeat": {
+          "type": "string",
+          "format": "date-time",
+          "description": "last_heartbeat is written by the background runner every few seconds\nwhile phase is assess_running or switch_running. The startup sweeper\nuses it to flip rows left stranded by a pod restart into _failed with\nerror=\"server restarted\"."
+        }
+      },
+      "description": "MigrationRunInfo carries the lifecycle, inputs and outputs of one run.\n\nphase is the state machine:\n\n    assess_pending  ──► assess_running  ──► assess_complete\n                                       └──► assess_failed\n    assess_complete ──► switch_pending ──► switch_running ──► switch_complete\n                                                          └──► switch_failed\n\nOnly one row per org may hold phase in {switch_pending, switch_running} at\na time; StartSwitch enforces that."
+    },
+    "MigrationRunObject": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "migration_run_info": {
+          "$ref": "#/definitions/MigrationRunInfo"
+        }
+      },
+      "description": "MigrationRunObject is one migration attempt — one Assess, optionally\nfollowed by one Switch against it. The row is created by StartAssess and\nflipped forward through the phases listed on MigrationRunInfo.phase."
     },
     "MigrationSwitchOverrides": {
       "type": "object",
@@ -17105,45 +17437,6 @@
       "properties": {
         "resource": {
           "$ref": "#/definitions/CatalogResourceObject"
-        }
-      }
-    },
-    "ResourceCentricMigrationAssessRequest": {
-      "type": "object",
-      "properties": {
-        "org_id": {
-          "type": "string"
-        }
-      }
-    },
-    "ResourceCentricMigrationAssessResponse": {
-      "type": "object",
-      "properties": {
-        "report": {
-          "$ref": "#/definitions/MigrationReport"
-        }
-      }
-    },
-    "ResourceCentricMigrationSwitchRequest": {
-      "type": "object",
-      "properties": {
-        "org_id": {
-          "type": "string"
-        },
-        "confirm": {
-          "type": "boolean",
-          "description": "confirm MUST be true for the switch to run. Guards against accidental\ninvocation; mirrors the --confirm flag on the pxb CLI."
-        },
-        "overrides": {
-          "$ref": "#/definitions/MigrationSwitchOverrides"
-        }
-      }
-    },
-    "ResourceCentricMigrationSwitchResponse": {
-      "type": "object",
-      "properties": {
-        "result": {
-          "$ref": "#/definitions/MigrationSwitchResult"
         }
       }
     },
@@ -19231,6 +19524,49 @@
       ],
       "default": "Invalid",
       "title": "Sorting order type"
+    },
+    "StartAssessRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        }
+      }
+    },
+    "StartAssessResponse": {
+      "type": "object",
+      "properties": {
+        "migration": {
+          "$ref": "#/definitions/MigrationRunObject"
+        }
+      }
+    },
+    "StartSwitchRequest": {
+      "type": "object",
+      "properties": {
+        "org_id": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string",
+          "description": "uid is the MigrationRunObject the switch runs against. Its phase must\nbe assess_complete; anything else is refused."
+        },
+        "confirm": {
+          "type": "boolean",
+          "description": "confirm MUST be true for the switch to run. Guards against accidental\ninvocation; mirrors the --confirm flag on the pxb CLI."
+        },
+        "overrides": {
+          "$ref": "#/definitions/MigrationSwitchOverrides"
+        }
+      }
+    },
+    "StartSwitchResponse": {
+      "type": "object",
+      "properties": {
+        "migration": {
+          "$ref": "#/definitions/MigrationRunObject"
+        }
+      }
     },
     "StatusCounts": {
       "type": "object",
